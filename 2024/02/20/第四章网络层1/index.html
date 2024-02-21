@@ -1,0 +1,1108 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="forwarding  Forwarding involves the transfer of a packet from an incoming link to an outgoing link within a single router    routing  Routing involves all of a network’s routers, whose collective(集体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章-网络层（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="forwarding  Forwarding involves the transfer of a packet from an incoming link to an outgoing link within a single router    routing  Routing involves all of a network’s routers, whose collective(集体">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.21.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.590Z">
+<meta property="article:modified_time" content="2024-02-20T07:38:11.398Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.2.jpg">
+  
+  
+  
+  <title>第四章-网络层（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第四章-网络层（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第四章-网络层（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>
+<p><strong>forwarding</strong></p>
+<ul>
+<li>Forwarding involves the transfer of a packet from an incoming link to an outgoing link within a <strong>single</strong> router</li>
+</ul>
+</li>
+<li>
+<p><strong>routing</strong></p>
+<ul>
+<li>Routing involves <strong>all of a network’s routers</strong>, whose collective(集体的) interactions(相互作用，交流) via <u>routing protocols</u> <strong>determine the paths</strong> that packets take on their trips from <u>source to destination</u> node</li>
+</ul>
+</li>
+</ul>
+<h1>4.1 Introduction</h1>
+<ul>
+<li>routers are shown with a truncated(截断的) protocol stack, that is, with no upper layers above the network layer, because(<u>except for control purposes</u>) routers do not run application-and transport-layer protocols</li>
+</ul>
+<h3 id="4-1-1-Forwarding-and-Routing">4.1.1 Forwarding and Routing</h3>
+<h6 id="Forwarding">Forwarding</h6>
+<ul>
+<li>:small_blue_diamond:When a packet arrives at a router’s input link, the router must move the packet to the <strong>appropriate output link</strong></li>
+<li>refers to the <strong>router-local action</strong>(路由器本地动作) of transferring a packet from an input link interface to the appropriate output link interface</li>
+</ul>
+<h6 id="Routing">Routing</h6>
+<ul>
+<li>
+<p>:small_blue_diamond:The network layer must determine the route or path taken by packets as they flow from a sender to a receiver</p>
+</li>
+<li>
+<p>The algorithms that calculate these paths are referred to as <strong>routing algorithms</strong>(路由选择算法)</p>
+</li>
+<li>
+<p>refers to the <strong>network-wide process</strong>(网络范围的过程) that determines the end-to-end paths that packets take from source to destination</p>
+</li>
+<li>
+<p><u>Every</u> router has a <strong>forwarding table</strong>(转发表)</p>
+</li>
+<li>
+<p>A router forwards a packet by examining the value of a field in the arriving packet’s <strong>header</strong>, and then using this value to index(索引) into the router’s forwarding table</p>
+</li>
+<li>
+<p><u>Depending on the network-layer protocol,</u> this value in the packet’s header could be the <u>destination address</u> of the packet or <u>an indication of the connection</u> to which the packet belongs，该分组所属连接的指示</p>
+</li>
+<li>
+<p>the <strong>routing algorithm</strong> <u>determines the values</u> that are inserted into the <strong>routers’forwarding tables</strong></p>
+</li>
+<li>
+<p>The routing algorithm may be centralized(集中式的) or decentralized(分布式的)，In either case, a <u>router</u> <strong>receives routing protocol messages</strong>, which are used to <strong>configure(配置) its forwarding table</strong></p>
+</li>
+<li>
+<p>packet switches</p>
+<ul>
+<li>link-laver switches：base their forwarding decision on the value in the link-laver field</li>
+<li>routers：base their forwarding decision on the value in the network-layer field，，基于网络层字段中的值做转发决定</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h6 id="Connection-Setup，建立连接">Connection Setup，建立连接</h6>
+<ul>
+<li>
+<p>ATM, frame relay, X.25, MPLS (not Internet)</p>
+</li>
+<li>
+<p>some network-layer architectures—for example, <strong>ATM</strong> and <strong>frame-relay</strong>, but <strong>not the Internet</strong>— require the routers along the chosen path from source to destination to <strong>handshake</strong> with each other in order to set up state before network-layer data packets within a given source-to-destination connection can begin to flow</p>
+</li>
+<li>
+<p>before datagrams flow, two end hosts and intervening (中间的) routers establish virtual</p>
+<ul>
+<li>connection routers get involved (路由器也参与了！)</li>
+</ul>
+</li>
+<li>
+<p>network vs transport layer connection service:</p>
+<ul>
+<li>network: between two hosts (may also involve intervening  routers in case of VCs)</li>
+<li>transport: between two processes</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-1-2-Network-Service-Models">4.1.2 Network Service Models</h3>
+<ul>
+<li>
+<p>The <strong>network service model</strong>(网络服务模型) defines the <strong>characteristics</strong> of end-to-end transport of packets between sending and receiving end systems，端到端运输特性</p>
+</li>
+<li>
+<p>能由网络层提供的特定服务：</p>
+<ul>
+<li>
+<p>Example services for  individual datagrams:</p>
+<ul>
+<li>Guaranteed delivery
+<ul>
+<li>packet will eventually arrive at its destination</li>
+</ul>
+</li>
+<li>Guaranteed delivery with bounded delay，具有时延上界的确保交付
+<ul>
+<li><u>not only</u> guarantees delivery of the packet, <u>but</u> delivery <strong>within a specified host-to-host delay bound</strong></li>
+<li>less than 40 msec delay</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Example services for <strong>a flow of datagrams</strong>(分组流)</p>
+<ul>
+<li>
+<p>In-order packet delivery</p>
+</li>
+<li>
+<p>Guaranteed maximum jitter，确保最大时延抖动</p>
+<ul>
+<li>guarantees that the amount of time between the <u>transmission of two successive(连续的，接连的) packets at the sender</u> is equal to the amount of time between their <u>receipt at the destination</u> (or that this spacing changes by no more than some specified value)</li>
+</ul>
+</li>
+<li>
+<p>Security services</p>
+<ul>
+<li>Using a secret session key known only by a source and destination host</li>
+<li>the network layer in the source host could encrypt the payloads of all datagrams being sent to the destination host；responsible for decrypting the payloads</li>
+<li><strong>confidentiality</strong>(机密性) would be provided to <strong>all</strong> transport-layer segments (TCP and UDP) between the source and destination hosts</li>
+<li>could provide <strong>data integrity</strong>(数据完整性) and <strong>source authentication</strong>(源鉴别) services</li>
+</ul>
+</li>
+<li>
+<p>Guaranteed minimal bandwidth，确保最小带宽</p>
+<ul>
+<li>As long as the sending host transmits bits(as part of packets) at a rate below the specified bit rate, then no packet is lost and each packet arrives within a prespecified host-to-host delay (for example, within 40 msec)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>The <strong>Internet</strong>’s <strong>network layer</strong> provides <strong>a single service</strong>, known as <strong>best-effort service</strong>(尽力而为服务)</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Network Architecture</th>
+<th>Service Model</th>
+<th>Bandwidth</th>
+<th>Loss</th>
+<th>Order</th>
+<th>Timing</th>
+<th>Congestion feedback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Internet</td>
+<td>best effort</td>
+<td>none</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no (inferred via loss)</td>
+</tr>
+<tr>
+<td>ATM</td>
+<td>CBR</td>
+<td>constant rate</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no congestion</td>
+</tr>
+<tr>
+<td>ATM</td>
+<td>VBR</td>
+<td>constant rate</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no congestion</td>
+</tr>
+<tr>
+<td>ATM</td>
+<td>ABR</td>
+<td>constant rate</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>ATM</td>
+<td>UB</td>
+<td>none</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>两个最重要的 ATM 服务模型是恒定比特率和可用比特率服务：</p>
+<ul>
+<li>
+<p>**Constant bit rate(CBR，恒定比特率)**ATM network service</p>
+<ul>
+<li>to provide a <u>flow of packets</u>分组流(known as cells信元 in ATM terminology)with a <strong>virtual pipe</strong> whose properties(属性，性质) are the same <u>as if</u> a dedicated fixed-bandwidth transmission link existed between sending and receiving hosts</li>
+<li>With CBR service, a flow of ATM cells is carried across the network in such a way that a cell’s end-to-end delay, the <u>variability</u>(可变性，即时延抖动) in a cell’s end-end delay(that is, the jitter),and the fraction(分数) of cells that are <u>lost or delivered late</u>(丢失或推迟交付的信元的比率) are all guaranteed to be less than specified values</li>
+</ul>
+</li>
+<li>
+<p><strong>Available bit rate(ABR，可用比特率)</strong> ATM network service</p>
+<ul>
+<li>cells may be <u>lost</u> under ABR service</li>
+<li>unlike in the Internet, however, cells <u>cannot be reordered</u></li>
+<li>a **minimum cell transmission rate (MCR，最小信元传输速率)**is guaranteed to a connection using ABR service</li>
+<li>ATM ABR service can provide <u>feedback</u> to the sender</li>
+</ul>
+</li>
+</ul>
+<h1>4.2 Virtual Circuit and Datagram Networks，虚电路和数据报网络</h1>
+<p>网络层和运输层的差异</p>
+<ul>
+<li>
+<p>:small_blue_diamond:network layer：host-to-host services</p>
+<p>:small_red_triangle:transport layer： process-to-process services</p>
+</li>
+<li>
+<p>:small_blue_diamond:network layer：host-to-host services</p>
+<ul>
+<li>either a host-to-host connectionless service or a host-to-host connection service, <strong>but not both</strong></li>
+<li>Computer networks that provide only a <strong>connection service</strong> at the network layer are called <strong>virtual-circuit (VC)networks</strong>(虚电路网络)</li>
+<li>Computer networks that provide only a <strong>connectionless service</strong> at the network layer are called <strong>datagram networks</strong>(数据报网络)</li>
+</ul>
+</li>
+<li>
+<p>:small_blue_diamond:network layer： implemented in the <strong>routers</strong> in the network core as well as in the <strong>end systems</strong></p>
+<p>:small_red_triangle:transport layer： implemented at the edge of the network in the <strong>end systems</strong></p>
+</li>
+</ul>
+<h3 id="4-2-1-Virtual-Circuit-Networks">4.2.1 Virtual-Circuit Networks</h3>
+<ul>
+<li>
+<p>the <strong>Internet</strong> is a <strong>datagram network</strong></p>
+</li>
+<li>
+<p>many alternative network architectures—including those of <strong>ATM</strong> and <strong>frame relay(帧中继)</strong>—are virtual-circuit networks and use connections at the network layer</p>
+<ul>
+<li>These <u>network-layer connections</u> are called <strong>virtual circuits (VCs，虚电路）</strong></li>
+</ul>
+</li>
+<li>
+<p>虚电路的组成</p>
+<ul>
+<li>a <strong>path</strong> (<u>a series of links and routers</u>) between the source and destination hosts</li>
+<li><strong>VC numbers</strong>
+<ul>
+<li>one number for each link along the path</li>
+</ul>
+</li>
+<li>entries(条目，记录) in the forwarding table in each router along the path，沿着该路径的每台路由器中的转发表表项
+<ul>
+<li><u>a virtual circuit</u> may have a <u>different VC number</u> on each link</li>
+<li>each intervening(中间的) router must <strong>replace the VC number</strong> of each traversing packet with a new VC number</li>
+<li>The new VC number is obtained from the <strong>forwarding table</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Incoming interface</th>
+<th>Incoming VC #</th>
+<th>Outgoing interface</th>
+<th>Outgoing VC #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>12</td>
+<td>3</td>
+<td>22</td>
+</tr>
+<tr>
+<td>2</td>
+<td>63</td>
+<td>1</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>不简单地保持相同的VC号的原因</p>
+<ul>
+<li>replacing the number from link to link reduces the length of the VC field in the packet heade，长度</li>
+<li>VC setup is considerably simplified by permitting(分配) a different VC number at each link along the path of the VC，简化建立
+<ul>
+<li>each link in the path can choose a VC number independently of the VC numbers chosen at other links along the path</li>
+<li>若相同：the routers would have to exchange and process a substantial(固定的) number of messages to agree on a common VC number(e.g., one that is not being used by any other existing VC at these routers) to be used for a connection</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Routers maintain <strong>connection state information</strong>(连接状态信息)!</p>
+<ul>
+<li>each time a new connection is established across a router, a new connection entry must be added to the router’s for warding table</li>
+<li>each time a connection is released, an entry must be removed from the table</li>
+<li>even if <u>there is no VC-number translation</u>, it is still necessary to maintain connection <strong>state information</strong> that associates VC numbers with <strong>output interface numbers</strong></li>
+</ul>
+</li>
+<li>
+<p>there are three identifiable phases in a virtual circuit:</p>
+<ul>
+<li>
+<p>VC setup</p>
+<p>:one:the sending transport layer <u>contacts</u>(联系) the network layer, <u>specifies</u>(指定) the <u>receiver’s address</u>, and <u>waits</u> for the network to set up the VC</p>
+<p>:two:The <u>network layer</u>  <strong>determines the path</strong> between sender and receiver(the series of <strong>links and routers</strong> through which <strong>all</strong> packets of the VC will travel)</p>
+<p>:three:The <u>network layer</u> <strong>determines the VC number</strong> for <u>each link</u> along the path</p>
+<p>:four:<u>the network layer</u> <strong>adds an entry</strong> <u>in the forwarding table</u> in <u>each</u> router</p>
+<ul>
+<li>During VC setup, the network layer may also <strong>reserve resources</strong> (for example, bandwidth) along the path of the VC</li>
+</ul>
+</li>
+<li>
+<p>Data transfer，数据传输</p>
+<p>once the VC has been established, packets can begin to flow along the VC</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.17.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>VC teardown，虚电路拆除</p>
+<p>:one:it is initiated when the <u>sender (or receiver)</u> informs the network layer</p>
+<p>:two:<u>The network layer</u> will then typically <u>inform</u> the end system <u>on the other side</u> of the network of the call termination</p>
+<p>:three:<u>The network layer</u> <strong>update</strong> the <u>forwarding tables</u> in <u>each</u> of the packet routers on the path to indicate that <u>the VC no longer exists</u></p>
+</li>
+</ul>
+</li>
+<li>
+<p>There is a subtle(细微) but important distinction between <u>VC setup at the network layer</u> and <u>connection setup at the transport layer</u></p>
+<ul>
+<li>connection setup at the <u>transport</u> layer involves <strong>only the two end systems</strong>
+<ul>
+<li>During transport-layer connection setup, the two end systems <strong>alone</strong>(单独地，独立地) <strong>determine the parameters</strong> of their transport-layer connection
+<ul>
+<li>for example, initial <u>sequence number</u> and <u>flow-control window size</u></li>
+</ul>
+</li>
+<li>the <strong>routers</strong> within the network are completely <strong>oblivious</strong>(未察觉的，不知道) to the transport-layer connection</li>
+</ul>
+</li>
+<li>with a VC network layer, routers along the path between the two end systems are involved in VC setup, and <u>each router</u> <strong>is fully aware of</strong> <u>all</u> the VCs passing through it</li>
+</ul>
+</li>
+<li>
+<p><strong>signaling messages</strong>(信令报文)：the messages that the end systems send into the network to <u>initiate or terminate a VC</u>, and the messages passed <u>between the routers to set up the VC</u> (that is, to modify connection state in router tables)</p>
+<p><strong>signaling protocols</strong>(信令协议)：the protocols used to <u>exchange these messages</u></p>
+<ul>
+<li>used to setup, maintain, teardown VC</li>
+<li>used in ATM, frame-relay, X.25</li>
+<li>not used in today’s Internet</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-2-2-Datagram-Networks，数据报网络">4.2.2 Datagram Networks，数据报网络</h3>
+<ul>
+<li>
+<p>In a datagram network,each time an end system wants to send a packet,it <u>stamps</u>(印记，标记) the packet with <strong>the address of the destination end system</strong> and then pops the packet into the network</p>
+<ul>
+<li><strong>no call setup</strong> at network layer（without any VC setup）</li>
+<li>routers: <strong>no state</strong> about end-to-end connections
+<ul>
+<li>no network-level concept of “connection”</li>
+</ul>
+</li>
+<li>packets forwarded in routers using destination host  address (目标主机地址)
+<ul>
+<li>packets between same source-dest pair may take  different paths!!!</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.18.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.19.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>the router uses <strong>the longest prefix matching rule(最长前缀匹配原则)</strong></p>
+<ul>
+<li>finds the longest matching entry in the table and forwards the packet to the link interface associated with the longest prefix match</li>
+</ul>
+</li>
+<li>
+<p>Although routers in datagram networks maintain no connection state information, they nevertheless <strong>maintain forwarding state information</strong>(维持转发状态信息) in their <u>forwarding tables</u></p>
+<ul>
+<li>the time scale at which this forwarding state information changes is relatively(相对) <strong>slow</strong></li>
+<li>in a <strong>datagram network</strong> the <u>forwarding tables</u> are <strong>modified</strong> by <u>the routing algorithms</u>, which <u>typically</u> <strong>update</strong> a forwarding table <u>every one-to-five minutes</u> or so</li>
+<li>in a <strong>VC network</strong>, a forwarding table in a router is modified whenever a new connection is <strong>set up</strong> through the router or whenever an existing connection through the router is <strong>tor down</strong></li>
+</ul>
+</li>
+<li>
+<p>a series of packets sent from one end system to another may follow <strong>different paths</strong> through the network and may arrive <strong>out of order</strong></p>
+<ul>
+<li>Because forwarding tables in datagram networks <u>can be modified at any time</u></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-2-3-Origins-of-VC-and-Datagram-Networks">4.2.3 Origins of VC and Datagram Networks</h3>
+<table>
+<thead>
+<tr>
+<th>Internet (datagram)</th>
+<th>ATM (VC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data exchange among computers：<br />“elastic” service, no strict  timing req</td>
+<td>evolved from telephony ( 电话网络演化而来)</td>
+</tr>
+<tr>
+<td>many link types (fiber, radio,  Ethernet, statellite)：<br />different characteristics<br />uniform service difficult</td>
+<td>human conversation:<br />strict timing, reliability requirements<br />need for guaranteed  service</td>
+</tr>
+<tr>
+<td>“smart” end systems  (computers)：<br />can adapt, perform control,  error recovery<br />simple inside network,  complexity at “edge”(边缘复杂 ，核心简单)</td>
+<td>“dumb” end systems：<br />telephones<br />complexity inside  network (边缘简单，核心复杂)</td>
+</tr>
+</tbody>
+</table>
+<h1>4.3 What’s Inside a Router?路由器工作原理</h1>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.20.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>Four components of a router can be identified:
+<ul>
+<li>Input ports
+<ul>
+<li>it performs the physical-layer functions of terminating an incoming physical link to a router，执行将一条输入的物理链路与路由器相连接的物理层功能</li>
+<li>It performs the data link-layer functions needed to interoperate(交互) with the data link-layer functions at the remote side of the incoming link</li>
+<li>It also performs a lookup and forwarding function o that a packet forwarded into the switching fabric(结构) of the router emerges at the appropriate output port</li>
+<li>multiple ports are often gathered together on a single <strong>line card(接口卡)</strong> within a router</li>
+</ul>
+</li>
+<li>switching fabric，交换结构
+<ul>
+<li>The switching fabric connects the router’s <u>input ports</u> to its <u>output ports</u>.</li>
+<li>This switching fabric is completely contained within the router—a network inside of a network router!</li>
+</ul>
+</li>
+<li>Output ports
+<ul>
+<li>An output port stores the packets that have been forwarded to it through the switching fabric and then transmits the packets on the outgoing link</li>
+<li>The output port thus performs the reverse data link-and physical-layer functionality of the input port</li>
+<li>When a link is bidirectional, an output port to the link will typically be <u>paired</u> with the input port for that link, on the <u>same</u> line card</li>
+</ul>
+</li>
+<li>Ruting processor，路由选择处理器
+<ul>
+<li>maintains the routing information forwarding tables</li>
+<li>performs network management functions  within the router</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-3-1-Input-Ports">4.3.1 Input Ports</h3>
+<ul>
+<li>
+<p>The <strong>lookup/forwarding module</strong> in the <strong>input port</strong> is central to the forwarding function of the router</p>
+</li>
+<li>
+<p>here the router <strong>determines the output port</strong> to which an arriving packet will be forwarded via the switching fabric</p>
+</li>
+<li>
+<p><strong>a shadow copy of the forwarding table</strong> is typically stored at <u>each input port</u> and <strong>updated</strong>, as needed, by the **routing processor **==》 Such <strong>decentralized(去中心化)</strong> forwarding avoids creating a forwarding processing <u>bottleneck</u>(瓶颈) at a single point within the router</p>
+</li>
+<li>
+<p>Once the output port for a packet <u>has been determined</u> via the lookup, the packet can be <strong>forwarded into the switching fabric</strong></p>
+</li>
+</ul>
+<h3 id="4-3-2-Switching-Fabric，交换结构">4.3.2 Switching Fabric，交换结构</h3>
+<ul>
+<li>
+<p>It is through the switching fabric that the packets are actually switched from an input port to an output port</p>
+</li>
+<li>
+<p>switching rate: rate at which packets can be transfer  from inputs to outputs</p>
+<ul>
+<li>often measured as multiple of input/output line rate</li>
+<li>N inputs: switching rate N times line rate desirable</li>
+</ul>
+</li>
+<li>
+<p>three types of switching fabrics</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Switching via memory，经内存交换</p>
+<ul>
+<li>traditional computers with switching under direct  control of CPU</li>
+<li>packet copied to system’s memory</li>
+<li>speed limited by memory bandwidth (2 bus  crossings per datagram)</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/4.21.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>Switching via a bus</p>
+<ul>
+<li>datagram from input port memory to output port memory via a shared  bus</li>
+<li>bus contention: switching speed  limited by bus bandwidth</li>
+<li>32 Gbps bus, Cisco 5600: sufficient  speed for access and enterprise  routers</li>
+</ul>
+</li>
+<li>
+<p>Switching via  interconnection network</p>
+<ul>
+<li>overcome bus bandwidth limitations  banyan networks, crossbar, other  interconnection nets initially developed  to connect processors in multiprocessor</li>
+<li>advanced design: fragmenting datagram  into fixed length cells, switch cells  through the fabric</li>
+<li>Cisco 12000: switches 60 Gbps through  the interconnection network</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-3-3-Output-Ports">4.3.3 Output Ports</h3>
+<ul>
+<li>Output port processing takes the packets that have been stored in the output port’s memory and transmits them over the outgoing link</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/" title="第四章-网络层（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第四章-网络层（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%827/" title="第三章-运输层（七）">
+                        <span class="hidden-mobile">第三章-运输层（七）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

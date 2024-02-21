@@ -1,0 +1,1071 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="4.4 The Internet Protocol (IP): Forwarding and Addressing in the Internet，网际协议∶因特网中的转发和编址  the Internet’s network layer has three major components  the IP protocol the routing component  determines th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章-网络层（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="4.4 The Internet Protocol (IP): Forwarding and Addressing in the Internet，网际协议∶因特网中的转发和编址  the Internet’s network layer has three major components  the IP protocol the routing component  determines th">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822.assets/4%E3%80%8214.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822.assets/4.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.24.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.25.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.593Z">
+<meta property="article:modified_time" content="2024-02-20T07:40:42.874Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.12.jpg">
+  
+  
+  
+  <title>第四章-网络层（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第四章-网络层（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第四章-网络层（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>4.4 The Internet Protocol (IP): Forwarding and Addressing in the Internet，网际协议∶因特网中的转发和编址</h1>
+<ul>
+<li>the Internet’s network layer has three major components
+<ul>
+<li><strong>the IP protocol</strong></li>
+<li><strong>the routing component</strong>
+<ul>
+<li><strong>determines the path</strong> a datagram follows from source to destination</li>
+</ul>
+</li>
+<li>a facility(设施) to <strong>report errors</strong> in datagrams and <strong>respond to requests</strong> for <u>certain network-layer information</u></li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="4-4-1-Datagram-Format">4.4.1 Datagram Format</h3>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.13.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Version number</p>
+<ul>
+<li>By looking at the version number, the router can determine how to interpret the remainder of the IP datagram</li>
+</ul>
+</li>
+<li>
+<p>Header length</p>
+<ul>
+<li>an IPv4 datagram can contain a <u>variable</u> number of <u>options</u> (which are included in the IPv4 datagram header)</li>
+<li>4 bits</li>
+<li>determine where in the IP datagram the <strong>data</strong> actually begins</li>
+<li>Most IP datagrams <u>do not contain options</u>, so the <strong>typical</strong> IP datagram has a <strong>20-byte</strong> header</li>
+</ul>
+</li>
+<li>
+<p><strong>Type of service（TOS）</strong></p>
+<ul>
+<li>allow <u>different types of IP datagrams</u> (for example, datagrams particularly requiring <u>low delay</u>, <u>high throughput</u>, or <u>reliability</u>) to be <strong>distinguished</strong> from each other
+<ul>
+<li>it might be useful to distinguish <u>real-time datagrams</u> (such as those used by an IP telephony application) from <u>non-real-time traffic</u>(for example, FTP)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Datagram length</p>
+<ul>
+<li>the <strong>total length</strong> of the IP datagram(<strong>header plus data</strong>)</li>
+<li>this field is <strong>16 bits</strong> long==&gt;the theoretical <strong>maximum size</strong> of the IP datagram is <strong>65,535 bytes</strong></li>
+<li>datagrams are <u>rarely</u> larger than <strong>1,500 bytes</strong></li>
+</ul>
+</li>
+<li>
+<p>Identifier, flags, fragmentation offset，标识，标志，分片偏移量</p>
+<ul>
+<li>to do with so-called IP fragmentation/reassembly，分片和重组</li>
+<li><strong>only</strong> for IPv4</li>
+</ul>
+</li>
+<li>
+<p><strong>Time-to-live(TTL，寿命)</strong></p>
+<ul>
+<li>ensure that datagrams <strong>do not circulate forever</strong>(due to, for example, a long-lived routing loop)in the network</li>
+<li>This field is decremented by one each time the datagram is processed by <strong>a router</strong></li>
+<li>If the TTL field reaches 0 , the datagram must be <strong>dropped</strong></li>
+</ul>
+</li>
+<li>
+<p>Potocol</p>
+<ul>
+<li>be used only when an IP datagram reaches its <strong>final destination</strong></li>
+<li>indicates the specific <strong>transport-layer</strong> protocol to which the data portion of this IP datagram should be passed
+<ul>
+<li>6：TCP；17：UDP</li>
+</ul>
+</li>
+<li>note
+<ul>
+<li>the <strong>protocol number</strong> is the glue that binds the <strong>network and transport layers</strong> together</li>
+<li>the <strong>port numbe</strong>r is the glue that binds the <strong>transport and application layers</strong> together</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Header checksum</p>
+<ul>
+<li>aids a router in detecting bit errors in a received IP datagram</li>
+<li>treating each <strong>2 bytes</strong> in the <strong>header</strong> as a number and summing these numbers using <u>1s complement arithmetic</u></li>
+<li>A router computes the header checksum for <u>each</u> received IP datagram</li>
+<li>Routers typically <strong>discard</strong> datagrams for which an error has been detected(检测到的)</li>
+<li>Note that the checksum must be recomputed and stored <u>again</u> at each router,as the <strong>TTL</strong> field, and possibly the <strong>options field</strong> as well, may <strong>change</strong></li>
+<li>Why does TCP/IP perform error checking at both the  transport and network layers?
+<ul>
+<li>only the <strong>IP header</strong> is checksummed at the IP layer, <strong>entire TCP/UDP segment</strong> checksum at TCP/UDP (IP层的校验和只针对IP头部进行校验，Segment数据在传输层进行校验)</li>
+<li>TCP/UDP and IP do not necessarily both have to belong to  the same protocol stack. TCP can run over a different  protocol (for example, ATM) and IP can carry data that  will not be passed to TCP/UDP (IP和TCP/UDP可能属于不同的协议栈)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Data(payload)</p>
+<ul>
+<li>In most circumstances, the data field of the IP datagram contains the <strong>transport-layer segment(TCP or UDP)</strong> to be delivered to the destination</li>
+<li>the data field can carry <strong>other types of data</strong>, such as <strong>ICMP messages</strong></li>
+</ul>
+</li>
+<li>
+<p>Note</p>
+<ul>
+<li>an IP datagram has a total of <strong>20 bytes</strong> of header(assuming no options)</li>
+<li>If the datagram carries a TCP segment, then each (nonfragmented) datagram carries a total of <strong>40 bytes</strong> of header (20 bytes of IP header plus 20 bytes of TCP header) along with the <strong>application-layer message</strong></li>
+</ul>
+</li>
+<li>
+<p>Comparison: Length field</p>
+<ul>
+<li>UDP protocol
+<ul>
+<li>头部字段固定为8个字节</li>
+<li>Length field (16 bits): the number of bytes in the UDP segment  (header plus data)</li>
+</ul>
+</li>
+<li>TCP protocol
+<ul>
+<li>头部字段典型长度为20个字节 (当option字段为空时)</li>
+<li>Header length field (4 bits): the length of the TCP header  including option field, measured in 32-bit words (以4个字节为基本单位)</li>
+</ul>
+</li>
+<li>IP protocol (IPv4)
+<ul>
+<li>头部字段典型长度为20个字节 (当option字段为空时)</li>
+<li>Header length field (4bits): the length of the header including  option field</li>
+<li>Datagram Length field (16 bits): the total length of the IP  datagram (header plus data), measured in bytes (以1个字节为基本单位)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="IP-Datagram-Fragmentation">IP Datagram Fragmentation</h6>
+<ul>
+<li>
+<p>not all <u>link-layer protocols</u> can carry <u>network-layer packets</u> of the <u>same size</u></p>
+<ul>
+<li><strong>Ethernet frames</strong> can carry up to <strong>1,500 bytes</strong> of data</li>
+<li>the <strong>maximum transmission unit (MTU，最大传输单元)</strong>：The maximum amount of data that a link-layer frame can carry is called</li>
+<li>回顾：MSS: (maximum segment size 最大报文段长度) ，定义 ：传输层能承载的应用层最大数据长度，不包括传输层的头部 （注意：它并非指报文段(segment)的长度！！！）
+<ul>
+<li>例如：一个在以太网上传输的IPv4 TCP报文的MSS值为1460， 是由MTU=1500bytes减去IPv4 Header（20 Byte）和TCP  header（20 Byte）得到</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>each IP datagram is encapsulated within the link-layer frame for transport from one router to the next router==&gt;the MTU of the link-layer protocol places a hard <strong>limit</strong> on the length of an IP datagram</p>
+</li>
+<li>
+<p>What is a problem is that each of the links along the route between sender and destination can use <u>different link-layer protocols</u>, and each of these protocols can have <u>different MTUs</u></p>
+</li>
+<li>
+<p>fragmentation:</p>
+<ul>
+<li>in: one large  datagram</li>
+<li>out: 3 smaller  datagrams==&gt;fragment(片)</li>
+</ul>
+</li>
+<li>
+<p>Fragments need to be <strong>reassembled</strong> before they reach the <strong>transport layer</strong> at the <strong>destination</strong></p>
+<ul>
+<li>Sticking to the principle of <strong>keeping the network core simple</strong>, the designers of IPv4 decided to put the job of <strong>datagram reassembly</strong> in the <strong>end systems</strong> rather than in network routers</li>
+</ul>
+</li>
+<li>
+<p>When a destination host receives a series of datagrams from the same source, it needs to determine whether any of these datagrams are fragments of some original, larger datagram</p>
+<p>==&gt; the designers of IP(version 4)put identification, flag, and fragmentation offset fields in the IP datagram header</p>
+<p>Typically,the sending host increments the identification number for each datagram it sends，标识号+1</p>
+</li>
+<li>
+<p>IP is an unreliable service–&gt;sure it has received the last fragment of the original datagram</p>
+<p>==&gt; one or more of the fragments may never arrive at the destination</p>
+<p>==&gt;the last fragment has a flag bit set to 0, all the other fragments have this flag bit set to 1</p>
+<p>in order for the destination host to determine whether a fragment is missing(and also to be able to reassemble the fragments in their proper order)</p>
+<p>==&gt;the <strong>offset field</strong> is used to specify(详细说明，指定) where the fragment fits within the <u>original IP datagram</u></p>
+</li>
+<li>
+<p>例</p>
+<ul>
+<li>
+<p>A datagram of <u>4,000 bytes</u> (20 bytes of IP header plus 3,980 bytes of IP payload) arrives at a router and must be forwarded to a link with an <u>MTU of 1,500 bytes</u></p>
+<p>==&gt;implies that the 3,980 data bytes in the original datagram must be allocated to three separate fragments(each of which is also an IP datagram)</p>
+</li>
+<li>
+<p>suppose that the <u>original datagram</u> is stamped with an identification number of <u>777</u>，标识号为777</p>
+</li>
+<li>
+<img src="%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822.assets/4%E3%80%8214.jpg" srcset="/img/loading.gif" lazyload alt="4。14" style="zoom:67%;" />
+</li>
+<li>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Bytes</th>
+<th>ID</th>
+<th>Offset</th>
+<th>Flog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1st  format</td>
+<td>1480 bytes in the data field of the IP datagram</td>
+<td>identification=777</td>
+<td>offset=0<br />(meaning the data should be inserted begining at byte 0)</td>
+<td>flag=1<br />(meaning there is more)</td>
+</tr>
+<tr>
+<td>2nd  format</td>
+<td>1480 bytes of data</td>
+<td>identification=777</td>
+<td>offset=185<br />(meaning the data should be inserted begining at byte 1480. Note that 185×8=1480)</td>
+<td>flag=1<br />(meaning there is more)</td>
+</tr>
+<tr>
+<td>3rd  format</td>
+<td>1020 bytes of data（3980-1480-1480）</td>
+<td>identification=777</td>
+<td>offset=370<br />(meaning the data should be inserted begining at byte 2960. Note that 370×8=2960)</td>
+<td>flag=0<br />(meaning this is the last format)</td>
+</tr>
+</tbody>
+</table>
+<p><img src="%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822.assets/4.14.jpg" srcset="/img/loading.gif" lazyload alt="4.14"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>At the <strong>destination</strong>, the payload of the datagram is passed to the transport layer <strong>only after</strong> the IP layer has <strong>fully reconstructed the original IP datagram</strong></p>
+<ul>
+<li>If one or more of the fragments does not arrive at the destination, the <strong>incomplete</strong> datagram is <strong>discarded</strong> and not passed to the transport layer</li>
+<li>if TCP is being used at the transport layer, then TCP will recover from this loss by having the source retransmit the data in the original datagram</li>
+</ul>
+</li>
+<li>
+<p>drawback</p>
+<ul>
+<li>complicates routers and end system</li>
+<li>fragmentation can be used to create lethal(致命的) DoS attacks</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-2-IPv4-Addressing，IPv4编址">4.4.2 IPv4 Addressing，IPv4编址</h3>
+<ul>
+<li>
+<p>A host typically has only <strong>a single link</strong> into the network</p>
+</li>
+<li>
+<p><strong>interface</strong>：The <u>boundary</u> between the <u>host</u> and the <u>physical link</u></p>
+<ul>
+<li>router’s typically have  multiple interfaces</li>
+<li>host typically has one or  two interfaces (e.g.,  wired Ethernet, wireless  802.11)</li>
+</ul>
+</li>
+<li>
+<p>IP requires <u>each host and router interface</u> to have its <strong>own IP address</strong></p>
+</li>
+<li>
+<p><strong>an IP address</strong> is technically <strong>associated with an interface</strong>, rather than with the host or router containing that interface</p>
+</li>
+<li>
+<p>Each IP address is <strong>32 bits</strong> long (equivalently, <strong>4 bytes</strong>), and there are thus a total of <strong>2^32^ possible IP addresses</strong>(约有40亿个可能的IP地址)</p>
+<ul>
+<li><strong>dotted-decimal notation(点分十进制)</strong></li>
+<li>A portion of an interface’s IP address will be determined by the subnet(子网) to which it is connected</li>
+</ul>
+</li>
+<li>
+<p>Subnets (子网)</p>
+<ul>
+<li>
+<p>what’s a subnet ?</p>
+<ul>
+<li>device interfaces with  same subnet part(子网位) of IP address</li>
+<li>can physically reach each  other without intervening  router</li>
+</ul>
+</li>
+<li>
+<p>to determine the subnets,  detach(分离) each interface  from its host or router,  creating islands of isolated  networks</p>
+</li>
+<li>
+<p>each isolated network is called a subnet</p>
+</li>
+<li>
+<p>subnet:223.1.1.0/24：</p>
+<ul>
+<li>
+<p>/24 notations is subnet mask( 子网掩码)</p>
+<p>11111111 11111111  11111111 00000000 =  255.255.255.0</p>
+</li>
+<li>
+<p>subnet network address(子网网络地址)：223.1.1.0 (计算方式 ：IP address AND subnet  mask)</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>已知一个IP地址和子网掩码可以算出：</p>
+<p>（1）子网的网络地址(network address)</p>
+<p>（2）子网的广播地址(broadcast address)</p>
+<p>（3）子网中的主机地址范围</p>
+<p>（4）子网中有几台主机</p>
+<ul>
+<li>
+<p>Note:</p>
+<p>When a host sends a datagram with <strong>destination  address (broadcast address)</strong>, the message is <u>delivered</u> to <strong>all hosts on the same subnet</strong></p>
+</li>
+<li>
+<p>例如：IP地址为192·168·100·5 ，子网掩码是255·255·255·0。算出网络地址、广播地址、地址范围、主机数</p>
+<p>:one:将IP地址和子网掩码换算为<u>二进制</u>，子网掩码<u>连续全1</u>对应的IP地址部分是<strong>地址的网络部分</strong>(24位)，后面的是<strong>主机部分</strong>(8位)</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.15.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:two:IP地址和子网掩码进行<u>与运算</u>，结果是<strong>网络地址</strong>（ 192.168.100.0）</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.16.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:three:第三步：将上面的网络地址中的<u>网络部分不变</u>，<u>主机部分变为全1</u>，结果就是<strong>广播地址</strong>(192.168.100.255)</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.17.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:four:网络地址**+1<strong>即为第一个主机地址，广播地址</strong>-1**即为最后一个主机地址，主机地址范围是： <strong>网络地址+1</strong> 至 <strong>广播 地址-1</strong>，即192·168·100·1 至 192·168·100·254</p>
+<p>:five:主机的数量=2^主机位数^-2，即2^8^-2=254台，减2是因为主机不包括网络地址（网络地址既不能用于源地址，也不能用于目的地址，而是<strong>供路由器查找路由表用</strong>）和广播地址</p>
+</li>
+<li>
+<p>例</p>
+<p>Consider the network shown below, There are one router, 4 switches, and 11 hosts. Suppose all the switch table on all switches and all the ARP tables on all nodes are empty initially</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.18.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>a) Let’s assume that the IP address of R’s interface #1 is 202.115.32.1 and the IP address of R’s interface #2 is 202.115.32.65. Please assign IP address ranges to the subnets containing hosts A and B, and assign IP addresses in these ranges to hosts A and B. Your subnet addressings should use the smallest amount of address space</p>
+<p>Solution：THE SUBNET CONTAINNING A 202.115.32.0/28 （共有7个设备需要9个地 址，3位主机位不够，需要4个主机位，可用IP主机地址范围为：202.115.32.1-15）</p>
+<p>THE SUBNET CONTAINNING B 202.115.32.64/29（共有6个设备需要8个地 址，3位主机位够了，可用IP主机地址范围：202.115.32.65-70）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>IP addressing assignment (1):  CIDR</p>
+<p>The Internet’s address assignment strategy is known as <strong>Classless Interdomain Routing(CDR，无类别域间路由选择）</strong></p>
+<ul>
+<li>
+<p>address format: <strong>a.b.c.d/x</strong>, where x is # bits in subnet  portion of address, referred to as <strong>prefix (前缀)</strong></p>
+</li>
+<li>
+<p>IP addresses of devices <u>within</u> the organization will  <u>share the common prefix</u>, <u>router only consider prefix  to forward</u></p>
+</li>
+<li>
+<p>remaining 32-x bits of an address distinguishing among  the devices within the organization</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.19.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>IP addressing assignment (2): classful addressing</p>
+<p>classful addressing (分类编址): the network portions of an  IP address were constrained to be 8, 16, or 24 bits in  length</p>
+<ul>
+<li>
+<p>subnets with 8-, 16-, and 24-bit subnet addresses  were known as class A, B, and C networks(A类网络、B 类网络、C类网络)</p>
+</li>
+<li>
+<p>A class C (/24) subnet could accommodate only up to  2^8^ – 2 = 254 hosts, <strong>too small for many organizations</strong></p>
+</li>
+<li>
+<p>a class B (/16) subnet, which supports up to 65,634  hosts, was <strong>too large</strong></p>
+</li>
+<li>
+<p>led to a rapid depletion of the class B address space  and poor utilization of the assigned address space(<strong>快速消耗，利用率低</strong>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>IP addressing assignment: private  IP address</p>
+<ul>
+<li>随着私有IP网络的发展，为节省可分配的注册IP地址，有一组IP地址被拿出来专门用于私有IP网络，称为私有IP地址。
+<ul>
+<li>这些地址不会被Internet分配，<strong>在Internet上也不会被路由</strong>，虽然它们<strong>不能直接和Internet网连接</strong>，但通过技术手段仍旧可以和Internet通 信（<strong>NAT技术</strong>）</li>
+<li>A类私有IP地址空间: 10.0.0.0~10.255.255.255 即10.0.0.0/8</li>
+<li>B类私有IP地址空间:172.16.0.0~172.31.255.255即172.16.0.0/12</li>
+<li>C类私有IP地址空间:192.168.0.0~192.168.255.255 即192.168.0.0/16</li>
+</ul>
+</li>
+<li>一些特殊的IP地址
+<ul>
+<li>0.0.0.0 ：保留地址，表示**“本网络”<strong>上的</strong>“本主机”**（<u>设备启动时但又不知道自己的IP地址情况下</u>）</li>
+<li>255.255.255.255：<strong>受限广播地址</strong>，<strong>只在本网络上进行广播</strong>（各个路由器均不转发）。（IP地址的主机字段全为1，例如：192.168.10.255， 称为<strong>直接广播地址</strong>，被发送到该网络号的每台主机，路由器可转发）</li>
+<li>127.0.0.1：<strong>环回地址(Loopback Address)</strong>，一般用来作为本地软件环回测试（lookback test）<strong>本主机的进程之间通信</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Hierarchical addressing:  route aggregation (路由聚合)</strong></p>
+<ul>
+<li>
+<p>hierarchical addressing allows efficient advertisement of routing  information, 使用单个网络前缀（200.23.16.0/20）通告多个网络（子网）的能力称为<strong>地址聚合或路由聚合</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.21.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>Hierarchical addressing:  more specific routes</p>
+<ul>
+<li>
+<p>ISPs-R-Us has a more specific route to Organization 1</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.22.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Q: How does a host get IP address?</p>
+<p>(1) hard-coded by system admin in a file</p>
+<p>Windows: control-panel-&gt;network-&gt;configuration-&gt;tcp/ip-&gt;properties</p>
+<p>UNIX: /etc/rc.config</p>
+</li>
+<li>
+<p>获得地址</p>
+<ul>
+<li>
+<p>1、obtaining a Block of Addresses</p>
+<ul>
+<li>
+<p>ISP也许自己已被 分配了地址块200.23.16.0/20。该IS 可以依次将该地址块分成8个长度相等的连续地址块，为本ISP支持的最多达8个组织中的一个分配这些地址块中的一块</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.20.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>IP addresses are managed under the authority of the <strong>Internet Corporation for Assigned Names and Numbers (ICANN,因特网名字和编号分配机构)</strong></p>
+<ul>
+<li>it also to manage the <strong>DNS root servers</strong></li>
+<li>also has the very contentious job of assigning domain names and resolving domain name disputes,分配域名与解决域名纷争</li>
+</ul>
+</li>
+<li>
+<p>2、Obtaining a Host Address: the Dynamic Host Configuration Protocol，获取主机地址∶动态主机配置协议</p>
+<ul>
+<li><strong>动态主机配置协议 （Dynamic Host Configuration，DHC）</strong></li>
+<li>DHCP allows a host to learn additional information, such as its <strong>subnet mask</strong>(子网掩码), the address of its <strong>first-hop router</strong> (第一跳路由器，often called the <strong>default gateway</strong>，默认网关), and the address of its local DNS server</li>
+<li>Because of DHCP’s ability to automate the network-related aspects of connecting a host into a network, it is often referred to as a <strong>plug-and-play protocol(即插即用协议)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>DHCP is a <strong>client-server protocol</strong></p>
+<ul>
+<li>In the simplest case, <u>each</u> subnet will have a DHCP server</li>
+<li>if no server is present on the subnet, a DHCP relay <strong>agent</strong> (typically a router) that knows the address of a DHCP server for that network is needed</li>
+</ul>
+</li>
+<li>
+<p>DHCP goal: allow host to dynamically obtain its IP address  from network server when it joins network</p>
+<ul>
+<li>can renew its lease on address in use</li>
+<li>allows reuse of addresses (only hold address while  connected/“ on ”)</li>
+<li>support for mobile users who want to join network  (more shortly)</li>
+</ul>
+</li>
+<li>
+<p>DHCP client-server  scenario</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.23.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:one:DHCP server discovery</p>
+<ul>
+<li>host <strong>broadcasts</strong> <strong>“DHCP discover” msg</strong> [optional], dest. IP address of 255.255.255.255, dest. port  67, “this host” source IP address of 0.0.0.0</li>
+<li>The DHCP client passes the IP datagram to the link layer, which then broadcasts this frame to all nodes attached to the subnet</li>
+</ul>
+<p>:two:DHCP server offer(s)</p>
+<ul>
+<li>DHCP servers responds with <strong>“DHCP offer” msg [optional]</strong>, destination IP address of 255.255.255.255,  dest. port 68, including <strong>transaction ID</strong>, <strong>proposed IP  address (建议IP地址)</strong>, <strong>network mask(子网掩码)</strong>, <strong>IP address  lease time</strong> (<strong>租赁时间</strong>, typically several hours or days)</li>
+</ul>
+<p>:three:DHCPrequest</p>
+<ul>
+<li>host <u>choose one</u> offer and requests IP address:  <strong>“DHCP request” msg</strong>, and choing back the configuration parameters,回显配置参数</li>
+</ul>
+<p>:four:: DHCP server sends address: <strong>“DHCP ack” msg</strong> Client use DHCP-allocated IP address for the lease  duration! confirming the requested parameters，证实所要求的参数</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.24.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/4.25.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>总结:</p>
+<p>(1) 整个过程中，DHCP客户端的源IP地址均为0.0.0.0</p>
+<p>(2) 整个过程中，DHCP客户端和服务端的目标IP地址均为 255.255.255.255</p>
+<p>(3) yiaddr除第一次DHCP客户端请求时为空，后面三个阶段的地 址为服务器分配和客户端希望使用的IP地址</p>
+<p>(4) 客户端一般使用UDP 68号端口，服务端一般使用UDP 67号端口</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/" title="第四章-网络层（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第四章-网络层（三）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/" title="第四章-网络层（一）">
+                        <span class="hidden-mobile">第四章-网络层（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

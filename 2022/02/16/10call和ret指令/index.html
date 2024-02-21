@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ret和retf ret  ret指令用栈中的数据，修改IP的内容，从而实现近转移 CPU执行ret指令时，进行两步操作：  （IP）&#x3D;（（ss）*16+（sp））—&gt;指向栈顶 （sp）&#x3D;（sp）+2   相当于pop IP  retf   retf指令用栈中的数据，修改cs和ip的内容，从而实现远转移   执行时：  （IP）&#x3D;（（ss）*16+（sp）） （sp）&#x3D;（sp）+2 （cs）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10-call和ret指令">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/10call%E5%92%8Cret%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="ret和retf ret  ret指令用栈中的数据，修改IP的内容，从而实现近转移 CPU执行ret指令时，进行两步操作：  （IP）&#x3D;（（ss）*16+（sp））—&gt;指向栈顶 （sp）&#x3D;（sp）+2   相当于pop IP  retf   retf指令用栈中的数据，修改cs和ip的内容，从而实现远转移   执行时：  （IP）&#x3D;（（ss）*16+（sp）） （sp）&#x3D;（sp）+2 （cs）">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:38:43.540Z">
+<meta property="article:modified_time" content="2024-02-19T15:05:47.561Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>10-call和ret指令 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="10-call和ret指令"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:38" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">10-call和ret指令</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>ret和retf</h1>
+<h5 id="ret">ret</h5>
+<ul>
+<li>ret指令用栈中的数据，修改IP的内容，从而实现近转移</li>
+<li>CPU执行ret指令时，进行两步操作：
+<ul>
+<li>（IP）=（（ss）*16+（sp））—&gt;指向栈顶</li>
+<li>（sp）=（sp）+2</li>
+</ul>
+</li>
+<li>相当于pop IP</li>
+</ul>
+<h5 id="retf">retf</h5>
+<ul>
+<li>
+<p>retf指令用栈中的数据，修改cs和ip的内容，从而实现远转移</p>
+</li>
+<li>
+<p>执行时：</p>
+<ul>
+<li>（IP）=（（ss）*16+（sp））</li>
+<li>（sp）=（sp）+2</li>
+<li>（cs）=（（ss）*16+（sp））</li>
+<li>（sp）=（sp）+2</li>
+</ul>
+</li>
+<li>
+<p>相当于pop IP、pop CS</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg<br><br>stack segment<br> db 16 dup (0)<br>stack ends<br><br>codesg segment<br>	mov ax,4c00h<br>	int 21h<br>start:<br>	mov ax,stack<br>	mov ss,ax<br>	mov sp,16<br>	mov ax,0<br>	<br>	push ax<br>	<br>	mov bx,0<br>	ret   ;相当于pop IP---&gt;在这段程序中，最后使得IP=0，回到最开始<br>codesg ends<br><br>end start<br></code></pre></td></tr></table></figure>
+<h1>call指令</h1>
+<ul>
+<li>
+<p>call指令经常跟ret指令配合使用，因此CPU执行call指令，进行两步操作</p>
+<ul>
+<li>将当前的IP或CS和IP压入栈中</li>
+<li>转移（jmp）</li>
+</ul>
+</li>
+<li>
+<p>call指令不能实现短转移，除此之外，call指令实现转移的方法和jmp指令的原理相同</p>
+</li>
+<li>
+<p>call 标号</p>
+<ul>
+<li>
+<p>将当前的IP压栈后，转到标号处执行指令</p>
+</li>
+<li>
+<p>CPU执行此种格式的call指令时，进行以下操作：</p>
+<ul>
+<li>
+<p>（sp）=（sp）-2</p>
+<p>（（ss）*16+（sp））=（IP）</p>
+</li>
+<li>
+<p>（IP）=（IP）+16位位移</p>
+</li>
+</ul>
+</li>
+<li>
+<p>16位位移=“标号”处的地址-call指令后的第一个字节的地址</p>
+</li>
+<li>
+<p>16位位移的范围为-32768~32767，用补码表示</p>
+</li>
+<li>
+<p>16位位移由编译程序在编译时算出</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1>转移的目的地址在指令中的call指令</h1>
+<p><strong>call far ptr 标号</strong></p>
+<ul>
+<li>
+<p>实现段间转移</p>
+</li>
+<li>
+<p>CPU执行时的操作</p>
+<ul>
+<li>
+<p>（sp）=（sp）-2</p>
+<p>（（ss）*16+（sp））=（CS）</p>
+<p>（sp）=（sp）-2</p>
+<p>（（ss）*16+（sp））=（IP）</p>
+</li>
+<li>
+<p>（CS）=标号所在的段地址</p>
+<p>（IP）=标号所在的偏移地址</p>
+</li>
+</ul>
+</li>
+<li>
+<p>相当于进行：</p>
+<p>push CS</p>
+<p>push IP</p>
+<p>jmp far ptr 标号</p>
+</li>
+</ul>
+<h1>转移地址在寄存器中的call指令</h1>
+<ul>
+<li>
+<p>格式：call  16位寄存器</p>
+</li>
+<li>
+<p>功能：</p>
+<ul>
+<li>（sp）=（sp）-2</li>
+<li>（（ss）*16+（sp））=（IP）</li>
+<li>（IP）=（16位寄存器）</li>
+</ul>
+</li>
+<li>
+<p>相当于</p>
+<p>push IP</p>
+<p>jmp 16位寄存器</p>
+</li>
+</ul>
+<h1>转移地址在内存中的call指令</h1>
+<ul>
+<li>
+<p>call word ptr 内存单元地址</p>
+<ul>
+<li>
+<p>push IP</p>
+</li>
+<li>
+<p>jmp word ptr 内存单元地址</p>
+</li>
+</ul>
+</li>
+<li>
+<p>call dword ptr 内存单元地址</p>
+<ul>
+<li>push CS</li>
+<li>push IP</li>
+<li>jmp dword ptr 内存单元地址</li>
+<li>（底16位放IP，高16位放CS）</li>
+</ul>
+</li>
+</ul>
+<h1>call和ret的配合使用</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code<br>code segment<br>start: mov ax,1<br>	   mov cx,3<br>	   call s  ;将紧接着的一条指令的IP地址推入栈中，然后跳到s中执行<br>	   mov bx,ax<br>	   mov ax,4c00h<br>	   int 21h<br>	 s:add ax,ax<br>	   loop s   ;loop想到cs，cs为0时退出循环<br>	   ret  ;pop IP,回到mov bx,ax<br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+<h1>mul指令</h1>
+<ul>
+<li>
+<p>乘法指令</p>
+</li>
+<li>
+<p>相乘的两个数，要么都是8位，要么都是16位</p>
+<ul>
+<li>
+<p>8位：AL中和8位寄存器或内存字节单元中（乘数默认在al中）</p>
+<p>​          结果保存在AX中</p>
+<p>mul byte ptr ds:[0]：(ax)=(al) * ((ds) * 16+0)</p>
+</li>
+<li>
+<p>16位：AX中和16位寄存器或内存字单元中</p>
+<p>​            结果保存在DX（高位）和AX（低位）中</p>
+<p>mul word ptr [bx+si+8]：(ax)=(ax) * ((ds) * 16+(bx)+(si)+8)结果的底16位</p>
+<p>​											 (dx)=(ax) * ((ds) * 16+(bx)+(si)+8)结果的高16位</p>
+</li>
+</ul>
+</li>
+<li>
+<p>格式：</p>
+<p>mul reg</p>
+<p>mul 内存单元</p>
+</li>
+</ul>
+<h1>参数和结果传递的问题</h1>
+<p>设计一个子程序，可以根据提供的N，来计算N的3次方</p>
+<ul>
+<li>用寄存器来存储参数和结果是最常使用的方法</li>
+<li>对于存放参数的寄存器和存放结果的寄存器，调用者和子程序的读写操作qqxf：
+<ul>
+<li>调用者将参数送入参数寄存器，从结果寄存器中取到返回值</li>
+<li>子程序从参数寄存器中取到参数，将返回值送到结果寄存器</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code<br><br>data segment<br>dw 1,2,3,4,5,6,7,8<br>dd 0,0,0,0,0,0,0,0<br>data ends<br><br>code segment<br><br>start:mov ax,data<br>	  mov ds,ax<br>	  mov si,0    ;ds:si指向第一组word单元<br>	  mov di 16   ;ds:di指向第二组dword单元<br>	  <br>	  mov cx,8<br>	s:mov bx,[si]<br>	  call cube<br>	  mov [di],ax<br>	  mov [di].2,dx<br>	  add si,2    ;ds:si指向下一个word单元<br>	  add di,4    ;ds:di指向下一个dword单元<br>	  loop s<br>	  <br>	  mov ax,4c00h<br>	  int 21h<br></code></pre></td></tr></table></figure>
+<h1>批量数据的传递</h1>
+<ul>
+<li>
+<p>将批量的数据放到内存中，然后将它们所在内存空间的首地址放在寄存器中，传递给需要的子程序</p>
+</li>
+<li>
+<p>将打他段中的字符串转化为大写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code<br>	data segment<br>		db &#x27;conversation&#x27;<br>	data ends<br>	<br>	code segment<br>		start:mov ax,data<br>			  mov ds,ax<br>			  mov si,0    ;ds:si指向字符串（批量数据）所在空间的首地址<br>			  <br>			  mov cx,12   ;cx存放字符串的长度<br>			  call capital<br>			  <br>			  mov ax,4c00h<br>			  int 21h<br>			  <br>		capital:and byte [si],11011111b<br>				inc si<br>				loop capital<br>				ret<br><br>			  <br>	code ends<br>	end start<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1>寄存器冲突的问题</h1>
+<ul>
+<li>设计一个子程序，将一个全是字母，以0结尾的字符串，转化为大写</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs assembly">capital:mov al.[si]<br>		mov ch,0<br>		<br>		jcxz ok   ;如果（cx）=0，结束，如果不是0，处理<br>		<br>		and byte ptr [si],11011111b  ;将ds：si所指单元中的字母转化为大写<br>		<br>		inc si    ;ds:si指向下一个单元<br>		<br>		jmp short capital<br>		<br>	  ok:ret<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>将data段中字符串全部转化为大写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs assembly">;?<br>assume cs:code<br>data segment<br>	db &#x27;word&#x27;,0<br>	db &#x27;unix&#x27;,0<br>	db &#x27;wind&#x27;,0<br>	db &#x27;good&#x27;,0<br>data ends<br><br>code segment<br>start:mov ax,data<br>	  mov ds,ax<br>	  mov bx,0<br>	  <br>	  mov cx,4<br>	  <br>	s:mov si,bx<br>	  call caapital<br>	  add bx<br>	  loop s<br>	  <br>	  mov ax,4c00h<br>	  int 21h<br>	  <br>capital:mov al.[si]<br>		mov ch,0<br>		<br>		jcxz ok   ;如果（cx）=0，结束，如果不是0，处理<br>		<br>		and byte ptr [si],11011111b  ;将ds：si所指单元中的字母转化为大写<br>		<br>		inc si    ;ds:si指向下一个单元<br>		<br>		jmp short capital<br>		<br>	  ok:ret<br>	  <br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+<h1>实验</h1>
+<h5 id="显示字符串">显示字符串</h5>
+<p>功能：在指定的位置用指定的颜色显示一个用</p>
+<p>参数：（dh）=行号（取值范围0~24），（dl）=列号（取值范围为0 ~ 79），（cl）=颜色，ds:si指向字符串的首地址</p>
+<p>例：在屏幕的8行3列，用绿色显示data段中字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code<br>data segment<br>	db &#x27;welcome to masm!&#x27;,0<br>data ends<br>	<br>code segment<br>start:mov dh,8<br>	  mov dl,3<br>	  mov cl,2<br>	  mov ds,ax<br>	  mov si,0    ;偏移地址为0，指向第一个字符<br>	  <br>	  call show_str<br>	  <br>	  mov ax,4c00h<br>	  int 21h<br>	  <br>	  <br>show_start:<br>		mov dh,8   ;dh装行号（范围：1~25）<br>		mov dl,3   ;dl装列号（范围：1~80，每超过80等于行号自动+1）<br>		mov cl,2   ;cl中存放颜色属性（0cah为红底高亮闪烁绿色属性）<br>		<br>		mov ax,data<br>		<br>		mov ds,ax<br>		<br>		mov si,0<br>		<br>		call show_str<br>		<br>		mov ax,4c00h<br>		<br>		int 21h<br>		<br>show_str:   ;显示字符串的子程序<br>	push cx<br>	push si<br>	<br>	mov al,0A0h<br>	<br>	dec dh   ;行号在显存中下标从0开始，所以-1<br>	mul dh   ;相当于从第（n-1）*0A0h个byte单元开始<br>	<br>	mov bx,ax   ;定位好的位置偏移地址存放在bx里（行）<br>	<br>	mov al,2    ;每个字符占2个字节<br>	mul dl      ;定位列，结果ax存放在的是定位好的列的位置<br>	sub ax,2    ;列号在显存中下标从0开始，又因为偶字节存放字符，所以-2<br>	<br>	add bx,ax   ;此时bx中存放的是行与列号的偏移地址<br>	<br>	mov ax,0B800h  ;显存开始的地址<br>	mov es,ax      ;es中存放的是显存的第0页（0-7页）的起始的段地址<br>	<br>	mov di,0       ;di指向显存的偏移地址,确定指向下一个要处理的字符的位置<br>	<br>	mov al,cl      ;cl是存放颜色的参数，这时候al存放颜色<br>	<br>	mov ch,0       ;下边cx存放的是每次准备处理的字符串<br>	<br>s:	mov cl,ds:[si]  ;ds:[si]指向“welcome to masm！”，0<br>	<br>	jcxz ok        ;当cl的值为0的时候，cx==0，则发生跳转，到ok处结束处理<br>	<br>	mov cs:[bx+di],cl  ;偶地址存放字符<br>	mov cs:[bx+di+1],al  ;奇地址存到字符串的颜色属性<br>	<br>	inc si<br>	<br>	add di,2   ;指向下个字符串<br>	jmp short s   ;无条件跳转，jcxz是离开的关键<br>	<br>ok:pop si<br>   pop cx <br>   <br>   ret  ;显示字符串的子程序[定义结束]<br><br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="divdw-解决除法溢出问题">divdw(解决除法溢出问题)</h5>
+<p>功能：进行不会产生溢出的除法运算，被除数为dword型，除数为word型，结果为dword型</p>
+<p>参数：（ax）=dword型数据的低16位</p>
+<p>​			（ds）=dword型数据的高16位</p>
+<p>​		    （cx）=除数</p>
+<p>返回：（dx）=结果的高16位，（ax）=结果的低16位</p>
+<p>​			（cx）=余数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code<br><br>code segment<br><br>start:<br>		mov ax,stack<br>		<br>		mov ss,ax<br>		<br>		mov sp,10h<br>		<br>		mov ax,4240h<br>		<br>		mov dx,0fh<br>		<br>		mov cx,0ah<br>		<br>		call divdw<br>		<br>		mov ax,4c00h<br>		int 21h<br>		<br>divdw:<br>		push ax        ;低16位先保存<br>		<br>		mov ax,dx      ;这时ax的值是高16位了<br>		<br>		mov dx,0       ;dx置0是为了不影响下边余数位<br>		<br>		div cx         ;H/H<br>		<br>		mov bx,ax      ;ax,bx的值为（int）H/H，dx的值为（rem）H/H<br>		<br>		pop ax         ;ax的值现在是L<br>		<br>		div cx         ;L/M,注意16位除法的时候默认被除数dx为高16位，ax为低16位<br>		<br>		mov cx,dx<br>		<br>		mov dx,bx<br>		<br>		ret <br>		<br>code ends<br>end start<br>		<br>		<br>		<br></code></pre></td></tr></table></figure>
+<h5 id="数值显示">数值显示</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs assembly">asume cs:code,ds:data<br><br>data segment<br>		db 10 dup (0)<br>data ends<br><br>code segment<br><br>start:<br>		mov ax,12666<br>		<br>		mov bx,data    ;ds:si指向字符串的首地址<br>		mov ds,bx<br>		mov si,0<br>		<br>		call dtcc       ;dtcc子程序实现将word型整数转化为字符串并存储<br>		<br>		mov dh,s        ;初始化打印的位置<br>		mov dl,3<br>		mov cl,0cah<br>		<br>		call show_str    ;开始打印字符串<br>		<br>		mov ax,4c00h<br>		int 21h<br>		<br>dtcc:   ;数值显示的子程序定义<br>		push ds<br>		push cx<br>		push ax<br>		push si<br>		push bx<br>		<br>		mov bx,0   ;bx在子程序中用来存放位数，用栈来临时存放修改后的字符<br>		<br>s1:		mov cx,100  ;d表示十进制<br>        mov ds,0<br><br>        div cx      ;除以10<br>        mov cx,ax   ;得到的商赋值给cx<br>        <br>        jcxz s2     ;当商为0则跳到s2<br>        <br>        add dx,30h<br>        push dx<br>        <br>        inc bx<br>        <br>        jmp short s1<br>        <br>s2:		add dx,30h<br>		push dx     ;当商为0是，余数为个位<br>		<br>		inc bx      ;再进行一次栈操作（补充当“商为零而余数不为零”时的情况<br>		<br>		mov cx,bx   ;总共有bx位进栈了，所以循环次数位bx<br>		mov si,0<br>		<br>s3:		pop ax      ;s3实现将栈中的数据依次出栈放到指定的内存中<br><br>		mov [si],al<br>		inc si<br>		<br>		loop s3<br>		<br>okay:	pop bx<br>		pop si<br>		pop ax<br>		pop cx<br>		pop dx<br>		<br>		ret   <br>		<br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/11%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/" title="11-标志寄存器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">11-标志寄存器</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/9%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86/" title="9-转移指令的原理">
+                        <span class="hidden-mobile">9-转移指令的原理</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

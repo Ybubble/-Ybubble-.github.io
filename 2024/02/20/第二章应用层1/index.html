@@ -1,0 +1,1115 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.1 Principles of Network Applications  network-core devices do not function at the application laver but instead function at lower lavers—specifically at the network layer and below  &#x3D;&#x3D;》confining app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-应用层（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.1 Principles of Network Applications  network-core devices do not function at the application laver but instead function at lower lavers—specifically at the network layer and below  &#x3D;&#x3D;》confining app">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/jw2.2b.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/142150.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.555Z">
+<meta property="article:modified_time" content="2024-02-20T05:36:17.592Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/jw2.2b.jpg">
+  
+  
+  
+  <title>第二章-应用层（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-应用层（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-应用层（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>2.1 Principles of Network Applications</h1>
+<ul>
+<li><strong>network-core devices</strong> do not function at the <strong>application laver</strong> but instead function at lower lavers—specifically at the <strong>network layer and below</strong></li>
+</ul>
+<p>==》confining application software to the end systems</p>
+<ul>
+<li>network -core devices do  not run user applications</li>
+</ul>
+<h3 id="2-1-1-Network-Application-Architectures，网络应用程序体系结构">2.1.1 Network Application Architectures，网络应用程序体系结构</h3>
+<ul>
+<li>
+<p><u>From the application developer’s perspective</u>, the network architecture is <strong>fixed</strong> and provides a <strong>specific set of services</strong> to application</p>
+</li>
+<li>
+<p>application architecture：is designed by the <strong>application developer</strong> and dictates(规定，指定) how the <strong>application</strong> is structured over the <strong>various end systems</strong></p>
+</li>
+<li>
+<p>two predominant(主导的) architectural paradigms used in modern network applications:</p>
+<ul>
+<li>the <strong>client-server</strong>（客户-服务器） architecture</li>
+<li>the <strong>peer-to-peer (P2P，对等)</strong> architecture</li>
+</ul>
+</li>
+<li>
+<p><strong>client-server</strong>（客户-服务器） architecture</p>
+<ul>
+<li>
+<p>server</p>
+</li>
+<li>
+<p>an always-on host</p>
+</li>
+<li>
+<p>rvices requests from many other hosts, called clients</p>
+</li>
+<li>
+<p>client</p>
+<ul>
+<li>sometimes-on or always-on</li>
+<li><u>intermittently</u> connected (间断地连接)</li>
+<li>may have <u>dynamic</u>(动态的) IP addresses</li>
+</ul>
+</li>
+<li>
+<p><u>clients</u> do <strong>not directly</strong> <u>communicate</u> with each othe</p>
+</li>
+<li>
+<p>the server has a <strong>fixed</strong>, wellknown adress, called an <strong>IP address</strong></p>
+</li>
+<li>
+<p>Some of the applications with a client-server architecture include the Web, FTP, Telnet, and e-mail</p>
+
+</li>
+<li>
+<p>a single server host is incapable of keeping up with all the requests from its clients</p>
+<p>==》<strong>a large cluster of hosts</strong>（a <strong>data center</strong>）is often used to create a powerful <strong>virtual server</strong> in client-server architectures</p>
+</li>
+<li>
+<p>Application services（应用服务程序） that are based on the client-server architecture are often <strong>infrastructure intensive</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>P2P architecture，P2P体系结构</p>
+<ul>
+<li>
+<p>there is <strong>minimal (or no) reliance</strong> on always-on infrastructure <strong>servers</strong></p>
+</li>
+<li>
+<p><strong>peers</strong>：the application exploits <strong>direct communication</strong> between pairs of <strong>intermittently</strong>(间歇地) connected hosts</p>
+</li>
+<li>
+<p>The peers(对等方) are <strong>not</strong> owned by the <strong>service provider</strong>，but are instead desktops and laptops controlled by <strong>users</strong></p>
+</li>
+<li>
+<p>新型流量密集型应用，e.g. IM(Instant Message),IPTV(IP网络电视),  Internet Phone, Live Streaming</p>
+<ul>
+<li>BitTorrent, eMule, Skpye,  PPTV, Thunder</li>
+</ul>
+</li>
+<li>
+<p>the peers communicate without passing through a dedicated server（peer-to-peer）</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/jw2.2b.jpg" srcset="/img/loading.gif" lazyload class=""> 
+</li>
+<li>
+<p>some applications have <strong>hybrid architectures</strong></p>
+<ul>
+<li>many instant messaging applications：<strong>servers</strong> are used to <strong>track</strong> the <strong>IP addresses</strong> of users, but user-to-user <strong>messages are sent directly</strong> between user hosts (without passing through intermediate servers)，对于许多即时讯息应用而言，服务器被用于跟踪用户的IP地址，但用户到用户的报文在用户主机之间（无需通过中间服务器）直接发送</li>
+</ul>
+</li>
+<li>
+<p>compelling features：<strong>self-scalability（自扩展性，可收缩性）</strong></p>
+<ul>
+<li>For example, in a P2P file-sharing application,although each peer generates workload by <strong>requesting files</strong>, each peer also <strong>adds service capacity</strong> to the system <strong>by distributing files to other peers</strong>，在一个P2P文件共享应用中，尽管每个对等方都由于请求文件产生工作量，但每个对等方通过向其他对等方分发文件也为系统增加服务能力</li>
+<li>new  peers bring new <strong>service  capacity</strong>, as well as new <strong>service  demands</strong></li>
+</ul>
+</li>
+<li>
+<p>cost effective</p>
+<ul>
+<li>they normally don’t require significant <u>server infrastructure</u> and <u>server bandwidth</u></li>
+</ul>
+</li>
+<li>
+<p>major challenges：</p>
+</li>
+<li>
+<p>ISP Friendly</p>
+<ul>
+<li>most residential ISPs(including DSL and cable ISPs) have been dimensioned for “<strong>asymmetrical</strong>” bandwidth usage</li>
+<li>P2P <strong>video streaming</strong> and <strong>file distribution applications</strong> <u>shift</u> <strong>upstream</strong> traffic from servers to residential ISPs, thereby putting significant <strong>stress</strong> on the ISPs</li>
+</ul>
+</li>
+<li>
+<p>security</p>
+<ul>
+<li>highly distributed and open nature，高度分布和开放特性</li>
+</ul>
+</li>
+<li>
+<p>Incentives</p>
+<ul>
+<li>The success of future P2P applications also depends on convincing users to volunteer bandwidth, storage, and computation resources to the applications</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>hybrid of client-server and P2P</p>
+<ul>
+<li>Instant messaging applications
+<ul>
+<li>centralized service: client presence detection/location
+<ul>
+<li>user registers its IP address with central server when it  comes online</li>
+<li>user contacts central server to find IP addresses of  buddies</li>
+</ul>
+</li>
+<li>chatting between two users is P2P</li>
+</ul>
+</li>
+<li>Skype(网络电话)
+<ul>
+<li>voice-over-IP (VoIP) P2P application</li>
+<li>centralized server: finding address of remote party</li>
+<li>client-client connection: direct (not through server)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-2-Processes-Communicating">2.1.2 Processes Communicating</h3>
+<ul>
+<li>In the jargon of operating systems,it is not actually programs but <strong>processes</strong> that communicate</li>
+<li>when processes are running on the <strong>same end system</strong>, they can communicate with each other with <strong>inter-process communication</strong>（IPC，进程间通信）, using rules that are governed by the <strong>end system’s operating system</strong></li>
+<li>:star:processes on two different end systems communicate with each other by <u>exchanging messages</u>（报文） across the computer network
+<ul>
+<li>sending process: creates and sends messages into the  network</li>
+<li>receiving process: receives these messages and possibly  responds by sending messages back</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-Client-and-Server-Processes">1.Client and Server Processes</h5>
+<ul>
+<li>
+<p><u><strong>A network application</strong> consists of <strong>pairs of processes</strong></u> that send messages to each other over a network（label one of the two processes as the client and the other process as the server)</p>
+<ul>
+<li>in the Web application a <strong>client browser process</strong> exchanges messages with a <strong>Web server process</strong></li>
+<li>In a P2P file-sharing system,a file is transferred from a process in one peer to a process in another peer</li>
+</ul>
+</li>
+<li>
+<p>define the client and server processes as follows:</p>
+<p><em>In the context of a communication session between a pair of processes, the process that <strong>initiates</strong> the communication(that is, initially contacts the other process at the beginning of the session)is labeled as the <strong>client</strong>.The process that <strong>waits</strong> to be contacted to begin the session is the <strong>server</strong></em></p>
+</li>
+<li>
+<p>sometimes also use the terminology “client side and server side of an application”</p>
+</li>
+</ul>
+<h5 id="2-The-Interface-Between-the-Process-and-the-Computer-Network，进程与计算机网络之间的接口">2.The Interface Between the Process and the Computer Network，进程与计算机网络之间的接口</h5>
+<ul>
+<li>
+<p>Any message sent from one process to another must go through the <strong>underlying network</strong></p>
+</li>
+<li>
+<p>A process sends messages into, and receives messages from, the network through a <strong>software interface</strong> called a <strong>socket</strong>（套接字）</p>
+
+</li>
+<li>
+<p>a socket is the <strong>interface</strong> between the application layer and the transport layer <strong>within a host</strong></p>
+</li>
+<li>
+<p>It is also referred to as the <strong>Application Programming Interface(<em>API，应用程序编程接口</em>）</strong> between the application and the network, since the socket is the programming interface with which network applications are built（建立网络应用程序的可编程接口）</p>
+</li>
+<li>
+<p>The only control that the application developer has on the <strong>transport-layer</strong> side is</p>
+<ul>
+<li>the choice of <strong>transport protocol</strong></li>
+<li>perhaps the ability to fix a few <strong>transport-layer parameters</strong>，such as maximum buffer and maximum segment sizes最大缓存和最大报文段长度</li>
+</ul>
+</li>
+</ul>
+<h5 id="3、进程寻址">3、进程寻址</h5>
+<ul>
+<li>主机由其IP地址（IP address）标识</li>
+<li>to receive messages, process  must have <strong>identifier</strong></li>
+<li>an IP address is a <strong>32-bit</strong> quantity（uniquely identifying the host）</li>
+<li>除了知道报文送往目的地的主机地址外，发送进程还必须指定运行在接收主机上的接收进程（更具体地说，接收套接字），端口号（port number）用于此</li>
+</ul>
+<h5 id="App-layer-protocol-defines">App-layer protocol  defines</h5>
+<ul>
+<li>types of messages exchanged
+<ul>
+<li>request, response</li>
+</ul>
+</li>
+<li>message syntax (语法)
+<ul>
+<li>what fields in messages &amp;  how fields are delineated(描绘)</li>
+</ul>
+</li>
+<li>message semantics (语义)
+<ul>
+<li>meaning of information in  fields</li>
+</ul>
+</li>
+<li>rules for when and how  processes send &amp; respond to  messages</li>
+<li>open protocols (公开协议)
+<ul>
+<li>defined in RFCs</li>
+<li>allows for interoperability( 互通性)</li>
+<li>HTTP, SMTP</li>
+</ul>
+</li>
+<li>proprietary protocols (私有协议)
+<ul>
+<li>Skype, QQ, Thunder</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-3-Transport-Services-Available-to-Applications，可供应用程序使用的运输服务">2.1.3 Transport Services Available to Applications，可供应用程序使用的运输服务</h3>
+<ul>
+<li>在<u>发送端的应用程序</u>将报文推进该套接字，在该套接字的另一侧，<u>运输层协议</u>负责使该报文进入接收进程的套接字</li>
+<li>the possible services that a transport-layer protocol can offer：
+<ul>
+<li>reliable data transfer，可靠数据传输</li>
+<li>throughput</li>
+<li>timing，定时</li>
+<li>security</li>
+</ul>
+</li>
+</ul>
+<h6 id="reliable-data-transfer">reliable data transfer</h6>
+<ul>
+<li>data loss can have devastating consequences（灾难性的后果）
+<ul>
+<li>electronic mail</li>
+<li>file transfer</li>
+<li>remote host access，远程主机访问</li>
+<li>Web document transfers</li>
+<li>financial applications，金融应用</li>
+</ul>
+</li>
+<li>reliable data transfer：the data sent by one end of the application is delivered correctly and completely to the other end of the application，应用程序的一端发送的数据正确、完全地交付给该应用程序的另一端</li>
+<li>One important service that a <strong>transport-layer protocol</strong> can potentially provide to an <strong>application</strong> is <strong>process-to-process reliable data transfer</strong>（可靠数据传输）</li>
+<li>loss-tolerant applications（容忍丢失的应用）：</li>
+<li>real-time audio/video</li>
+<li>stored audio/video</li>
+</ul>
+<h6 id="Throughput">Throughput</h6>
+<ul>
+<li>throughput：in the conext of a communication session between two processes along a network path is the <strong>rate</strong> at which the sending process can deliver bits to the receiving proces，在沿着一条网络路径上的两个进程之间的通信会话场景中，<u>可用吞吐量</u>就是发送进程能够向接收进程<strong>交付比特的速率</strong></li>
+<li>the available throughput can fluctuate with time</li>
+<li>transport-layer protocol could provide another natural service：guaranteed <strong>available throughput</strong> at some <strong>specified rate</strong></li>
+<li>With such a service,，the application could <u>request a guaranteed throughput</u> of r bits/sec，and the transport protocol would then <strong>ensure</strong> that the <u>available throughput</u> is always at <strong>least</strong> r bits/sec</li>
+<li><strong><em>bandwidth-sensitive applications</em>（宽带敏感的应用）</strong>：Applications that have throughput requirements
+<ul>
+<li>Many current <u>multimedia applications</u> are bandwidth sensitive, although some multimedia applications may use <strong>adaptive coding techniques</strong> to encode at a rate that matches the currently available throughpu</li>
+</ul>
+</li>
+<li><strong><em>elastic applications</em>（弹性应用）</strong>：can make use of as much,or as little, throughput as happens to be available
+<ul>
+<li>Electronic mail</li>
+<li>file transfer</li>
+<li>Web transfers，web传送</li>
+</ul>
+</li>
+</ul>
+<h6 id="Timing（定时）">Timing（定时）</h6>
+<ul>
+<li>A transport-layer protocol can also provide <strong>timing guarantees</strong></li>
+<li>Internet telephony、virtual environments、teleconferencing、multiplayer games</li>
+<li>For non-real-time applications, lower delay is alwavs preferable to higher delay, but no tight constraint is placed on the end-to-end delays</li>
+</ul>
+<h6 id="Security">Security</h6>
+<ul>
+<li>a transport protocol can provide an application with <strong>one or more security services</strong></li>
+<li><u>in the sending host</u>, a <u>transport protocol</u> can <strong>encrypt</strong> <u>all data</u> transmitted by the sending process,<u>and in the receiving host</u>, the transport-layer protocol can <strong>decrypt</strong> the data <strong>before</strong> delivering the data to the receiving process</li>
+</ul>
+<h3 id="2-1-4-Transport-Services-Provided-by-the-Internet，特网提供的运输服务">2.1.4 Transport Services Provided by the Internet，特网提供的运输服务</h3>
+<ul>
+<li>The Internet (and, more generally, TCP/IP networks) makes two <strong>transport protocols</strong> available to applications
+<ul>
+<li>UDP</li>
+<li>TCP</li>
+</ul>
+</li>
+<li>选择网络应用的要求</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Datat Loss</th>
+<th>Bindwidth</th>
+<th>Time-Sensitive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file tansfer</td>
+<td>no loss</td>
+<td>elastic</td>
+<td>no</td>
+</tr>
+<tr>
+<td>e-mail</td>
+<td>no loss</td>
+<td>elastic</td>
+<td>no</td>
+</tr>
+<tr>
+<td>web document</td>
+<td>no loss</td>
+<td>elastic(few kbps)</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Internet telephone/video conferecing</td>
+<td>loss-tolerant</td>
+<td>audio:few kbps-1Mbps<br />video:10kbps-5Mbps</td>
+<td>yes:100s of msec</td>
+</tr>
+<tr>
+<td>stored audio/video</td>
+<td>loss-tolerant</td>
+<td>same as above</td>
+<td>yes:few seconds</td>
+</tr>
+<tr>
+<td>Interactive games,交互式游戏</td>
+<td>loss-tolerant</td>
+<td>few kbps-10kbps</td>
+<td>yes:100s of msec</td>
+</tr>
+<tr>
+<td>instan messaging</td>
+<td>no loss</td>
+<td>elastic</td>
+<td>yes and no</td>
+</tr>
+</tbody>
+</table>
+<h6 id="TCP-Services">TCP Services</h6>
+<ul>
+<li>TCP service=<strong>connection-oriented</strong> service + <strong>reliable data transfer</strong> service，TCP服务模型=面向连接服务+可靠数据传输服务</li>
+<li>connection-oriented service
+<ul>
+<li><u>before</u> the <u>application</u>-level messages begin to flow，TCP has the client and server exchange <strong><u>transport</u>-layer control information</strong> with each other （handshaking procedure：prepare for an onslaught of packets）</li>
+<li><u>After</u> the handshaking phase，a <strong>TCP connection</strong> is said to exist between the <strong>sockets</strong> of the two processes</li>
+<li>The connection is a <strong>full-duplex connection</strong>（全双工）：the two processes can send messages to each other <u>over the connection at the same time</u></li>
+<li>When the application <u>finishes</u> sending messages, it must <strong>tear down the connection</strong></li>
+<li>the two processes are connected in a very <u>loose manner</u></li>
+</ul>
+</li>
+<li>reliable data transfer service
+<ul>
+<li>deliver <strong>all data</strong> sent <strong>without error</strong> and in the <strong>proper order</strong>，无差错、按适当顺序交付所有发送的数据</li>
+<li>no missing or <u>duplicate</u> bytes，没有字节的丢失和冗余</li>
+</ul>
+</li>
+<li>TCP also includes a <strong>congestion-control mechanism</strong>（拥塞控制机制）（a service for the general welfare of the Internet rather than for the direct benefit of the communicating processes）
+<ul>
+<li>The TCP congestion-control mechanism <u>throttles a sending process</u>(client or server) when the network is congested between sender and receiver</li>
+<li>TCP congestion control also attempts to <strong>limit each TCP connection</strong> to its <strong>fair share</strong> of <u>network bandwidth</u>，TCP拥塞控制也试图限制每个TCP连接、使它们达到公平共享网络带宽的目的</li>
+</ul>
+</li>
+<li>summary
+<ul>
+<li>reliable transport可靠传输、flow control流量控制、congestion control拥塞控制、connection-oriented面向连接</li>
+<li>no：
+<ul>
+<li>timing、minimum throughput guarantee(最低保证吞吐量)、security</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="UDP-Services">UDP Services</h6>
+<ul>
+<li><strong>no-frills、lightweight、providing minimal services、connectionless</strong>（=》no handshaking）</li>
+<li>provides an <strong>unreliable</strong> data transfer service
+<ul>
+<li>no guarantee that the message will ever <u>reach</u> the receiving process. Furthermore, messages that do arrive at the receiving process may arrive <u>out of order</u>，乱序</li>
+</ul>
+</li>
+<li>does not include a <strong>congestion-control mechanism</strong>
+<ul>
+<li>the sending side of UDP can pump data into the layer below(the network layer) <strong>at any rate</strong> it pleases</li>
+<li>the actual end-to-end throughput may be <u>less</u> than this rate due to the <u>limited bandwidth</u> of intervening links or due to <u>congestion</u></li>
+</ul>
+</li>
+<li>summary
+<ul>
+<li>does not provide: reliability，flow control，congestion  control，timing，throughput  guarantee，security，connection setup</li>
+</ul>
+</li>
+</ul>
+<h6 id="focus-on-security">focus on security</h6>
+<ul>
+<li>
+<p>Neither TCP nor UDP provide any encryption</p>
+</li>
+<li>
+<p><strong>Secure Sockets Layer(SSL，安全套接字层）</strong>：an enhancement for TCP</p>
+</li>
+<li>
+<p>not only···（TCP），also provides critical process-to-process security services</p>
+<ul>
+<li>encryption</li>
+<li>data integrity，数据完整</li>
+<li>end-point authentication，端点鉴别</li>
+</ul>
+</li>
+<li>
+<p>:star:SSL is not a third Internet transport protocol,on the same level as TCP and UDP, but instead is an enhancement of TCP，with the enhancements being implemented in the <strong>application layer</strong>，SSL 不是与TCP和 UDP在相同层次上的第三种因特网 运输协议，而是一种对TCP的加强，这种强化是在<strong>应用层</strong>上实现的</p>
+</li>
+<li>
+<p>if an application wants to use the services of SSL, it needs to include SSL code  in <u>both</u> the client and server sides of the applicaion</p>
+</li>
+<li>
+<p>SSL has is own socket API that is similar to the traditional TCP socket API</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/142150.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>about throughput or timing guarantees（services not provided by today’s Internet transport protocol）（in ch.7）</p>
+<ul>
+<li>today’s Internet can often provide satisfactory service to time-sensitive applications, but it cannot provide any timing or bandwidth guarantees，今天的因特网通常能够为时间敏感应用提供满意的 服务，但它不能提供任何定时或带宽保证</li>
+</ul>
+</li>
+<li>
+<p>一些流行的因特网应用所使用的运输协议：</p>
+<ul>
+<li>telephony typically runs over UDP
+<ul>
+<li>Each side of an Internet phone application needs to send data across the network at some minimum rate.this is more likely to be possible with UDP than with TCP</li>
+<li>Also,Internet phone applications are loss-tolerant, so they do not need the reliable data transfer service provided by TCP.因为因特网电话应用（如Skype）<u>通常能够容忍某些丢失</u>但要求<u>达到一定的最小速率</u>才能有效工作，所以常将该应用运行在 UDP上，从而设法避开 TCP 的<u>拥塞控制机制和分组开销</u></li>
+<li>但因为许多防火墙被配置成阻挡（大多数类型的）UDP流量，所以因特网电话应用通常设计成<u>如果 UDP通信失败就使用 TCP 作为备份</u></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Application-Layer Protocol<br />应用层协议</th>
+<th>Underlying Transport Protocol<br />支撑的运输层协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electronic mail</td>
+<td>SMTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Remote terminal access</td>
+<td>Telnet，远程终端协议</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>HTTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>File transfer</td>
+<td>FTP，文件传输协议</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Streaming multimedia</td>
+<td>HTTP,RTP（实时传输协议）</td>
+<td>TCP or UDP</td>
+</tr>
+<tr>
+<td>Internet telephony</td>
+<td>SIP（会话初始化协议）,RTP,or proprietary(专用的)</td>
+<td>Typically UDP</td>
+</tr>
+</tbody>
+</table>
+<h5 id="other">other</h5>
+<ul>
+<li>throughput or timing guarantees services not provided by  today’s Internet transport protocols</li>
+<li>Internet can often provide satisfactory service to time-sensitive applications, <strong>cannot provide any timing or throughput guarantees</strong></li>
+</ul>
+<h3 id="2-1-5-Application-Layer-Protocols">2.1.5 Application-Layer Protocols</h3>
+<ul>
+<li>An <u>application-layer protocol</u> defines how an application’s processes, running on different end systems, pass messages to each other：
+<ul>
+<li>The <u>types</u> of messages exchanged，交换的报文类型
+<ul>
+<li>for example, request messages and response messages</li>
+</ul>
+</li>
+<li>The <u>syntax</u> of the various message types，各种报文类型的语法
+<ul>
+<li>such as the <u>fields</u> in the message and how the fields are <u>delineated</u>，报文中的各个字段及这些字段是如何描述的</li>
+</ul>
+</li>
+<li>The <u>semantics</u> of the fields，字段的语义
+<ul>
+<li>the <u>meaning</u> of the information in the fields</li>
+</ul>
+</li>
+<li><u>Rules</u> for determining when and how a process sends messages and responds to messages，一个进程何时以及如何发送报文，对报文进行响应的规则</li>
+</ul>
+</li>
+<li>Some application-layer protocols are specified in RFCs and are therefore in the public domain
+<ul>
+<li>For example, the Web’s application-layer protocol, HTTP(the HyperText Transfer Protocol is available as an RFC</li>
+</ul>
+</li>
+<li>Many other application-layer protocols are proprietary（专用的）
+<ul>
+<li>many existing P2P file-sharing systems use proprietary application-layer protocols：Skype</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/" title="第二章-应用层（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第二章-应用层（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%912/" title="第一章-计算机网络和因特网（一）">
+                        <span class="hidden-mobile">第一章-计算机网络和因特网（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

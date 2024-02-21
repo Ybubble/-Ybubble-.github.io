@@ -1,0 +1,1775 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="4.5 Routing Algorithms  Typically a host is attached directly to one router, the default router for the host (also called the first-hop router，第一跳路由器 for the host) c(x,x’) &#x3D; cost of link (x,x’)  :one:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章-网络层（四）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="4.5 Routing Algorithms  Typically a host is attached directly to one router, the default router for the host (also called the first-hop router，第一跳路由器 for the host) c(x,x’) &#x3D; cost of link (x,x’)  :one:">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.32.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.33.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.34.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.34-16536391639381.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.341.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.39.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.40.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.41.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.35.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.44.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.45.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.46.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.47.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.48.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.49.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.599Z">
+<meta property="article:modified_time" content="2024-02-20T11:59:26.948Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.4.jpg">
+  
+  
+  
+  <title>第四章-网络层（四） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第四章-网络层（四）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第四章-网络层（四）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>4.5 Routing Algorithms</h1>
+<ul>
+<li>Typically a host is attached directly to one router, the <strong>default router</strong> for the host (also called <strong>the first-hop router</strong>，第一跳路由器 for the host)</li>
+<li>c(x,x’) = cost of link (x,x’)</li>
+</ul>
+<p>:one:Routing algorithm  classification (分类一),global or decentralized information?</p>
+<ul>
+<li>global (全局式路由算法):
+<ul>
+<li>all routers have complete topology(拓扑结构), link cost info</li>
+<li>referred to as <strong>“link state” algorithms(LS, 链路状态算法)</strong></li>
+</ul>
+</li>
+<li>decentralized (分散式路由算法)
+<ul>
+<li>router only knows <u>physically-connected neighbors</u>, <u>link costs to neighbors</u></li>
+<li><strong>iterative</strong>(迭代) process of computation, exchange of info with  neighbors</li>
+<li>referred to as <strong>“distance vector” algorithms (DV, 距离向量算法)</strong></li>
+</ul>
+</li>
+</ul>
+<p>:two:Routing algorithm  classification (分类二),static or dynamic?</p>
+<ul>
+<li>static (静态路由算法):
+<ul>
+<li>routes change slowly over time</li>
+<li>human manually(人工地，手动地) edit forwarding table</li>
+</ul>
+</li>
+<li>dynamic (动态路由算法):
+<ul>
+<li>routes change more quickly</li>
+<li>periodic update</li>
+<li>or in response to topology or link cost changes</li>
+<li>more susceptible(易受影响的) to problems such as <strong>routing loops</strong> and <strong>oscillation</strong>(路由选择循环和震荡) in routes</li>
+</ul>
+</li>
+</ul>
+<p>:three:Routing algorithm  classification (分类三),:load-sensitive or load-insensitive?</p>
+<ul>
+<li>load-sensitive algorithm (负载敏感算法):
+<ul>
+<li><strong>link costs</strong> vary dynamically to reflect the current <strong>level  of congestion</strong></li>
+<li>a high cost is associated with a link that is currently  congested</li>
+<li>routing algorithm will tend to choose routes around  such a congested link (在拥塞的链路上选择合适的路径)</li>
+<li>e.g. ARPAnet</li>
+</ul>
+</li>
+<li>load-insensitive (负载不敏感&lt;迟钝&gt;路由算法)
+<ul>
+<li><strong>link’s cost does not</strong> explicitly reflect its current (or  recent past) <strong>level of congestion</strong></li>
+<li>e.g. RIP, OSPF, and BGP</li>
+<li>Today’s Internet routing algorithms(such as RIP, OSPF, and BGP) are load-insensitive, as a link’s cost does not explicitly reflect its current (or recent past) level of congestion</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-1-The-Link-State-LS-Routing-Algorithm，链路状态路由选择算法">4.5.1 The Link-State(LS)Routing Algorithm，链路状态路由选择算法</h3>
+<ul>
+<li>In LS routing algorithm, the network <strong>topology and  all link costs</strong> are known (网络拓扑和链路代价已知)</li>
+<li>实现途径：accomplished by having <strong>each node</strong>  broadcast link-state packets to all other nodes in  the network <strong>link-state broadcast</strong> algorithm  [Section 4.7]
+<ul>
+<li>each link-state packet containing the <strong>identities</strong> and  <strong>costs of its attached links</strong></li>
+<li>finally, all nodes have an <strong>identical and complete view</strong>  of the network!</li>
+</ul>
+</li>
+<li><strong>link-state routing algorithm</strong> is known as <strong>Dijkstra’s algorithm (迪杰斯特拉算法)</strong>, named after its inventor</li>
+</ul>
+<p>:small_blue_diamond:Dijkstra’s algorithm</p>
+<ul>
+<li>
+<p>net topology, link costs known to all nodes</p>
+<ul>
+<li>accomplished via <strong>“link state broadcast”</strong></li>
+<li>all nodes have <strong>same</strong> info</li>
+</ul>
+</li>
+<li>
+<p>can computes least cost paths from <strong>one node  (‘source”) to all other nodes</strong></p>
+<ul>
+<li>gives <strong>forwarding table</strong> for that node</li>
+</ul>
+</li>
+<li>
+<p><strong>iterative</strong>(迭代算法): after <strong>k</strong> iterations, know least  cost path to <strong>k</strong> dest.’s</p>
+</li>
+<li>
+<p>notation(数学符号):</p>
+<ul>
+<li>c(x, y): link cost from node x to y;  = ∞ if not direct  neighbors (从节点x到y的链路代价，如果不相邻则值为无穷)</li>
+<li>D(v): current value of least cost of path from source to  dest. v (从<u>原点</u>到<u>目标节点v</u>的<u>最小代价路径</u>的值)</li>
+<li>p(v): predecessor node (neighbor of v) along current leastcost path from source to v (从源点到目标节点v的最小代价路 径中，节点v的前继节点)</li>
+<li>N‘: set of nodes whose least cost path definitively known (已经确定在最小代价路径中的节点集合)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>Initialization(初始化):<br><span class="hljs-symbol">2 </span>N‘ = &#123;u&#125;        /*初始时仅有源节点*/<br><span class="hljs-symbol">3 </span><span class="hljs-keyword">for</span> all nodes v /*注意：此处节点u为例子中存在的节点，v, w均为变量*/<br><span class="hljs-symbol">4 </span>	<span class="hljs-keyword">if</span> v adjacent (临近) <span class="hljs-keyword">to</span> u <br><span class="hljs-symbol">5 </span>		<span class="hljs-keyword">then</span> D(v) = c(u,v) /*如果节点v与节点u为邻居， D(v) = c(u,v) */<br><span class="hljs-symbol">6 </span>	<span class="hljs-keyword">else</span> D(v) = ∞          /*否则D(v) = ∞ */<br><span class="hljs-symbol">7 </span><br><span class="hljs-symbol">8 </span>Loop<br><span class="hljs-symbol">9 </span>	find w <span class="hljs-keyword">not</span> in N‘ such that D(w) is a minimum   /*某一个节点w*/<br><span class="hljs-symbol">10 </span>	add w <span class="hljs-keyword">to</span> N‘ /*从N’之外的节点中选择一个节点w, D(w)的值最小，添加到N’ */<br><span class="hljs-symbol">11 </span>	update D(v) <span class="hljs-keyword">for</span> all v adjacent <span class="hljs-keyword">to</span> w <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> in N<span class="hljs-comment">&#x27;: /*针对w的所有邻居节点重新计算D(v) ，这些节点是集合N’之外的节点*/</span><br><span class="hljs-symbol">12 </span>		D(v) = min( D(v), D(w) + c(w,v) )  /* <span class="hljs-keyword">new</span> cost <span class="hljs-keyword">to</span> v is either old cost <span class="hljs-keyword">to</span> v <span class="hljs-keyword">or</span> known shortest path cost <span class="hljs-keyword">to</span> w plus cost from w <span class="hljs-keyword">to</span> v */ <br><span class="hljs-symbol">13 </span>until all nodes in N‘ /*所有节点加入集合N’ ，算法结束*/<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<table>
+<thead>
+<tr>
+<th>step</th>
+<th>N’</th>
+<th>D(v),p(v)</th>
+<th>D(w),p(w)</th>
+<th>D(x),p(x)</th>
+<th>D(y),p(y)</th>
+<th>D(z),p(z)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>u</td>
+<td>7,u</td>
+<td>3,u</td>
+<td>5,u</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>1</td>
+<td>uw</td>
+<td>6,w</td>
+<td></td>
+<td>5,u</td>
+<td>11,w</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>2</td>
+<td>uwx</td>
+<td>6,w</td>
+<td></td>
+<td></td>
+<td>11,w</td>
+<td>14,x</td>
+</tr>
+<tr>
+<td>3</td>
+<td>uwxv</td>
+<td></td>
+<td></td>
+<td></td>
+<td>10,v</td>
+<td>14,x</td>
+</tr>
+<tr>
+<td>4</td>
+<td>uwxvy</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>12,y</td>
+</tr>
+<tr>
+<td>5</td>
+<td>uwxvyz</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>for each dest., the  next-hop node on the  least-cost path from  u to the dest</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>在所有迭代中需要搜寻的结点总数为 n（n+1）/2</p>
+<p>O(n^2^),more efficient implementations possible: O(nlogn)</p>
+</li>
+<li>
+<p><strong>oscillations(振荡)</strong> possible:</p>
+<ul>
+<li>
+<p>e.g., suppose link cost equals amount of carried traffic</p>
+</li>
+<li>
+<p>solution: router randomize the time it sends out a link  advertisement (路由器发送链路通告的时间随机化)</p>
+<ul>
+<li>ensure that not all routers run the LS algorithm at the same time</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.6.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-2-The-Distance-Vector-DV-Routing-Algorithm-距离向量路由选择算法">4.5.2 The Distance-Vector (DV)Routing Algorithm,距离向量路由选择算法</h3>
+<ul>
+<li>
+<p>Bellman-Ford equation</p>
+<ul>
+<li>
+<p><strong>Bellman-Ford equation (贝尔曼福特方程)</strong> (dynamic programming) let</p>
+<p>d~x~ (y) := cost of least-cost path from x to y (节点x到节点y的最小代价路径值)</p>
+<p>d~x~ (y) = min~v~ {c(x,v) + d~v~ (y) }</p>
+<ul>
+<li>min taken over all neighbors v of x (遍历x的所有邻居v)</li>
+<li>c(x,v)：cost to neighbor v</li>
+<li>d~v~ (y)：cost from neighbor v to destination y</li>
+</ul>
+</li>
+<li>
+<p>Bellman-Ford example</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>clearly, d~v~ (z) = 5, d~x~ (z) = 3, d~w~ (z) = 3</p>
+</li>
+<li>
+<p>B-F equation says:</p>
+<p>d~u~ (z) = min { c(u,v) + d~v~ (z), c(u,x) + d~x~ (z), c(u,w) + d~w~ (z) }</p>
+<p>​		   = min {2 + 5, 1 + 3, 5 + 3} = 4</p>
+</li>
+<li>
+<p>node achieving minimum is next hop in shortest path(最短路径中的下一跳的节点可知：BF方程中的节点v), can be  used in forwarding table</p>
+</li>
+<li>
+<p>例如：上面的例子中，u到z的最 短路径代价值为4，是通过节点x这个节点取得最短，因此从节点u 到节点z应该选择节点x作为其下 一跳</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Distance vector (DV)  algorithm (距离向量算法)</p>
+<ul>
+<li>
+<p>d~x~ (y) := cost of least-cost path from x to y (节点x到节点y的最小代价路径值)</p>
+</li>
+<li>
+<p>D~x~ (y) = <strong>estimate</strong>(估计值) of least cost from x to y (i.e.  distance vector)</p>
+</li>
+<li>
+<p>node x:</p>
+<p>(1) knows cost to each <strong>neighbor</strong> v: c(x,v)</p>
+<p>(2) maintains distance vector D~x~ = [D~x~ (y): y є N ] (x节点自己：到所有节点的最短路径代价的估计值)</p>
+<p>(3) maintains <strong>its neighbors’ distance vectors</strong>. For each  neighbor v, x maintains</p>
+<p>D~v~ = [D~v~ (y): y є N ] (x节点邻居：所有邻居节点v的距离向量，即所有节点v到所有其他节点的最短路径代价的估计值)</p>
+</li>
+<li>
+<p>key idea:</p>
+<p>(1) from time-to-time, each node sends its own  distance vector estimate to <strong>neighbors</strong></p>
+<p>(2) when x receives new DV estimate from neighbor, it  <strong>updates its own DV</strong> using <strong>B-F equation</strong>:</p>
+<p>D~x~ (y) ← min~v~ {c(x,v) + D~v~ (y)} for each node y ∊ N</p>
+</li>
+<li>
+<p>under minor, natural conditions, the estimate D~x~ (y)  converge(收敛) to the actual least cost d~x~ (y) 估计值将最终收敛接近实际值</p>
+</li>
+<li>
+<p>iterative(迭代), asynchronous( 异步): each local iteration  caused by:</p>
+<p>(1) local link cost change</p>
+<p>(2) DV update message  from neighbor</p>
+</li>
+<li>
+<p>distributed(分布式)</p>
+<ul>
+<li>each node notifies neighbors only when its DV changes(只有自己的DV发生变化通知邻居)
+<ul>
+<li>neighbors then notify  their neighbors if  necessary</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.9.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.10.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>Distance vector: link  cost changes</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.11.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>1、</p>
+<ul>
+<li>link cost changes:
+<ul>
+<li>node detects local link cost change  (from itself to a neighbor) 4-&gt;1</li>
+<li>updates routing info, recalculates  distance vector</li>
+<li>if DV changes, notify neighbors</li>
+<li>example(only focus y and z)</li>
+</ul>
+</li>
+<li>t0  : y detects link-cost change (4 to 1), updates its DV,  informs its neighbors</li>
+<li>t1  : z receives update from y, updates its table, computes  new least cost to x (5 to 2), sends its neighbors its DV</li>
+<li>t2  : y receives z ’s update, updates its distance table. y ’s least  costs do not change, so y does not send a message to z</li>
+<li><strong>“good news  travels fast”</strong></li>
+</ul>
+<p>2、</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>link cost changes:</p>
+<ul>
+<li>
+<p>node detects local link cost change</p>
+</li>
+<li>
+<p>“bad news travels slow“ - “count to  infinity” problem!</p>
+</li>
+<li>
+<p>44 iterations before algorithm  stabilizes: see textbook</p>
+</li>
+<li>
+<p>Before the link cost changes(稳定), Dy (x) = 4, Dy (z) = 1, Dz (y)  = 1, and Dz (x) = 5</p>
+</li>
+<li>
+<p>(1) At time t0 , y detects the link-cost change (the cost has  changed from 4 to 60). Y computes its new minimum-cost  path to x to have a cost of  Dy (x) = min{c(y,x) + Dx (x), c(y,z) + Dz (x)} = min{60 + 0, 1 + <strong>5</strong>} = 6</p>
+<p>（注意：节点z尚未知道变化（<strong>D~z~ (x) = 5</strong>））</p>
+</li>
+<li>
+<p>全局来看：this new cost <strong>from y to x  via z is wrong</strong>!!!</p>
+</li>
+<li>
+<p>the only information node y has is  that its direct cost to x is 60 and  that z has last told y that z could get  to x with a cost of 5</p>
+</li>
+<li>
+<p>y would now route x through z!!! (y将选 择一条从z到x的路由)</p>
+</li>
+<li>
+<p><strong>routing loop</strong>(路由循环)!!!—in order to  get to x, y routes through z, and z  routes through y</p>
+</li>
+<li>
+<p><strong>until the forwarding tables are  changed</strong> (路由转发表变化前将持续进行)</p>
+</li>
+<li>
+<p>(2) Since node y has computed a new minimum cost to x, it  informs z of its new distance vector <strong>at time t1</strong></p>
+</li>
+<li>
+<p>(3) <strong>Sometime after t1</strong>, z receives y’s  new distance vector, which indicates  that <strong>y’s minimum cost to x is 6</strong></p>
+</li>
+<li>
+<p>z knows it can <strong>get to y</strong> with a cost <strong>of 1</strong>  and hence <strong>computes a new least</strong> cost  to x of</p>
+</li>
+<li>
+<p>D~z~ (x) = min{c(z,x) + D~x~ (x), c(z,y) + D~y~ (x)}  =min{50 + 0, 1 + 6} = 7</p>
+</li>
+<li>
+<p>Since z’s least cost to x has increased,  it then informs y of its new distance  vector <strong>at time t2</strong></p>
+</li>
+<li>
+<p>(4) In a similar manner, after receiving z’s new distance  vector, y determines <strong>D~y~ (x) = 8</strong> and sends z its distance  vector. z then determines <strong>D~z~ (x) = 9</strong> and sends y its  distance vector, and so on</p>
+</li>
+<li>
+<p>You should convince yourself that the  loop will persist for <strong>44 iterations</strong>  (message exchanges between y and  z)—until <strong>z</strong> eventually computes the  cost of its path via <strong>y</strong> to <strong>be greater  than 50</strong></p>
+</li>
+<li>
+<p>At this point, <strong>z</strong> will (finally!) determine  that its least-cost path to <strong>x</strong> is via <strong>its  direct connection to x</strong></p>
+</li>
+<li>
+<p><strong>y</strong> will then route to <strong>x</strong> via <strong>z</strong></p>
+</li>
+<li>
+<p>The result of the <strong>bad news</strong> about the  increase in link cost has indeed  <strong>traveled slowly</strong>!</p>
+</li>
+</ul>
+</li>
+<li>
+<p>poisoned reverse:</p>
+<ul>
+<li>If <strong>Z</strong> routes through <strong>Y</strong> to get to <strong>X</strong> :
+<ul>
+<li>Z tells Y its (Z’s) distance to X is <strong>infinite</strong> (so Y  won ’t route to X via Z)</li>
+</ul>
+</li>
+<li>will this completely solve <strong>count to infinity</strong> problem?
+<ul>
+<li>NO, three more nodes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Comparison of LS and  DV algorithms</p>
+<ul>
+<li>
+<p>message complexity</p>
+<ul>
+<li>LS: with n nodes, E links, O(nE)  msgs sent (global: 与<strong>所有节点</strong>交互信息)</li>
+<li>DV: exchange between neighbors  only (仅与<strong>邻居节点</strong>交互信息)
+<ul>
+<li>convergence time varies</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>speed of convergence, 收敛速度</p>
+<ul>
+<li>
+<p>LS: <strong>O(n^2^)</strong> algorithm requires  <strong>O(nE)</strong> msgs</p>
+<ul>
+<li>may have <strong>oscillations (振荡)</strong></li>
+</ul>
+</li>
+<li>
+<p>DV: convergence time varies</p>
+<ul>
+<li>
+<p>may be <strong>routing loops(环路)</strong></p>
+</li>
+<li>
+<p><strong>count-to-infinity</strong> problem</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>robustness，健壮性: what happens  if router malfunctions( 发生故障)?</p>
+<ul>
+<li>LS:
+<ul>
+<li>node can <strong>advertise</strong> incorrect <strong>link</strong> cost</li>
+<li>each node computes <strong>only</strong>  its <strong>own table</strong></li>
+</ul>
+</li>
+<li>DV:
+<ul>
+<li>DV node can advertise  incorrect <strong>path</strong> cost</li>
+<li>each node’s table used by  <strong>others</strong>
+<ul>
+<li>error propagate (扩散)  thru network</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-3-Hierarchical-Routing，层次路由选择">4.5.3 Hierarchical Routing，层次路由选择</h3>
+<p>our routing study thus far - idealization</p>
+<p>1、all routers identical相同的</p>
+<p>2、network “flat” …</p>
+<p>3、not true in practice</p>
+<p>==&gt;</p>
+<p>1、Scale</p>
+<p>with 600 million (6亿)  destinations:</p>
+<ul>
+<li>can ’t store all dest’s in routing  tables: broadcast LS updates  <strong>leave no bandwidth</strong> to <strong>send data</strong>，没有剩余的带宽</li>
+<li>routing table exchange would  swamp links: DV would surely <strong>never converge</strong>，无法收敛</li>
+</ul>
+<p>2、administrative autonomy(管理自治)</p>
+<ul>
+<li>internet = network of networks</li>
+<li>each network admin may  want to control routing in  its own network</li>
+</ul>
+<p>:star:Solution: aggregate  routers into regions, <strong>“autonomous systems” (AS) 自治系统</strong></p>
+<ul>
+<li>
+<p>routers in same AS run  same routing protocol  (e.g. DV or LS)</p>
+<ul>
+<li><strong>“intra-AS” routing  protocol (自治系统域内路由协议)</strong></li>
+<li>routers in different AS  can run different intra-AS routing protocol</li>
+</ul>
+</li>
+<li>
+<p>gateway router(网关路由器):</p>
+<ul>
+<li>at “edge” of its own AS</li>
+<li>has link to router in  another AS</li>
+</ul>
+</li>
+<li>
+<p>Difference concepts :</p>
+<p>default gateway (默认网关)</p>
+<p>default router (默认路由器)</p>
+<p>gateway router(网关路由器): being responsible for forwarding packets to destinations <strong>outside the AS</strong></p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.32.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li><strong>inter-AS routing protocol，自治系统间路由选择协议</strong></li>
+<li>obtaining <u>reachability information</u> from neighboring ASs，获取可达性信息</li>
+<li>propagating the reachability information to <strong>all routers internal to the AS</strong>，向该 AS 中所有路由器传播可达性信息</li>
+<li>the two communicating ASs must run the <strong>same</strong> inter-AS routing protocol</li>
+<li>in the <strong>Internet</strong> all ASs run the same inter-AS routing protocol, called <strong>BGP4</strong></li>
+</ul>
+  <img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.33.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Example 1: setting  forwarding table in router 1d</p>
+<ul>
+<li>suppose AS1 learns (via <strong>inter-AS protocol</strong>) that subnet x reachable via AS3 (gateway 1c), but not via AS2 (gateway 1b)
+<ul>
+<li>inter-AS protocol propagates reachability info to all internal  routers (AS1内部路由器)</li>
+</ul>
+</li>
+<li>router <strong>1d</strong> determines from <strong>intra-AS routing info</strong> that its  interface <strong>Ⅰ</strong> is on the least cost path to 1c
+<ul>
+<li>installs forwarding table entry <strong>(x,Ⅰ)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Example 2: choosing  among multiple ASes</p>
+<ul>
+<li>
+<p>now suppose AS1 learns from <strong>inter-AS protocol</strong> that  subnet <strong>x</strong> is reachable from <strong>AS3</strong> and from <strong>AS2</strong></p>
+</li>
+<li>
+<p>to configure forwarding table, router <strong>1d</strong> must determine  which gateway it should forward packets towards for dest <strong>x</strong></p>
+<ul>
+<li>this is also <strong>job of inter-AS routing protocol!</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>hot potato routing(热土豆路由)</strong>: send packet towards  closest of two routers**(尽可能快摆脱数据包-热土豆)**</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.34.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>选择:源路由器距离网关路由器最短路径<strong>代价中最小</strong>的网关，作为其转发表对应的接口！</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>4.6 Routing in the Internet,因特网中的路由选择</h1>
+<ul>
+<li>Inra-AS routing protocols are also known as <strong>interior gateway protocols(内部网关协议)</strong>
+<ul>
+<li><strong>Routing Information Protocol (RIP，路由选择信息协议)</strong></li>
+<li><strong>Open Shortest Path First (OSPF，开放最短路优先)</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-6-1-Intra-AS-Routing-in-the-Internet-RIP">4.6.1 Intra-AS Routing in the Internet: RIP</h3>
+<ul>
+<li>
+<p>widespread deployment reason: included in BSD-UNIX  distribution in 1982，UNIX伯克利软件分发版本</p>
+</li>
+<li>
+<p>uses <strong>hop count(跳数)</strong> as a <u>cost metric</u>(成本度量，路由的度量值)==&gt;each <strong>link</strong> has a cost of 1</p>
+</li>
+<li>
+<p>In RIP(and also in OSPF), costs are actually from source router to a destination subnet</p>
+<p>RIP uses the term hop, which is <strong>the number of subnets</strong> traversed along the shortest path from <strong>source router</strong> to <strong>destination subnet</strong>, including the destination subnet，在RIP（也在OSPF） 中，费用实际上是从源路由器到目的子网。RIP 使用术语跳，跳是沿着从源路由器到目的 子网（包括目的子网）的最短路径所经过的子网数量</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.34-16536391639381.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li><code>连接路由器的线表示子网；的路由器（A、B、C、D）与 网络（w、x、y、z））被标记；。虚线指示了该AS还在继续</code></li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.341.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>In RIP, <strong>routing updates</strong> are <strong>exchanged</strong> between neighbors approximately(大约) every <strong>30 seconds</strong> using a <strong>RIP response message(RIP响应报文)</strong></p>
+</li>
+<li>
+<p>each advertisement: list of up to <strong>25</strong> destination subnets (in IP addressing sense)，as well as the <strong>sender’s distance</strong> to <strong>each</strong> of those subnets</p>
+</li>
+<li>
+<p><code>现在假定 30秒以后，路由器D收到来自路由器A的通告==&gt;路由器D将该通告与旧路由选择表合并</code></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>destination subnet</th>
+<th>next router</th>
+<th># hops to dest</th>
+<th></th>
+<th>destination subnet</th>
+<th>next router</th>
+<th># hops to dest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>z</td>
+<td>C</td>
+<td>4</td>
+<td>←<br />A的通告</td>
+<td>w</td>
+<td>A</td>
+<td>2</td>
+</tr>
+<tr>
+<td>w</td>
+<td>—</td>
+<td>1</td>
+<td></td>
+<td>y</td>
+<td>B</td>
+<td>2</td>
+</tr>
+<tr>
+<td>x</td>
+<td>—</td>
+<td>1</td>
+<td>→<br />D的转发表改变</td>
+<td>z</td>
+<td>A</td>
+<td>5</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td></td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>if no advertisement heard after <strong>180 sec</strong> → neighbor/link declared <strong>dead</strong></p>
+<ul>
+<li>routes A via neighbor invalidated (无效)</li>
+<li>new advertisements sent to A’s other <strong>neighbors</strong></li>
+<li>other neighbors in turn send out new advertisements (if tables changed)</li>
+</ul>
+</li>
+<li>
+<p>link failure info quickly (?) propagates to entire net</p>
+<ul>
+<li><strong>poison reverse（毒性逆转）</strong> used to prevent ping-pong loops ( 无限距离<strong>infinite distance = 16 hops</strong>)</li>
+</ul>
+</li>
+<li>
+<p><strong>advertisements</strong> sent in <strong>UDP packets</strong>, using port number  <strong>520</strong>, periodically repeated</p>
+</li>
+<li>
+<p>RIP routing tables managed by <strong>application-level</strong> process  called <strong>route-d (daemon，守护进程)</strong></p>
+<p>RIP uses a <strong>transport-layer protocol (UDP)</strong> on top of a <strong>network-layer protocol (IP)</strong> to implement <strong>network-layer functionality(a routing algorithm)</strong>，RIP使用一个位于网络层协议（IP）之上的运输层协议（UDP）来实现网络层功能（一种路由选择算法）</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.39.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h3 id="4-6-2-Intra-AS-Routing-in-the-Internet-OSPF">4.6.2 Intra-AS Routing in the Internet: OSPF</h3>
+<ul>
+<li>
+<p>OSPF is deployed in <strong>upper-tier</strong> ISPs whereas RIP is  deployed in <strong>lower-tier ISPs</strong> and <strong>enterprise networks</strong></p>
+</li>
+<li>
+<p>The Open in OSPF indicates that the routing protocol specification is <strong>publicly available</strong>(for example,as opposed to <u>Cisco’s EIGRP protocol</u>)</p>
+</li>
+<li>
+<p>At its <strong>heart</strong>, however, OSPF is a <strong>link-state protocol</strong> that uses <strong>flooding of link-state information(洪泛链路状态信息)</strong> and a <strong>Dijkstra least-cost path algorithm(Dijkstra最低费用路径算法)</strong></p>
+<ul>
+<li>
+<p>LS packet dissemination (自治系统内容<strong>所有</strong>路由器广播)</p>
+</li>
+<li>
+<p>topology map at <strong>each</strong> node</p>
+</li>
+<li>
+<p>route computation using <strong>Dijkstra’s</strong> algorithm</p>
+</li>
+</ul>
+</li>
+<li>
+<p>With OSPF, a router constructs a complete <strong>topological map</strong> (that is,a graph) of the e<strong>ntire autonomous system</strong>，构建自治系统完整的拓扑图</p>
+</li>
+<li>
+<p>Individual link costs are configured by the <u>network administrator</u></p>
+</li>
+<li>
+<p>broadcasts a link’s state <strong>periodically</strong> (<u>at least</u> once every <strong>30 minutes</strong>), <strong>even if</strong> the link’s state has <strong>not change</strong></p>
+<ul>
+<li>adds robustness to the link state algorithm，增加健壮性</li>
+</ul>
+</li>
+<li>
+<p>OSPF advertisements are contained in <strong>OSPF messages</strong> that are <strong>carried directly by IP</strong>, with an <strong>upper-layer protocol</strong> of <strong>89</strong> for OSPF，对 OSPF 其上层协议的值为89</p>
+</li>
+<li>
+<p>OSPF protocol must <u>itself implement</u> functionality such as <strong>reliable message transfer</strong> and <strong>link-state broadcast</strong></p>
+</li>
+<li>
+<p>checks that links are <strong>operational</strong>，(检查链路正在运行) (via a HELLO message that is sent to an attached neighbor) and allows an OSPF router to obtain a neighboring router’s database of network-wide link state</p>
+</li>
+<li>
+<p>OSPF advertisement carries one entry per neighbor</p>
+</li>
+<li>
+<p>advertisements flooded to entire AS</p>
+<ul>
+<li>carried in OSPF messages directly over IP (注：RIP由UDP报文承载)</li>
+</ul>
+</li>
+<li>
+<p>OSPF “advanced”  features (not in RIP)</p>
+<ul>
+<li>(1)<strong>security</strong>: all OSPF messages authenticated (to  prevent malicious intrusion)</li>
+<li>(2) <strong>multiple</strong> same-cost <strong>paths</strong> allowed (only <strong>one path</strong> in  <strong>RIP</strong>)
+<ul>
+<li>for each link, multiple cost metrics for different TOS (e.g., satellite link cost set “low” for best effort TOS;  “high” for real time TOS)</li>
+</ul>
+</li>
+<li>(3) integrated(综合) <strong>unicas</strong>t(单播) and multicast support:
+<ul>
+<li>Multicast OSPF (MOSPF) uses same topology data base as  OSPF</li>
+</ul>
+</li>
+<li>(4) <strong>hierarchical(分层)</strong> OSPF in large domains</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.40.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Hierarchical OSPF</p>
+<ul>
+<li>
+<p>two-level hierarchy: local area, backbone(骨干)</p>
+<ul>
+<li>
+<p>link-state advertisements only in area</p>
+</li>
+<li>
+<p>each nodes has detailed area topology (仅在区域内);</p>
+<p><strong>only know direction (shortest path)</strong> to nets in other  areas</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>area border routers</strong>: “summarize” distances to nets  in own area, advertise to other Area Border routers</p>
+</li>
+<li>
+<p><strong>backbone routers</strong>: run OSPF routing limited to  backbone</p>
+</li>
+<li>
+<p><strong>boundary routers</strong>: connect to other AS’s</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-6-3-Inter-AS-Routing-BGP">4.6.3 Inter-AS Routing: BGP</h3>
+<ul>
+<li>
+<p><strong>BGP (Border Gateway Protocol, 边界网关协议)</strong>: the de  facto <strong>inter-domain routing protocol (域间路由协议)</strong> in today’s Internet</p>
+<ul>
+<li>“glue(胶水) that holds the Internet together”</li>
+</ul>
+</li>
+<li>
+<p>BGP provides each AS a means to:</p>
+<ol>
+<li><strong>eBGP</strong>: obtain subnet reachability information from <u>neighboring ASs</u></li>
+<li><strong>iBGP</strong>: propagate reachability information to all <u>AS-internal routers</u> (AS内部路由器)</li>
+<li>determine “good” routes to other networks based  on reachability information and policy</li>
+</ol>
+</li>
+<li>
+<p>allows subnet to advertise its existence to rest of  Internet: “I am here”</p>
+</li>
+</ul>
+<h6 id="BGP-Basics">BGP Basics</h6>
+<ul>
+<li><strong>BGP session</strong>: two BGP routers (“peers”) exchange BGP messages:
+<ul>
+<li>advertising <strong>paths</strong> to different destination network prefixes  (“path vector” protocol)</li>
+<li>exchanged over <strong>semi-permanent(半永久) TCP connections</strong> using  port <strong>179</strong></li>
+</ul>
+</li>
+<li>when AS3 advertises a prefix to AS1:
+<ul>
+<li>AS3 <strong>aggregate</strong> prefixes in its advertisement <strong>(路由聚合</strong>)</li>
+<li>AS3 <strong>promises</strong> it will forward datagrams towards that prefix</li>
+</ul>
+</li>
+</ul>
+<h6 id="BGP-basics-distributing-path-information">BGP basics: distributing  path information</h6>
+<ul>
+<li>
+<p>using <strong>external BGP(eBGP) session</strong> between 3a and 1c,  AS3 sends prefix reachability info to AS1</p>
+<ul>
+<li>1c can then use <strong>internal BGP(iBGP)</strong> do distribute new  prefix info to all routers in AS1</li>
+<li>1b can then re-advertise new reachability info to AS2  over 1b-to-2a <strong>eBGP session</strong></li>
+</ul>
+</li>
+<li>
+<p>when router learns of new prefix, it creates entry for  prefix in its forwarding table</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.41.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>In BGP, destination are not host instead are <strong>CIDRized prefixes</strong></p>
+</li>
+<li>
+<p>example 1</p>
+<ul>
+<li>suppose there are four subnets attached to AS2: 138.16.64/24,  138.16.65/24, 138.16.66/24, and 138.16.67/24</li>
+<li>Then, AS2 could aggregate prefixes for the four subnets and use BGP to  advertise single prefix to <u>138.16.64/22</u> to <u>AS1</u></li>
+</ul>
+</li>
+<li>
+<p>example 2</p>
+<ul>
+<li>only the first three of those four subnets are in AS2 and the fourth  subnet, 138.16.67/24, is in AS3</li>
+<li>routers use longest-prefix matching, AS3 advertise to AS1 the <u>more specific prefix 138.16.67/24</u> and AS2 still advertise to AS1 the  aggregated prefix <u>138.16.64/22</u></li>
+</ul>
+</li>
+<li>
+<p>Path attributes and BGP routes</p>
+<ul>
+<li>
+<p>advertised prefix includes BGP attributes</p>
+</li>
+<li>
+<p>prefix + attributes = “route” (带有属性的前缀即一条路由)</p>
+</li>
+<li>
+<p>two important attributes:</p>
+<ul>
+<li>
+<p><strong>AS-PATH</strong>: contains ASs through which prefix advertisement  has passed: e.g., AS2, AS1 (假定前缀138.16.64/24 首先是由AS2向ASl通告的;如果ASl接下来将该前缀向AS3通告，则该AS-PATH 将是AS2 ASl)</p>
+<p>used to <strong>detect and prevent looping</strong> (检测和防止循环通告)</p>
+</li>
+<li>
+<p><strong>NEXT-HOP</strong>: indicates specific internal-AS router interface  to next-hop AS. (may be multiple links from current AS to next-hop-AS) 用于正确配置转发表</p>
+</li>
+</ul>
+</li>
+<li>
+<p>gateway router receiving route advertisement uses <strong>import  policy</strong> (输入策略) to accept/decline, e.g., never route through  AS x</p>
+<ul>
+<li><strong>policy-based</strong> routing</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="BGP-Route-Selection">BGP Route Selection</h6>
+<ul>
+<li>router may learn about more than 1 route to  destination AS, selects route based on (如果对相同前缀存在2条及以上路由，BGP顺序调用下列消除规则):</li>
+</ul>
+<ol>
+<li>local preference value attribute: <strong>policy  decision (set by manager)</strong></li>
+<li>shortest <strong>AS-PATH</strong> (DV algorithm will be  enabled if only this rule)</li>
+<li>closest <strong>NEXT-HOP</strong> router: <strong>hot potato routing (热土豆路由)</strong></li>
+<li>additional BGP criteria (标准)</li>
+</ol>
+<h6 id="BGP-messages">BGP messages</h6>
+<ul>
+<li>BGP messages exchanged between peers over <strong>TCP connection</strong> (注意!)</li>
+<li>BGP messages:
+<ul>
+<li><strong>OPEN</strong>: opens TCP connection to peer and authenticates  sender</li>
+<li><strong>UPDATE</strong>: advertises new path (or withdraws old)</li>
+<li><strong>KEEPALIVE</strong>: keeps connection alive in absence of UPDATES;  also ACKs OPEN request</li>
+<li><strong>NOTIFICATION</strong>: reports <strong>errors</strong> in previous msg; also used  to <strong>close</strong> connection</li>
+</ul>
+</li>
+</ul>
+<h6 id="BGP-routing-policy">BGP routing policy</h6>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.35.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>A,B,C are <strong>provider networks</strong></li>
+<li>X,W,Y are <strong>customer</strong> (of <strong>provider networks</strong>)</li>
+<li>X is <strong>dual-homed (双宿)</strong>: attached to two networks
+<ul>
+<li>X <strong>does not</strong> want to route from <strong>B</strong> via <strong>X</strong> to <strong>C</strong></li>
+<li>… so X will not advertise to B <strong>a route</strong> to C (advertise it <strong>has no  paths</strong> to other dest. except itself)</li>
+</ul>
+</li>
+<li>A advertises path AW to B (B knows A has a path AW to W.)</li>
+<li>B advertises path BAW to X (X knows that it can route to W  via B)</li>
+<li>Should B advertise path BAW to C?
+<ul>
+<li><strong>No way</strong>! B gets <strong>no “revenue” 没有收益</strong> for routing CBAW since  neither A <strong>nor</strong> C are B’s <strong>customers</strong></li>
+<li>B wants to <strong>force C to route to w via A</strong></li>
+<li>B wants to route <strong>only</strong> to/from its customers!</li>
+<li>need peering agreements</li>
+</ul>
+</li>
+</ul>
+<h1>4.7 Broadcast and Multicast Routing，播和多播路由选择</h1>
+<ul>
+<li>In <strong>broadcast routing(广播)</strong>, the network layer provides a service of delivering a packet sent from a source node to <strong>all other nodes</strong> in the network</li>
+<li><strong>multicast(多播)</strong> routing enables a single source node to <strong>send a copy of a packet</strong> to a <strong>subset of the other network nodes</strong>，子集</li>
+</ul>
+<h3 id="4-7-1-Broadcast-Routing-Algorithms">4.7.1 Broadcast Routing Algorithms</h3>
+<ul>
+<li>
+<p><strong>N-way-unicast(N次单播)</strong></p>
+<ul>
+<li>
+<p>the source node simply makes <strong>N copies</strong> of the packet, <strong>addresses(编址)</strong> each copy to a <u>different destination</u>, and then transmits the N copies to the N destinations using <strong>unicast routing</strong></p>
+</li>
+<li>
+<p>优</p>
+<ul>
+<li>simple—no <strong>new</strong> network-layer routing protocol, <strong>packet-duplication</strong>(复制), or <strong>forwarding functionality</strong> is needed</li>
+</ul>
+</li>
+<li>
+<p>缺</p>
+<ul>
+<li>
+<p>inefficiency</p>
+<ul>
+<li>若需都需通过一条路径，则N个副本都会经过该处</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.44.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>In-network duplication</p>
+<p>1、<strong>Uncontrolled Flooding(无控制洪泛)</strong></p>
+<ul>
+<li>the source node sends a copy of the packet to all of its <strong>neighbors</strong></li>
+<li>When a node receives a broadcast packet, it duplicates the packet and forwards it to all of its <strong>neighbors</strong> (<strong>except</strong> the neighbor from which it received the packet)
+<ul>
+<li>If the graph has cycles==&gt;cycle indefinitely</li>
+<li><strong>broadcast storm(广播风暴)</strong>:（当一个结点与两个以上其他结点连接）resulting from the endless multiplication of broadcast packets，无休止地复制</li>
+</ul>
+</li>
+</ul>
+<p>2、<strong>Controlled Flooding(受控洪泛)</strong></p>
+<ul>
+<li>node only broadcasts pkt if it hasn’t  broadcast same packet before
+<ul>
+<li>node keeps track of packet ids already broadcasted
+<ul>
+<li><strong>sequence-number-controlled flooding(序号控制洪泛)</strong></li>
+<li><strong>broadcast sequence number(广播序号)</strong></li>
+</ul>
+</li>
+<li><strong>reverse path forwarding (RPF，反向路径转发)</strong>: only forward packet if it arrived  on shortest path between node and source（反向路径广播（RPB））
+<ul>
+<li>当一台路由器接 收到具有给定源地址的广播分组时，仅当该分组到达的链路正好是位于它自己的返回其源的最短单播路径上，它才向其所有出链路（除了它接收分组的那个）传输报文;否则，路由器只是丢弃入分组而不向任何它的出链路转发分组</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>3、<strong>panning-Tree Broadcast(生成树广播)</strong></p>
+<p>序号控制洪泛和 RPF避免了广播风暴，但它们不能完全避免冗余广播分组的传输</p>
+<ul>
+<li>
+<p>no redundant packets received by any node</p>
+</li>
+<li>
+<p>first construct a spanning tree</p>
+</li>
+<li>
+<p>nodes then forward/make copies only along spanning  tree</p>
+</li>
+<li>
+<p>Spanning tree: creation</p>
+<ul>
+<li>center node</li>
+<li>each node sends unicast join message to center node
+<ul>
+<li>message forwarded until it arrives at a node already belonging  to spanning tree</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.45.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="4-7-2-Multicast-多播">4.7.2 Multicast, 多播</h3>
+<ul>
+<li>
+<p>problem statement</p>
+<ul>
+<li>goal: find a tree (or trees) connecting routers  having local mcast group members</li>
+<li>tree: not all paths between routers used</li>
+<li>shared-tree: same tree used by all group  members</li>
+<li>source-based: different tree from each sender  to rcvrs</li>
+</ul>
+</li>
+<li>
+<p>Approaches for building  mcast trees</p>
+<ul>
+<li>approaches:
+<ul>
+<li>source-based tree: one tree per source
+<ul>
+<li>shortest path trees
+<ul>
+<li>Dijkstra’s algorithm</li>
+</ul>
+</li>
+<li>reverse path forwarding</li>
+</ul>
+</li>
+<li>group-shared tree: group uses one tree
+<ul>
+<li>minimal spanning (Steiner)</li>
+<li>center-based trees</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Reverse path forwarding</p>
+<ul>
+<li>
+<p>rely on router’s knowledge of unicast  shortest path from it to sender</p>
+</li>
+<li>
+<p>each router has simple forwarding behavior:</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-keyword">if</span> (mcast datagram received <span class="hljs-keyword">on</span> incoming link <span class="hljs-keyword">on</span> shortest path <span class="hljs-keyword">back</span> <span class="hljs-keyword">to</span> center)<br>	<span class="hljs-keyword">then</span> flood datagram <span class="hljs-keyword">onto</span> all outgoing links<br><span class="hljs-keyword">else</span> ignore datagram<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.46.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>result is a source-specific reverse SPT
+<ul>
+<li>may be a bad choice with asymmetric links</li>
+</ul>
+</li>
+<li>forwarding tree contains subtrees with no mcast group members
+<ul>
+<li>no need to forward datagrams down subtree</li>
+<li>“prune” msgs sent upstream by router with no downstream group  members</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Shared-tree: steiner tree</p>
+<ul>
+<li>steiner tree: minimum cost tree connecting all  routers with attached group members  problem is NP-complete</li>
+<li>excellent heuristics exists  not used in practice:
+<ul>
+<li>computational complexity</li>
+<li>information about entire network needed</li>
+<li>monolithic: rerun whenever a router needs to join/leave</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Center-based trees</p>
+<ul>
+<li>single delivery tree shared by all</li>
+<li>one router identified as “center” of tree</li>
+<li>to join:
+<ul>
+<li>edge router sends unicast join-msg addressed to center router</li>
+<li>join-msg  “processed” by intermediate routers and forwarded  towards center</li>
+<li>join-msg either hits existing tree branch for this center, or arrives  at center</li>
+<li>path taken by join-msg becomes new branch of tree for this router</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.47.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>Internet Multicasting  Routing: DVMRP</p>
+<ul>
+<li>DVMRP: distance vector multicast routing protocol,  RFC1075</li>
+<li>flood and prune: reverse path forwarding, source-based  tree
+<ul>
+<li>RPF tree based on DVMRP’s own routing tables constructed by  communicating DVMRP routers</li>
+<li>no assumptions about underlying unicast</li>
+<li>initial datagram to mcast group flooded everywhere via RPF</li>
+<li>routers not wanting group: send upstream prune msgs</li>
+</ul>
+</li>
+<li>soft state: DVMRP router periodically (1 min.)  “forgets” branches are pruned:
+<ul>
+<li>mcast data again flows down unpruned branch</li>
+<li>downstream router: reprune or else continue to receive data</li>
+</ul>
+</li>
+<li>routers can quickly regraft to tree
+<ul>
+<li>following IGMP join at leaf</li>
+</ul>
+</li>
+<li>odds and ends
+<ul>
+<li>commonly implemented in commercial router</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Tunneling</p>
+<ul>
+<li>
+<p>how to connect “islands” of multicast routers in a “sea” of unicast routers?</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.48.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>mcast datagram encapsulated inside “normal” (non-multicast-addressed) datagram</p>
+</li>
+<li>
+<p>normal IP datagram sent thru “tunnel” via regular IP  unicast to receiving mcast router (recall IPv6 inside  IPv4 tunneling)</p>
+</li>
+<li>
+<p>receiving mcast router unencapsulates to get mcast datagram</p>
+</li>
+</ul>
+</li>
+<li>
+<p>PIM: Protocol  Independent Multicast</p>
+<ul>
+<li>not dependent on any specific underlying  unicast routing algorithm (works with all)</li>
+<li>two different multicast distribution scenarios
+<ul>
+<li>dense(密集):
+<ul>
+<li>group members  densely packed, in  “close” proximity</li>
+<li>bandwidth more  plentiful</li>
+</ul>
+</li>
+<li>sparse(稀疏):
+<ul>
+<li>#networks with group  members small wrt # interconnected networks</li>
+<li>group members “widely  dispersed”</li>
+<li>bandwidth not plentiful</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Consequences of sparsedense dichotomy:</p>
+<ul>
+<li>dense
+<ul>
+<li>group membership by  routers assumed until  routers explicitly prune</li>
+<li>data-driven construction  on mcast tree (e.g., RPF)</li>
+<li>bandwidth and non-group-router processing  profligat</li>
+</ul>
+</li>
+<li>sparse:
+<ul>
+<li>no membership until  routers explicitly join</li>
+<li>receiver- driven construction of mcast tree (e.g., center-based)</li>
+<li>bandwidth and non-grouprouter processing  conservative</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>PIM- dense mode</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/4.49.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>flood-and-prune RPF: similar to DVMRP  but…
+<ul>
+<li>underlying unicast protocol provides RPF  info for incoming datagram</li>
+<li>less complicated (less efficient)  downstream flood than DVMRP reduces  reliance on underlying routing algorithm</li>
+<li>has protocol mechanism for router to  detect it is a leaf-node router</li>
+</ul>
+</li>
+<li>center-based approach</li>
+<li>router sends join msg to  rendezvous point (RP)
+<ul>
+<li>intermediate routers  update state and forward  join</li>
+</ul>
+</li>
+<li>after joining via RP, router  can switch to source-specific tree
+<ul>
+<li>increased performance:  less concentration,  shorter paths</li>
+</ul>
+</li>
+<li>sender(s):
+<ul>
+<li>unicast data to RP, which  distributes down RP</li>
+<li>rooted tree  RP can extend mcast tree upstream to source</li>
+<li>RP can send stop msg if  no attached receivers
+<ul>
+<li>“no one is listening!”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/" title="第五章-链路层">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第五章-链路层</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/" title="第四章-网络层（三）">
+                        <span class="hidden-mobile">第四章-网络层（三）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3.5 Connection-Oriented Transport: TCP   TCP protocol runs only in the end systems and not in the intermediate network elements(routers and link-layer switches), the intermediate network elements do n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-运输层（四）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3.5 Connection-Oriented Transport: TCP   TCP protocol runs only in the end systems and not in the intermediate network elements(routers and link-layer switches), the intermediate network elements do n">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.28.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.29.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.30.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.578Z">
+<meta property="article:modified_time" content="2024-02-20T06:26:19.081Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.27.jpg">
+  
+  
+  
+  <title>第三章-运输层（四） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-运输层（四）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-运输层（四）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>3.5 Connection-Oriented Transport: TCP</h1>
+<ul>
+<li>
+<p>TCP protocol runs <u>only</u> in the <strong>end systems</strong> and not in the <u>intermediate network elements</u>(routers and link-layer switches), the intermediate network elements <strong>do not maintain TCP connection state</strong></p>
+<ul>
+<li>the intermediate routers are completely oblivious(不在意，不察觉) to TCP connections; they see <strong>datagrams</strong>, not connections</li>
+</ul>
+</li>
+<li>
+<p>A TCP connection provides a <strong>full-duplex service</strong>，全双工服务:</p>
+<ul>
+<li>bi-directional (双向) data flow in  same connection</li>
+<li>MSS: maximum segment size，最大报文段长度 （<strong>传输层</strong>能承载的<strong>应用层最大数据长度</strong>，<strong>不包括传输层的头部</strong>）</li>
+</ul>
+</li>
+<li>
+<p><strong>point-to-point</strong>，点对点</p>
+<ul>
+<li>one sender, one receiver</li>
+<li>not support one sender to  many receivers (multicasting ，多播)</li>
+</ul>
+</li>
+<li>
+<p>Pipelined (流水线):</p>
+<ul>
+<li>TCP congestion and flow  control set window size</li>
+</ul>
+</li>
+<li>
+<p>connection-oriented:</p>
+<ul>
+<li>handshaking (exchange of control  msgs) inits sender, receiver state  before data exchange</li>
+</ul>
+</li>
+<li>
+<p>flow controlled:</p>
+<ul>
+<li>sender will not overwhelm receiver</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-5-1-TCP连接">3.5.1 TCP连接</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">clientSocket.connect((serverName,serverPort))<br></code></pre></td></tr></table></figure>
+<ul>
+<li>the client first sends a special TCP segment</li>
+<li>the server responds with a second special TCP segment</li>
+<li>and finally the client responds again with a third special segment</li>
+<li>The first two segments carry no payload, that is, no application-layer data</li>
+<li>the third of these segments may carry a <u>payload</u>（有效载荷）</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.27.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>TCP directs this data to the connection’s <strong>send buffer</strong>, which is one of the buffers that is set aside during the initial three-way handshake，发送缓存是在三次握手初期设置的缓存之一</p>
+</li>
+<li>
+<p>From time to time, TCP will grab chunks of data from the send buffer</p>
+<p>（有趣的是，在 TCP规范中没提及 TCP 应何时实际发送缓存里的数据，只是描述为&quot;TCP 应该在它方便的时候以报文段的形式发送数据&quot;）</p>
+</li>
+<li>
+<p>the maximum amount of data that can be grabbed and placed in a segment is limited by the <strong>maximum segment size</strong> (MSS，最大报文段长度)</p>
+<ul>
+<li>the MSS is typically set by first determining the length of the <strong>largest link-layer frame</strong> that can be sent by the <strong>local sending host</strong> (the so-called <strong>maximum transmission unit</strong>, MTU,最大传输单元)，MSS通常根据最初确定的由 地发送主机发送的最大链路层帧长度来设置</li>
+<li>setting the MSS to ensure that a TCP segment (when encapsulated in an IP datagram) will fit into a single <strong>link-layer fram</strong>，设置该MSS要保证一个TCP报文段（当封装在一个IP数据报中） 加上 TCP/P首部长度（通常40字节）将适合单个链路层帧</li>
+</ul>
+</li>
+<li>
+<p>TCP pairs each chunk of client data with a TCP header, thereby forming TCP segments</p>
+</li>
+<li>
+<p>TCP connection=buffers + variables + a socket connection to a process （in one host）+ another set of buffers + variables + a socket connection to a process （in another host）</p>
+<ul>
+<li>在这两台主机之间的网络元素（路由器、交换机和中继器）中，没有为该连接分配任何缓存和变量</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-5-2-TCP-Segment-Structure">3.5.2 TCP Segment Structure</h3>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.28.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>TCP报文段首部还包含的字段∶
+<ul>
+<li>The <u>32-bit</u> <strong>sequence number field</strong>(序号字段) and the <u>32-bit</u> <strong>acknowledgment number field</strong>(确认号字段)
+<ul>
+<li>used by the TCP sender and receiver in implementing a <strong>reliable data transfer service</strong></li>
+</ul>
+</li>
+<li>the <u>16-bit</u> <strong>receive window field</strong>(接收窗口字段)
+<ul>
+<li>used for <strong>flow control</strong></li>
+<li>indicate the number of bytes that a receiver is <strong>willing to accept</strong></li>
+</ul>
+</li>
+<li>The <u>4-bit</u> <strong>header length field</strong>
+<ul>
+<li>该字段指示了以32比特的字为单位的TCP首部长度。由于TCP选项字段的原因，TCP首部的长度是可变的（通常选项字段为空，所以TCP首部的典型长度就是20字节）</li>
+</ul>
+</li>
+<li>The <u>optional</u> and <u>variable-length</u> <strong>options field</strong>(选项字段)
+<ul>
+<li>used when a sender and receiver negotiate(协商) the maximum segment size (MSS)or as a <u>window scaling factor</u>(窗口调节因子) for use in <u>high&gt;-speed networks</u>(高速网络)</li>
+</ul>
+</li>
+<li>the <strong>flag field</strong>(标志字段) contains 6 bits
+<ul>
+<li>ACK bit
+<ul>
+<li>used to indicate that the value carried in the acknowledgment field is valid; that is, the segment contains an acknowledgement for a segment that has been successfully received</li>
+</ul>
+</li>
+<li>RST, SYN, FIN bits
+<ul>
+<li>used for <strong>connection setup and teardown</strong>，连接建立和拆除</li>
+</ul>
+</li>
+<li>PSH bit
+<ul>
+<li>indicates that the receiver should pass the data to the <strong>upper layer</strong> immediately，当PSH比特被设置的时候，就指示接收方应立即将数据交给上层</li>
+</ul>
+</li>
+<li>URG bit
+<ul>
+<li>used to indicate that there is data in this segment that the sending-side upper-layer entity has marked as&quot;urgent&quot;，指示报文段里存在着被发送端的上层实体置为&quot;紧急&quot;的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the <u>16-bit</u> <strong>urgent data pointer field</strong>(紧急数据指针字段)
+<ul>
+<li>TCP must inform the receiving-side upper-layer entity when urgent data exists and pass it a pointer to the end of the urgent data</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>（在实践中，PSH、URG 和紧急数据指针并没有使用）</p>
+<h6 id="Sequence-Numbers-and-Acknowledgment-Numbers，序号和确认号">Sequence Numbers and Acknowledgment Numbers，序号和确认号</h6>
+<ul>
+<li>
+<p>TCP报文段首部中两个最重要的字段是序号字段和确认号字段这两个字段是TCP可靠传输服务的关键部分</p>
+</li>
+<li>
+<p>TCP views data as an <u>unstructured</u>, but <u>ordered</u>, stream of <u>bytes</u>，无结构的、有序的字节流</p>
+</li>
+<li>
+<p>sequence numbers are over the stream of transmitted bytes and not over the series of transmitted segments，序号是建立在传送的字节流之上，而不是建立在传送的报文段的序列之上</p>
+</li>
+<li>
+<p>The <strong>sequence number for a segment</strong>(报文段的序号) is therefore <strong>the byte-stream number</strong> of the <strong>first byte in the segment</strong>，是该报文段首字节的字节流编号</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.29.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>ACK # is the sequence number of  the next byte that receiver is  expecting from sender. (different  from rdt 3.0!) 接收方期待收到的字节数据的序列号</p>
+<ul>
+<li>example 1: Host R has received  bytes from 0-535 from host S, is  about to send segment to host S  with 536 in ACK# field</li>
+<li><strong>cumulative ACK</strong> (TCP采用累积确认)：example 2: R has received 0-535,  900-1000, R’s next segment  contain 536 in ACK# field</li>
+</ul>
+</li>
+<li>
+<p>How receiver handles out-of-order segments?</p>
+<ul>
+<li>
+<p>the receiver immediately <u>discards</u> out-of-order segments</p>
+</li>
+<li>
+<p>the receiver <u>keeps</u> the out-of-order bytes and waits for the missing bytes to <u>fill in the gaps</u>填补间隔</p>
+<p>（Clearly, the latter choice is more efficient in terms of network bandwidth,and is the approach taken in practice）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>我们假设初始序号为0，事实上，一条TCP连接的双方均可随机地选择初始序号</p>
+<ul>
+<li>This is done to minimize the possibility that a segment that is still present in the network from an earlier, already-terminated connection between two hosts is <u>mistaken</u> for a valid segment in a later connection between these same two hosts (which also happen to be using the same port numbers as the old connection)，减少误会</li>
+</ul>
+</li>
+<li>
+<p>例：suppose the starting sequence numbers are 42 and 79 for the client and server，Now suppose the user types a single letter, ‘C’</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/3.30.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>在TCP连接建立后但没有发送任何数据之前，该客户等待字节79，而该服务器等待字节42</p>
+</li>
+<li>
+<p>1、第一个报文段是由客户发往服务器，在它的数据字段里包含一字节的字符’C’的ASCII码，由于客户还没有接收到来自服务器的任何数据，因此该第一个报文段中的确认号字段中是79</p>
+<p>2、二个报文段目的：</p>
+<p>①为该服务器所收到数据提供一个确认</p>
+<p>​	通过在确认号字段中填入43，服务器告诉客户它已经成功地收到字节42及以前的所有字节，现在正等待着字节43的出现</p>
+<p>②回显字符 ‘C’</p>
+<p>​	在第二个报文段的数据字段里填入的是字符’C’的ASCⅡ码</p>
+<p>​	第二个报文段的序号为79，它是该TCP连接上从服务器到客户的数据流的起始序号，这也正是服务器要发送的第一个字节的数据</p>
+<p>​	对客户到服务器的数据的确认被装载在一 个承载服务器到客户的数据的报文段中;这种确认被称为是被**捎带（piggybacked）**在服务器到客户的数据报文段中的</p>
+<p>3、第三个报文段是从客户发往服务器的：确认已从服务器收到的数据</p>
+<p>​	该报文段的数据字段为空</p>
+<p>​	该报文段的确认号字段填入的是80，因为客户已经收到了字节流中序号为79及以前的字节，它现在等待着字节 80的出现</p>
+<p>​	即使该报文段里没有数据还仍有序号，这是因为TCP存在序号字段，报文段需要填入某个序号</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-5-3-Round-Trip-Time-Estimation-and-Timeout，往返时间的估计与超时">3.5.3 Round-Trip Time Estimation and Timeout，往返时间的估计与超时</h3>
+<ul>
+<li>TCP, like our rdt protocol, uses a timeout/retransmit mechanism to recover from lost segments</li>
+<li>Clearly,the timeout should be larger than <strong>the connection’s round-trip time (RTT)</strong>,that is, the time from when a segment is sent until it is acknowledged，，即从一个报文段发出到它被确认的时间. Otherwise, unnecessary retransmissions would be send，不必要的重传</li>
+<li>too short: premature timeout (过早超时), unnecessary  retransmissions</li>
+<li>too long: slow reaction to segment loss，反应迟钝</li>
+</ul>
+<h6 id="Estimating-the-Round-Trip-Time">Estimating the Round-Trip Time</h6>
+<ul>
+<li>
+<p><strong>SampleRTT</strong>(样本RTT): measured time from segment transmission  until ACK receipt</p>
+<ul>
+<li>Instead of measuring a SampleRTT for every transmitted segment, most TCP implementations take only one SampleRTT measurement at a time. That is, at any point in time, the SampleRTT is being estimated for only one of the <u>transmitted but currently unacknowledged segments</u>, leading to a new value of SampleRTT approximately once every RTT，产生一个接近每个RTT的新SampleRTT值</li>
+<li>TCP never computes(估算) a SampleRTT for a segment that <u>has been retransmitted</u>; it only measures SampleRTT for segments that have been transmitted once，它仅为传输一次的报文段测量SampleRTT</li>
+</ul>
+</li>
+<li>
+<p><strong>EstimatedRTT</strong>(RTT均值)：TCP maintains an average, called EstimatedRTT, of the SampleRTT values</p>
+</li>
+<li>
+<p>TCP就会根据下列公式来更新EstimatedRT: EstimatedRTT=(1-α)· EstimatedRT+α· SampleRTT</p>
+<p>（的α参考值是 α=0.125）</p>
+<p>EstimatedRTT是一个 SampleRTT 值的加权平均值，这个加权平均对最近的样本赋予的权值要大于对老样本赋予的权值，这种平均被称为<strong>指数加权移动平均（Exponential Weighted Moving Average，EWMA）</strong></p>
+<p>influence of past sample decreases exponentially fast过去样本的影响呈指数级下降</p>
+</li>
+<li>
+<p>RTT偏差 DevRTT，用于估算 SampleRT一般会偏离EstimatedRT的程度∶ DevRTT=(1-β)·DevRTT+β·|SampleRTT-EstimatedRTT|</p>
+<p>（β的推荐值为0.25）</p>
+</li>
+</ul>
+<h6 id="Setting-and-Managing-the-Retransmission-Timeout-Interval">Setting and Managing the Retransmission Timeout Interval</h6>
+<ul>
+<li>
+<p>timeout should be &gt;= EstimatedRTT</p>
+</li>
+<li>
+<p>not be too mach larger than EstimatedRTT, not quickly  retransmit, 否则当报文段丢失时，TCP不能很快地重传该报文段，导致数据传输时延大</p>
+</li>
+<li>
+<p>TimeoutInterval = EstimatedRT+4 · DevRT</p>
+<p>(推荐的初始 Timeoutlnterval值为1秒。当出现超时后，Timeoutlnterval值将加倍，以免即将被确认的后继报文段过早出现超时。一旦报文段收到并更新 EstimatedRTT后，TimeoutInterval就又使用上述公式计算了)</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%825/" title="第三章-运输层（五）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（五）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%823/" title="第三章-运输层（三）">
+                        <span class="hidden-mobile">第三章-运输层（三）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

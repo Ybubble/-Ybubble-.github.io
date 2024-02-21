@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="reg：寄存器 sreg：段寄存器 bx、si、di、bp   在8086CPU中，只有bx、bp、si、di这四个寄存器可以用在[ ]中进行内存单元的寻址   在[ ]中，这四个寄存器可以单个出现，或只能以四种组合出现： bx+si、bx+di、bp+si、bp+di   只要在[ ]总使用寄存器bp，而指令中没有显性地给出段地址，段地址就默认在ss中   机器指令处理地数据所在地位置   绝大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8-数据处理的两个基本问题">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="reg：寄存器 sreg：段寄存器 bx、si、di、bp   在8086CPU中，只有bx、bp、si、di这四个寄存器可以用在[ ]中进行内存单元的寻址   在[ ]中，这四个寄存器可以单个出现，或只能以四种组合出现： bx+si、bx+di、bp+si、bp+di   只要在[ ]总使用寄存器bp，而指令中没有显性地给出段地址，段地址就默认在ss中   机器指令处理地数据所在地位置   绝大">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:38:43.529Z">
+<meta property="article:modified_time" content="2024-02-19T15:03:39.086Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>8-数据处理的两个基本问题 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="8-数据处理的两个基本问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:38" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">8-数据处理的两个基本问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>reg：寄存器</p>
+<p>sreg：段寄存器</p>
+<h1>bx、si、di、bp</h1>
+<ul>
+<li>
+<p>在8086CPU中，只有bx、bp、si、di这四个寄存器可以用在[ ]中进行内存单元的寻址</p>
+</li>
+<li>
+<p>在[ ]中，这四个寄存器可以单个出现，或只能以四种组合出现：</p>
+<p>bx+si、bx+di、bp+si、bp+di</p>
+</li>
+<li>
+<p>只要在[ ]总使用寄存器bp，而指令中没有显性地给出段地址，段地址就默认在ss中</p>
+</li>
+</ul>
+<h1>机器指令处理地数据所在地位置</h1>
+<ul>
+<li>
+<p>绝大部分机器指令都是进行数据处理地指令，大致可以分为三类：读取、写入、运算</p>
+</li>
+<li>
+<p>在机器指令这一层来讲，并不关心数据的值是多少，而关心执行指令前一刻，它将要处理的数据所在位置</p>
+</li>
+<li>
+<p>指令在执行前，所要处理的数据可以在三个位置：CPU内部、内存、端口</p>
+</li>
+</ul>
+<h1>汇编语言中数据位置的表达</h1>
+<p>汇编语言中用三个概念来表达数据的位置：立即数（idata）、寄存器、段地址（SA）和偏移地址（EA）</p>
+<h5 id="立即数（idata）：">立即数（idata）：</h5>
+<ul>
+<li>
+<p>对于直接包含着机器指令中的数据（执行前在CPU的指令缓冲器中），在汇编语言中称为立即数（idata），在汇编指令中直接给出</p>
+</li>
+<li>
+<p>如mov ax,1</p>
+<p>对应机器码：B80100</p>
+<p>执行结构：（ax）=1</p>
+</li>
+</ul>
+<h1>寻址方式小结</h1>
+<table>
+<thead>
+<tr>
+<th>寻址方式</th>
+<th>含义</th>
+<th>名称</th>
+<th>常用格式举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[idata]</td>
+<td>EA=idata;SA=(ds)</td>
+<td>直接寻址</td>
+<td>[idata]</td>
+</tr>
+<tr>
+<td>[bx]<br />[si]<br />[di]<br />[bp]</td>
+<td>EA=(bx);SA=(ds)<br />EA=(si);SA=(ds)<br />EA=(di);SA=(ds)<br />EA=(bp);SA=(ss)</td>
+<td>寄存器间接寻址</td>
+<td>[bx]</td>
+</tr>
+<tr>
+<td>[bx+idata]<br />[si+idata]<br />[di+idata]<br />[bp+idata]</td>
+<td>EA=(bx)+idata;SA=(ds)<br />EA=(si)+idata;SA=(ds)<br />EA=(di)+idata;SA=(ds)<br />EA=(bp)+idata;SA=(ss)</td>
+<td>寄存器相对寻址</td>
+<td>用于结构体：[bx].idata<br />用于数组：idata[si],idata[di]<br />用于二维数组：[bx] [idata]</td>
+</tr>
+<tr>
+<td>[bx+si]<br />[bx+di]<br />[bp+si]<br />[bp+di]</td>
+<td>EA=(bx)+(si);SA=(ds)<br />EA=(bx)+(di);SA=(ds)<br />EA=(bp)+(si);SA=(ss)<br />EA=(bp)+(di);SA=(ss)</td>
+<td>基址变址寻址</td>
+<td>用于二维数组：[bx] [si]</td>
+</tr>
+<tr>
+<td>[bx+si+idata]<br />[bx+di+idata]<br />[bp+si+idata]<br />[bp+di+idata]</td>
+<td>EA=(bx)+(si)+idata;SA=(ds)<br />EA=(bx)+(di)+idata;SA=(ds)<br />EA=(bp)+(si)+idata;SA=(ss)<br />EA=(bp)+(di)+idata;SA=(ss)</td>
+<td>相对基址变址寻址</td>
+<td>用于表格（结构）中的数组项：[bx].idata[si]<br />用于二维数组：idata[bx] [si]</td>
+</tr>
+</tbody>
+</table>
+<h1>指令要处理的数据有多长</h1>
+<p>8086CPU的指令，可以处理两种尺寸的数据：byte和word。所以在机器指令中要指明，指令进行的是字操作还是字节操作</p>
+<ul>
+<li>
+<p>通过寄存器名指明要处理的数据大小</p>
+<p>mov ax,1</p>
+<p>mov al,1</p>
+</li>
+<li>
+<p>在没有寄存器名存在的情况下，用操作符X ptr指明内存单元的长度，X在汇编指令中可以为word或byte</p>
+<p>mov word ptr ds:[0],1</p>
+<p>add word ptr [bx],2</p>
+</li>
+<li>
+<p>有些指令默认了访问的是字单元还是字节单元</p>
+<p>push指令只进行字操作</p>
+</li>
+</ul>
+<h1>div指令</h1>
+<ul>
+<li>
+<p>div是除法指令（division），使用div作除法时：</p>
+<ul>
+<li>
+<p>除数：8位或16位，在寄存器或内存单元中</p>
+</li>
+<li>
+<p>被除数：（默认）放在AX或DX和AX中</p>
+</li>
+<li>
+<table>
+<thead>
+<tr>
+<th>除数</th>
+<th>被除数</th>
+<th>商</th>
+<th>余数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8位</td>
+<td>16位（AX）</td>
+<td>al</td>
+<td>ah</td>
+</tr>
+<tr>
+<td>16位</td>
+<td>32位（DX+AX）</td>
+<td>ax</td>
+<td>dx</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p>格式：</p>
+<ul>
+<li>div reg</li>
+<li>div 内存单元</li>
+</ul>
+</li>
+<li>
+<p>示例：</p>
+<ul>
+<li>
+<p>div byte ptr ds:[0]</p>
+<ul>
+<li>
+<p>(al)=(ax)/((ds)*16+0)的商</p>
+</li>
+<li>
+<p>(ah)=(ax)/((ds)*16+0)的余数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>div word ptr es:[0]</p>
+<ul>
+<li>(ax)=[(dx) * 10000H+(ax)] / ((ds) * 16+0)的商</li>
+<li>(dx)=[(dx) * 10000H+(ax)] / ((ds) * 16+0)的余数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>实例：</p>
+<p>用除法指令计算100001/100</p>
+<p>（被除数100001大于65535，不能用ax寄存器存放，所以要用dx和ax两个寄存器联合存放100001，也就是说要进行16位的除法）</p>
+</li>
+</ul>
+<h1>实验</h1>
+<h5 id="——寻址方式在结构化数据访问中的应用">——寻址方式在结构化数据访问中的应用</h5>
+<h6 id="题目：">题目：</h6>
+<p>某公司1975-1995年的基本情况如下：</p>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>收入（千美元）</th>
+<th>雇员（人）</th>
+<th>人均收入（千美元）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1975</td>
+<td>16</td>
+<td>3</td>
+<td>？</td>
+</tr>
+<tr>
+<td>1976</td>
+<td>22</td>
+<td>7</td>
+<td>？</td>
+</tr>
+<tr>
+<td>1977</td>
+<td>382</td>
+<td>9</td>
+<td>？</td>
+</tr>
+<tr>
+<td>1978</td>
+<td>1356</td>
+<td>13</td>
+<td>？</td>
+</tr>
+<tr>
+<td>1979</td>
+<td>2390</td>
+<td>28</td>
+<td>？</td>
+</tr>
+<tr>
+<td>1980</td>
+<td>8000</td>
+<td>38</td>
+<td>？</td>
+</tr>
+<tr>
+<td>M</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1995</td>
+<td>5937000</td>
+<td>17800</td>
+<td>？</td>
+</tr>
+</tbody>
+</table>
+<p>定义好的数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg<br>data segment<br>	db &#x27;1975&#x27;,&#x27;1976&#x27;,&#x27;1977&#x27;,&#x27;1978&#x27;,&#x27;1979&#x27;,&#x27;1980&#x27;,&#x27;1981&#x27;,&#x27;1982&#x27;,&#x27;1983&#x27;<br>	db &#x27;1984&#x27;,&#x27;1985&#x27;,&#x27;1986&#x27;,&#x27;1987&#x27;,&#x27;1988&#x27;,&#x27;1989&#x27;,&#x27;1990&#x27;,&#x27;1991&#x27;,&#x27;1992&#x27;<br>	db &#x27;1993&#x27;,&#x27;1994&#x27;,&#x27;1995&#x27;<br>	;以上表示21年的21个字符串<br>	<br>	dd 16,22,382,1356,2390,8000,16000,24486,50065,97479,140417,197514<br>	dd 345980,590827,803530,1183000,2759000,3753000,4649000,5937000<br>	;以上是表示21年公司总收入的21个dword型数据(dd:四个字节)<br>	<br>	dw 3,7,9,13,130,220,476,778,1001,1442,2258,2793,4037,5635,8226<br>	dw 11542,14430,15257,17800<br>	;以上是表示21年公司雇员人数的21个word型数据<br>data ends<br><br>table segment<br>	db 21 dup (&#x27;year summ ne ?? &#x27;)<br>table ends<br></code></pre></td></tr></table></figure>
+<p>编程，将data段中的数据按如下格式写入到table段中，并计算21年中的人均收入（取整），结果也按照下面的格式保存在table段中</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>年份（4字节）</th>
+<th>空格</th>
+<th>收入（4字节）</th>
+<th>空格</th>
+<th>雇员数（2字节）</th>
+<th>空格</th>
+<th>人均收入（2字节）</th>
+<th>空格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行内地址:arrow_right:<br />1年占1行，每行的起始地址<br />⬇</td>
+<td>0,1,2,3</td>
+<td>4</td>
+<td>5,6,7,8</td>
+<td>9</td>
+<td>A,B</td>
+<td>C</td>
+<td>D,E</td>
+<td>F</td>
+</tr>
+<tr>
+<td>table：0</td>
+<td>‘1975’</td>
+<td></td>
+<td>16</td>
+<td></td>
+<td>3</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>table：10H</td>
+<td>‘1976’</td>
+<td></td>
+<td>22</td>
+<td></td>
+<td>7</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>table：20H</td>
+<td>‘1977’</td>
+<td></td>
+<td>382</td>
+<td></td>
+<td>9</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>table：30H</td>
+<td>‘1978’</td>
+<td></td>
+<td>1356</td>
+<td></td>
+<td>13</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>table：40H</td>
+<td>‘1979’</td>
+<td></td>
+<td>2390</td>
+<td></td>
+<td>28</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>table：50H</td>
+<td>‘1980’</td>
+<td></td>
+<td>8000</td>
+<td></td>
+<td>38</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>M</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>table：140H</td>
+<td>‘1995’</td>
+<td></td>
+<td>5937000</td>
+<td></td>
+<td>17800</td>
+<td></td>
+<td>?</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>提示：可将data段中的数据看成是多个数组，而将table中的数据看成是一个结构型数据的数组，每个结构型数据中包含多个数据项。可用bx定位每个结构型数据，用idata定位数据项，用si定位数据项中的每个元素，对于table中的数据的访问可采用[bx].idata和[bx].idata[si]的寻址方式</p>
+<h6 id="分析">分析</h6>
+<ul>
+<li>
+<p>源数据在哪里（注意从0开始）（放在ds中）</p>
+<ul>
+<li>年份：0-53H    [21*4(4个字节)=84=54H]</li>
+<li>收入：54H-0A7H   （不能以字母开头，故写为0A7）</li>
+<li>雇员：0A8H-0D1</li>
+</ul>
+</li>
+<li>
+<p>目标存放位用什么表示 （放在es中）</p>
+<ul>
+<li>年份：</li>
+<li>收入：</li>
+<li>雇员：</li>
+<li>平均收入：</li>
+</ul>
+</li>
+</ul>
+<h6 id="初始化阶段">初始化阶段</h6>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax,data<br>mov ds,ax<br>mov ax,table  ;这里因为data已被占用<br>mov es,ax<br><br>mov bx,0<br>mov si,0<br>mov di,0<br>mov cx,21   ;21次循环<br></code></pre></td></tr></table></figure>
+<h6 id="每次循环要执行的任务：">每次循环要执行的任务：</h6>
+<ul>
+<li>
+<p>存放年份(4个字节)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov al,[bx]   ;例如1<br>mov es:[di],al<br>mov al,[bx+1]   ;9<br>mov e:[di+1],al<br>mov al,[bx+2]    ;8<br>mov es:[di+2],al<br>mov al,[bx+3]   ;9<br>mov es:[di+3],al<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>存放公司总收入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax,54h[bx]   ;第一个‘年收入’的段地址为54H<br>mov dx,56h[bx]<br>mov es:5h[di],ax<br>mov es:7h[di],dx<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>存放公司人数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax,0A8h[si]   ;第一个‘人数’的段基址为0A8H<br>mov es:0Ah[di],ax<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>计算人均收入并存放</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax,54h[bx]<br>mov dx,56h[bx]   ;这两句初始化被除数<br><br>div word ptr ds:0A8h[si]  ;除以人数（16位除数，商默认放在ax中）<br>mov es:0dh[di],ax   ;将商放入指定位置<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>为下一次循环时存放数据做准备</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">add bx,4  ;bx确定年份和收入<br>add si,2  ;si确定人数<br>add di,16 ;di确定每行的列数<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="源代码">源代码</h6>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:data,es:table<br><br>data segement<br>	db &#x27;1975&#x27;,&#x27;1976&#x27;,&#x27;1977&#x27;,&#x27;1978&#x27;,&#x27;1979&#x27;,&#x27;1980&#x27;,&#x27;1981&#x27;,&#x27;1982&#x27;,&#x27;1983&#x27;<br>	db &#x27;1984&#x27;,&#x27;1985&#x27;,&#x27;1986&#x27;,&#x27;1987&#x27;,&#x27;1988&#x27;,&#x27;1989&#x27;,&#x27;1990&#x27;,&#x27;1991&#x27;,&#x27;1992&#x27;<br>	db &#x27;1993&#x27;,&#x27;1994&#x27;,&#x27;1995&#x27;<br>	;以上表示21年的21个字符串<br>	<br>	dd 16,22,382,1356,2390,8000,16000,24486,50065,97479,140417,197514<br>	dd 345980,590827,803530,1183000,2759000,3753000,4649000,5937000<br>	;以上是表示21年公司总收入的21个dword型数据(dd:四个字节)<br>	<br>	dw 3,7,9,13,130,220,476,778,1001,1442,2258,2793,4037,5635,8226<br>	dw 11542,14430,15257,17800<br>	;以上是表示21年公司雇员人数的21个word型数据<br>data ends<br><br>table segment<br>	db 21 dup (&#x27;year summ ne ?? &#x27;)<br>table ends<br><br>start:<br>	mov ax,data<br>	mov ds,ax<br>	mov ax,table  ;这里因为data已被占用<br>	mov es,ax<br><br>	mov bx,0<br>	mov si,0<br>	mov di,0<br>	mov cx,21   ;21次循环<br>	<br>	<br>	s:   ;进入循环<br>        mov al,[bx]   ;例如1<br>        mov es:[di],al<br>        mov al,[bx+1]   ;9<br>        mov e:[di+1],al<br>        mov al,[bx+2]    ;8<br>        mov es:[di+2],al<br>        mov al,[bx+3]   ;9<br>        mov es:[di+3],al<br>        ;以上8句存放年份<br>        <br>        mov ax,54h[bx]   ;第一个‘年收入’的段地址为54H<br>        mov dx,56h[bx]<br>        mov es:5h[di],ax<br>        mov es:7h[di],dx<br>        ;以上8句存放公司总收入<br>        <br>        mov ax,0A8h[si]   ;第一个‘人数’的段基址为0A8H<br>        mov es:0Ah[di],ax<br>        <br>        mov ax,54h[bx]<br>        mov dx,56h[bx]   ;这两句初始化被除数<br><br>        div word ptr ds:0A8h[si]  ;除以人数（16位除数，商默认放在ax中）<br>        mov es:0dh[di],ax   ;将商放入指定位置<br>        <br>        add bx,4  ;bx确定年份和收入<br>        add si,2  ;si确定人数<br>        add di,16 ;di确定每行的列数<br>        ;以上3句为下一次循环时存放数据作准备<br>        ;3个寄存器递增的速度决定了所要存取的数据的位置的偏移地址<br>        <br>    loop s  ;跳到标号s处<br>    <br>mov ax,4c00h<br>int 21h<br><br>codesg ends<br>end start<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/9%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86/" title="9-转移指令的原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">9-转移指令的原理</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/4%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F/" title="4-第一个程序">
+                        <span class="hidden-mobile">4-第一个程序</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

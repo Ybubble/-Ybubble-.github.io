@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="8.1.3 分段   虚拟内存的含义  分段允许把内存视为由多个地址空间或段组成，段的大小不等，并且是动态的。内存访问以段号和偏移量的形式组成地址    与非段式地址空间相比有许多优点∶  简化了对不断增长的数据结构的处理 允许程序独立地改变或重新编译，而不要求整个程序集重新链接和重新加载 有助于进程间的共享  可以在段中放置一个实用工具程序或一个有用的数据表，供其他进程访问   有助于保护  一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八章-虚拟内存（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="8.1.3 分段   虚拟内存的含义  分段允许把内存视为由多个地址空间或段组成，段的大小不等，并且是动态的。内存访问以段号和偏移量的形式组成地址    与非段式地址空间相比有许多优点∶  简化了对不断增长的数据结构的处理 允许程序独立地改变或重新编译，而不要求整个程序集重新链接和重新加载 有助于进程间的共享  可以在段中放置一个实用工具程序或一个有用的数据表，供其他进程访问   有助于保护  一">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.15.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.620Z">
+<meta property="article:modified_time" content="2024-02-20T13:23:00.778Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.11.jpg">
+  
+  
+  
+  <title>第八章-虚拟内存（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第八章-虚拟内存（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第八章-虚拟内存（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="8-1-3-分段">8.1.3 分段</h3>
+<ul>
+<li>
+<p>虚拟内存的含义</p>
+<ul>
+<li>分段允许把内存视为由<u>多个地址空间</u>或<u>段</u>组成，段的<strong>大小不等</strong>，并且是<strong>动态</strong>的。内存访问以<strong>段号和偏移量</strong>的形式组成地址</li>
+</ul>
+</li>
+<li>
+<p>与非段式地址空间相比有许多优点∶</p>
+<ul>
+<li>简化了对<u>不断增长的</u><strong>数据结构</strong>的处理</li>
+<li>允许程序<strong>独立</strong>地<u>改变或重新编译</u>，而不要求整个程序集重新链接和重新加载</li>
+<li>有助于<strong>进程间的共享</strong>
+<ul>
+<li>可以在段中放置一个实用工具程序或一个有用的数据表，供其他进程访问</li>
+</ul>
+</li>
+<li>有助于保护
+<ul>
+<li>一个段可被构造成包含一个<strong>明确定义的程序或数据集</strong>==&gt;程序员或系统管理员可以更方便地<strong>指定访问权限</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>组织</p>
+<ul>
+<li>
+<p>每个进程都有自己的段表，当它的<strong>所有段</strong>都装入内存时，会为该进程创建一个<strong>段表</strong>并<strong>装入内存</strong></p>
+</li>
+<li>
+<p>每个<strong>段表项</strong>包含相应段在内存中的<strong>起始地址</strong>和<strong>段的长度</strong></p>
+</li>
+<li>
+<p>每个段表项中需要有一位表明相应的段<strong>是否在内存中</strong></p>
+</li>
+<li>
+<p>修改位：相应的段从<u>上次被装入内存</u>到目前为止其内容是否已改变</p>
+</li>
+<li>
+<p>地址转换</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.11.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-1-4-段页式">8.1.4 段页式</h3>
+<ul>
+<li>
+<p>比较：</p>
+<ul>
+<li>分页
+<ul>
+<li>对程序员透明</li>
+<li>消除了外部碎片，能更有效地使用内存</li>
+<li>由于移入或移出内存的块是固定的、大小相等的，因而有可能开发出更精致的存储管理算法</li>
+</ul>
+</li>
+<li>分段</li>
+<li>对程序员可见</li>
+<li>具有处理不断增长的数据结构的能力，及支持共享和保护的能力</li>
+</ul>
+</li>
+<li>
+<p>结合==&gt;段页式</p>
+<ul>
+<li>用户的<strong>地址空间</strong>被划分为许多<strong>段</strong>，每段依次划分为许多<strong>固定大小的页</strong>， <strong>页的长度</strong>等于<strong>内存中的页框大小</strong></li>
+<li>若某段的长度<strong>小于</strong>页，则该段只占据一页</li>
+<li>从程序员的角度看， <strong>逻辑地址</strong>仍然由<strong>段号</strong>和<strong>段偏移量</strong>组成</li>
+<li>从系统的角度看，<strong>段偏移量</strong>可视为指定段中的一个<strong>页号</strong>和<strong>页偏移量</strong></li>
+<li>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.12.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-1-5-保护和共享">8.1.5 保护和共享</h3>
+<ul>
+<li>
+<p>分段有助于实现<strong>保护与共享</strong>机制</p>
+</li>
+<li>
+<p>每个段表项包括一个<strong>长度</strong>和一个<strong>基地址</strong>==&gt; 程序<u>不会</u>不经意地访问超出该段的内存单元</p>
+</li>
+<li>
+<p>共享==&gt; 一个段可能会在多个进程的段表中引用</p>
+<p>(在分页系统中也可得到同样的机制。但是，这种情况下由于<strong>程序的页结构和数据</strong>对程序员<strong>不可见</strong>，因此更难说明共享和保护需求)</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.13.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h1>8.2 操作系统软件</h1>
+<ul>
+<li>操作系统的内存管理设计取决于三个基本的选择
+<ul>
+<li>是否使用虚存技术</li>
+<li>是使用分页还是使用分段，或同时使用二者</li>
+<li>为各种存储管理特征采用的算法</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="8-2-1-读取策略">8.2.1 读取策略</h3>
+<ul>
+<li>
+<p>常用的两种方法</p>
+<ul>
+<li>
+<p>请求分页（demand paging）</p>
+<ul>
+<li>
+<p>只有当访问到某页中的一个单元时才将该页取入内存</p>
+</li>
+<li>
+<p>当一个进程首次启动时，会在一段时间出现大量的缺页中断</p>
+</li>
+<li>
+<p>取入越来越多的页后，局部性原理表明大多数将来访问的页都是最近读取的页</p>
+<p>==&gt; 在一段时间后错误会逐渐减少，缺页中断的数量会降到很低</p>
+</li>
+</ul>
+</li>
+<li>
+<p>预先分页 （prepaging)</p>
+<ul>
+<li>读取的页并不是缺页中断请求的页</li>
+<li>利用了大多数<strong>辅存设备</strong>（如磁盘） 的特性</li>
+<li>若一个进程的页<strong>连续存储</strong>在<strong>辅存</strong>中，则一次读取许多连续的页要比隔一段时间读取一页有效</li>
+<li>若大多数额外读取的页<strong>未引用到</strong>，则这个策略是低效的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>进程<strong>首次启动</strong>时，可采用预先分页策略，此时程序员须以某种方式指定需要的页;发生缺页中断时也可采用预先分页策略，由于<u>这个过程对程序员不可见</u>，因此更为可取。但是，预先分页的实用工具程序还未建立</p>
+</li>
+<li>
+<p>不要把预先分页和交换混淆</p>
+<ul>
+<li>某个进程被<strong>换出内存并置于挂起态</strong>时，它的<strong>所有驻留页</strong>都会被换出。当该进程被唤醒时，<strong>所有以前在内存中的页</strong>都会被<strong>重新读回内存</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="8-2-2-放置策略">8.2.2 放置策略</h3>
+<ul>
+<li>决定一个进程块驻留在<strong>实存</strong>中的什么位置</li>
+<li>在纯分段系统中，放置策略不重要题，最佳适配、首次适配等都可供选择</li>
+<li>对于<strong>纯分页系统</strong>或<strong>段页式系统</strong>， 如何放置通常无关紧要
+<ul>
+<li><strong>地址转换硬件</strong>和<strong>内存访问硬件</strong>能以相同的效率为任何页框组合执行相应的功能</li>
+</ul>
+</li>
+<li>Important in a segmentation system and <strong>nonuniform memory access(NUMA) system</strong>, 非一致存储访问多处理器
+<ul>
+<li>在非一致存储访问多处理器中，机器中分布的共享内存可被机器的任何处理器访问，但访问某 一特定物理单元所需的时间会随处理器和内存模块之间距离的不同而变化</li>
+<li>其性能很大程度上取决于数据驻留的位置与使用数据的处理器间的距离</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-2-3-置换策略">8.2.3 置换策略</h3>
+<ul>
+<li>
+<p>处理在必须读取一个新页时，应该<strong>置换内存中的哪一页</strong></p>
+</li>
+<li>
+<p>页框锁定</p>
+<ul>
+<li>内存中的某些页框可能是被锁定的。一个页框被锁定时， 当前保存在该页框中的页就<strong>不能被置换</strong></li>
+<li><strong>大部分操作系统内核</strong>和<strong>重要的控制结构</strong>就保存在锁定的页框中</li>
+<li><strong>I/O缓冲区</strong>和其他<strong>对时间要求严格的区域</strong>也可能锁定在内存的页框中</li>
+<li>锁定是通过<strong>给每个页框关联一个&quot;锁定&quot;位</strong>实现的，这一位可以包含在<strong>页框表</strong>和<strong>当前的页表</strong>中</li>
+</ul>
+</li>
+<li>
+<p>基本算法</p>
+<ul>
+<li>
+<p>最佳（Optimal，<strong>OPT</strong>）</p>
+<ul>
+<li>置换<strong>下次访问</strong>距当前时间最长的那，基于未来</li>
+<li>页中断最少</li>
+<li>不能实现，可作为衡量其他算法性能一种标准</li>
+</ul>
+</li>
+<li>
+<p>最近最少使用（Least Recently Used，<strong>LRU</strong>）</p>
+<ul>
+<li>
+<p>置换内存中<strong>最长时间未被引用</strong>的页</p>
+</li>
+<li>
+<p>根据局部性原理，是最近最不可能访问到的页</p>
+</li>
+<li>
+<p>性能接近于OPT策略，较难实现</p>
+<ul>
+<li>
+<p>1、给每页添加一个最后一次访问的<strong>时间戳</strong>，并在<strong>每次访问内存</strong>时<strong>更新</strong>这个时间戳</p>
+</li>
+<li>
+<p>2、维护一个关于访问页的栈</p>
+<p>（两种方法开销都很大）</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>先进先出（First In First Out，<strong>FIFO</strong>）</p>
+<ul>
+<li>把分配给进程的页框视为一个<strong>循环缓冲区</strong>，并按循环方式移动页</li>
+<li>需要的只是一个指针，该指针在进程的页框中循环</li>
+<li>实现起来最简单</li>
+<li>隐含逻辑：置换驻留在内存中<strong>时间最长</strong>的页</li>
+<li>一部分程序或数据在整个程序的生命周期中使用频率都很高==&gt;这些页需要被反复地换入和换出</li>
+</ul>
+</li>
+<li>
+<p>时钟（<strong>Clock</strong>）</p>
+<ul>
+<li>使用位
+<ul>
+<li>某页<strong>首次装入内存</strong>时，将该页框的使用位置为<strong>1</strong></li>
+<li><strong>被访问</strong>时（在访问产生缺页中断后），其使用位也会置为<strong>1</strong></li>
+</ul>
+</li>
+<li>指针
+<ul>
+<li>用于置换的候选页框集（当前进程：局部范围；整个内存：全局范围）被视为一个循环缓冲区，并有一个指针与之相关联</li>
+<li>当一页<strong>被置换</strong>时，该指针被置为指向缓冲区中的<strong>下一个</strong>页框</li>
+<li>需要置换一页时，操作系统扫描缓冲区，查找使用位置为0的一个页框</li>
+<li>每当遇到一个使用位为1的页框，操作系统就将该位重置为0</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%982/os8.15.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>页缓冲</p>
+<ul>
+<li>
+<p>能提高分页的性能并允许使用较简单的页面置换策略的一种方法是页缓冲</p>
+</li>
+<li>
+<p><strong>VAX VMS</strong>方法（页面置换算法是简单的FIFO），不丢弃置换出的页</p>
+<ul>
+<li>
+<p>若未被修改，则分配到<strong>空闲页链表</strong>中</p>
+<ul>
+<li>空闲页链表内包含有页中可以读取的一系列页框</li>
+<li>当未经修改的一页被置换时，它<strong>仍然在内存</strong>中，且其<strong>页框</strong>被添加到空闲页链表的尾部</li>
+</ul>
+</li>
+<li>
+<p>若已被修改，则分配到<strong>修改页链表</strong>中</p>
+</li>
+<li>
+<p>该页在内存中并<strong>不会物理性移动</strong>，移动的只是该页所对应的<strong>页表项</strong>，移动后的页表项放置在空闲页链表中或修改页链表中</p>
+</li>
+<li>
+<p>重要特点：<strong>被置换的页仍然留在内存中</strong></p>
+<p>==&gt;若进程访问该页，则可<strong>迅速返回该进程的驻留集</strong>，且<strong>代价很小</strong></p>
+<p>(空闲页链表和修改页链表充当着<strong>页的高速缓存</strong>的角色)</p>
+</li>
+<li>
+<p>修改页链表还有另一种很有用的功能：已修改的页<strong>按簇写回</strong>，而不是一次只写一页，因此大大<strong>减少了I/O操作的数量</strong>，进而<strong>减少了磁盘访问时间</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Mach 操作系统现了一种更简单的页缓冲，不区分修改页和未修改页</p>
+</li>
+</ul>
+</li>
+<li>
+<p>置换策略和高速缓存大小</p>
+<ul>
+<li>随着内存越来越大，应用的局部性特性逐渐降低==&gt;高速缓存的大小也相应增加</li>
+<li>对于较大的高速缓存，虚存页的置换对性能可能会有所影响。若选择置换的页框在高速缓存中，则该高速缓存块及保存在块中的页都会失效</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%983/" title="第八章-虚拟内存（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第八章-虚拟内存（三）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%981/" title="第八章-虚拟内存（一）">
+                        <span class="hidden-mobile">第八章-虚拟内存（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

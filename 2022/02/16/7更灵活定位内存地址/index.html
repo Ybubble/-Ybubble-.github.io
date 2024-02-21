@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、and指令 通过该指令可将操作对象的相应位设为0，其他位不变 2、or指令 相应位设为1，其他位不变 3、以字符形式给出的数据 1db &#x27;unIX&#x27;   ;相当于db 75H,6EH,49H,58H(分别对应ASCⅡ码) 4、大小写转换的问题 小写字母的ASCⅡ码值比大写字母的ASCⅡ值大20H 就ASCⅡ码的二进制形式来看，除第五位（位数从0开始计算）外，大写字母和小写字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7-更灵活定位内存地址">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/7%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%AE%9A%E4%BD%8D%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1、and指令 通过该指令可将操作对象的相应位设为0，其他位不变 2、or指令 相应位设为1，其他位不变 3、以字符形式给出的数据 1db &#x27;unIX&#x27;   ;相当于db 75H,6EH,49H,58H(分别对应ASCⅡ码) 4、大小写转换的问题 小写字母的ASCⅡ码值比大写字母的ASCⅡ值大20H 就ASCⅡ码的二进制形式来看，除第五位（位数从0开始计算）外，大写字母和小写字">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:38:43.565Z">
+<meta property="article:modified_time" content="2024-02-19T16:29:06.967Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>7-更灵活定位内存地址 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="7-更灵活定位内存地址"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:38" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">7-更灵活定位内存地址</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1、and指令</h1>
+<p>通过该指令可将操作对象的相应位设为0，其他位不变</p>
+<h1>2、or指令</h1>
+<p>相应位设为1，其他位不变</p>
+<h1>3、以字符形式给出的数据</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">db &#x27;unIX&#x27;   ;相当于db 75H,6EH,49H,58H(分别对应ASCⅡ码)<br></code></pre></td></tr></table></figure>
+<h1>4、大小写转换的问题</h1>
+<p>小写字母的ASCⅡ码值比大写字母的ASCⅡ值大20H</p>
+<p>就ASCⅡ码的二进制形式来看，除第五位（位数从0开始计算）外，大写字母和小写字母的其他各位都一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg<br>datasg segment<br>db &#x27;BaSiC&#x27;<br>db &#x27;iNfOrMaTiOn&#x27;<br>datasg ends<br><br>codesg segment<br>start: mov ax,datasg<br>	   mov ds, ax   ;设置ds指向datasg段<br>	   <br>	   mov bx, 0     ;设置[bx]=0,ds:bx指向第一个字母<br>	   <br>	   mov cx, 5     ;设置循环次数5<br>	  s: mov al,[bx]    ;将ASCⅡ码从ds：bx所指向的单元中取出<br>	    and al,11011111b    ;变为大写字母<br>	    mov [bx],al    ;将转换后的ASCⅡ码协会原单元<br>	    <br>	    inc [bx],al    ;(bx)+1,ds:bx指向下一个字母<br>	    loop s<br>	    <br>	    mov bx,5<br>	    <br>	    mov cx, 11<br>	   s0: mov al, [bx]<br>	    or al, 001100000b<br>	    mov [bx],al<br>	    inc bx<br>	    loop s0<br>	    <br>	    mov ax, 4c00h<br>	    inc 21h<br>	    <br>codesg ends<br>end start<br>	    <br></code></pre></td></tr></table></figure>
+<h1>5、</h1>
+<p>[bx+idata]：表示一个内存单元，它的偏移地址为（bx）+idata</p>
+<p>mov ax,[bx+200]=mov ax,[200+bx]</p>
+<p>​							  =mov ax,200[bx]</p>
+<p>​						      =mov ax,[bx].200</p>
+<h1>6、用[bx+idata]的方式进行数组的处理</h1>
+<ul>
+<li>有了这种表示内存单元的方式，就可以用更高级的结构来看待所要处理的数据</li>
+<li>上段程序改进</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax, datasg<br>mov ds, ax<br>mov bx,0<br><br>mov cx, 5<br> s:mov al, [bx]<br>   and al, 11011111b<br>   mov [bx],al<br>   mov al,[5+bx]<br>   or al,00100000b<br>   mov [5+bx],al<br>   inc bx<br>   loop s<br> <br></code></pre></td></tr></table></figure>
+<ul>
+<li>C的形式</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> a[<span class="hljs-number">5</span>]=<span class="hljs-string">&quot;BaSiC&quot;</span><br><span class="hljs-type">char</span> b[<span class="hljs-number">5</span>]=<span class="hljs-string">&quot;MinIX&quot;</span><br>main()<br>&#123;<br>    <span class="hljs-type">int</span> i;<br>    i=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">do</span>&#123;<br>        a[i]=a[i]|<span class="hljs-number">0xDF</span>;<br>        b[i]=b[i]|<span class="hljs-number">0x20</span>;<br>        i++;<br>    &#125;<span class="hljs-keyword">while</span>(i&lt;<span class="hljs-number">5</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>对比</p>
+<p>C语言定位方式：a[i]、b[i]</p>
+<p>汇编语言定位方式：0[bx]、5[bx]</p>
+</li>
+<li>
+<p>[bx+idata]的方式为高级语言实现数组提供了便利机制</p>
+</li>
+</ul>
+<h1>7、SI和DI</h1>
+<ul>
+<li>
+<p>SI和DI是8086CPU中和bx功能相近的两个寄存器，但是SI和DI不能分成两个8位寄存器来使用</p>
+</li>
+<li>
+<p>[bx],[SI],[DI]都默认段地址在ds中</p>
+</li>
+</ul>
+<h5 id="例">例</h5>
+<p>用寄存器SI和DI实现将字符串‘welcome to masm！’复制到它后面的数据区中</p>
+<ul>
+<li>用ds：si指向要复制的原始字符串</li>
+<li>用ds：地支相复制的目的空间</li>
+<li>用循环复制</li>
+<li>注意：在程序中用16位寄存器进行内存单元之间的数据传送，一次复制2个字节，一共循环8次</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:dodesg,ds:datasg<br>datasg segment<br>  db &#x27;welcome to masm!&#x27;  ;长度为16<br>  db &#x27;................&#x27;<br>datasg ends<br><br>codesg segment<br>start:mov ax,datasg<br>      mov ds,ax<br>      mov si,0<br>      mov di,16<br>      mov cx,8<br>      <br>    s:mov ax,[si]<br>      mov [di],ax<br>      add si,2<br>      add di,2<br>      loop s<br>      <br>      mov ax,4c00h<br>      int 21h<br></code></pre></td></tr></table></figure>
+<h1>8、[bx+si]和[bx+di]</h1>
+<ul>
+<li>
+<p>[bx+si]表示一个内存单元，它的偏移地址为(bx)+(si)</p>
+</li>
+<li>
+<p>mov ax,[bx+si]的含义：将一个内存单元的内容送入ax，这个内存单元的长度为2字节（字单元），存放一个字，段地址在ds中</p>
+</li>
+</ul>
+<h1>9、实例</h1>
+<h5 id="将datasg段中的每个单词的头一个字母改写为大写字母">将datasg段中的每个单词的头一个字母改写为大写字母</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg<br>datasg segment<br>  db &#x27;1. file         &#x27;<br>  db &#x27;2. edit         &#x27;<br>  db &#x27;3. search       &#x27;<br>  db &#x27;4. view         &#x27;<br>  db &#x27;5. options      &#x27;<br>  db &#x27;6. help         &#x27;<br>datasg ends<br><br>codesg segment<br> start:mov ax,datasg<br>       mov ds,ax<br>       mov bx,0<br>       <br>       mov cx,6<br>     s:mov al,[bx+3]<br>       and al,11011111b<br>       mov [bx+3],al<br>       add bx,16<br>       loop s<br>       <br>       mov ax,4c00h<br>       int 21h<br> codesg ends<br> end start<br></code></pre></td></tr></table></figure>
+<ul>
+<li>datasg中的数据的存储结构</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>1</td>
+<td>.</td>
+<td></td>
+<td>f</td>
+<td>i</td>
+<td>l</td>
+<td>e</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>2</td>
+<td>.</td>
+<td></td>
+<td>e</td>
+<td>d</td>
+<td>i</td>
+<td>t</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>······</p>
+<h5 id="将dtasg段中每个单词改为大写字母">将dtasg段中每个单词改为大写字母</h5>
+<p>用bx作为变量，定位每行的起始地址，用si定位要修改的列，用[bx+si]的方式来对目标单元进行寻址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg<br>datasg segment<br>  db &#x27;ibm             &#x27;<br>  db &#x27;dec             &#x27;<br>  db &#x27;dos             &#x27;<br>  db &#x27;vax             &#x27;<br>datasg ends<br><br>codesg segment<br> start:mov ax,datasg<br> 	   mov ds,ax<br> 	   mov bx,0  ;用bx来定位行<br> 	   <br> 	   mov cx,4<br> 	 s0:mov dx,cx  ;用dx寄存器来临时保存外层cx的值 <br> 	 	mov si,0  ;用si来定位列<br> 	    mov cx,3<br> 	  s:mov al,[bx+si]<br> 	    and al,11011111b<br> 	    mov [bx+si],al<br> 	    <br> 	    inc si<br> 	    <br> 	    loop s<br> 	    <br> 	    add bx,16<br> 	    mov cx,dx   ;在进行外层循环时恢复cx的值<br> 	    loop s0<br> <br>        mov ax,4c00h<br>       int 21h<br> codesg ends<br> end start<br></code></pre></td></tr></table></figure>
+<p>当程序比较复杂，需要暂存的数据很多，寄存器不够用时：</p>
+<p>可以考虑将需要暂存的数据放到内存单元中，需要使用的时候再从内存单元中恢复</p>
+<p>修改后的程序如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg<br>datasg segment<br>  db &#x27;ibm             &#x27;<br>  db &#x27;dec             &#x27;<br>  db &#x27;dos             &#x27;<br>  db &#x27;vax             &#x27;<br>  dw 0   ;定义一个字，用来保存cx<br>datasg ends<br><br>codesg segment<br> start:mov ax,datasg<br> 	   mov ds,ax<br> 	   <br> 	   mov bx,0  ;用bx来定位行<br> 	   <br> 	   mov cx,4<br> 	 s0:mov ds:[20H],cx  ;将外层循环的cx值保存在datasg:40H单元中<br> 	 	mov si,0  ;用si来定位列<br> 	    mov cx,3<br> 	  s:mov al,[bx+si]<br> 	    and al,11011111b<br> 	    mov [bx+si],al<br> 	    <br> 	    inc si<br> 	    <br> 	    loop s<br> 	    <br> 	    add bx,16<br> 	    mov cx,dx   ;在进行外层循环时恢复cx的值<br> 	    loop s0<br> <br>        mov ax,4c00h<br>       int 21h<br> codesg ends<br> end start<br></code></pre></td></tr></table></figure>
+<h5 id="用栈改进">用栈改进</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg<br>datasg segment<br>  db &#x27;ibm             &#x27;<br>  db &#x27;dec             &#x27;<br>  db &#x27;dos             &#x27;<br>  db &#x27;vax             &#x27;<br>datasg ends<br><br>stacksg segment   ;定义一个段，用来作栈段，容量为16个字节<br>	dw 0,0,0,0,0,0,0,0<br>stacksg ends<br><br>codesg segment<br>start:mov ax,stacksg<br>	mov ss,ax<br>	mov sp,16<br>	mov ax,datasg<br>	mov ds,ax<br>	<br>	mov bx,0<br>	<br>	mov bx,0<br>	<br>	mov cx,4<br>  s0: push cx    ;将外层循环的cx值压栈<br>    mov si,0<br>    mov cx,3    ;cx设置为内层循环的次数<br>    s:mov al,[bx+si]<br>    and al,11011111b<br>    mov [bx+si],al<br>    inc si<br>    loop s<br>    <br>    add bx,16<br>    pop cx   ;从栈顶弹出原cx的值，恢复cx<br>    loop s0    ;外层循环的loop指令将cx中的计数值-1<br>    <br>    mov ax,4c00h<br>    int 21h<br>codesg ends<br>end start<br></code></pre></td></tr></table></figure>
+<h5 id="将datasg段中每个单词的前4个字母改写为大写字母">将datasg段中每个单词的前4个字母改写为大写字母</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:codesg,ds:datasg,ss:stacksg<br>stacksg segment<br>  dw 0,0,0,0,0,0,0,0<br>stacksg ends<br>datasg segment<br>  db &#x27;1. display      &#x27;<br>  db &#x27;2. brows        &#x27;<br>  db &#x27;3. replace      &#x27;<br>  db &#x27;4. modify       &#x27;<br>datasg ends<br>codesg segment<br>start:mov ax,stacksg<br>	  mov ss,ax<br>	  mov sp,16<br>	  mov ax,datasg<br>	  mov ds,ax<br>	  mov bx,0   ;定义行<br>	  <br>	  mov cx,4<br>	s0:push cx<br>	   mov si,0   ;定义列<br>	   mov cx,4<br>	 s:mov al,[bx+3+si]   ;定位到每个要索引的字母<br>	   and al,11011111b<br>	   mov [bx+3+si],al<br>	   inc si   ;指向下一个字母<br>	   loop s<br>	   <br>	   add bx,16<br>	   pop cx<br>	   loop s0<br>	   <br>	   mov ax,4c00h<br>	   int 21h<br><br>codesg ends<br>end start<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%861/" title="1-基础知识">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">1-基础知识</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/6%E5%8C%85%E5%90%AB%E5%A4%9A%E4%B8%AA%E6%AE%B5%E7%9A%84%E7%A8%8B%E5%BA%8F/" title="6-包含多个段的程序">
+                        <span class="hidden-mobile">6-包含多个段的程序</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

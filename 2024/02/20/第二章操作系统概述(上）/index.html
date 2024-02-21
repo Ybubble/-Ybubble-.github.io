@@ -1,0 +1,995 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.1操作系统的目标和功能  操作系统是控制应用程序执行的程序，是应用程序和计算机硬件间的接口  2.1.1作为用户&#x2F;计算机接口的操作系统   须提供一些系统程序以便于开发应用程序，其中一部分称为实用工具或库，它们实现了创建程序、管理文件和控制I&#x2F;O设备时常用的功能 最重要的系统程序是操作系统 操作系统通常提供的服务：  程序开发 程序运行：一个程序运行时，要把指令和数据加载到内存、初始化I&#x2F;O设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-操作系统概述（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0(%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.1操作系统的目标和功能  操作系统是控制应用程序执行的程序，是应用程序和计算机硬件间的接口  2.1.1作为用户&#x2F;计算机接口的操作系统   须提供一些系统程序以便于开发应用程序，其中一部分称为实用工具或库，它们实现了创建程序、管理文件和控制I&#x2F;O设备时常用的功能 最重要的系统程序是操作系统 操作系统通常提供的服务：  程序开发 程序运行：一个程序运行时，要把指令和数据加载到内存、初始化I&#x2F;O设">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2024-02-20T12:04:46.625Z">
+<meta property="article:modified_time" content="2024-02-20T13:28:01.917Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>第二章-操作系统概述（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-操作系统概述（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-操作系统概述（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>2.1操作系统的目标和功能</h1>
+<ul>
+<li>操作系统是<strong>控制</strong>应用程序执行的<strong>程序</strong>，是应用<strong>程序</strong>和<strong>计算机硬件</strong>间的<strong>接口</strong></li>
+</ul>
+<h5 id="2-1-1作为用户-计算机接口的操作系统">2.1.1作为用户/计算机接口的操作系统</h5>
+
+<ul>
+<li>须提供一些系统程序以便于开发应用程序，其中一部分称为<strong>实用工具</strong>或<strong>库</strong>，它们实现了<strong>创建程序、管理文件</strong>和<strong>控制I/O设备</strong>时常用的功能</li>
+<li>最重要的系统程序是操作系统</li>
+<li>操作系统通常提供的服务：
+<ul>
+<li>程序开发</li>
+<li>程序运行：一个程序运行时，要把<strong>指令</strong>和<strong>数据</strong>加载到<strong>内存</strong>、<strong>初始化</strong>I/O设备和文件、准备其他一些资源，操作系统为用户处理这些<strong>调度</strong>问题</li>
+<li>I/O设备访问</li>
+<li>文件访问控制</li>
+<li>系统访问：提供资源和数据的保护、解决资源竞争时的冲突问题</li>
+<li>错误检测和响应：
+<ul>
+<li>对于每种错误，操作系统必须提供响应以清除错误条件，使其对正在运行的应用的影响最小</li>
+<li>响应：终止引起错误的程序、重试操作、简单地给应用程序报告错误</li>
+<li>记账：收集对各种资源地利用率地统计数据，监控诸如响应时间之类地性能参数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>典型计算机系统中地三种重要接口：
+<ul>
+<li>指令系统体系结构（ISA）
+<ul>
+<li>定义了<strong>机器语言指令系统</strong></li>
+<li><strong>硬件与软件</strong>的分界线</li>
+<li><strong>应用程序</strong>和<strong>实用程序</strong>都可以直接访问ISA，这些程序使用指令系统的一个子集（用户集ISA），<strong>操作系统</strong>使用操作<strong>系统资源</strong>的机器语言指令（系统级ISA)</li>
+</ul>
+</li>
+<li>应用程序二进制接口（ABI）
+<ul>
+<li>定义了<strong>程序</strong>间<strong>二进制可移植性</strong>的标准、<strong>操作系统</strong>的<strong>系统调用接口</strong>、在系统中通过ISA能使用的<strong>硬件资源服务</strong></li>
+</ul>
+</li>
+<li>应用程序编程接口（API）
+<ul>
+<li>允许<strong>应用程序</strong>访问系统的<strong>硬件资源</strong>和<strong>服务</strong>，这些服务由<strong>用户级ISA</strong>和<strong>高级语言库（HLL）调用</strong>来提供</li>
+<li>让<strong>应用软件</strong>更容易<strong>重新编译</strong>并<strong>移植</strong>到具有<strong>相同API</strong>的<strong>其他系统</strong>中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-1-2作为资源管理的操作系统">2.1.2作为资源管理的操作系统</h5>
+<ul>
+<li>
+<p>操作系统与普通计算机软件的作用相同，即它是由<strong>处理器</strong>执行的<strong>一段程序或一组程序</strong>，区别在于程序的意图</p>
+</li>
+<li>
+<p>操作系统经常会<strong>释放控制</strong>，而且必须依赖<strong>处理器</strong>才能<strong>恢复控制</strong></p>
+</li>
+<li>
+<p><strong>操作系统</strong>控制<strong>处理器</strong>使用其他<strong>资源</strong>，并<strong>控制</strong>其他程序<strong>执行的时机</strong></p>
+</li>
+<li>
+<p>处理器要去执行其他程序，就必须<strong>停止</strong>执行<strong>操作系统程序</strong>。这时操作系统会<strong>释放</strong>对处理器的<strong>控制</strong>，处理后用足够长的时间<strong>恢复控制权</strong>，让处理器准备好下一件工作</p>
+
+</li>
+<li>
+<p>操作系统的一部分在内存中，包括**内核程序（<em>kernel或nucleus</em>）**和当前正在使用的其他操作系统程序</p>
+</li>
+<li>
+<p><strong>内核程序</strong>包含<strong>操作系统</strong>中<strong>最常使用</strong>的功能</p>
+</li>
+<li>
+<p>内存的其余部分包含<strong>用户程序</strong>和<strong>数据</strong>，它的分配由<strong>操作系统</strong>和<strong>处理器</strong>中的<strong>存储管理硬件</strong>联合控制完成</p>
+
+</li>
+<li>
+<p>操作系统在运行一个特定的用户程序时，决定分配给处理器的时间，且在多处理器系统中，这一决定传达到所有处理器</p>
+</li>
+</ul>
+
+<h1>2.2操作系统的发展史</h1>
+<h5 id="2-2-1串行处理">2.2.1串行处理</h5>
+<ul>
+<li>问题：调度、准备时间</li>
+</ul>
+<h5 id="2-2-2简单批处理系统">2.2.2简单批处理系统</h5>
+<ul>
+<li>
+<p>中心思想：使用称为<strong>监控程序（<em>monitor</em>）</strong></p>
+</li>
+<li>
+<p>作业= =》（按顺序组织）= =》批= =》输入设备= =》（监控程序使用）</p>
+</li>
+<li>
+<p>每个程序完成处理后返回监控程序，同时监控程序自动加载下一个程序</p>
+</li>
+<li>
+<p>监控程序角度：</p>
+<ul>
+<li>
+<p><strong>监控程序</strong>控制事件的<strong>顺序</strong></p>
+</li>
+<li>
+<p>大部分监控程序必须总是处于内存中并且可以执行，这部分程序称为<strong>常驻监控程序（<em>resident monitor</em>）</strong>，其他部分包括一些<strong>实用程序</strong>和<strong>公用函数</strong>作为用户程序的子程序，在需要用到它们的作业<strong>开始执行</strong>时才被载入</p>
+</li>
+<li>
+<p>1、监控程序每次从输入设备（通常是卡片阅读机或磁带驱动器）中读取一个作业</p>
+<p>2、当前作业被放置在用户程序区域</p>
+<p>​	   控制权交给这个作业</p>
+<p>3、作业完成后，控制权返回给监控程序，监控程序立即读取下一个作业</p>
+<p>4、每个作业的结果发送到输出设备</p>
+
+</li>
+</ul>
+</li>
+<li>
+<p>处理器角度：</p>
+<ul>
+<li>
+<p>处理器执行<strong>内存</strong>中存储的<strong>监控程序</strong>中的<strong>指令</strong>，这些指令<strong>读入下一个作业</strong>并<strong>存储到内存中的另一部分</strong></p>
+</li>
+<li>
+<p>1、处理器执行指令，读入一个作业</p>
+<p>2、处理器遇到<strong>监控程序</strong>中的<strong>分支指令</strong>，分支指令指导处理器在<strong>用户程序的开始处</strong>继续执行</p>
+<p>3、处理器继而执行用户程序中的指令，指导遇到一个<strong>结束指令</strong>或<strong>错误条件</strong></p>
+<p>4、处理器从监控程序中去下一条指令</p>
+</li>
+<li>
+<p>“控制权交给作业”：处理器当前取的和执行的都是用户程序中的指令</p>
+<p>“控制权返回给监控程序”：处理器当前从监控程序中去指令并执行指令</p>
+</li>
+</ul>
+</li>
+<li>
+<p>监控程序<strong>完成调度功能</strong>：一批作业排队等候，处理器尽可能迅速地执行作业，没有任何空闲事件</p>
+</li>
+<li>
+<p>监控程序改善了作业的准备时间</p>
+</li>
+<li>
+<p>监控处理程序或批处理操作系统，只是一个简单的计算机程序，它依赖于处理器可从内存的不同部分取指令的能力，交替地获取或释放控制权，并且考虑了硬件功能：</p>
+<ul>
+<li>
+<p>内存保护：</p>
+<p>当用户程序正在运行时，不能改变包括监控程序的内存区域</p>
+<p>or：处理器硬件发生错误→控制权转移给监控程序→取消作业，输出错误信息→加载下一个作业</p>
+</li>
+<li>
+<p>定时器：防止一个作业独占系统，在每个作业开始时设置</p>
+</li>
+<li>
+<p>特权指令：</p>
+<p>某些<strong>机器指令</strong>被设计成<strong>特权指令</strong>，只能由<strong>监控程序</strong>执行，处理器在运行一个用户程序时遇到这类指令会发生错误，并将<strong>控制权</strong>转移给监控程序</p>
+<p>I/O指令属于特权指令，监控程序可以控制所有的I/O设备，还可以避免程序意外地读到下一个作业中地作业控制指令</p>
+</li>
+<li>
+<p>中断</p>
+</li>
+</ul>
+</li>
+<li>
+<p>用户程序以**用户模式（<em>user mode</em>）<strong>执行，监控程序以系统态或</strong>内核模式（<em>kernel mode</em>）**执行</p>
+</li>
+<li>
+<p>用户程序和监控程序交替执行</p>
+</li>
+<li>
+<p>缺点：系统开销</p>
+<ul>
+<li>一部分内存交付给监控程序</li>
+<li>监控程序消耗了一部分机器时间</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-2-3多道批处理系统">2.2.3多道批处理系统</h5>
+<ul>
+<li>
+<p>单道程序设计（<em>uniprogramming</em>）</p>
+<p>处理器花费一定的运行时间进行计算，直到遇到一个I/O指令，这时它必须等到I/O指令结束后才能继续进行</p>
+
+</li>
+<li>
+<p>多道程序设计（<em>multiprogramming</em>）或多任务处理（<em>multitasking</em>）</p>
+<p>内存空间可以保存操作系统（常驻监控程序）和多个用户程序，执行时进行切换</p>
+</li>
+</ul>
+
+<ul>
+<li>对多道程序设计最有帮助地硬件是，支持<strong>I/O中断</strong>和**直接存储器访问（<em>Direct Memory Access，DMA</em>）**的硬件</li>
+<li>多道程序设计操作系统比单个程序或<strong>单道程序设计（<em>uniprogramming</em>）<strong>系统复杂，待运行的多个作业必须保留在内存中，因此需要</strong>内存管理（<em>memory management</em>）</strong></li>
+<li>使用多道程序设计，可使**批处理（<em>batch processing</em>)**更加有效</li>
+</ul>
+<h5 id="2-2-4分时系统">2.2.4分时系统</h5>
+<ul>
+<li>
+<p>多道程序设计允许处理器同时处理多个批作业，还可以处理多个交互作业。对于后者而言，由于多个用户分享处理器时间，因而该技术称为<strong>分时（<em>time sharing</em>）</strong></p>
+</li>
+<li>
+<p><strong>多个用户</strong>可以通过<strong>终端</strong><u>同时</u>访问<strong>系统</strong>，由<strong>操作系统</strong>控制每个<strong>用户程序</strong>在<strong>很短时间</strong>内<strong>交替执行</strong></p>
+</li>
+<li>
+<p>如果有n个用户同时请求服务，若不计操作系统开销，每个用户平均只能得到计算机有效速度的1/n</p>
+</li>
+<li>
+<p>设计良好的系统相应时间可以接近于专用计算机的响应时间</p>
+</li>
+<li>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>批处理多道程序</th>
+<th>分时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主要目标</td>
+<td>充分利用处理器</td>
+<td>减小响应时间</td>
+</tr>
+<tr>
+<td>操作系统指令源</td>
+<td>作业控制语言<br />作业提供的命令</td>
+<td>终端键入的命令</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>时间片（<em>time sharing</em>）技术：在固定时间间隔内，当前用户被抢占，另一个用户被载入</p>
+</li>
+</ul>
+<h1>2.3主要成就</h1>
+<h5 id="2-3-1进程">2.3.1进程</h5>
+<ul>
+<li>
+<p>进程的概念是操作系统设计的核心</p>
+</li>
+<li>
+<p>定义：</p>
+<ul>
+<li>一个正在执行的程序</li>
+<li>计算机中正在运行的程序的一个实例</li>
+<li>可分配给处理器并由处理器执行的一个实体</li>
+<li>由一个单一顺序线程、一个当前状态和一组相关的系统资源所表征的活动单元</li>
+</ul>
+</li>
+<li>
+<p>计算机系统发展的三条主线</p>
+<ul>
+<li>多道程序批处理操作
+<ul>
+<li>为了让处理器和I/O设备（包括存储设备）同时保持忙状态，以实现最大效率</li>
+<li>关键机制：在响应表示I/O事务结束的信号时，操作系统将对内存中驻留的不同进程进行处理器切换</li>
+</ul>
+</li>
+<li>分时系统
+<ul>
+<li>为了能及时响应单个用户的要求</li>
+</ul>
+</li>
+<li>实时事务处理系统
+<ul>
+<li>应对场景举例：很多用户都在对数据库进行查询或修改（航空公司订票）</li>
+<li>事务处理系统和分时系统的差别：前者局限于一个或几个应用，而后者的用户可以开始程序、执行作业以及使用各种各样的应用程序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>程序设计中少见的错误</p>
+<ul>
+<li>不确定的同步：常常会出现一个例程必须挂起，等待系统中其他地方的某一事件的情况</li>
+<li>失败的互斥：常常会出现多个用户或程序试图同时使用一个共享资源的情况（如同时编辑一个文件）</li>
+<li>不确定的程序操作：
+<ul>
+<li>某个特定程序的结果只依赖于该程序的输入，而不依赖于共享系统中其他程序的活动</li>
+<li>当程序共享内存且处理器控制它们交替执行时，它们可能会因为重写相同的内存区域而发生不可预测的相护干扰</li>
+</ul>
+</li>
+<li>死锁：
+<ul>
+<li>很可能两个或多个程序相互挂起等待</li>
+<li>如两个程序可能都需要两个I/O设备执行一些操作（如从磁盘复制到磁带）。一个程序获得了一个设备的控制权，而另一个程序获得了另一个设备的控制权，它们都等待对方释放自己想要的资源</li>
+<li>这样的死锁依赖于资源分配和释放的时机安排</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>进程的组成</p>
+<ul>
+<li>一段可执行的程序</li>
+<li>程序所需要的相关数据（变量、工作时间、缓冲区等）</li>
+<li>程序的执行上下文（根本）
+<ul>
+<li><strong>执行上下文（<em>execution context</em>）<strong>又称为</strong>进程状态（<em>process state</em>）</strong>，是<strong>操作系统</strong>用来<strong>管理和控制进程</strong>所需要的<strong>内部数据</strong></li>
+<li>这种内部信息和进程是<strong>分开</strong>的，因为操作系统不允许进程直接访问</li>
+<li>上下文包括操作系统管理<strong>进程</strong>及<strong>处理器</strong>正确<strong>执行</strong>进程所需的<strong>所有信息</strong>，包括各种处理器寄存器的内容，如程序计数器和数据寄存器</li>
+<li>上下文还包括<strong>操作系统</strong>使用的信息，如<strong>进程优先级</strong>和<strong>进程是否在等待特定I/O事件的完成</strong></li>
+</ul>
+</li>
+</ul>
+<p>一种进程管理的办法：</p>
+
+<ul>
+<li>
+<p>每个进程分配得到了一块存储器区域，并且在<strong>操作系统建</strong>立和维护的<strong>进程表</strong>中进行了<strong>记录</strong></p>
+</li>
+<li>
+<p>进程表包含记录每个进程的<strong>表项</strong>，表项内容包括指向包含<strong>进程的存储地址</strong>的<strong>指针</strong>，还包括该进程的<strong>部分或全部执行上下文</strong></p>
+</li>
+<li>
+<p>执行上下文的其余部分存放在别处，可能和进程本身保存在一起，通常还可能保存在内存中的一块独立的区域</p>
+</li>
+<li>
+<p><strong>进程索引寄存器（<em>process index register</em>）<strong>包含当前</strong>正在控制处理器</strong>的<strong>进程</strong>在<strong>进程表</strong>中的<strong>索引</strong></p>
+</li>
+<li>
+<p><strong>程序计数器（<em>program counter</em>）<strong>指向该进程的</strong>下一条</strong>待执行的<strong>指令</strong></p>
+</li>
+<li>
+<p><strong>基址寄存器（<em>base register</em>）<strong>和</strong>界限寄存器（<em>limit register</em>）<strong>定义该进程所占据的</strong>存储器区域</strong></p>
+<p>基址寄存器：保存该存储器区域的<strong>开始地址</strong></p>
+<p>界限寄存器：保存该区域的<strong>大小</strong>（以字节或字为单位）</p>
+</li>
+<li>
+<p>程序计数器和所有数据引用<strong>相对于基址寄存器来解释</strong>，且不能超过<strong>界限寄存器中的值</strong>，因此可以保护<strong>内部进程不会相互干涉</strong></p>
+</li>
+<li>
+<p>图中进程索引寄存器表名进程B正在执行，以前执行的进程被临时中断，在A中断的同时，所有寄存器的内容被记录在其执行上下文环境中，以后操作系统就可以执行进程切换，恢复进程A的执行</p>
+</li>
+<li>
+<p>线程（<em>thread</em>）：一个<strong>分配了资源的进程</strong>可分解为多个<strong>并发</strong>的<strong>线程</strong>，这些线程相互协作执行，完成进程的工作</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-3-2内存管理">2.3.2内存管理</h5>
+<ul>
+<li>
+<p>操作系统担负着5项存储器管理职责：</p>
+<ul>
+<li>进程隔离
+<ul>
+<li>操作系统必须保护独立的进程，防止相互干扰各自的存储空间，包括数据和指令</li>
+</ul>
+</li>
+<li>自动分配和管理
+<ul>
+<li>程序应该根据需要在存储层次间动态地分配，分配对程序员透明</li>
+</ul>
+</li>
+<li>支持模块化程序设计</li>
+<li>保护和访问控制</li>
+<li>长期存储</li>
+</ul>
+</li>
+<li>
+<p>（典型）操作系统使用<strong>虚存</strong>和<strong>文件系统机制</strong>来履行这些职责</p>
+</li>
+<li>
+<p>对操作系统来说，<strong>文件</strong>是<strong>访问控制</strong>和<strong>保护</strong>的一个有用单元</p>
+</li>
+<li>
+<p><strong>虚存机制</strong>允许程序以<strong>逻辑</strong>方式访问<strong>存储器</strong>，而不考虑<strong>物理内存</strong>上可用的<strong>空间数量</strong></p>
+<ul>
+<li>满足<u>多个用户作业同时驻留在内存中的要求</u>，一个进程被写出到辅助存储器中且后续进程被读入时，连续的进程执行之间不会脱节</li>
+</ul>
+</li>
+<li>
+<p><u>进程大小不同时</u>，若处理器在很多进程间切换，则很难将它们紧密的压入内存==》引入<strong>分页系统</strong></p>
+<ul>
+<li>
+<p>进程由许多<strong>固定大小</strong>的<strong>块</strong>组成，这些块被称为<strong>页</strong></p>
+</li>
+<li>
+<p>程序通过<strong>虚地址（<em>virtual address</em>）<strong>访问</strong>字</strong>，虚地址=页号+页中的偏移量</p>
+</li>
+<li>
+<p><strong>分页系统</strong>提供了进程中使用的<strong>虚地址</strong>和内存中的<strong>实地址（<em>real address</em>）<strong>或物理地址之间的</strong>动态映射</strong></p>
+</li>
+<li>
+<p>虚存（<em>virtual memory</em>）</p>
+<ul>
+<li>
+<p>一个进程的所有页都保存在<strong>磁盘</strong>中，进程执行时，一部分页会调入<strong>内存</strong>中</p>
+</li>
+<li>
+<p>若要访问的某页不在内存中，<strong>存储管理硬件</strong>会在检测到它后，安排<strong>载入</strong>这个<strong>缺页（<em>missing page</em>）</strong></p>
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>虚拟处理器</p>
+<ul>
+<li>
+<p>处理器硬件和操作系统共同提供”虚拟处理器“的概念，有对<strong>虚存的访问权</strong></p>
+</li>
+<li>
+<p>给每个进程<strong>唯一</strong>的<strong>不重叠</strong>的虚存空间==》实现<strong>进程隔离</strong></p>
+<p>两个虚存空间<strong>一部分重叠</strong>==》内存<strong>共享</strong></p>
+</li>
+<li>
+<p>文件或其一部分可以复制到虚存中提供程序操作</p>
+
+<ul>
+<li>存储器由内存和低速辅助存储器组成，内存可以<strong>直接</strong>访问（通过机器指令），外存可以通过把<strong>块</strong>载入内存<strong>间接</strong>访问</li>
+<li>如果访问的虚地址不在实际内存中，实际内存中的一部分内容将换到外存中，然后换入所需要的数据块</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-3-3信息保护和安全">2.3.3信息保护和安全</h5>
+<p>与操作系统相关的大多数安全和保护问题可以分为4类</p>
+<ul>
+<li>可用性：保护系统不被中断</li>
+<li>保密性：保证用户不能读取未授权访问的数据</li>
+<li>数据完整性：保护数据不被未授权修改</li>
+<li>认证：涉及用户身份的正确认证和消息或数据的合法性</li>
+</ul>
+<h5 id="2-3-4调度和资源管理">2.3.4调度和资源管理</h5>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第二章-操作系统概述（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第二章-操作系统概述（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%85%AB%E7%AB%A0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%983/" title="第八章-虚拟内存（三）">
+                        <span class="hidden-mobile">第八章-虚拟内存（三）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

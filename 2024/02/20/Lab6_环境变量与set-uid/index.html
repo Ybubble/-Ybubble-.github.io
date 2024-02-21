@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Task 1: Manipulating Environment Variables task1.1 Use printenv or env command to print out the environment variables. If you are interested in some particular environment variables, such as PWD, you">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab6-环境变量与set-uid">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="Task 1: Manipulating Environment Variables task1.1 Use printenv or env command to print out the environment variables. If you are interested in some particular environment variables, such as PWD, you">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.4.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.2-16674533606342.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.3-16674534746286.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.6.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.561Z">
+<meta property="article:modified_time" content="2024-02-21T06:32:41.200Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.jpg">
+  
+  
+  
+  <title>Lab6-环境变量与set-uid - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab6-环境变量与set-uid"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab6-环境变量与set-uid</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>Task 1: Manipulating Environment Variables</h1>
+<h2 id="task1-1">task1.1</h2>
+<p>Use <code>printenv</code> or <code>env</code> command to print out the environment variables. If you are interested in</p>
+<p>some particular environment variables, such as <code>PWD</code>, you can use “<code>printenv PWD</code>” or &quot;<code>env |</code></p>
+<p><code>grep PWD</code>&quot;.</p>
+<ol>
+<li>使用env命令查看命令查看环境变量</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>
+<p>查看特定的环境变量</p>
+<p>这里分别使用env和printenv命令查看“PWD”变量。</p>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="task1-2">task1.2</h2>
+<ol>
+<li>设置环境变量</li>
+</ol>
+<p>使用export命令新增一个环境变量“newenv”，接着分别使用echo和env命令查看结果，可以看到，新增环境变量的值被成功打印输出，说明成功新增环境变量。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>删除环境变量</li>
+</ol>
+<p>使用unset命令删除刚刚新增的环境变量，再次查看，结果表明该环境变量已被删除。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.1.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 2: Passing Environment Variables from Parent Process to Child Process</h1>
+<h2 id="task2-1">task2.1</h2>
+<p>please see the manual of fork() by typing the following command: man fork.</p>
+<p>输入命令man fork</p>
+<p>该文档说明fork函数执行时会在内存的另一个地方创建一个状态相同的进程，称为子进程。子进程的ID，与父进程不相同。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="task2-2">task2.2</h2>
+<ol>
+<li>
+<p>编译mypritenv.c，将编译结果写入文件file</p>
+<p>该程序打印的是子进程的环境变量。</p>
+</li>
+</ol>
+
+<ol start="2">
+<li>通过运行编译结果，可以看到子进程的所有环境变量。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>修改代码，使程序输出的是父进程的环境变量。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="4">
+<li>
+<p>重新编译，编译结果为b.out文件。</p>
+<p>从比较结果来看，这两个文件仅在文件名上有所不同，其余的内容一样，说明子进程继承了父进程的环境变量，即子进程创建时的环境变量与父进程相同。</p>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.2.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 3: Environment Variables and execve()</h1>
+<ol>
+<li>编译运行myenv.c，该程序通过命令execve执行&quot;/usr/bin/env&quot;命令。execve的三个参数分别代表的是执行命令所在文件的路径，第二个参数是需要执行的命令的集合，第三个参数是传递给文件的环境变量。由于传递的环境变量为NULL，所以运行程序时没有输出。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>把第三个参数改为“environ”，即把当前的环境变量传递进去。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>运行修改后的程序，可以看到，程序输出了环境变量。执行execve时不会像fork一样继承原来的环境变量，环境变量由传递进来的参数决定，原来的环境变量将被覆盖。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 4: Environment Variables and system()</h1>
+<ol>
+<li>task4.c调用system执行“/usr/bin/env”命令，运行编译后的程序，可以看到环境变量被打印出来。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.3.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>
+<p>使用man命令查看system的用法</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.4.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>可以看到，system使用fork产生一个新的进程，这意味着新进程将继承原有的环境变量。然后通过execl调用外部命令“/bin/sh -c command”来执行命令，所以使用system查看环境变量时，原有的环境变量将被输出。</p>
+</li>
+</ol>
+<h1>Task 5: Environment Variable and Set-UID Programs</h1>
+<ol>
+<li>编写示例代码task5.c</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>编译运行示例代码，打印环境变量。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>把task5.c的所有者改为root，并且使其称为set-uid程序。接着使用“ls -l”命令查看设置的结果，task5标红，说明它现在是一个特权程序。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>
+<p>设置PATH</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=<span class="hljs-string">&quot;<span class="hljs-variable">$PATH</span>:/usr/local/bin&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>设置LD_LIBRARY_PATH</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">LD_LIBRARY_PATH</span>=<span class="hljs-string">&quot;<span class="hljs-variable">$LD_LIBRARY_PATH</span>:/usr/local/bin&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>设置新的环境变量</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">TASK</span>=task5<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.2-16674533606342.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="6">
+<li>
+<p>运行特权程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./task5<br></code></pre></td></tr></table></figure>
+<p>​		从输出结果来看，所设置的TASK变量和PATH变量正常输出，但是没有输出变量LD_LIBRARY_PATH。因为当运行task5时，shell会启动一个新进程来运行，子进程会继承原来父进程的环境变量。但是由于我们把task5设置为特权进程，所有者为root，也就是说，此时的EUID和RUID不一样。在动态链接库的保护机制中，EUID和RUID不一致时，将会忽略LD_LIBRARY_PATH和LD_LIBRARY变量，所以在上面的实验中，LD_LIBRARY_PATH没有出现。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.3-16674534746286.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.5.4.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>task6 <strong>The PATH Environment Variable and</strong> Set-UID Programs</h1>
+<h2 id="6-1-使system执行的是恶意构造的“ls”">6.1 使system执行的是恶意构造的“ls”</h2>
+<ol>
+<li>
+<p>因为Ubuntu 20.04具有相应的防御机制，所以首先进入到实验提供的shell/zsh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo <span class="hljs-built_in">rm</span> /bin/sh<br>sudo <span class="hljs-built_in">ln</span> -s /bin/zsh /bin/sh<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>
+<p>将实验提供的代码编译为task6，并且使其称为特权程序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//task6</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    system(<span class="hljs-string">&quot;ls&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo <span class="hljs-built_in">chown</span> root task6<br>sudo <span class="hljs-built_in">chmod</span> 4755 task6<br><span class="hljs-built_in">ls</span> -l task6<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>运行task6，将打印输出当前目录。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="4">
+<li>
+<p>编写我们构造的恶意代码，编译后的名称为ls，这个程序将被用来取代系统原来的“ls”。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">gcc -o <span class="hljs-keyword">ls</span> bad_<span class="hljs-keyword">ls</span>.c<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="5">
+<li>
+<p>将恶意“ls”所在文件夹的路径添加到PATH变量的开头</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">export PATH=<span class="hljs-regexp">/home/</span>seed<span class="hljs-regexp">/Desktop/</span>lab<span class="hljs-regexp">/lab6/</span>Labsetup:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="6">
+<li>运行特权程序task6，“ls”执行的是我们自己编写的ls，而不是系统原本的“ls”。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>​	出现上面的结果是因为system函数执行命令时，传进去的参数未使用绝对路径，所以system函数首先会在PATH变量中找命令所在的文件路径，并且是顺序查找。利用export将恶意的“ls”所在路径添加到PATH环境变量开头时，恶意“ls”就会被首先检索到，隐藏task6中执行的是恶意构造的“ls”。</p>
+<h2 id="6-2-获取一个有root权限的shell">6.2 获取一个有root权限的shell</h2>
+<ol>
+<li>
+<p>将/bin/sh拷贝到当前目录下的ls文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cp</span> /bin/sh <span class="hljs-built_in">ls</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>将当前目录添加到环境变量PATH中</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">PATH</span>=/home/seed/Desktop/lab/lab6/Labsetup<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>执行task6，获得了具有root权限的shell。因为ls文件里的内容为/bin/sh，并且task6已经被设置为Set-UID程序，也就是一个特权程序，所以最后能够得到具有root权限的shell。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.6.8.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 7 The LD_PRELOAD Environment Variable and Set-UID Programs</h1>
+<h2 id="7-1-使用动态链接库">7.1 使用动态链接库</h2>
+<ol>
+<li>
+<p>编写mylib.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-type">void</span> <span class="hljs-title function_">sleep</span> <span class="hljs-params">(<span class="hljs-type">int</span> s)</span><br>&#123;<br>	<span class="hljs-comment">/* If this is invoked by a privileged program,</span><br><span class="hljs-comment">	you can do damages here! */</span><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;I am not sleeping!\n&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>编译，创建一个共享库，并将共享库添加到LD_PRELOAD环境变量中。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>
+<p>编译myprog.c，并放在与libmylib.so.1.0.1相同目录下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* myprog.c */</span><br><span class="hljs-meta"># <span class="hljs-keyword">include</span><span class="hljs-string">&lt;unistd.h&gt;</span> </span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    sleep(<span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="7-2-在四种场景下运行myprog">7.2 在四种场景下运行myprog</h2>
+<ol>
+<li>在普通用户下运行myprog，执行的是上面编写的sleep函数。因为在该场景下，设置LD_PRELOAD、和执行myprog的为同一个用户seed，因此程序运行时子进程继承了父进程的环境变量，动态链接库中有恶意sleep函数功能的链接。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>将myprog设置为特权程序，在普通用户模式下运行，这次的sleep函数执行的是原来的sleep，等待一秒后结束。因为在seed用户下运行特权程序，即EUID和RUID不一致，所以在动态链接库的保护机制下，LD_PRELOAD将会被忽略，因此sleep是原来的sleep。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>myprog为特权程序，在root用户下设置LD_PRELOAD变量，以root身份运行，执行的是恶意sleep。接着以普通用户身份运行时，再次运行，此时执行的sleep是正常的sleep，等待一秒后退出。在这种场景下，设置LD_PRELOAD和运行myprog的用户都为root，所以root用户运行myprog时的EUID和IUID一致，子进程继承了设置的LD_PRELOAD，执行恶意sleep。但是切换到seed用户时，由于EUID和RUID不一致，因此忽略LD_PRELOAD，执行了sleep的休眠功能。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="4">
+<li>
+<p>新增用户user1，使myprog的所有者为user1，同时设置环境变量。然后再seed用户下再次执行myprog，sleep执行休眠功能。myprog的所有者为user1，当seed用户运行myprog时，同样由于保护机制的限制而执行的是sleep函数的休眠功能。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> useradd userq1<br><span class="hljs-attribute">sudo</span> chown user1 myprog<br><span class="hljs-attribute">sudo</span> chmod <span class="hljs-number">4755</span> myprog<br><span class="hljs-attribute">export</span> LD_PRELOAD=./libmylib.so.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.7.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 8: Invoking External Programs Using system() versus execve()</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span><br>&#123;<br>    <span class="hljs-type">char</span> *v[<span class="hljs-number">3</span>];<br>    <span class="hljs-type">char</span> *command;<br>    <span class="hljs-keyword">if</span>(argc &lt; <span class="hljs-number">2</span>) <br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Please type a file name.\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    v[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;/bin/cat&quot;</span>; v[<span class="hljs-number">1</span>] = argv[<span class="hljs-number">1</span>]; v[<span class="hljs-number">2</span>] = <span class="hljs-literal">NULL</span>;<br>    command = <span class="hljs-built_in">malloc</span>(<span class="hljs-built_in">strlen</span>(v[<span class="hljs-number">0</span>]) + <span class="hljs-built_in">strlen</span>(v[<span class="hljs-number">1</span>]) + <span class="hljs-number">2</span>);<br>    <span class="hljs-built_in">sprintf</span>(command, <span class="hljs-string">&quot;%s %s&quot;</span>, v[<span class="hljs-number">0</span>], v[<span class="hljs-number">1</span>]);<br>    <span class="hljs-comment">// Use only one of the followings.</span><br>    system(command);<br>    <span class="hljs-comment">// execve(v[0], v, NULL);</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> ;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>编译catall.c，并使编译后的程序为set-uid程序。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="2">
+<li>在root用户下创建文件夹task8_dir，并新建文件hello.c</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="3">
+<li>在seed用户身份下试图删除由root用户创建的hello.c，发现无法删除，因为普通用户seed的权限不足。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="4">
+<li>返回上一级目录，利用catall程序，传入命令“some str;rm task8_dir/hello.c”，执行后发现root的 hello.c文件被成功删除。分析原因：catall.c中将接收到的命令进行简单的拼接，也就是说最后传递给system的命令为“/bin/cat some str;rm task8_dir/hello.c”，相当于有两个命令交给system去执行。而catall为特权程序，所以它可以删除root创建的文件，因此seed普通用户通过这种方式实现了对文件的删除。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol start="5">
+<li>将处理命令的函数换成execve，参数不变，但是这次却无法将root的hello.c文件删除。分析原因：与system不同的是，execve不调用shell，不会继承原来的环境变量，接收到的参数不会像system一样当成命令，而仅仅是一个字符串。所以传入的命令被当成需要读取的文件名，因此无法执行删除操作。</li>
+</ol>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.8.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>task9 Capability Leaking</h1>
+<p>示例代码打开了一个文件，但是没有关闭这个文件，并且使用setuid()降低了权限，因此存在有权限泄露的问题。若文件标识符被利用，且打开的这个文件为特权程序，则可以利用泄露的权限以普通用户的身份操作特权文件。</p>
+<ol>
+<li>
+<p>以root身份创建文件夹etc和文件zzz（内容为“task9”），然后设置权限为0644，即普通用户无法写入内容。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>修改示例代码。修改打开的文件为所创建的root权限文件zzz，执行的操作为获取未关闭的文件的标识符，写入内容“Malicious Data”。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;sys/types.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;unistd.h&gt;</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> fd;<br>  <span class="hljs-type">char</span> *v[<span class="hljs-number">2</span>];<br><br>  <span class="hljs-comment">/* Assume that /etc/zzz is an important system file,</span><br><span class="hljs-comment">   * and it is owned by root with permission 0644.</span><br><span class="hljs-comment">   * Before running this program, you should create</span><br><span class="hljs-comment">   * the file /etc/zzz first. */</span><br>  fd = open(<span class="hljs-string">&quot;/home/seed/Desktop/lab/lab6/Labsetup/etc/zzz&quot;</span>, O_RDWR | O_APPEND);        <br>  <span class="hljs-keyword">if</span> (fd == <span class="hljs-number">-1</span>) &#123;<br>     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Cannot open /etc/zzz\n&quot;</span>);<br>     <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<br><br>  <span class="hljs-comment">// Print out the file descriptor value</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fd is %d\n&quot;</span>, fd);<br><br>  <span class="hljs-comment">// Permanently disable the privilege by making the</span><br>  <span class="hljs-comment">// effective uid the same as the real uid</span><br>  setuid(getuid());                                <br><br>  <span class="hljs-comment">// Execute /bin/sh</span><br>  <span class="hljs-comment">//v[0] = &quot;/bin/sh&quot;; v[1] = 0;</span><br>  <span class="hljs-comment">//execve(v[0], v, 0);</span><br>  <span class="hljs-keyword">if</span>(fork())&#123;<br>  	close(fd);<br>  	<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<span class="hljs-keyword">else</span>&#123;<br>  	write(fd,<span class="hljs-string">&quot;Malicious Data\n&quot;</span>,<span class="hljs-number">15</span>);<br>  	close(fd);<br>  &#125;            <br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>编译cap_leak.c，把它设置为set-uid程序。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>运行cap_leak，然后查看zzz文件的内容，发现指定字符串被写入文件中。</p>
+<img src="/2024/02/20/Lab6_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Eset-uid/6.9.6.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/" title="Lab7-XSS攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab7-XSS攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab5_shellcode%E7%BC%96%E5%86%99/" title="Lab5-shellcode编写">
+                        <span class="hidden-mobile">Lab5-shellcode编写</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

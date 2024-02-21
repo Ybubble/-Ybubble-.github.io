@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 DNS层次结构、区域和服务器 1.1 DNS域名层次结构  IANA：Internet Assigned Numbers Authority，互联网数字分配机构  所有顶级域名的官方列表被因特网编号分配机构（IANA）掌管 每个顶级域名都被IANA委托给一个指定代理，称为注册处。VeriSign是com和net域的指定代理，EDUCASE是edu域的指定代理 顶级域名的指定代理会通过注册商为公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="假消息攻击-DNS欺骗">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 DNS层次结构、区域和服务器 1.1 DNS域名层次结构  IANA：Internet Assigned Numbers Authority，互联网数字分配机构  所有顶级域名的官方列表被因特网编号分配机构（IANA）掌管 每个顶级域名都被IANA委托给一个指定代理，称为注册处。VeriSign是com和net域的指定代理，EDUCASE是edu域的指定代理 顶级域名的指定代理会通过注册商为公">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.1.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.2.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.3.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97.assets/1.5.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.9.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.30.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.6.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.7.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.8.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.10.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.11.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.12.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.13.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.14.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.15.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.16.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.17.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.19.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.20.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.21.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.22.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.23.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.24.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.27.png">
+<meta property="article:published_time" content="2024-02-20T13:55:34.537Z">
+<meta property="article:modified_time" content="2024-02-21T14:52:56.971Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.1.png">
+  
+  
+  
+  <title>假消息攻击-DNS欺骗 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="假消息攻击-DNS欺骗"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">假消息攻击-DNS欺骗</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 DNS层次结构、区域和服务器</h1>
+<h2 id="1-1-DNS域名层次结构">1.1 DNS域名层次结构</h2>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.1.png" srcset="/img/loading.gif" lazyload class="">
+<p>IANA：<a target="_blank" rel="noopener" href="https://www.iana.org/">Internet Assigned Numbers Authority</a>，互联网数字分配机构</p>
+<ul>
+<li>所有顶级域名的官方列表被因特网编号分配机构（IANA）掌管</li>
+<li>每个顶级域名都被IANA委托给一个指定代理，称为注册处。VeriSign是com和net域的指定代理，EDUCASE是edu域的指定代理</li>
+<li>顶级域名的指定代理会通过注册商为公众提供注册服务，用户买了域名后，指定代理会负责把所购域名的相应信息填入注册数据库中</li>
+<li>中国域名注册商有易名中国、万网、商务中国等</li>
+</ul>
+<h2 id="1-2-DNS区域">1.2 DNS区域</h2>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.2.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>DNS是根据区域组织的。</li>
+<li>区域将域树上相邻的域和子域分组，并将管理权限分配给实体。每个区域由权威机构管理。一个域名可以由多个机构管理。</li>
+<li>树结构描述example.com域中的子域。</li>
+<li>在这种情况下，每个国家有多个DNS区域。区域保留其每个子域的权限记录。</li>
+<li>区域example.com仅包含不属于任何子域的主机名的DNS记录，<a target="_blank" rel="noopener" href="http://xn--mail-f96g.example.com">如mail.example.com</a></li>
+</ul>
+<h2 id="1-3-区域与域">1.3 区域与域</h2>
+<ul>
+<li>DNS区域仅包含域的一部分DNS数据。</li>
+<li>如果域未划分为子域，则区域和域本质上是相同的，因为区域包含域的所有DNS数据。</li>
+<li>当一个域被划分为子域时，它们的DNS数据仍然可以放在同一个区域中，因此域和区域仍然是相同的。</li>
+<li>但是子域可以有自己的区域。usa.example.com是一个域名，其子域为波士顿、纽约和芝加哥。为usa.example.com创建了两个区域。第一个包含SUSA域、芝加哥和波士顿子域，第二个包含NYC子域。</li>
+</ul>
+<h2 id="1-4-权威名称服务器">1.4 权威名称服务器</h2>
+<ul>
+<li>每个DNS区域至少有一个权威名称服务器，用于发布有关该区域的信息，出于冗余目的应至少提供两个权威域名服务器。它提供了DNS查询的原始和最终答案。</li>
+<li>权威名称服务器可以是主服务器（主服务器）或从服务器（辅助服务器）。</li>
+<li>主服务器存储所有区域记录的主副本，而从服务器使用自动更新机制来维护主记录的相同副本。</li>
+</ul>
+<h2 id="1-5-DNS根服务器">1.5 DNS根服务器</h2>
+<ul>
+<li>
+<p>根区域称为root。</p>
+</li>
+<li>
+<p>此区域有13个权威名称服务器（DNS根服务器）。</p>
+</li>
+<li>
+<p>它们提供有关所有TLD的名称服务器信息<code>https://www.internic.net/domain/root.zone</code></p>
+</li>
+<li>
+<p>它们是DNS查询的起点。</p>
+</li>
+<li>
+<p>13个DNS根服务器，它们是互联网上最关键的基础设施。</p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.3.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h2 id="1-6-顶级域（TLD）">1.6 顶级域（TLD）</h2>
+<ul>
+<li>基础结构TLD:.arpa</li>
+<li>通用TLD（gTLD）：.com、.net</li>
+<li>赞助TLD（sTLD）：这些域名由私人机构或组织提议和赞助，这些机构或组织制定并实施限制TLD使用资格的规则：.edu、.gov、.mil、.travel、.jobs</li>
+<li>国家代码TLD（ccTLD）：.au（澳大利亚），.cn（中国），.fr（法国）</li>
+<li>保留TLD:.example、.test、.localhost、.invalid</li>
+</ul>
+<h2 id="1-7-因特网中区域的组织形式">1.7 因特网中区域的组织形式</h2>
+<p>DNS请求最终目的是从权威域名服务器得到答案，DNS采用分布式方法来找权威域名服务器，以树的形式来组织因特网中所有的 DNS区域，每一个权威域名服务器都可以沿着树的结构找到。</p>
+<p>树的根被称为root区域，IANA负责维护这个区域，有13个权威域名服务器（DNS根服务器）管理这个区域，名称从a到m，即 <a target="_blank" rel="noopener" href="http://xn--a-rz6a.root-servers.xn--netm-sm9f.root-servers.net">从a.root-servers.net到m.root-servers.net</a>。</p>
+<h2 id="1-8-本地DNS文件">1.8 本地DNS文件</h2>
+<ul>
+<li>
+<p><code>/etc/host</code>：存储某些主机名的IP地址。在计算机联系本地DNS服务器之前，它首先在该文件中查找IP地址。</p>
+<img src="%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97.assets/1.5.png" srcset="/img/loading.gif" lazyload alt="1.5" style="zoom: 50%;" />
+</li>
+<li>
+<p><code>/etc/resolv.conf</code>：向计算机的DNS解析器提供有关本地DNS服务器地址的信息。DHCP提供的本地DNS服务器的IP地址也存储在这里。</p>
+<blockquote>
+<p>:exclamation:note：如果一台计算机用DHCP（动态主机配置协议）得到IP地址，它同时也会从DHCP得到本地DNS服务器的IP地址， 并且存储到resolv.conf文件中，这种情况下，resolv.conf文件会被自动修改，任何对该文件所做的手动 更改都会被覆盖。</p>
+</blockquote>
+</li>
+<li>
+<p>创建区域：通过将两个区域条目添加到<code>/etc/bind/named.conf</code>，在DNS服务器中创建两个区域条目。</p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.9.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>第一个zone用于转发查找（主机名→IP）；第二个用于反向查找（IP-&gt;主机名）。</li>
+</ul>
+</li>
+</ul>
+<h1>2 DNS查询过程</h1>
+<p>用户计算机应用试图与另一台计算机通信时，会先向本机DNS解析器查询，如果失败，再发请求给系统指定的本地DNS服务器， 如果没有，该服务器会逐步从因特网其他DNS服务器查询IP地址。</p>
+<blockquote>
+<p>:exclamation:<strong>本地dns服务器</strong></p>
+<p>计算机通常使用局域网内的DNS服务器，这是&quot;本地&quot;的名字来源，现在许多非本地的DNS服务器可以用作本地 DNS服务器，如谷歌公共DNS等，本地的含义服务器不一定必须位于本地</p>
+</blockquote>
+
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.30.png" srcset="/img/loading.gif" lazyload class="">
+<ol>
+<li>
+<p>询问root</p>
+<ul>
+<li>DNS响应中有4种类型的节
+<ul>
+<li>问题部分：向名称服务器描述问题</li>
+<li>回答部分：回答问题的记录</li>
+<li>权威部分：指向权威名称服务器的记录</li>
+<li>附加部分：与查询相关的记录。</li>
+</ul>
+</li>
+<li>dig命令模拟本地DNS服务器的行为</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dig @<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.root-servers</span><span class="hljs-selector-class">.net</span> www<span class="hljs-selector-class">.example</span>.net<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.6.png" srcset="/img/loading.gif" lazyload class="">
+<p>直接将查询发送到服务器<code>a.root-servers.net</code>，回答部分为空，表明root不知道答案，但是根服务器会告诉我们<code>.net</code>域名服务器。接着会询问AUTHORITY SECTION和ADDITIONAL SECTION部分的服务器。即由于根服务器不知道答案，因此没有答案部分，但在附加部分（记录）中告诉我们有关<u>权威域名服务器（NS记录）</u>及其IP地址的信息。</p>
+</li>
+<li>
+<p>询问一个<code>.net</code>（TLD）域名服务器。<code>.net</code>域名服务器返回了2个<code>example.net</code>区域的权威域名服务器</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dig @e<span class="hljs-selector-class">.gtld-servers</span><span class="hljs-selector-class">.net</span> www<span class="hljs-selector-class">.example</span>.net<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.7.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>继续询问<code>a.lana-server.net</code>（权威域名服务器），得到了答案</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dig @<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.lana-servers</span><span class="hljs-selector-class">.net</span> www<span class="hljs-selector-class">.example</span>.net<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.8.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>当本地DNS服务器从其他DNS服务器获取信息时，它会缓存该信息。</p>
+<p>缓存中的每一条信息都有一个生存时间值，最终将超时并从缓存中删除。</p>
+</li>
+</ol>
+<p><strong>DNS缓存</strong></p>
+<p>当本地DNS服务器从其他DNS服务器得到信息时，它会缓存这个信息，以便将来需要时不必浪费时间再次询问。<br>
+缓存中的每个信息都有一个存活时间。</p>
+<p><a target="_blank" rel="noopener" href="http://xn--mail-f96gs05emjgzm3e.example.net">比如查询mail.example.net</a>，本地DNS服务器不会从root域开始查询，因为缓存中已经有example.net域名服务器的IP 地址，就直接从这个服务器开始查询。</p>
+<h1>3 DNS ATTACK：概述</h1>
+<h2 id="3-1-拒绝服务攻击（DoS）">3.1 拒绝服务攻击（DoS）</h2>
+<p>当本地DNS服务器和权威名称服务器不响应DNS查询时，计算机无法检索IP地址，这从本质上减少了通信。</p>
+<h2 id="3-2-DNS欺骗">3.2 DNS欺骗</h2>
+<ul>
+<li>主要目标：向受害者提供欺诈性IP地址，诱使他们与不同于他们意图的机器进行通信。</li>
+<li>示例：如果用户打算访问银行网站进行网上银行业务，但通过DNS过程获得的IP地址是攻击者的机器，则用户机器将与攻击者的web服务器通信。</li>
+</ul>
+<h2 id="3-3-攻击面概述">3.3 攻击面概述</h2>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.10.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>（如果攻击者获得了机器的根权限）<strong>在受感染的计算机中攻击</strong></p>
+<ul>
+<li>
+<p>修改 <code>/etc/resolv.conf</code>：使用恶意DNS服务器作为机器的本地DNS服务器，并可以控制整个DNS进程。</p>
+</li>
+<li>
+<p>修改 <code>/etc/hosts</code>：向文件中添加新记录，提供某些选定域的IP地址。例如，攻击者可以修改<code>www.bank32.com</code>的IP地址，这可能导致攻击者的机器。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>攻击用户机</strong></p>
+<p>当用户机给本地DNS服务器发送DNS请求时，攻击者可以立即发送一个欺骗的回复</p>
+</li>
+<li>
+<p><strong>攻击本地DNS服务器：缓存中毒攻击</strong></p>
+<p>当本地DNS服务器向因特网中的DNS服务器发送迭代请求时，攻击者可以发送欺骗回复给本地DNS服务器。<br>
+欺骗回复的信息通常被DNS服务器缓存，这个攻击被称为DNS缓存中毒攻击。</p>
+</li>
+<li>
+<p><strong>从恶意DNS服务器发起攻击</strong></p>
+<p>比如用户访问attacker32.com这个网站时，一个DNS请求会最终到达attacker32.com的权威域名服务器。 除了在响应的回复部分提供IP地址外，这个域名服务器还会提供授权和附加部分的信息。<br>
+如果用户不加选择地接受域名服务器提供的所有信息，攻击者就可以通过提供虚假信息来达到攻击的目的。</p>
+</li>
+</ul>
+<h1>4 本地DNS缓存中毒攻击</h1>
+<p>欺骗DNS回复（来自LAN）</p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.11.png" srcset="/img/loading.gif" lazyload class="">
+<p>目标：在看到来自本地DNS的查询后伪造DNS应答</p>
+<h1>5 远程DNS缓存中毒攻击</h1>
+<h2 id="5-1-概述">5.1 概述</h2>
+<p><strong>挑战</strong>：对于与本地DNS服务器不在同一网络上的远程攻击者，欺骗回复要困难得多，因为他们需要猜测查询数据包使用的两个随机数：</p>
+<ul>
+<li>源端口号（16位随机数）</li>
+<li>事务ID（16位随机数）</li>
+</ul>
+<p><strong>缓存效果</strong>：如果一次尝试失败，local DNS 将缓存实际回复；攻击者需要等待缓存超时以进行下一次尝试。</p>
+<h2 id="5-2-Kaminsky攻击">5.2 Kaminsky攻击</h2>
+<h3 id="5-2-1-概述">5.2.1 概述</h3>
+<p>如何在不担心缓存效应的情况下不断伪造回复？</p>
+<p>卡明斯基的想法：每次询问不同的问题，因此缓存答案并不重要，并且本地DNS服务器每次都会发送一个新的查询。在<u>授权部分</u>提供伪造答案</p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.12.png" srcset="/img/loading.gif" lazyload class="">
+<h3 id="5-2-2-Kaminsky攻击：一个示例响应">5.2.2 Kaminsky攻击：一个示例响应</h3>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.13.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>QUESTION SECTION部分的<code>twysw.example.com</code>是一个随机生成的名称，会随着每次攻击尝试而更改。</li>
+<li>ANSER SECTION部分的回应并不重要</li>
+<li>AUTHORITY SECTION部分的内容是我们希望本地DNS服务器缓存的内容，它告诉DNS服务器使用<code>ns.attacker32.com</code>作为<code>example.com</code>域的名称服务器</li>
+</ul>
+<p><strong>IP和UDP头</strong></p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.14.png" srcset="/img/loading.gif" lazyload class="">
+<p><strong>DNS Header和有效载荷</strong></p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.15.png" srcset="/img/loading.gif" lazyload class="">
+<h1>6 来自恶意DNS服务器的回复伪造攻击</h1>
+<p>当用户访问网站（<a target="_blank" rel="noopener" href="http://xn--attacker32-lv8r.com">如attacker32.com</a>）时，DNS查询最终将到达attacker32.com域的权威名称服务器。除了在响应的应答部分提供IP地址外，DNS服务器还可以在授权和其他部分提供信息。攻击者可以使用这些部分提供欺诈信息。</p>
+<p><strong>附加部分的假数据</strong></p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.16.png" srcset="/img/loading.gif" lazyload class="">
+<p>ADDITIONAL SECTION部分的数据超出区域，会被丢弃。如果不丢弃，它们将导致安全问题。</p>
+<p><strong>权限部分的假数据</strong></p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.17.png" srcset="/img/loading.gif" lazyload class="">
+<p>AUTHORITY SECTION部分中<code>example.net</code>是被允许的，而<code>facebook.com</code>是不被允许的，因为它超出了区域，应该被丢弃。</p>
+<p><strong>来自恶意DNS服务器的回复伪造攻击</strong></p>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.19.png" srcset="/img/loading.gif" lazyload class="">
+<p>AUTHORITY SECTION部分中<code>www.facebook.com</code>被允许的.</p>
+<p>ADDITIONAL SECTION部分的<code>www.facebook.com</code>不被允许（区域外）。本地DNS服务器将自行获取此主机名的IP地址。</p>
+<p><strong>反向DNS查找中的应答伪造</strong></p>
+<p>例子：给定IP地址128.230.171.184，DNS解析器构造一个“假名称”184.171.230.128.in-addr.arpa，然后通过迭代过程发送查询。在dig命令中使用@option模拟整个反向查找过程。</p>
+<ol>
+<li>
+<p>询问根服务器。得到in-addr.arpa区域的名称服务器。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dig</span> <span class="hljs-variable">@a</span>.root-servers.net -x <span class="hljs-number">128.230.171.184</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.20.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>询问in-addr.arpa区域的名称服务器。为128.in-addr.arpa区域提供名称服务器。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dig</span> <span class="hljs-variable">@f</span>.in-addr-servers.arpa -x <span class="hljs-number">128.230.171.184</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.21.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>询问128.in-appr.arpa区域的名称服务器。得到203.128.in-addr.arpa区域的名称服务器。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dig</span> <span class="hljs-variable">@r</span>.arin.net -x <span class="hljs-number">128.230.171.184</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.22.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>询问230.128.in-appr.arpa区域的名称服务器。得到了最终结果。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dig</span> <span class="hljs-variable">@ns2</span>.syr.edu -x <span class="hljs-number">128.230.171.184</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.23.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<p><strong>问题</strong></p>
+<p>可以使用从反向DNS查找获得的主机名作为访问控制的基础吗？</p>
+<p><strong>回答</strong></p>
+<p>如果数据包来自攻击者，则反向DNS查找将返回到攻击者的名称服务器。攻击者可以使用他们想要的任何主机名进行回复。</p>
+<h1>7 防止DNS缓存中毒攻击</h1>
+<h2 id="7-1-DNSSEC">7.1 DNSSEC</h2>
+<ul>
+<li>DNSSEC是DNS的一组扩展，旨在对DNS数据提供身份验证和完整性检查。</li>
+<li>使用DNSSEC，来自DNSSEC保护区的所有答案都经过数字签名。</li>
+<li>通过检查数字签名，DNS解析器能够检查信息是否真实。</li>
+<li>DNS缓存中毒将被此机制击败，因为将检测到任何虚假数据，因为它们将无法通过签名检查。</li>
+</ul>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.24.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="7-2-使用TLS-SSL进行保护">7.2 使用TLS/SSL进行保护</h2>
+<ul>
+<li>传输层安全（TLS/SSL）协议提供了针对缓存中毒攻击的解决方案。</li>
+<li>在使用DNS协议获取域名（<a target="_blank" rel="noopener" href="http://www.example.net">www.example.net</a>）的IP地址后，计算机将询问IP地址的所有者（服务器）<a target="_blank" rel="noopener" href="http://xn--www-c88dt4yq92a.example.net">是否为www.example.net</a>。</li>
+<li>服务器必须提供由受信任实体签名的公钥证书，并证明它知道与www.example.net关联的相应私钥（即，它是证书的所有者）。</li>
+<li>HTTPS构建在TLS/SSL之上。它可以击败DNS缓存中毒攻击。</li>
+</ul>
+<h2 id="7-3-DNSSEC与TLS-SSL比较">7.3 DNSSEC与TLS/SSL比较</h2>
+<ul>
+<li>DNSSEC和TLS/SSL都基于公钥技术，但它们的信任链不同。</li>
+<li>DNSSEC使用DNS区域层次结构提供信任链，因此<strong>父区域中的名称服务器</strong>为子区域中的名称服务器提供担保。</li>
+<li>TLS/SSL依赖于<strong>公钥基础设施</strong>，该基础设施包含为其他计算机提供担保的证书颁发机构。</li>
+</ul>
+<h1>8 DNS重新绑定攻击</h1>
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.26.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/11.27.png" srcset="/img/loading.gif" lazyload class="">
+<h1>9 DNS服务器上的拒绝服务攻击</h1>
+<h2 id="9-1-对根服务器和TLD服务器的攻击">9.1 对根服务器和TLD服务器的攻击</h2>
+<ul>
+<li>
+<p>根名称服务器：如果攻击者能够关闭根区域的服务器，则可以关闭整个Internet。但是，攻击根服务器很困难：</p>
+<ul>
+<li>
+<p>根名称服务器是高度分布式的。有13（A，B……M）个根名称服务器（服务器场），由大量冗余计算机组成，以提供可靠的服务。</p>
+<p>（同一个根域名服务器部署在不同大洲的多个地点。通过IP anycast技术实现请求时，其中一个服务器就会接受并回复。这项技术使用边界网关协议（BGP）。在多个不同地点 同时广播同一个目标IP地址，BGP路由器会从中选择一个来实现路由目的。）</p>
+</li>
+<li>
+<p>由于TLD的名称服务器通常缓存在本地DNS服务器中，因此在缓存过期（48小时）之前不需要查询根服务器。（一旦获得顶级域名服务器ip地址，接下来再请求就不是从root服务器开始了）对根服务器的攻击必须持续很长时间才能看到显著效果。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>TLD的名称服务器更容易受到攻击。TLD（如gov、com、net等）具有相当强的抵御DOS攻击的基础设施。但某些不太有名的TLD（如国家代码TLD）没有足够的框架结构。因此，攻击者可以关闭目标国家的互联网。</p>
+</li>
+</ul>
+<h2 id="9-2-对特定域的名称服务器的攻击">9.2 对特定域的名称服务器的攻击</h2>
+<p>案件：</p>
+<p>1、UltraDNS是许多主要电子商务公司的DNS提供商，如亚马逊、沃尔玛、Expedia。2004年，针对该提供商的DOS启动，该服务中断了一个小时。</p>
+<p>2、Dyn网络：2016年，针对CNN、BBC、HBO、PayPaletc等公司的一家主要DNS服务提供商发起了多起攻击。这些攻击被认为是通过僵尸网络发起的，僵尸网络由不同的设备组成，如IP摄像机、婴儿监视器等。这导致了主要的互联网服务不可用。</p>
+<p>3、DNSPod：2009年，一家中国域名服务提供商的多个DNS服务器遭到DDoS攻击。此次攻击的目标是一家在中国广受欢迎的视频流媒体网站（<a target="_blank" rel="noopener" href="http://Baofeng.com">Baofeng.com</a>）。攻击的第二天，当其他服务器先前缓存的DNS响应超时时，用户机器上的暴风媒体播放器因攻击而无法找到服务器的IP地址。由于媒体播放器软件中的缺陷，他们没有等待，而是以更快的速度连续发送DNS查询。由于大量的DNS查询，导致中国电信（ISP）网络充斥和拥塞。它影响了20个省份，被称为中国最严重的互联网事件。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/12_%E7%86%94%E6%96%AD%E4%B8%8E%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/" title="熔断与幽灵攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">熔断与幽灵攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/" title="假消息攻-TCP攻击">
+                        <span class="hidden-mobile">假消息攻-TCP攻击</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

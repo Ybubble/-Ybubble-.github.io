@@ -1,0 +1,885 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图的定义和术语   图：Graph&#x3D;(V,E)。V：顶点(数据元素)的有穷非空集合； E：边的有穷集合。   完全图：  完全无向图：n(n-1)&#x2F;2 条边 完全有向图：n(n-1) 条边    关联(依附)：边&#x2F;弧与顶点之间的关系。存在(v~i~ , v~j~ )&#x2F; &lt;v~i~,v~j~&gt;， 则称该边&#x2F;弧关联于v~i~和v~j~   顶点的度：TD(v)&#x3D;ID(v)+OD(v)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-图（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="图的定义和术语   图：Graph&#x3D;(V,E)。V：顶点(数据元素)的有穷非空集合； E：边的有穷集合。   完全图：  完全无向图：n(n-1)&#x2F;2 条边 完全有向图：n(n-1) 条边    关联(依附)：边&#x2F;弧与顶点之间的关系。存在(v~i~ , v~j~ )&#x2F; &lt;v~i~,v~j~&gt;， 则称该边&#x2F;弧关联于v~i~和v~j~   顶点的度：TD(v)&#x3D;ID(v)+OD(v)">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/8.jpg">
+<meta property="article:published_time" content="2024-02-19T06:14:52.435Z">
+<meta property="article:modified_time" content="2024-02-19T14:33:40.385Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/19/%E5%9B%BE1/3.jpg">
+  
+  
+  
+  <title>数据结构-图（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构-图（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-19 14:14" pubdate>
+          February 19, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构-图（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="图的定义和术语">图的定义和术语</h3>
+<ul>
+<li>
+<p>图：Graph=(V,E)。V：顶点(数据元素)的<strong>有穷非空</strong>集合； E：边的<strong>有穷</strong>集合。</p>
+</li>
+<li>
+<p>完全图：</p>
+<ul>
+<li>完全无向图：n(n-1)/2 条边</li>
+<li>完全有向图：n(n-1) 条边</li>
+</ul>
+</li>
+<li>
+<p>关联(依附)：边/弧与顶点之间的关系。存在(v~i~ , v~j~ )/ &lt;v~i~,v~j~&gt;， 则称该边/弧关联于v~i~和v~j~</p>
+</li>
+<li>
+<p>顶点的度：TD(v)=ID(v)+OD(v)</p>
+<ul>
+<li>
+<p>当有向图中仅1个顶点的入度为0,其余顶点的入度均为1， 此时形状：:deciduous_tree:,而且是有向树</p>
+<img src="/2024/02/19/%E5%9B%BE1/3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>路径：接续的边构成的<strong>顶点序列</strong>。</p>
+</li>
+<li>
+<p>路径长度：路径上边或弧的数目/权值之和。</p>
+</li>
+<li>
+<p>回路(环)：第一个顶点和最后一个顶点相同的路径。</p>
+</li>
+<li>
+<p>简单路径：序列中<strong>顶点不重复</strong>出现的路径。</p>
+</li>
+<li>
+<p>简单回路(简单环)：除路径起点和终点相同外，其余顶点均不相同的路径。</p>
+</li>
+<li>
+<p>连通图：在<strong>无向图</strong>G=( V, {E} )中，若对任何两个顶点 v、u 都存 在从 v 到 u 的路径，则称G是连通图。</p>
+</li>
+<li>
+<p>强连通图：在<strong>有向图</strong>G=( V, {E} )中，若对任何两个顶点 v、u 都存 在从 v 到 u 的路径，则称G是强连通图。</p>
+</li>
+<li>
+<p>带<strong>权</strong>的图称为<strong>网</strong>。</p>
+</li>
+<li>
+<p><strong>连通分量</strong>：<strong>无向图</strong>G 的<strong>极大连通子图</strong>称为G的连通分量。</p>
+<ul>
+<li>
+<p>极大连通子图意思是：该子图是G连通子图，将G的任何不在该子图中的顶点加入，子图不再连通。</p>
+<img src="/2024/02/19/%E5%9B%BE1/4.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p><strong>强连通分量</strong>：<strong>有向图</strong>G的<strong>极大强连通子图</strong>称为G的强连通分量。</p>
+<ul>
+<li>
+<p>极 大强连通子图意思是：该子图是G的强连通子图，将G的任何不在该子图中的顶点加入，子图不再是强连通的。</p>
+<img src="/2024/02/19/%E5%9B%BE1/5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p><strong>生成树</strong>：包含<strong>无向图</strong>G<strong>所有顶点</strong>的<strong>极小连通子图</strong>。</p>
+<img src="/2024/02/19/%E5%9B%BE1/7.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p><strong>极小连通子图</strong>：该子图是G的<strong>连通子图</strong>，在该子图中<strong>删除</strong>任何一条边，子图<strong>不再连通</strong>。</p>
+</li>
+<li>
+<p><strong>生成森林</strong>：对<strong>非连通图</strong>，由各个<strong>连通分量</strong>的<strong>生成树</strong>的<strong>集合</strong>。</p>
+</li>
+</ul>
+<h3 id="图的存储结构">图的存储结构</h3>
+<img src="/2024/02/19/%E5%9B%BE1/8.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="邻接矩阵-的存储表示">==邻接矩阵==的存储表示</h6>
+<ul>
+<li>
+<p>顶点表：记录各个顶点的信息</p>
+</li>
+<li>
+<p>邻接矩阵：表示各个顶点之间的关系</p>
+</li>
+<li>
+<p>设图 A = (V, E) 有n个顶点，则图的邻接矩阵是一个二维数组A.Edge[n] [n]，定义为：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mi mathvariant="normal">.</mi><mi>E</mi><mi>d</mi><mi>g</mi><mi>e</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>1</mn><mo separator="true">,</mo><mtext>如果</mtext><mo>&lt;</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo>&gt;</mo><mo>∈</mo><mi>E</mi><mtext>或者</mtext><mo stretchy="false">(</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo>∈</mo><mi>E</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0</mn><mo separator="true">,</mo><mi>o</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>s</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">A.Edge[i][j]=\begin{cases}
+1, 如果&lt;i,j&gt;∈E或者(i,j)∈E\\
+0, others\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">如果</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord cjk_fallback">或者</span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">ers</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li>无向图的邻接矩阵是<strong>对称</strong>的；</li>
+<li>顶点 i 的<strong>度</strong>＝第 i 行 (列) 中1 的个数；</li>
+<li>特别：完全图的邻接矩阵中，对角元素为0，其余1。</li>
+</ul>
+</li>
+<li>
+<p>在<strong>有向图</strong>的邻接矩阵中， 第 i <strong>行</strong>含义：以结点vi为尾的弧(即<strong>出度边</strong>）； 第 i <strong>列</strong>含义：以结点v~i~为头 的弧(即<strong>入度</strong>边）</p>
+<p>分析1：有向图的邻接矩阵<strong>可能是不对称的</strong>。 分析2：顶点的出度 = 第 i 行元素之和顶点的入度 = 第 i 列元素之和。<strong>顶点的度</strong>=第 i 行元素之和 + 第 i 列元素之和</p>
+</li>
+<li>
+<p>网（有权图）的邻接矩阵表示法</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mi mathvariant="normal">.</mi><mi>E</mi><mi>d</mi><mi>g</mi><mi>e</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo stretchy="false">[</mo><mi>j</mi><mo stretchy="false">]</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>W</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo separator="true">,</mo><mtext>如果</mtext><mo>&lt;</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo>&gt;</mo><mo>∈</mo><mi>E</mi><mtext>或者</mtext><mo stretchy="false">(</mo><msub><mi>v</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>∈</mo><mi>V</mi><mi>R</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi mathvariant="normal">∞</mi><mo separator="true">,</mo><mtext>无边（弧）</mtext></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">A.Edge[i][j]=\begin{cases}W_{ij}, 如果&lt;v_i,v_j&gt;∈E或者(v_i,v_j)∈VR\\∞, 无边（弧）\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">如果</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord cjk_fallback">或者</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">∞</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">无边（弧）</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>优缺点：</p>
+<ul>
+<li>
+<p>优：容易实现图的操作，如：求某顶点的<strong>度</strong>、判断顶点之间<strong>是否有边</strong>、<strong>找顶点的邻接</strong>点等等</p>
+</li>
+<li>
+<p>缺：n个顶点需要<strong>n*n</strong>个单元存储边;<strong>空间效率为O(n^2^ )</strong>。对稀疏图而言尤其浪费空间</p>
+<p>​        不便千增加和删除顶点</p>
+<p>​        不便千统计边的数目，需要扫描邻接矩阵所有元素才能统计完毕，时间复杂度为O(n^2^)</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//用两个数组分别存储顶点表和临界矩阵</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxInt 32767         <span class="hljs-comment">//表示极大值，∞</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100			 <span class="hljs-comment">//最大顶点数</span></span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">char</span> VexTexType;	 <span class="hljs-comment">//假设顶点的数据类型为字符型</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> ArcType;		 <span class="hljs-comment">//假设便的权值类型为整型</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span><br>    VerTexType vex[MvNum];	    <span class="hljs-comment">//顶点表</span><br>    ArcType arcs[MVNum][MVNum]; <span class="hljs-comment">//邻接矩阵</span><br>    <span class="hljs-type">int</span> vexnum,arcnum;			<span class="hljs-comment">//图的当前点数和边数</span><br>&#125;AMGraph;<br></code></pre></td></tr></table></figure>
+<h4 id="采用邻接矩阵表示法创建无向网G，时间复杂度：O-n-2">采用邻接矩阵表示法创建无向网G，时间复杂度：O(n^2^)</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C">Status <span class="hljs-title function_">CreateUDN</span><span class="hljs-params">(AMGraph &amp;G)</span>&#123;<br>    <span class="hljs-built_in">cin</span>&gt;&gt;G.vexnum&gt;&gt;G.arcnum;        <span class="hljs-comment">//①输入总顶点数</span><br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;G.vexnum;i++)			<span class="hljs-comment">//②依次输入顶点信息存入顶点表中</span><br>        <span class="hljs-built_in">cin</span>&gt;&gt;G.vex[i];<br>    <br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;G.vexnum;i++)			<span class="hljs-comment">//③初始化邻接矩阵，边的权值均置为极大值</span><br>        <span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>;j&lt;G.vexnum;j++)<br>            G.arcs[i][j]=MaxInt;<br>    <br>    <span class="hljs-keyword">for</span>(k=<span class="hljs-number">0</span>;k&lt;G.arcnum;k++)&#123;		<span class="hljs-comment">//④构造邻接矩阵</span><br>        <span class="hljs-built_in">cin</span>&gt;&gt;v1&gt;&gt;v2&gt;&gt;w;				<span class="hljs-comment">//输入一条边依附的顶点及权值</span><br>        i=LocateVex(G,v1);			<span class="hljs-comment">//确定v1和v2在G中的位置</span><br>        j=LocateVex(G,v2);<br>        G.arcs[i][j]=w;				<span class="hljs-comment">//边&lt;v1,v2&gt;的权值置为w</span><br>        G.arcs[j][i]=G.arcs[i][j];  <span class="hljs-comment">//对称边的设置</span><br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> ok;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="定位">定位</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">LocateVex</span><span class="hljs-params">(AMGraph G,VexTexType u)</span><br>&#123;<span class="hljs-comment">//存在则返回u在顶点表中的下标;否则返回-1</span><br><span class="hljs-type">int</span> i;<br><span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;G.vexnum;++i)<br>	<span class="hljs-keyword">if</span>(u==G.vex[i])<br>		<span class="hljs-keyword">return</span> i;<br><span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h6 id="邻接表-的存储表示">==邻接表==的存储表示</h6>
+<ul>
+<li>
+<p>数组表示法不适合存储稀疏图，提出邻接表表示法（链式）</p>
+</li>
+<li>
+<p>对每个<strong>顶点v~i~</strong> 建立一个单链表，把与vi有关联（依附于v~i~)的<strong>边</strong>的信息链接起来。该单链表中每个结点设为3个域(邻接点域[adjvex]，链域[nextarc]，数据域[info])；</p>
+</li>
+<li>
+<p>每个单链表有一个<strong>头结点</strong>（设为2个域），存v~i~信息；</p>
+</li>
+<li>
+<p>每个单链表的头结点<strong>另外用顺序存储</strong>结构存储。</p>
+</li>
+<li>
+<p><strong>空间效率</strong>为<strong>O(n+2e)</strong>。 若是稀疏图(e&lt;&lt;n2)，比邻接矩阵表示法O(n^2^)省空间。</p>
+</li>
+<li>
+<p>对于<strong>无向图</strong>TD(Vi)=<strong>单链表</strong>中链接的<strong>结点</strong>个数</p>
+</li>
+<li>
+<p>对于<strong>有向图</strong>： OD(Vi)＝单链出边表（邻接表）中链接的结点数</p>
+<p>​						 ID(Vi)＝<strong>邻接点域</strong>（出现在其他链表中）为Vi的弧个数</p>
+<p>​						 TD(Vi) = OD( Vi ) + ID( Vi )</p>
+</li>
+<li>
+<p>优缺点：</p>
+<ul>
+<li>
+<p>优：<strong>空间效率高</strong>，容易寻找顶点的<strong>邻接点</strong>；</p>
+</li>
+<li>
+<p>缺：判断两顶点间是否有边或弧，需搜索两结点对应的单链表，没有邻接矩阵方便。</p>
+<p>​		对于无向图而言，邻接则增节点，导致每条边都要存储两遍（解决：采用邻接多重表）</p>
+<p>​		对于有向图而言，链表仅存出边或入边的相关结点，导致求结点的度困难（解决：采用十字链表）</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100 <span class="hljs-comment">//最大顶点数</span></span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ArcNode</span>&#123;</span> <span class="hljs-comment">//边结点</span><br>	<span class="hljs-type">int</span> adjvex; <span class="hljs-comment">//该边所指向的顶点的位置</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ArcNode</span> * <span class="hljs-title">nextarc</span>;</span> <span class="hljs-comment">//指向下一条边的指针</span><br>	OtherInfo info; <span class="hljs-comment">//和边相关的信息</span><br>&#125;ArcNode; <br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">VNode</span>&#123;</span> <br>	VerTexType data; <span class="hljs-comment">//顶点信息</span><br>	ArcNode * firstarc; <span class="hljs-comment">//指向第一条依附该顶点的边的指针</span><br>&#125;VNode, AdjList[MVNum]; <span class="hljs-comment">//AdjList表示邻接表类型</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span> <br>    AdjList vertices; <span class="hljs-comment">//邻接表 ，等价于 VNode vertices[MVNum] </span><br>    <span class="hljs-type">int</span> vexnum, arcnum; <span class="hljs-comment">//图的当前顶点数和边数</span><br>&#125;ALGraph; <br></code></pre></td></tr></table></figure>
+<h4 id="用邻接表表示法创建无向网">用邻接表表示法创建无向网</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C">Status <span class="hljs-title function_">CreateUDG</span><span class="hljs-params">(ALGraph &amp;G)</span>&#123; <br>        <span class="hljs-comment">//采用邻接表表示法，创建无向图G </span><br>        <span class="hljs-built_in">cin</span>&gt;&gt;G.vexnum&gt;&gt;G.arcnum; <span class="hljs-comment">//①输入总顶点数，总边数</span><br>        <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i&lt;G.vexnum; ++i)&#123; <span class="hljs-comment">//②输入各点，构造表头结点表</span><br>            <span class="hljs-built_in">cin</span>&gt;&gt;G.vertices[i].data; <span class="hljs-comment">//②输入顶点值</span><br>            G.vertices[i].firstarc=<span class="hljs-literal">NULL</span>; <span class="hljs-comment">//②初始化表头结点的指针域为NULL </span><br>		&#125;<br>    <br>	<span class="hljs-keyword">for</span>(k = <span class="hljs-number">0</span>; k&lt;G.arcnum;++k)&#123; <span class="hljs-comment">//输入各边，③构造邻接表</span><br>        <span class="hljs-built_in">cin</span>&gt;&gt;v1&gt;&gt;v2; <span class="hljs-comment">//输入一条边依附的两个顶点</span><br>        i = LocateVex(G, v1); j = LocateVex(G, v2); <br>        p1=new ArcNode; <span class="hljs-comment">//生成一个新的边结点*p1 </span><br>        p1-&gt;adjvex=j; <span class="hljs-comment">//邻接点序号为j </span><br>        p1-&gt;nextarc= G.vertices[i].firstarc; G.vertices[i].firstarc=p1; <br>        <span class="hljs-comment">//将新结点*p1插入顶点vi的边表头部 （头插法）</span><br>        p2=new ArcNode; <span class="hljs-comment">//生成另一个对称的新的边结点*p2 </span><br>        p2-&gt;adjvex=i; <span class="hljs-comment">//邻接点序号为i </span><br>        p2-&gt;nextarc= G.vertices[j].firstarc; G.vertices[j].firstarc=p2; <br>        <span class="hljs-comment">//将新结点*p2插入顶点vj的边表头部</span><br>    &#125;<span class="hljs-comment">//for </span><br>    <span class="hljs-keyword">return</span> OK; <br>&#125;<span class="hljs-comment">//CreateUDG</span><br></code></pre></td></tr></table></figure>
+<h3 id="邻接矩阵与邻接表表示法的关系">邻接矩阵与邻接表表示法的关系</h3>
+<ul>
+<li>
+<p>联系：邻接表中每个链表对应 于邻接矩阵中的一行，链表中结点个数等于一行中非零元素 的个数。</p>
+</li>
+<li>
+<p>区别：</p>
+<p>​	① 对于任一确定的无向图，邻接矩阵是唯一的（行列号与顶点编号一致，但邻接表不唯一（链接次序与顶点编号无关）。</p>
+<p>​	② 邻接矩阵的空间复杂度为O(n^2),而邻接 表的空间复杂度为O(n+e)。</p>
+</li>
+<li>
+<p>用途：邻接矩阵多用于稠密图，而邻接表多用于稀疏图</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">时间效率</th>
+<th style="text-align:center">空间效率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">邻接矩阵</td>
+<td style="text-align:center">O(n^2^)</td>
+<td style="text-align:center">O(n^2^)</td>
+</tr>
+<tr>
+<td style="text-align:center">邻接表</td>
+<td style="text-align:center">O(n+e)</td>
+<td style="text-align:center">O(n+2e)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="十字链表-Orthogonal-List">十字链表(Orthogonal List)</h6>
+<ul>
+<li>
+<p>十字链表是<strong>有向图</strong>的另一种链式存储结构是将有向图的正邻接表和逆邻接表结合起来得到的一种链表。</p>
+</li>
+<li>
+<p>在这种结构中，每条弧的弧头结点和弧尾结点都存放在链表中，并将弧结点分别组织到以弧尾结点为头结点(顶点)和以弧头结点为头结点(顶点)的链表中。</p>
+</li>
+<li>
+<p>若将有向图的邻接矩阵看成是稀疏矩阵的话，则十字链表也可以看成是邻接矩阵的链表存储结构</p>
+</li>
+<li>
+<p>在图的十字链表中，弧结点所在的链表非循环链表，结点之间相对位置自然形成，不一定按顶点序号有序，表头结点即<strong>顶点结点</strong>，它们之间不是链接，而是<strong>顺序存储</strong>。</p>
+</li>
+<li>
+<p>弧结点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">tailvex</th>
+<th style="text-align:center">headvex</th>
+<th style="text-align:center">hlink</th>
+<th style="text-align:center">tlink</th>
+<th style="text-align:center">info</th>
+</tr>
+</thead>
+</table>
+<p>tailvex：尾域，指示弧尾顶点在图中的位置</p>
+<p>headvex：头域，指示弧头顶点在图中的位置</p>
+<p>hlink：指向弧头相同的下一条弧</p>
+<p>tlink：指向弧尾相同的下一条弧</p>
+<p>info：指向该弧的相关信息</p>
+<p>弧头相同的弧在同一链表上，弧尾相同的弧也在同一链表上，它们的头结点即为顶点结点</p>
+</li>
+<li>
+<p>顶点结点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">data</th>
+<th style="text-align:center">firstin</th>
+<th style="text-align:center">firstout</th>
+</tr>
+</thead>
+</table>
+<p>data：存储和顶点相关的信息</p>
+<p>firstin：指向以该顶点为弧头的第一个弧结点</p>
+<p>firstout：指向以该顶点为弧尾的第一个弧结点</p>
+</li>
+<li>
+<p>:eyes:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">//- - - - -有向图的十字链表存储表示－ －－－－</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_ VERTEX_NUM 20 </span><br><span class="hljs-keyword">typedef</span> strut ArcBox&#123; <br>	<span class="hljs-type">int</span> tailvext,headvex; <span class="hljs-comment">//该弧的尾和头顶点的位置</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ArcBox</span> *<span class="hljs-title">hlink</span>, *<span class="hljs-title">tlink</span>;</span> <span class="hljs-comment">//分别为弧头相同和弧尾相同的弧的链域</span><br>	InfoType *info; <span class="hljs-comment">//该弧相关信息的指针</span><br>&#125; ArcBox; <br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">VexNode</span>&#123;</span><br>	VertexType data; <br>	ArcBox *firstin,*firstout; <span class="hljs-comment">//分别指向该顶点第一条人弧和出弧</span><br>&#125;VexNode;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span> <br>	VexNode xlist[MAX_VERTEX_NUM]; <span class="hljs-comment">//表头向量</span><br>	<span class="hljs-type">int</span> vexnnm, arcnum; <span class="hljs-comment">//有向图的当前顶点数和弧数</span><br>&#125;OLGraph;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="邻接多重表-Adjacency-Multilist">邻接多重表 (Adjacency Multilist)</h6>
+<ul>
+<li>
+<p>邻接多重表(Adjacency Multilist)是<strong>无向图</strong>的另一种链式存储结构</p>
+</li>
+<li>
+<p>邻接表是无向图的一种有效的存储结构，很容易求得<strong>顶点和边的信息</strong>。但在邻接表中每一条边有两个结点，分别在第 i 个和第 j 个链表中，在涉及到<strong>边的操作</strong>会带来不便（例如：删除边要重复两次）</p>
+</li>
+<li>
+<p>邻接多重表的结构和十字链表类似，每条边用一个结点表示；邻接多重表中的顶点结点结构与邻接表中的完全相同</p>
+</li>
+<li>
+<p>边结点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">mark</th>
+<th style="text-align:center">ivex</th>
+<th style="text-align:center">ilink</th>
+<th style="text-align:center">jvex</th>
+<th style="text-align:center">jlink</th>
+<th style="text-align:center">info</th>
+</tr>
+</thead>
+</table>
+<p>mark：标志域，用以标记该边是否被搜索过</p>
+<p>ivex、jvex：该边依附的两个顶点在图中的位置</p>
+<p>ilink：指向下一条依附于顶点 ivex 的边</p>
+<p>jlink：指向下一条依附于顶点 jvex 的边</p>
+<p>info：指向和边相关的各种信息的指针域</p>
+</li>
+<li>
+<p>顶点结点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">data</th>
+<th style="text-align:center">firstedge</th>
+</tr>
+</thead>
+</table>
+<p>data：存储和该顶点相关的信息</p>
+<p>firstedge：指示第一条依附于该顶点的边</p>
+
+</li>
+<li>
+<p>:eyes:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">//- - - - -无向图的邻接多重表存储表示－－－－－</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_VERTEX_NUM 20</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">enum</span>&#123;</span>unvisited,visited&#125; Visitlf;<br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">EBox</span></span><br><span class="hljs-class">&#123;</span><br>    Visitlf mark; <span class="hljs-comment">//访问标记</span><br>	<span class="hljs-type">int</span> ivex, jvex; <span class="hljs-comment">//该边依附的两个顶点位置</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">EBox</span> *<span class="hljs-title">ilink</span>, *<span class="hljs-title">jlink</span>;</span> <span class="hljs-comment">//分别指向依附这两个顶点的下一条边</span><br>	InfoType *info; <span class="hljs-comment">//该边信息指针</span><br>&#125;Ebox; <br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">VexBox</span> </span><br><span class="hljs-class">&#123;</span> <br>	VertexType data; <br>	EBox *firstedge; <span class="hljs-comment">//指向第一条依附该结点的边</span><br>&#125;VexBox; <br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span>&#123;</span> <br>	VexBox adjmulist[MAX_VERTEX_NUM]; <br>	<span class="hljs-type">int</span> vexnum, edgenum; <span class="hljs-comment">//无向图的当前顶点数和边数</span><br>&#125;AMLGraph; <br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/19/%E5%9B%BE2/" title="数据结构-图（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构-图（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/14/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

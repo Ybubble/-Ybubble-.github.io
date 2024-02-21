@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 概述 环境变量概念   一组动态的定义值   操作系统运行环境的一部分   影响正在运行进程的行为方式（加载哪些外部DLL）   在Unix中提出，也被微软操作系统采用   示例：PATH变量 当执行一个程序时，如果没有提供完整的路径，shell进程将使用环境变量来找到程序的位置   2 如何访问环境变量 2.1 从主函数中访问  2.2 更可靠的方法：使用全局变量  3 进程如何获取环境变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="环境变量">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 概述 环境变量概念   一组动态的定义值   操作系统运行环境的一部分   影响正在运行进程的行为方式（加载哪些外部DLL）   在Unix中提出，也被微软操作系统采用   示例：PATH变量 当执行一个程序时，如果没有提供完整的路径，shell进程将使用环境变量来找到程序的位置   2 如何访问环境变量 2.1 从主函数中访问  2.2 更可靠的方法：使用全局变量  3 进程如何获取环境变量">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.1.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.2.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.3.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.4.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.5.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.6.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.7.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.9.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.11.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.526Z">
+<meta property="article:modified_time" content="2024-02-21T14:59:02.714Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.1.png">
+  
+  
+  
+  <title>环境变量 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="环境变量"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">环境变量</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 概述</h1>
+<p><strong>环境变量概念</strong></p>
+<ul>
+<li>
+<p>一组动态的定义值</p>
+</li>
+<li>
+<p>操作系统运行环境的一部分</p>
+</li>
+<li>
+<p>影响正在运行进程的行为方式（加载哪些外部DLL）</p>
+</li>
+<li>
+<p>在Unix中提出，也被微软操作系统采用</p>
+</li>
+<li>
+<p>示例：PATH变量</p>
+<p>当执行一个程序时，如果没有提供完整的路径，shell进程将使用环境变量来找到程序的位置</p>
+</li>
+</ul>
+<h1>2 如何访问环境变量</h1>
+<h2 id="2-1-从主函数中访问">2.1 从主函数中访问</h2>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.1.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-2-更可靠的方法：使用全局变量">2.2 更可靠的方法：使用全局变量</h2>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.2.png" srcset="/img/loading.gif" lazyload class="">
+<h1>3 进程如何获取环境变量</h1>
+<p>进程可以通过以下两种方式来获取环境变量：</p>
+<ul>
+<li>
+<p>如果使用fork()创建了一个新进程，则子进程将继承其父进程的环境变量。</p>
+</li>
+<li>
+<p>如果进程使用execve()启动一个新程序，在此场景中内存空间被覆盖，所有旧环境变量将丢失。可以以一种特殊的方式调用执行 lost.Execve()，以将环境变量从一个进程传递给另一个进程。</p>
+</li>
+</ul>
+<h1>4 环境变量的内存位置</h1>
+<ul>
+<li>envp和environ最初指向同一个地方</li>
+<li>envp只能在主函数中可访问，而 environ 是一个全局变量</li>
+<li>当对环境变量进行更改时（例如添加新变量），存储环境变量的位置可能会移动到堆中，因此environ将发生更改（envp不会更改）</li>
+</ul>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.3.png" srcset="/img/loading.gif" lazyload class="">
+<h1>5 shell命令变量和环境变量</h1>
+<ul>
+<li>
+<p>人们经常认为shell命令变量和环境变量是相同的。</p>
+</li>
+<li>
+<p>shell命名变量：</p>
+<ul>
+<li>
+<p>shell使用的内部变量。</p>
+</li>
+<li>
+<p>shell提供了内置命令，允许用户创建、分配和删除Shell变量。</p>
+</li>
+<li>
+<p>在这个示例中，我们创建了一个名为FOO的shell变量。</p>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.4.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<h1>6 /proc 文件系统的知识</h1>
+<ul>
+<li>/proc是linux中的一个虚拟文件系统。它包含每个进程的一个目录，使用进程ID作为目录的名称</li>
+<li>每个进程目录都有一个名为environ的虚拟文件，其中包含进程的环境
+<ul>
+<li>虚拟文件/proc/932/environ 包含进程932的环境变量</li>
+<li>命令“<code>strings /proc/$$/environ</code>”将打印出当前进程的环境变量(shell将把$$替换为它自己的进程ID)</li>
+</ul>
+</li>
+<li>当在bash shell中调用env程序时，它将在子进程中运行。因此，它打印出shell子进程的环境变量，而不是它自己的环境变量。</li>
+</ul>
+<h1>7 set-UID概念</h1>
+<ul>
+<li>每个进程都有两个用户ID。
+<ul>
+<li>Real UID (RUID):确定进程的真正所有者</li>
+<li>Effective UID (EUID): 标识进程的权限
+<ul>
+<li>访问控制基于EUID</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当执行正常程序时 , RUID = EUID, 它们都等于运行程序的用户的ID</li>
+<li>当执行Set-UID时, RUID ≠ EUID. RUID还是用户 ID, 但是 EUID 是程序 owner的 ID.
+<ul>
+<li>如果程序归root所有，则程序以root权限运行。</li>
+</ul>
+</li>
+<li>允许用户以程序所有者的权限运行程序。</li>
+<li>允许用户以临时提升的权限运行程序</li>
+</ul>
+<h1>8 环境变量的攻击面</h1>
+<p>环境变量隐藏使用是危险的。由于用户可以设置环境变量，因此它们将成为Set-UID程序的攻击面的一部分。</p>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.5.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="8-1-通过动态链接器攻击">8.1 通过动态链接器攻击</h2>
+<ul>
+<li>
+<p>链接可以找到在程序中引用的外部库代码;</p>
+</li>
+<li>
+<p>链接可以在运行时或编译时完成：</p>
+<ul>
+<li>动态链接-使用环境变量，它将成为攻击面的一部分</li>
+<li>静态链接</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-1-1-示例">8.1.1 示例</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*hello.c*/</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello world&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>静态链接</strong></p>
+<ul>
+<li>
+<p>该链接器结合了程序的代码和包含 printf()函数的库代码;</p>
+</li>
+<li>
+<p>静态编译程序的大小是动态程序的100倍.</p>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.6.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<p><strong>动态链接</strong></p>
+<ul>
+<li>该链接将在运行时完成
+<ul>
+<li>共享库（Windows中的DLL文件）</li>
+</ul>
+</li>
+<li>在运行使用动态链接编译的程序之前，首先将其可执行文件加载到内存</li>
+</ul>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.7.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>可以使用“ldd”命令来查看程序依赖于什么共享库</p>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.8.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h3 id="8-1-2-通过动态链接器进行攻击：风险">8.1.2 通过动态链接器进行攻击：风险</h3>
+<ul>
+<li>动态链接节省内存</li>
+<li>这意味着程序在编译期间未决定部分代码</li>
+<li>如果用户可以影响丢失的代码，它们可能会损害程序的完整性</li>
+</ul>
+<p><strong>案例</strong></p>
+<ul>
+<li>LD_PRELOAD 包含一个共享库的列表，链接器将首先搜索它；</li>
+<li>如果没有找到所有函数，链接器将在几个文件夹列表中搜索，包括LD_LIBRARY_PATH指定的文件夹；</li>
+<li>这两个变量都可以由用户设置，因此使他们有机会控制链接过程结果；</li>
+<li>如果该程序是一个Set-UID程序，它可能会导致安全漏洞。</li>
+</ul>
+<p><strong>对策</strong></p>
+<p>动态连接器实现了一个对策。当EUID和RUID不同时，它会忽略LD_PRELOAD和LD_LIBRARY_PATH环境变量。</p>
+<h2 id="8-2-通过外部程序攻击">8.2 通过外部程序攻击</h2>
+<ul>
+<li>应用程序可以调用外部程序。</li>
+<li>应用程序本身可能不使用环境变量，但被调用的外部程序可能会使用。</li>
+<li>调用外部程序的典型方法：
+<ul>
+<li>执行exec()函数家族，它们调用执行execve()：直接运行程序</li>
+<li>system()
+<ul>
+<li>system()函数调用execl()</li>
+<li>execl()最终调用execve()运行/bin/sh</li>
+<li>然后，shell程序运行该程序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>system()和execve()的对比
+<ul>
+<li>与system()相比，execve()的攻击面更小</li>
+<li>execve()不调用shell，因此不受环境变量的影响</li>
+<li>当在特权程序中调用外部程序时，我们应该使用 execve()</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-3-通过外部库的攻击">8.3 通过外部库的攻击</h2>
+<p>程序通常使用来自外部库的函数。如果这些函数使用环境变量，则它们会添加到攻击表面。</p>
+<h2 id="8-4-通过应用程序代码攻击">8.4 通过应用程序代码攻击</h2>
+<p>程序可以直接使用环境变量。如果这些是特权程序，它可能会导致不可信任的输入。</p>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.9.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>该程序使用getenv()从PWD环境变量中了解其当前目录</li>
+<li>然后，程序将其复制到一个数组“arr”中，但忘记检查输入的长度。这将导致潜在的缓冲区溢出。</li>
+<li>PWD的值来自于shell程序，所以每次我们更改文件夹时，shell程序都会更新其shell变量。</li>
+<li>我们可以自己改变外壳变量。</li>
+</ul>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.10.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>通过应用程序代码进行攻击的对策</strong></p>
+<ul>
+<li>当具有特权的Set-UID程序使用环境变量时，必须对它们进行正确的清理。</li>
+<li>开发人员可以选择使用一个安全版本的getenv()，比如secure_getenv()。
+<ul>
+<li>Getenv()的工作原理是通过搜索环境变量列表并返回指向找到的字符串的指针。</li>
+<li>secure_getenv()的工作方式完全相同，除了当需要“安全执行”时，它返回NULL。</li>
+<li>安全执行由流程的用户/组的EUID和RUID不匹配等条件定义</li>
+</ul>
+</li>
+</ul>
+<h1>9 Set-UID方法VS服务方法</h1>
+<img src="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/6.11.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>大多数操作系统遵循两种方法，允许正常用户执行特权操作</p>
+<ul>
+<li>Set-UID方法：普通用户必须运行一个特殊的程序才能临时获得root权限</li>
+<li>服务方法：普通用户必须请求特权服务才能为他们执行操作。</li>
+</ul>
+</li>
+<li>
+<p>Set-UID具有更广泛的攻击面，这是由环境变量引起的</p>
+<ul>
+<li>在Set-UID方法中不能信任环境变量</li>
+<li>环境变量在服务方法中可以被信任</li>
+</ul>
+</li>
+<li>
+<p>尽管其他攻击面仍然适用于服务方法（在第1章中讨论），但它被认为比Set-UID方法更安全</p>
+</li>
+<li>
+<p>因此，安卓操作系统完全删除了Set-UID和Set-GID机制</p>
+</li>
+</ul>
+<blockquote>
+<p>Set-UID不要求一直运行一个后台进程，性能会更好，但是在Set-UID机制中，环境变量是从普通用户那里获得的，基于服务的机制中，服务是由特权父进程或操作系统启动，环境变量来自可信实体。故 Set-UID有更大的攻击面。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/7%E3%80%818_web%E5%BA%94%E7%94%A8%E6%94%BB%E5%87%BB/" title="web应用攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">web应用攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/5_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_shellcode%E7%BC%96%E5%86%99/" title="shellcode">
+                        <span class="hidden-mobile">shellcode</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

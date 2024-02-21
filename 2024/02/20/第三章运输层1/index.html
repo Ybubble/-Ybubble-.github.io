@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3.1 Introduction and Transport-Layer Services   A transport-layer protocol provides for logical communication(逻辑通信) between application processes running on different hosts   By logical communication，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-运输层（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3.1 Introduction and Transport-Layer Services   A transport-layer protocol provides for logical communication(逻辑通信) between application processes running on different hosts   By logical communication，">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/3.01.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/3.03.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/net3.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/net3-12.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.569Z">
+<meta property="article:modified_time" content="2024-02-20T11:50:38.897Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/3.01.jpg">
+  
+  
+  
+  <title>第三章-运输层（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-运输层（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-运输层（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>3.1 Introduction and Transport-Layer Services</h1>
+<ul>
+<li>
+<p>A <strong>transport-layer</strong> protocol provides for <strong>logical communication</strong>(逻辑通信) between <u>application processes</u> running on different hosts</p>
+</li>
+<li>
+<p>By logical communication，from an application’s perspective，it is as if the hosts running the processes were directly connected</p>
+</li>
+<li>
+<p><strong>transport-layer protocols</strong> are implemented(实现) in the <strong>end systems</strong> but <u>not</u> in <strong>network routers</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/3.01.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>:star:It’s important to note that <strong>network routers</strong> act <u>only</u> on the <strong>network-layer fields</strong> of the datagram; that is, they do not examine(检查) the fields of the <strong>transport-layer</strong> segment encapsulated with the datagram，网络路由器仅作用于该数据报的网络层字段；即它们不检查封装在该数据报的运输层报文段的字段</p>
+</li>
+<li>
+<p>More than one transport-layer protocol may be available to network applications.网络应用程序可以使用多种的运输层协议</p>
+<ul>
+<li>the Internet has two protocols—TCP and UDP. Each of these protocols provides a different set of transport-layer services to the invoking application(调用的应用程序)</li>
+</ul>
+</li>
+</ul>
+<h1>3.1.1 Relationship Between Transport and Network Layers</h1>
+<ul>
+<li>
+<p><strong>Transport-layer protocol</strong> provides <u>logical communication</u> between <strong>processes</strong> running on different hosts, a <strong>network-layer protocol</strong> provides <u>logical communication</u>  between <strong>hosts</strong></p>
+
+</li>
+<li>
+<p>类比</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/3.03.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p><code>应用层报文 = 信封上的字符 </code></p>
+<p><code>进程 = 堂兄弟姐妹 </code></p>
+<p><code>主机（又称为端系统）= 家庭 </code></p>
+<p><code>运输层协议 = Ann 和 Bill </code></p>
+<p><code>网络层协议 = 邮政服务（包括邮车）</code></p>
+</li>
+<li>
+<p><code>Ann 和 Bill都是在各自家里进行工作的;例如，他们并没有参与任何一个中间邮件中心对邮件进行分拣，或者将邮件从一个邮件中心送到另一个邮件中心之类的工作</code></p>
+<p>transport-layer protocols live in the end system,运输层协议只工作在端系统中</p>
+<ul>
+<li>Within an end system, a transport protocol moves messages from <u>application</u> processes to the <u>network edge</u>(that is, the network layer), but it doesn’t have any say about how the messages are moved within the <u>network core</u></li>
+<li>Intermediate <u>routers</u> neither act on, nor recognize,any information that the transport layer may have added to the application messages</li>
+</ul>
+</li>
+<li>
+<p><code>little Susan 和Harvey接替他们的工作，收发邮件的次数少，而且偶尔还会丢失邮件。因此，Susan 和Harvey 这对堂兄妹并没有提供与Ann 和 Bill一样的服务集合（即相同的服务模型）</code></p>
+<p>a computer network may make available multiple transport proocols, with each protocol offering a different service model to applications，计算机网络中可以安排多种运输层协议，每种协议为应用程序提供不同的服务模型</p>
+</li>
+<li>
+<p><code>Ann 和 Bill 所能提供的服务明显受制于邮政服务所能提供的服务。例如，如果邮政服务不能提供在两家之间传递邮件所需时间的最长期限（例如3天），那么 Ann 和 Bill 就不可能保证邮件在堂兄弟姐妹之间传递信件的最长期限</code></p>
+<p>the services that a transport protocol can provide are often constrained(约束，限制) by the service model of the underlying network-layer protocol</p>
+<ul>
+<li>If the network-layer protocol cannot provide delay or bandwidth guarantees(时延或带宽保证) for transportlayer segments sent between hosts, then the transport-layer protocol cannot provide delay or bandwidth guarantees for application messages sent between processes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>certain services can be offered by a transport protocol even when the underlying network protocol doesn’t offer the corresponding(相应的，相关的) service at the network layer</p>
+<ul>
+<li>a <u>transport protocol</u> can offer <strong>reliable data transfer service</strong> to an application even when the underlying <u>network protocol is unreliable</u>, that is, even when the network protocol loses, garbles(篡改), or duplicates(冗余) packets</li>
+<li>a transport protocol can use <u>encryption</u> to guarantee that application messages are not read by intruders, even when the network layer cannot guarantee the confidentiality(机密性) of transport-layer segments</li>
+</ul>
+</li>
+</ul>
+<h1>3.1.2 Overview of the Transport Layer in the Internet</h1>
+<h6 id="brief-introduction-of-UDP-and-TCP">brief introduction of UDP and TCP</h6>
+<ul>
+<li>IP，the Internet’s network-laver protocol (网际协议)
+<ul>
+<li>IP provides logical communication between hosts</li>
+<li>the IP service model is a <strong>best-effort delivery service</strong>(尽力而为交付服务)</li>
+<li>but it makes no guarantees(segment delivery, <u>orderly</u> delivery of segments, integrity(完整性) of the data in the segments)----&gt; <strong>unreliable service</strong></li>
+<li>every host has <strong>at least</strong> one network-layer address, a so-called IP address</li>
+</ul>
+</li>
+</ul>
+<h6 id="summarize-the-service-models-provided-by-UDP-and-TCP">summarize the service models provided by UDP and TCP</h6>
+<ul>
+<li>UDP和TCP最基本的责任是to <u>extend</u> IP’s delivery service between two end systems to a delivery service between two processes running on the <strong>end systems</strong></li>
+<li><strong>Extending host-to-host delivery to process-to-process delivery</strong> is called <strong>transport-laver multiplexing</strong>(运输层的多路复用) and <strong>demultiplexing</strong>(多路分解)</li>
+<li>UDP and TCP also provide <u>integrity checking</u>(完整性检查) by including <strong>errordetection fields</strong>(差错检香字段) in their segments’ headers(报文段首部)</li>
+<li>These two <strong>minimal transport-laver services</strong>(最低限度的运输层服务)—<strong>process-to-process data delivery</strong>(进程到进程的数据交付) and <strong>error checking</strong>(错误检查)—are the <u>only</u> two services that <u>UDP</u> provides</li>
+<li>TCP为应用程序提供了几种附加服务
+<ul>
+<li>reliable data transfer，可靠数据传输</li>
+<li>Using <strong>flow control</strong>(流量控制), <strong>sequence numbers</strong>(序号), <strong>acknowledgments</strong>(确认), and <strong>timers</strong>(定时器)，TCP ensures delivery <u>correctly</u> and <u>in order</u></li>
+<li>congestion control，拥塞控制
+<ul>
+<li>TCP congestion control prevents any one TCP connection from swamping(淹没) the links and routers between communicating hosts with an excessive amount of traffic，防止任何一条 TCP连接用过多流量来淹没通信主机之间的链路和交换设备</li>
+<li>TCP strives to give each connection （traversing a congested link） an equal share of the link bandwidth</li>
+<li>An application using UDP transport can send at any rate it pleases, for as long as it pleases</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>3.2 Multiplexing and Demultiplexing</h1>
+<ul>
+<li>
+<p>a multiplexing/demultiplexing service is needed for <u>all</u> computer networks</p>
+</li>
+<li>
+<p><strong>demultiplexing</strong>(多路分解)：the job of <u>delivering</u> the data in a <u>transport-layer segment</u> to the <strong>correct socket</strong>,将运输层报文段中的数据交付到正确的套接字</p>
+</li>
+<li>
+<p><strong>multiplexing</strong>(多路复用)：The job of <u>gathering data chunks</u> at the source host from different sockets, encapsulating(封装) each data chunk with <strong>header information</strong>(首部信息)(that will later be used in demultiplexing)to <u>create segments</u>,and passing the segments to the network layer，在源主机从不同套接字中收集数据块，并为每个数据块封装上首部信息（这将在以后用于分解）从而生成报文段，然后将报文段传递到网络层</p>
+</li>
+<li>
+<p><code>Bill从邮递员处收到一批信件，并通过香看收信人名字而将信件亲手交付给他的兄弟姐妹们</code></p>
+<p>=&gt;分解</p>
+<p><code>Ann 从兄弟姐妹们那里收集信件并将它们交给邮递员</code></p>
+<p>=&gt;多路复用</p>
+</li>
+<li>
+<p>运输层多路复用要求：</p>
+<ul>
+<li>
+<p><u>sockets</u> have <strong>unique identifiers</strong></p>
+</li>
+<li>
+<p><u>each segment</u> have <strong>special fields</strong> that indicate the socket to which the segment is to be delivered，每个报文段有特殊字段来指示该报文段所要交付到的套接字</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/net3.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li><strong>source port number field</strong>：源端口号字段</li>
+<li><strong>destination port number field</strong>：目的端口号字段</li>
+<li>Each port number is a <strong>16-bit</strong> number, ranging from <strong>0 to 65535</strong></li>
+<li>The port numbers ranging from <strong>0 to 1023</strong> are called <strong>well-known port numbers</strong>(周知端口号) and are restricted(受限制的), which means that they are reserved for use by well-known application protocols such as HTTP(which uses port number 80) and FTP (which uses port number 21)</li>
+<li>we must assign the application a port number when developing a new application</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>how the transport layer could implement the demultiplexing service：</p>
+</li>
+<li>
+<p>Each socket in the host could be assigned a port number</p>
+</li>
+<li>
+<p>when a segent arrives at the host, the transport layer examines(检查) the destination port number in the segment and directs the segment to the corresponding socket</p>
+</li>
+<li>
+<p>The segment’s data then passes through the socket into the attached process</p>
+</li>
+<li>
+<p>（this is basically how UDP does it. TCP is yet more subtle(复杂)）</p>
+</li>
+</ul>
+<h3 id="onnectionless-Multiplexing-and-Demultiplexing，无连接的多路复用与多路分解">onnectionless Multiplexing and Demultiplexing，无连接的多路复用与多路分解</h3>
+<ul>
+<li>
+<p>创建了一个UDP套接字</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">clientSocket = socket(socket.AF INET, socket.SOCK_DGRAM)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>运输层自动地为该套接字分配一个端口号。特别是，运输层从范围1024～65535内分配一个端口号，该端口号是当前未被该主机中任何其他UDP端口使用的号</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">clientSocket.<span class="hljs-built_in">bind</span>((&#x27;&#x27;,<span class="hljs-number">19157</span>))<br></code></pre></td></tr></table></figure>
+<ul>
+<li>通过套接字bind() 方法为这个UDP套接字关联一个特定的端口号</li>
+</ul>
+</li>
+<li>
+<p>Host B could be running multiple processes, each with its own UDP socket and associated port number. As UDP segments arrive from the network, Host B directs (demultiplexes) each segment to the appropriate socket by examining the segment’s destination port number</p>
+<p>UDP只通过目的端口号区分不同的进程</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/net3-12.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>A UDP socket is fully identified by a <strong>two-tuple consisting</strong> of a <strong>destination IP address</strong> and a <strong>destination port number</strong>，一个UDP套接字是由一个二元组来全面标识的</p>
+</li>
+<li>
+<p>if two UDP segments have different source IP addresses and/or source port numbers, but have the same destination IP address and destination port number, then the two segments will be directed to the same destination process <u>via the same destination socket</u>，不同源同目的===&gt;通过相同的套接字定向到相同进程</p>
+</li>
+<li>
+<p>the A-to-B segment the source port number serves as part of a&quot;<strong>return address</strong>&quot;(返回地址)—when B wants to send a segment back to A</p>
+</li>
+</ul>
+<h3 id="Connection-Oriented-Multiplexing-and-Demultiplexing，面向连接的多路复用与多路分解">Connection-Oriented Multiplexing and Demultiplexing，面向连接的多路复用与多路分解</h3>
+<ul>
+<li>
+<p>TCP socket is identified by a four-tuple（different from UDP）</p>
+<ul>
+<li>source IP address</li>
+<li>source port number</li>
+<li>destination IP address</li>
+<li>destination port number</li>
+</ul>
+</li>
+<li>
+<p>when a TCP segment arrives from the network to a host, the host uses <strong>all four values</strong> to direct(demultiplex，分解)the segment to the appropriate socket</p>
+</li>
+<li>
+<p>In contrast with UDP, two arriving TCP segments with <strong>different source IP addresses</strong> <u>or</u> <strong>source port numbers</strong> will<code>(with the exception of a TCP segment carrying the original connection-establishment request,除非TCP报文段携带了初始创建连接的请求)</code>be directed to <strong>two different sockets</strong></p>
+</li>
+</ul>
+<h3 id="Web-Servers-and-TCP，Web-服务器与TCP">Web Servers and TCP，Web 服务器与TCP</h3>
+<ul>
+<li>
+<p>there is not always a one-to-one correspondence between connection sockets and processes. In fact, today’s high-performing Web servers often use only one process, and create a new thread with a new connection socket for each new client connection.(A thread can be viewed as a lightweight subprocess.)高性能Web服务器通常只使用一个进程，但是为每个新的客户连接创建一个具有新连接套接字的新线程（线程可被看作是一个轻量级的子进程）</p>
+</li>
+<li>
+<p>If the client and server are using <strong>persistent HTTP</strong>, then throughout the duration of the persistent connection the client and server exchange HTTP messages via the same server socket. 客户与服务器之间经由同一个服务器套接字交换 HTTP报文</p>
+</li>
+<li>
+<p>If the client and server use <strong>non-persistent HTTP</strong>, then a new TCP connection is created and closed for every request/response, and hence a new socket is created and later closed for every request/response，每一对请求/响应都创建一个新的TCP连接并在随后关闭，因此对每一对请求/响应创建一个新的套接字并在随后关闭（会影响性能）</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/" title="第三章-运输层（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/" title="第二章-应用层（四）">
+                        <span class="hidden-mobile">第二章-应用层（四）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

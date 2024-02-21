@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="5.2 互斥∶硬件的支持 5.2.1 中断禁用   单处理器机器中：  并发进程不能重叠，只能交替 一个进程在调用一个系统服务(主动)或被中断(被动)前，将一直运行  &#x3D;&#x3D;&gt;为保证互斥，只需保证一个进程不被中断即可 临界区不能被中断↓ 123456while (true)&#123;    &#x2F;*禁用中断*&#x2F;;    &#x2F;* 临界区 *&#x2F;;    &#x2F;* 启用中断*&#x2F;;    &#x2F;* 其余部分*&#x2F;;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章-互斥和同步（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="5.2 互斥∶硬件的支持 5.2.1 中断禁用   单处理器机器中：  并发进程不能重叠，只能交替 一个进程在调用一个系统服务(主动)或被中断(被动)前，将一直运行  &#x3D;&#x3D;&gt;为保证互斥，只需保证一个进程不被中断即可 临界区不能被中断↓ 123456while (true)&#123;    &#x2F;*禁用中断*&#x2F;;    &#x2F;* 临界区 *&#x2F;;    &#x2F;* 启用中断*&#x2F;;    &#x2F;* 其余部分*&#x2F;;">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os1-16543108478401.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.12.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.652Z">
+<meta property="article:modified_time" content="2024-02-20T13:47:37.476Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os3.jpg">
+  
+  
+  
+  <title>第五章-互斥和同步（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第五章-互斥和同步（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第五章-互斥和同步（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>5.2 互斥∶硬件的支持</h1>
+<h3 id="5-2-1-中断禁用">5.2.1 中断禁用</h3>
+<ul>
+<li>
+<p>单处理器机器中：</p>
+<ul>
+<li><strong>并发</strong>进程不能重叠，只能<strong>交替</strong></li>
+<li>一个进程在<strong>调用一个系统服务</strong>(主动)或<strong>被中断</strong>(被动)前，将<strong>一直运行</strong></li>
+</ul>
+<p>==&gt;为保证互斥，只需保证一个进程<strong>不被中断</strong>即可</p>
+<p>临界区不能被中断↓</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>    <span class="hljs-comment">/*禁用中断*/</span>;<br>    <span class="hljs-comment">/* 临界区 */</span>;<br>    <span class="hljs-comment">/* 启用中断*/</span>;<br>    <span class="hljs-comment">/* 其余部分*/</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>代价非常高</li>
+<li>处理器被限制得只能交替执行程序 → <strong>执行的效率</strong>会<strong>明显降低</strong></li>
+<li><u>不能</u>用于多处理器体系结构中（一个以上的进程同时执行时，禁用中断并不能保证互斥）</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-2-专用机器指令">5.2.2 专用机器指令</h3>
+<ul>
+<li>在多处理器配置中
+<ul>
+<li>几个处理器共享对内存的访问</li>
+<li>不存在主/从关系（对等），处理器间的行为是无关的</li>
+</ul>
+</li>
+</ul>
+<h6 id="比较和交换指令：compare-swap-指令">比较和交换指令：compare&amp;swap 指令</h6>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">compare_and_swap</span><span class="hljs-params">(<span class="hljs-type">int</span> *word,<span class="hljs-type">int</span> testval,<span class="hljs-type">int</span> newval)</span><br>    <span class="hljs-type">int</span> oldval;<br>    oldval = *word<br>    <span class="hljs-keyword">if</span> (oldval == testval)*word = newval;<br>    <span class="hljs-keyword">return</span> oldval;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>用一个测试值（testval）检查一个内存单元（*word）</p>
+</li>
+<li>
+<p>如果这个内存单元的当前值是testval，就用 newva1取代该值；否则保持不变</p>
+</li>
+<li>
+<p>指令总是返回旧内存值</p>
+</li>
+<li>
+<p>如果返回值与测试值<strong>相同</strong>，则表示该内存单元已被<strong>更新</strong></p>
+</li>
+<li>
+<p>整个比较和交换功能按原子操作执行（不接受中断）</p>
+</li>
+<li>
+<p>有的版本返回<strong>bool值</strong>，几乎所有处理器家族（x86、 IA64、sparc 和IBMz系列等）都支持该指令的某个版本，且多数操作系统都利用该指令支持并发</p>
+</li>
+<li>
+<p>基于这个指令的互斥规程：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* program mutualexelusion*/</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> n = <span class="hljs-comment">/*进程个数*/</span>;<br><span class="hljs-type">int</span> bolt;<br><span class="hljs-type">void</span> <span class="hljs-title function_">P</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(ture)&#123;<br>        <span class="hljs-keyword">while</span>(compare_and_swap(bolt,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>) ==<span class="hljs-number">1</span>)&#123;<span class="hljs-comment">/*不做任何事*/</span>&#125;<br>        <span class="hljs-comment">/*临界区*/</span>;<br>        bolt = <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">/*其余部分*/</span>;<br>    &#125;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    boilt = <span class="hljs-number">0</span>;<br>    perbegin(P(<span class="hljs-number">1</span>), P(<span class="hljs-number">2</span>), ... ,P(n));<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>构造parbegin(P1, P2.…Pn)的含义：阻塞主程序，初始化并行过程P1，P2.…，Pn；P1，P2.….Pn过程全部终止之后，才恢复主程序的执行</li>
+<li>bolt：共享变量，初始化为0</li>
+<li>唯一可以进入临界区的进程是发现<strong>bolt 等于0</strong>的那个进程，其余进程处于<strong>忙等待</strong>模式</li>
+<li><strong>忙等待（busy waiting）<strong>或</strong>自旋等待（spin waiting）<strong>技术∶进程在得到临界区访问权之前，它只能继续执行</strong>测试变量</strong>的指令来得到访问权，除此之外<strong>不能做任何其他事情</strong></li>
+</ul>
+</li>
+</ul>
+<h6 id="exchange-指令">exchange 指令</h6>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">exchange</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-keyword">register</span>,<span class="hljs-type">int</span> *memory)</span><br>&#123;<br>    <span class="hljs-type">int</span> temp;<br>    temp =*memory;<br>    *memory =*<span class="hljs-keyword">register</span>;<br>    *<span class="hljs-keyword">register</span> = temp;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>基于 exchange 指令的互斥协议</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* program mutualexelusion */</span><br><span class="hljs-type">int</span> <span class="hljs-type">const</span> n = <span class="hljs-comment">/*进程个数*/</span>;<br><span class="hljs-type">int</span> bolt;<br><span class="hljs-type">void</span> <span class="hljs-title function_">P</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(ture)&#123;<br>        <span class="hljs-type">int</span> keyi = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">do</span> <span class="hljs-title function_">exchange</span><span class="hljs-params">(keyi, bolt)</span><br>            <span class="hljs-title function_">while</span><span class="hljs-params">(keyi!=<span class="hljs-number">0</span>)</span>;<br>        <span class="hljs-comment">/*临界区*/</span>;<br>        bolt = <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">/*其余部分*/</span><br>    &#125;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    bolt = <span class="hljs-number">0</span>;<br>    parbegin(P(<span class="hljs-number">1</span>), P(<span class="hljs-number">2</span>), ... ,P(n));<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>交换一个<strong>寄存器</strong>的内容和一个<strong>存储单元</strong>的内容</li>
+<li>共享变量 bolt 初始化为0</li>
+<li>每个进程都使用一个局部变量 key且初始化为1</li>
+<li>唯一可以进入临界区的进程是发现bolt 等于0的那个进程
+<ul>
+<li>通过把 bolt置为1来避免其他进程进入临界区</li>
+<li>离开临界区时，把bolt 重置为0，允许另一个进程进入它的临界区</li>
+</ul>
+</li>
+<li>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>b</mi><mi>o</mi><mi>l</mi><mi>t</mi><mo>+</mo><munder><mo>∑</mo><mi>i</mi></munder><mrow><mi>k</mi><mi>e</mi><msub><mi>y</mi><mi>i</mi></msub></mrow><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">bolt + \sum_{i}{key_i} = n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">o</span><span class="mord mathnormal">lt</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.3277em;vertical-align:-1.2777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span></p>
+<ul>
+<li>若bolt = 0，则没有任何一个进程在它的临界区中</li>
+<li>若bolt = 1，则只有一个进程在临界区中， 即key的值等于0的那个进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>机器指令方法的特点(优点)</p>
+<ul>
+<li>适用于<strong>单处理器</strong>或<strong>共享内存</strong>的多处理器上的任意数量的进程</li>
+<li><strong>简单且易于证明</strong></li>
+<li>可用于<strong>支持多个临界区</strong>，每个临界区可以用它<strong>自己的变量定义</strong></li>
+</ul>
+</li>
+<li>
+<p>严重的缺点</p>
+<ul>
+<li><strong>使用了忙等待</strong>
+<ul>
+<li>当一个进程<strong>正在等待进入临界区</strong>时，它会<strong>继续消耗处理器时间</strong></li>
+</ul>
+</li>
+<li><strong>可能饥饿</strong>
+<ul>
+<li>当一个进程离开一个临界区且有多个进程正在等待时，<strong>选择</strong>哪个等待进程是<strong>任意</strong>的→某些进程可能会被<strong>无限地拒绝</strong>进入</li>
+</ul>
+</li>
+<li><strong>可能死锁</strong>
+<ul>
+<li>考虑单处理器上的下列情况：</li>
+<li>进程 P1 执行专用指令（例如 compare&amp;swap、 exchange）并进入临界区</li>
+<li>P1 被中断并把处理器让给具有更高优先级的P2</li>
+<li>若 P2 试图使用同一资源，由于互斥机制，它将被拒绝访问 → 它会进入忙等待循环</li>
+<li>但是， 由于P1比P2的优先级低，因此它将永远不会被调度执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>5.3 信号量</h1>
+<ul>
+<li>常用的并发机制</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>并发机制</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>信号量</td>
+<td>用于<strong>进程间</strong>传递信号的一个<strong>整数值</strong><br />在信号量上只可进行三种操作：<strong>初始化</strong>、<strong>递减</strong>、<strong>增加</strong>（都是原子操作）<br />递减：用于阻塞一个进程<br />递增：用于解除一个进程的阻塞<br />信号量也称为<u>计数信号量</u>或<u>一般信号量</u></td>
+</tr>
+<tr>
+<td>二元信号量</td>
+<td>只取0值和1值的信号量</td>
+</tr>
+<tr>
+<td>互斥量</td>
+<td>类似于二元信号量<br />关键区别：为其加锁（设定值为0）的进程和为其解锁（设定值为1）的进程必须为<strong>同 一个进程</strong></td>
+</tr>
+<tr>
+<td>条件变量</td>
+<td>一种<strong>数据类型</strong><br />用于<strong>阻塞</strong>进程或线程，直到<strong>特定的条件为真</strong></td>
+</tr>
+<tr>
+<td>管程</td>
+<td>一种<strong>编程语言结构</strong><br />在一个抽象数据类型中封装了变量、访问过程、初始化代码<br />管程的变量只能由<strong>管程自身的访问过程</strong>访问，每次只能有一个进程在其中执行<br />访问过程即<strong>临界区<br /><strong>管程可以有一个</strong>等待进程队列</strong></td>
+</tr>
+<tr>
+<td>事件标志</td>
+<td>用做<strong>同步机制</strong>的一个<strong>内存字</strong><br />应用程序代码可为标志中的每个位<strong>关联不同的事件</strong><br />通过测试相关的一个或多个位， 事件标志线程可以等待一个事件或多个事件<br />在全部所需位都被设定（AND）或至少一个位被设定（OR）之前，线程会一直被阻塞</td>
+</tr>
+<tr>
+<td>信箱/消息</td>
+<td>两个进程<strong>交换信息</strong>的一种方法，也可用于<strong>同步</strong></td>
+</tr>
+<tr>
+<td>自旋锁</td>
+<td>一种<strong>互斥机制</strong>，进程在一个无条件循环中执行，等待锁变量的值可用</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>基本原理：</p>
+<p>两个或多个进程可以通过简单的信号进行<strong>合作</strong>，可以<strong>强迫</strong>一个进程在某个位置停止， 直到它接收到一个<strong>特定的信号</strong></p>
+<p>任何复杂的合作需求都可通过适当的信号结构得到满足</p>
+<p>为 了发信号，需要使用一个称为信号量的特殊变量。要通过信号量 s <strong>传送信号</strong>，进程须执行原语 <strong>semSignal（s）</strong>;要通过信号量 s <strong>接收信号</strong>，进程须执行原语 <strong>semWait（s）</strong>;若相应的信号仍未发送，则<strong>阻塞</strong>进程，直到发送完为止</p>
+</li>
+<li>
+<p>在整数信号量上定义了3个操作</p>
+<p>1、一个信号量可以<strong>初始化成非负数</strong></p>
+<p>2、<strong>semWait</strong>操作使<strong>信号量减1</strong>。若值变成<strong>负数</strong>，<strong>则阻塞执行</strong> semWait 的进程，否则进程<strong>继续执行</strong></p>
+<p>3、<strong>semSignal</strong>操作使<strong>信号量加1</strong>。若值<strong>小于等于零</strong>，则被 semWait操作阻塞的进程<strong>解除阻塞</strong></p>
+</li>
+<li>
+<p>对这三个操作的解释如下</p>
+<ul>
+<li>开始时，信号量的值为<strong>零</strong>或<strong>正数</strong>
+<ul>
+<li>若值为<strong>正数</strong>，则它等于发出 semWait 操作后可立即继续执行的进程的数量</li>
+<li>若值为<strong>零</strong>（要么由于<strong>初始化</strong>，要么由于有<strong>等于信号量初值</strong>的进程<strong>已在等待</strong>），则发出 semWait操作的下一个进程会被阻塞，此时该信号量的值变为<strong>负值</strong></li>
+</ul>
+</li>
+<li>之后，每个后续的 <strong>semWait</strong> 操作都会使信号量的<strong>负值更大</strong>
+<ul>
+<li>该负值等于<strong>正在等待解除阻塞</strong>的进程的数量</li>
+</ul>
+</li>
+<li>在信号量为负值的情形下，每个<strong>semSignal</strong>操作都会将等待进程中的一个进程<strong>解除阻塞</strong></li>
+</ul>
+</li>
+<li>
+<p>信号量定义的三个重要结论∶</p>
+<ul>
+<li>通常，在进程对信号量减1之前，无法提前知道该信号量是否会被阻塞</li>
+<li>当进程对一个信号量加1之后，会唤醒另一个进程，两个进程继续并发运行。而在一个<strong>单处理器系统</strong>中，同样无法知道哪个进程会立即继续运行</li>
+<li>向信号量发出信号后，不需要知道是否有另一个进程正在等待，被解除阻塞的进程数要么没 有，要么是为1</li>
+</ul>
+</li>
+<li>
+<p>信号量原语的定义</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">semaphore</span>&#123;</span><br>    <span class="hljs-type">int</span> Count;<br>    queueType <span class="hljs-built_in">queue</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">semWait</span><span class="hljs-params">(semaphore s)</span><br>&#123;<br>    s.count--;<br>	<span class="hljs-keyword">if</span> (s.count &lt; <span class="hljs-number">0</span>)&#123;<br>		<span class="hljs-comment">/*把当前进程插入队列*/</span>;<br>		<span class="hljs-comment">/* 阻塞当前进程*/</span>;<br>    &#125;<br>&#125;<br>    <br><span class="hljs-type">void</span> <span class="hljs-title function_">semsignal</span><span class="hljs-params">(semaphore s)</span><br>&#123;<br>    s.count++; <br>    <span class="hljs-keyword">if</span>(s.count &lt;= <span class="hljs-number">0</span>)&#123;<br>		<span class="hljs-comment">/*把进程 P从队列中移除*/</span>;<br>		<span class="hljs-comment">/*把进程P插入就绪队列*/</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>二元信号量原语的定义</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">binary_semaphore</span>&#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">enum</span> [<span class="hljs-title">zero</span>,<span class="hljs-title">one</span>)<span class="hljs-title">value</span>;</span><br>    queueType <span class="hljs-built_in">queue</span>;<br>&#125;;<br>          <br><span class="hljs-type">void</span> <span class="hljs-title function_">semWaitB</span><span class="hljs-params">(binary_semaphore s)</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(s.value == one)<br>    	s.value = zero;<br>	<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-comment">/*把当前进程插入队列*/</span>;<br>        <span class="hljs-comment">/*阻塞当前进程*/</span>;<br>    &#125;<br>&#125;<br>    <br><span class="hljs-type">void</span> <span class="hljs-title function_">semsignalB</span><span class="hljs-params">(semaphore s)</span>&#123;<br>    <span class="hljs-keyword">if</span>(s,<span class="hljs-built_in">queue</span> is empty())<br>    	s.value = one;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-comment">/* 把进程P从等待队列中移除*/</span>;<br>        <span class="hljs-comment">/* 把进程P插入就绪队列*/</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>1、二元信号量初始化为0或1</p>
+<p>2、<strong>semWaitB</strong>操作检查信号的值。若值为<strong>0</strong>，则进程执行 semWaitB 就会<strong>受阻</strong>。若值为<strong>1</strong>，则将值改为<strong>0</strong>，并<strong>继续执行该进程</strong></p>
+<p>3、<strong>semSignalB</strong>操作<strong>检查</strong>是否有任何进程在该信号上<strong>受阻</strong>。若有进程受阻，则通过 <strong>semWaitB</strong> 操作，受阻的进程会被<strong>唤醒</strong>，若没有进程受阻，则值设置为<strong>1</strong></p>
+<ul>
+<li>
+<p>二元信号量更易于实现</p>
+<p>和普通信号具有同样的表达能力</p>
+<p>非二元信号量也常称为<strong>计数信号量（counting semaphore）<strong>或</strong>一般信号量（general semaphore)</strong></p>
+</li>
+<li>
+<p>与二元信号量相关的一个概念是<strong>互斥锁（mutex）</strong></p>
+<ul>
+<li>互斥是一个<strong>编程标志位</strong>，用来<strong>获取和释放一个对象</strong></li>
+<li>当需要的数据<strong>不能被分享或处理</strong>，进而导致在系统中的其他地方<strong>不能同时执行</strong>时，互斥被设置为<strong>锁定</strong>（一般为0），用于<strong>阻塞</strong>其他程序使用数据</li>
+<li>二元信号量和互斥量的<strong>关键区别</strong>在于，为互斥量<strong>加锁</strong>（设定值为 0）的进程和为互斥量<strong>解锁</strong>（设定值为1）的进程<strong>必须是同一个进程</strong></li>
+</ul>
+</li>
+<li>
+<p>计数信号量、二元信号量，都需要使用<strong>队列</strong>来保存于信号量上等待的进程=&gt;程按照什么顺序从队列中移出?最公平的策略：先进先出（FIFO）=&gt; <strong>强信号量（strong semaphore）</strong></p>
+<ul>
+<li>没有规定进程从队列中<strong>移出顺序</strong>的信号量称为<strong>弱信号量（weak semaphore）</strong></li>
+</ul>
+</li>
+<li>
+<p>信号量机制示例</p>
+</li>
+<li></li>
+</ul>
+<p>1、</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os3.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>2、</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os4.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、允许D运行</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>4、当D完成一个新结果后，它执行一条 semSignal指令，允许B移到就绪队列中</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os6.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>5、D加入就绪队列，C开始运行，当它执行 semWait指令时被阻塞</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>············</p>
+<p>6、A 和B运行，且被阻塞在这个信号量上，允许D恢复执行。当D有一个结果后，执行一条 semSignal指令，把C移到就绪队列中，随后的D循环将解除A和B的阻塞状态</p>
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os8.jpg" srcset="/img/loading.gif" lazyload class="">
+  <img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os9.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="5-3-1-互斥">5.3.1 互斥</h3>
+<ul>
+<li>
+<p>用信号量s解决互斥问题的方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*program mutualexclusion /</span><br><span class="hljs-comment">const int n = /*进程数 */</span>;<br>semaphore s = <span class="hljs-number">1</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">P</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>    semWait(s); <br>    <span class="hljs-comment">/* 临界区*/</span>;<br>    semSignal(s);<br>    <span class="hljs-comment">/*其余部分*/</span>;<br>	&#125;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    parbegin (P(<span class="hljs-number">1</span>),P(<span class="hljs-number">2</span>),,P(n));<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>有n个进程，用数组P(i) 表示，所有进程都需要访问共享资源</li>
+<li>每个进程进入临界区前执行 semWait（s），若 s 的值为负，则进程被阻塞</li>
+<li>若值为1，则s 被减为0，进程立即进入临界区（s不再为正，因而其他任何进程都不能进入临界区）</li>
+</ul>
+</li>
+<li>
+<p>信号量一般初始化为1，这样<strong>第一个</strong>执行 semWait（s）的进程可<strong>立即进入临界区</strong>，并把s的值置为 0</p>
+<p>接着任何试图进入临界区的其他进程，都将发现<strong>第一个进程忙</strong>，因此<strong>被阻塞</strong>，把 s 的值置为**-1**</p>
+<p>可以有<strong>任意数量</strong>的进程试图进入，每个不成功的尝试都会使 s 的值<strong>减1</strong></p>
+<p>当最初进入临界区的进程离开时，<strong>s 增 1</strong>→一个被阻塞的进程（如果有的话）<strong>被移出等待队列</strong>→置于<strong>就绪态</strong></p>
+<p>进程访问受信号量保护的共享数据：（注意∶正常执行可以并行，但是临界区代码只能<strong>串行执行</strong>）</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os1-16543108478401.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>三个进程（A、B、C）访问一个<u>受信号量 lock 保护</u>的<strong>共享资源</strong></li>
+<li>进程 A执行semWait（lock）→（信号量semWait在本次操作时值为<strong>1</strong>）A可以<strong>立即进入</strong>临界区→把信号量的值置为<strong>0</strong></li>
+<li>当A 在临界区中时，B 和 C 都执行一个<strong>semWait</strong>操作并<strong>被阻塞</strong></li>
+<li>当 A 退出临界区并执行时，队列中的第一个进程B现在可以进入临界区</li>
+</ul>
+</li>
+<li>
+<p>s.count的值的解释</p>
+<ul>
+<li>count≥0
+<ul>
+<li>s.count是<strong>可执行</strong> semWait(s)而<strong>不被阻塞</strong>的进程数 [期间无semSignal(s) 执行]</li>
+<li>这种情形允许<strong>信号量</strong>支持<strong>同步与互斥</strong></li>
+</ul>
+</li>
+<li>s.count&lt;0
+<ul>
+<li>s.count的大小是<strong>阻塞</strong>在s.queue队列中的进程数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-2-生产者-消费者问题">5.3.2 生产者/消费者问题</h3>
+<ul>
+<li>
+<p>分析<strong>并发</strong>处理中最常见的一类问题</p>
+</li>
+<li>
+<p>描述：</p>
+<ul>
+<li>有<u>一个或多个</u><strong>生产者</strong>生产某种类型的数据（记录、字符），并放置在<strong>缓冲区</strong>中</li>
+<li>有<u>一个</u><strong>消费者</strong>从缓冲区中取数据，<u>每次取一项</u></li>
+<li>系统保证<strong>避免</strong><u>对缓冲区的重复操作</u>，即在任何时候<strong>只有一个</strong>主体（<u>生产者或消费者</u>）可访问缓冲区</li>
+</ul>
+</li>
+<li>
+<p>要确保：</p>
+<ul>
+<li>缓存已满时，生产者不添加数据</li>
+<li>缓存为空时，消费者不移走数据</li>
+</ul>
+</li>
+</ul>
+<p>:one:假设<strong>缓冲区无限</strong>，且是一个<strong>线性</strong>的元素<u>数组</u></p>
+<p>​	 定义生产者和消费者函数如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">producer:<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>	<span class="hljs-comment">/*生产v*/</span>;<br>    b[in] = v;<br>    in++;<br>&#125;<br><br>consumer:<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>    <span class="hljs-keyword">while</span>(in &lt;= out)&#123;<span class="hljs-comment">/* do nothing */</span>;&#125;<br>    w = b[out];<br>    out++;<br>    <span class="hljs-comment">/* 消费w */</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>缓冲区b的结构:</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>消费者在<u>开始</u>进行之前应该确保生产者已经生产（in&gt;out）</p>
+</li>
+<li>
+<p>使用<u>二元信号量</u>解决无限缓冲区生产者/消费者问题的<strong>不正确</strong>方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* program producerconeumer*/</span> <br><span class="hljs-type">int</span> n;<br>binary_semaphore s=<span class="hljs-number">1</span>,delay = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>        produce(); <br>        SemWaitB（s）;<br>        appenid();<br>        n++;<br>        <span class="hljs-keyword">if</span> (n==<span class="hljs-number">1</span>) semSignalB(delay);<br>        Sems1gnalB(s);<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">()</span><br>&#123;<br>    semWaitB(delay);<br>	whl1e (<span class="hljs-literal">true</span>)&#123;<br>        semWaitB(B);<br>        take();<br>        n--;<br>        semSignalB(R);<br>        consume();<br>        <span class="hljs-keyword">if</span>(n==<span class="hljs-number">0</span>) semWaitB(delay);<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    n = <span class="hljs-number">0</span>;<br>    parbegin(producer,consumer);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<ul>
+<li>不处理索引 in 和 out，而用整型变量 n（=in-out）简单地记录缓冲区中数据项的个数</li>
+<li>信号量s用于实施<strong>互斥</strong></li>
+<li>信号量 delay用于迫使消费者在<strong>缓冲区为空</strong>时<strong>等待</strong>（semWait）</li>
+<li>生产者可以在<u>任何时候</u>自由地向缓冲区中增加数据项
+<ul>
+<li>在<strong>添加数据前</strong>执行semWaitB（s），之后执行 semSignalB（s），以<strong>阻止</strong>消费者或任何其他生产者在添加操作过程中访问缓冲区</li>
+<li>当生产者在临界区中时，将n的值+1</li>
+<li>若n=1，则在本次添加之前缓冲区为空，生产者执行 semSignalB（delay）以通知消费者这个事实</li>
+</ul>
+</li>
+<li>消费者
+<ul>
+<li>消费者最初就使用 semWaitB（delay）<strong>等待</strong>生产出第一个项目，然后在自己的临界区中取到这一项并将n-1</li>
+</ul>
+</li>
+<li>缺陷
+<ul>
+<li>当<strong>消费者</strong>消耗尽缓冲区中的数据项时，需重<strong>置信号量 delay</strong>→<strong>被迫等待</strong>到生产者向缓冲区中放置更多的数据项→语句if n == 0 semWaitB（（delay）的目的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>解决：引入一个辅助变量，使用二元信号量解决无限缓冲区生产者/消费者问题的正确方法↓</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*program producerconsumer */</span> <br><span class="hljs-type">int</span> n; <br>binary semaphore s = <span class="hljs-number">1</span>,delay = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>        produce();<br>        semWaitB(s);<br>        append();<br>        n++;<br>        <span class="hljs-keyword">if</span>(n == <span class="hljs-number">1</span>) semSignalB(delay);<br>        semSignalB(s);<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">int</span> m;<span class="hljs-comment">/*局部变量*/</span><br>    semWaitB(delay);<br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>        semWaitB(s);<br>        take();<br>        n--; <br>        m = n; <br>        semSignalB(s);<br>        consume();<br>        <span class="hljs-keyword">if</span>(m == <span class="hljs-number">0</span>) semWaitB(delay);<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span> <span class="hljs-params">()</span><br>&#123;<br>    n = <span class="hljs-number">0</span>;<br>	parbegin (producer, consumer);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>使用信号量解决无限缓冲区生产者/消费者问题的方法[一般信号量（计数信号量）]</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* proqram producerconsumer */</span><br>semaphore n = <span class="hljs-number">0</span>,<span class="hljs-number">3</span> = <span class="hljs-number">1</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">()</span><br>&#123;<br>    whi1e (<span class="hljs-literal">true</span>)&#123;<br>        produce();<br>        setwait(s);<br>        append(); semSignal(s);<br>        senSignal(n);<br>    &#125;<br>&#125;<br><br>vofd <span class="hljs-title function_">consumer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>        semNait(n);<br>        semWait(s);<br>        take();<br>        semsignal(s);<br>        consume();<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    parbegin (producer,consumer);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>变量n为信号量，其值等于缓冲区中的项数</li>
+<li>若不小心操作 semSignalB（s）和semSignalB（n）被互换→要求生产者在临界区中执行 semSignalB（n）操作时不会被消费者或另一个生产者打断→不会影响程序：无论何种情况，消费者在继续进行之前必须在两个信号量上等待</li>
+<li>假设 semwait（n）和 semwait（s）操作偶然被颠倒：产生严重甚至致命的错误
+<ul>
+<li>如果缓冲区为空（n.count =0）时消费者曾进入过临界区→任何一个生产者都不能继续向缓冲区中添加数据项→系统发生死锁</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>:two:缓冲区有限：缓冲区被视为一个循环存储器</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/os5.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>指针值按缓冲区的大小取模</p>
+</li>
+<li>
+<p>总保持</p>
+<table>
+<thead>
+<tr>
+<th>被阻塞</th>
+<th>解除阻塞</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生产者∶在满缓冲区中插入</td>
+<td>消费者：移出一项</td>
+</tr>
+<tr>
+<td>消费者∶从空缓冲区中移出</td>
+<td>生产者∶插入一项</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>生产者和消费者函数可表示成如下形式（变量in和out 初始化为0，n代表缓冲区的大小）∶</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c">producer:<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>    <span class="hljs-comment">/*生产v*/</span><br>    <span class="hljs-keyword">while</span>((in + <span class="hljs-number">1</span>) % n == out)<br>        <span class="hljs-comment">/* do nothing */</span><br>        b[in] = v;<br>    	in = (in + <span class="hljs-number">1</span>) % n;<br>&#125;<br><br>consumer:<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>    <span class="hljs-keyword">while</span>(in == out)<br>        <span class="hljs-comment">/* do noting*/</span><br>    w = b[out];<br>    out = (out + <span class="hljs-number">1</span>) % n;<br>    <span class="hljs-comment">/* 消费w */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>使用信号量解决有限缓冲区生产者/消费者问题的方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*program boundedbuffer*/</span> <br><span class="hljs-type">const</span> <span class="hljs-type">int</span> sizeofbuffer =<span class="hljs-comment">/*缓冲区大小*/</span>; <br>semaphore s=<span class="hljs-number">1</span>,n= <span class="hljs-number">0</span>,e= sizeofbuffer;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>        produce();<br>        semWait(e);<br>        semWait(s);<br>        append();<br>        semSignal(s);<br>        semSignal(n);<br>    &#125;<br>    <br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>        semwait(n);<br>        semwait(s);<br>        take();<br>        sersignal(s);<br>        semSignal(e);<br>        consume();<br>    &#125;<br>&#125;<br>    <br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    parbegin (producer,consumer);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>增加了信号量e来记录空闲空间的数量</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-3-信号量的实现">5.3.3 信号量的实现</h3>
+<ul>
+<li>semWait 和 semSignal 操作必须作为原子原语实现</li>
+<li>问题的本质是互斥∶任何时候只有一个 进程可用semWait或semSignal操作控制一个信号量</li>
+</ul>
+<p>:one:使用比较和交换指令实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c">semWait(s)<br>&#123;<br>	<span class="hljs-keyword">while</span>(compare and swap(s.flag,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)== <span class="hljs-number">1</span>)&#123;<span class="hljs-keyword">do</span> nothing&#125;<br>    s.count--; <br>    <span class="hljs-keyword">if</span>(s.count &lt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-comment">/* 该进程进入 s.queue 队列*/</span>; <br>        <span class="hljs-comment">/*阻寨该进程（还须将s.Flag设置为0）*/</span>;<br>    &#125;<br>    s.flag = <span class="hljs-number">0</span>; <br>&#125;<br><br>semsignal(s)<br>&#123;<br>    <span class="hljs-keyword">while</span>(compare and swap(s.flag,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)= <span class="hljs-number">1</span>)&#123;<span class="hljs-keyword">do</span> nothing&#125;<br>    s.Count++; <br>    <span class="hljs-keyword">if</span>(s.count &lt;= <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-comment">/*从s.queue队列中移出进程P*/</span>;<br>        <span class="hljs-comment">/*进程 P进入就绪队列*/</span>;<br>    &#125;<br>    s.flag = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>这涉及某 种形式的忙等待，但 semWait和semSignal操作都相对较短，因此所涉及的忙等待时间量非常小</li>
+</ul>
+<p>:two:在 semwait 或 semSignal操作期间是可以禁用中断的，这些操作的执行时间相对很短，因此这种方法是合理的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c">semwait(s)<br>&#123;<br>    禁用中断;<br>    s.count--;<br>    <span class="hljs-keyword">if</span>(s.count &lt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-comment">/* 该进程进入s.queue 队列*/</span>;<br>        <span class="hljs-comment">/* 阻塞该进程，并允许中断*/</span>;<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        允许中断<br>    &#125;<br>&#125;<br><br>semSignal(s)<br>&#123;<br>    禁用中断; <br>    s.count++;<br>    <span class="hljs-keyword">if</span>(s.count &lt;= <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-comment">/* 从s.queue 队列中移出进程P*/</span>;<br>        <span class="hljs-comment">/*进程 P进入就绪队列 */</span>;<br>    &#125;<br>    允许中断;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A53/" title="第五章-互斥和同步（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第五章-互斥和同步（三）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" title="第五章-互斥和同步（一）">
+                        <span class="hidden-mobile">第五章-互斥和同步（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1074 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="操作系统须满足的多数需求都涉及进程：  操作系统与普通计算机软件的作用相同，即它是由处理器执行的一段程序或一组程序 操作系统必须交替执行多个程序，在合理的响应时间范围内使处理器的利用率最大 操作系统必须按照特定的策略(如某些函数或应用进程具有较高的优先级)给进程分配资源，同时避免死锁 操作系统须为有助于构建应用的进程间通信和用户船舰提供支持  3.1什么是进程 3.1.1背景 3.1.2进程和进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-进程描述和控制（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="操作系统须满足的多数需求都涉及进程：  操作系统与普通计算机软件的作用相同，即它是由处理器执行的一段程序或一组程序 操作系统必须交替执行多个程序，在合理的响应时间范围内使处理器的利用率最大 操作系统必须按照特定的策略(如某些函数或应用进程具有较高的优先级)给进程分配资源，同时避免死锁 操作系统须为有助于构建应用的进程间通信和用户船舰提供支持  3.1什么是进程 3.1.1背景 3.1.2进程和进程">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/080139.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/181927.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.9a.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.9b.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.638Z">
+<meta property="article:modified_time" content="2024-02-20T13:37:21.089Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.1.jpg">
+  
+  
+  
+  <title>第三章-进程描述和控制（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-进程描述和控制（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-进程描述和控制（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>操作系统须满足的多数需求都涉及进程：</p>
+<ul>
+<li>操作系统与普通计算机软件的作用相同，即它是由处理器执行的一段程序或一组程序</li>
+<li>操作系统必须交替执行多个程序，在合理的响应时间范围内使处理器的利用率最大</li>
+<li>操作系统必须按照特定的策略(如某些函数或应用进程具有较高的优先级)给进程分配资源，同时避免死锁</li>
+<li>操作系统须为有助于构建应用的进程间通信和用户船舰提供支持</li>
+</ul>
+<h1>3.1什么是进程</h1>
+<h3 id="3-1-1背景">3.1.1背景</h3>
+<h3 id="3-1-2进程和进程控制块">3.1.2进程和进程控制块</h3>
+<ul>
+<li>
+<p>进程的几个定义</p>
+<ul>
+<li>一个正在执行的程序</li>
+<li>一个正在执行的程序</li>
+<li>能分配给处理器并由处理器执行的实体</li>
+<li>由一组执行的指令、一个当前状态和一组相关的系统资源表征的活动单元</li>
+</ul>
+</li>
+<li>
+<p>进程的基本元素：</p>
+<ul>
+<li><strong>程序代码（<em>program code</em>）</strong>：可能被执行相同程序的其他进程共享</li>
+<li>与代码相关联的<strong>数据集（<em>set of data</em>）</strong></li>
+</ul>
+</li>
+<li>
+<p>任一时刻进程的表征：</p>
+<ul>
+<li>标识符：唯一，用于区别其他进程</li>
+<li>状态</li>
+<li>优先级：相对于其他进程的优先顺序</li>
+<li>程序计数器：程序中执行<strong>下一条指令</strong>的<strong>地址</strong></li>
+<li>内存指针：包括<strong>程序代码</strong>和<strong>进程相关数据</strong>的指针，以及与其他进程<strong>共享内存块</strong>的指针</li>
+<li>I/O状态：显式I/O请求、分配给进程的I/O设备（如磁带驱动器）、被进程使用的文件列表等</li>
+<li>记账信息：处理器时间总和、使用的时间数总和、时间限制、记账号等</li>
+</ul>
+</li>
+<li>
+<p>上述表征信息存放在一个称为<strong>进程控制块（<em>process control block</em>）<strong>的数据结构中，控制块由</strong>操作系统</strong>创建和管理</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>进程控制块包含了<strong>充分的信息</strong>，因此可以<strong>中断</strong>一个进程的执行，并<strong>恢复</strong></p>
+</li>
+<li>
+<p>进程控制块是操作系统为<strong>支持多进程</strong>并提供<strong>多重处理技术</strong>的关键工具</p>
+</li>
+<li>
+<p>进程<strong>中断</strong>时，<strong>操作系统</strong>会把<strong>程序计数器</strong>和<strong>处理器寄存器（上下文信息）<strong>保存到</strong>进程控制块</strong>中的相应位置，<strong>进程状态</strong>相应地改为其他值，如阻塞态或就绪态</p>
+</li>
+<li>
+<p><strong>现代操作系统</strong>可以随意将其他进程<strong>置为运行态</strong>，并把它的<strong>程序计数器</strong>和<strong>进程上下文</strong>加载到<strong>处理器寄存器</strong>中，进而<strong>执行</strong>这一<strong>进程</strong></p>
+<p>（操作系统会为待执行程序创建进程或任务）</p>
+</li>
+<li>
+<p>可以说<u>进程=程序代码+相关数据+进程控制块</u></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1>3.2进程状态</h1>
+<ul>
+<li>
+<p>处理器以某种顺序执行指令序列中的指令，这种顺序由程序计数器寄存器中不断变化的值给出，因为程序计数器可能会执行不同进程的不同代码部分</p>
+</li>
+<li>
+<p>列出为进程执行的指令序列，可描述单个进程的行为，这样的序列称为进程<strong>轨迹（<em>trace</em>）</strong>。给出各个进程轨迹的<strong>交替</strong>方式，就可描述处理器的行为</p>
+</li>
+<li>
+<p>分派器（调度器）：在内存中，使处理器<strong>切换进程</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="3-2-1两状态进程模型">3.2.1两状态进程模型</h3>
+<ul>
+<li>操作系统的基本职责：控制进程的执行，包括确定<strong>交替执行的方式</strong>和<strong>给进程分配资源</strong>
+<ul>
+<li>
+<p>操作系统创建一个<strong>新进程</strong>时，将该进程以<strong>未运行态</strong>加入系统，操作系统知道这个进程的存在，并正在<strong>等待执行机会</strong></p>
+</li>
+<li>
+<p>正在运行的进程被中断时，操作系统中的<strong>分派器</strong>部分将<strong>选择</strong>一个新进程运行</p>
+</li>
+<li>
+<p>进程控制块用于方便操作系统跟踪进程</p>
+</li>
+<li>
+<p>被中断的进程转移到等待进程队列中，或在进程结束或取消时销毁</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-2进程的创建和终止">3.2.2进程的创建和终止</h3>
+<h5 id="进程的创建">进程的创建</h5>
+<ul>
+<li>操作系统：<strong>建立</strong>用于<strong>管理</strong>新进程的<strong>数据结构</strong>，在内存中<strong>分配地址空间</strong></li>
+<li>操作系统负责新进程的创建
+<ul>
+<li>批处理环境中：响应作业提交时会创建进程</li>
+<li>交互环境中：新用户实体登录时会创建进程</li>
+<li>可能会代表应用程序创建进程：如用户请求打印一个文件，则操作系统可以创建一个管理打印的进程，进而使请求进程可以继续执行，与打印任务的时间无关</li>
+</ul>
+</li>
+<li>触发进程创建的时间（进程创建的原因）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新的批处理作业</td>
+<td><strong>磁带或磁盘</strong>中的<strong>批处理</strong>作业<strong>控制流</strong>通常会提供给操作系统，当操作系统准备接收新工作时，将读取下一个作业控制命令</td>
+</tr>
+<tr>
+<td>交互登录</td>
+<td>终端用户登录到系统</td>
+</tr>
+<tr>
+<td>为<strong>提供服务</strong>而由操作系统创建</td>
+<td>操作系统可以创建一个进程，<u>代表用户程序执行一个功能</u>，使用户无需等待（如控制打印的进程）</td>
+</tr>
+<tr>
+<td>由现有进程派生</td>
+<td>基于<strong>模块化</strong>的考虑或<strong>开发并行性</strong>，用户程序可以创建多个进程</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>（传统上和现代常见）操作系统会以对用户或应用程序透明的方式来创建所有进程</li>
+<li>当操作系统为另一个进程的显式请求创建一个进程时，这个动作就成为<strong>进程派生（<em>process spawning</em>）</strong></li>
+<li>当一个进程派生另一个进程时，前一个进程称为<strong>父进程（<em>parent process</em>）</strong>，被派生的进程称为<strong>子进程（<em>child process</em>）</strong></li>
+</ul>
+<h5 id="进程终止">进程终止</h5>
+<ul>
+<li>批处理作业中应包含一个Halt指令或其他操作系统显式服务调用来终止</li>
+<li>常见的导致进程终止的原因</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正常完成</td>
+<td>进程自执行一个<strong>操作系统服务调用</strong>，表明已经结束运行</td>
+</tr>
+<tr>
+<td>超过时限</td>
+<td>可以测量多种类型的使劲按，包括总运行时间（挂钟时间）、花费在执行上的时间、对于交互进程从上一次用户输入到当前时刻的时间总量</td>
+</tr>
+<tr>
+<td>无可用内存</td>
+<td>系统无法满足进程需要的内存空间</td>
+</tr>
+<tr>
+<td>超出范围</td>
+<td>进程试图访问<strong>不允许访问</strong>的<strong>内存单元</strong></td>
+</tr>
+<tr>
+<td>保护错误</td>
+<td>进程试图使用<strong>不允许使用</strong>的资源或文件，或试图以一种<strong>不正确的方式</strong>使用（如往只读中写）</td>
+</tr>
+<tr>
+<td>算术错误</td>
+<td>进程试图进行被禁止的计算，如<strong>除以0</strong>或<strong>存储</strong>大于硬件可以接纳的数字</td>
+</tr>
+<tr>
+<td>时间超出</td>
+<td></td>
+</tr>
+<tr>
+<td>I/O失败</td>
+<td>在输入或输出期间发生错误。如找不到文件、在超过规定的最多努力次数后仍然读/写失败（如遇到磁带上的一个坏区时）、无效操作（如从打印机中读）</td>
+</tr>
+<tr>
+<td>无效指令</td>
+<td>进程试图执行一个不存在的指令（通常是由于转移到了数据区并<strong>企图执行数据</strong>）</td>
+</tr>
+<tr>
+<td>特权指令</td>
+<td>进程试图使用<strong>为操作系统保留的指令</strong></td>
+</tr>
+<tr>
+<td>数据误用</td>
+<td><strong>错误类型</strong>或<strong>未初始化</strong>的一块数据</td>
+</tr>
+<tr>
+<td>操作员或操作系统干涉</td>
+<td>由于某些原因，操作员或操作系统终止进程（如出现死锁时)</td>
+</tr>
+<tr>
+<td>父进程终止</td>
+<td>当一个父进程终止时，操作系统可能会自动终止该进程的所有子进程</td>
+</tr>
+<tr>
+<td>父进程请求</td>
+<td>父进程通常具有终止其任何子进程的权力</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>注：在某些情况下，宽松的操作系统可能会允许用户从错误中恢复而不结束进程。例如如果用户请求访问文件失败，操作系统可能仅仅告知访问被拒绝并且允许进程继续执行</li>
+</ul>
+<h3 id="3-2-3五状态模型">3.2.3五状态模型</h3>
+<ul>
+<li>
+<p>对于可运行的进程：<strong>处理器</strong>以一种**轮转（<em>round-robin</em>）**方式操作（依次给队列中每个进程一定的执行时间，然后进程返回队列。阻塞情况除外）</p>
+</li>
+<li>
+<p>问题：存在一些处于<strong>非运行态</strong>但已<strong>就绪等待执行</strong>的进程、处于<strong>阻塞态</strong>等待<strong>I/O操作结束</strong>的进程</p>
+</li>
+<li>
+<p>解决：</p>
+<ul>
+<li>分派器不能只考虑队列中最老的进程，而应扫描整个列表，查找那些<strong>未被阻塞</strong>且在队列中<strong>时间最长</strong>的进程</li>
+<li>分态：
+<ul>
+<li>运行态</li>
+<li>就绪态：进程做好了准备，只要有机会就开始执行</li>
+<li>阻塞/等待态：进程在某些时间发生前不能执行，如I/O操作完成</li>
+<li>新建态：刚刚创建的进程，操作系统还未把它加入<strong>可执行进程组</strong>，它通常是<strong>进程控制块</strong>已经创建但还<strong>未加载</strong>到<strong>内存</strong>中的新进程</li>
+<li>退出态：操作系统从可执行进程组中释放出的进程。自身已停止or因某种原因被取消</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>操作系统创建新进程：</p>
+<ul>
+<li>操作系统执行一些必需的<strong>辅助工作</strong>，将<strong>标识符</strong>关联到<strong>进程</strong>，并<strong>分配</strong>和<strong>创建</strong>管理进程所需要的<strong>全部表格</strong>
+<ul>
+<li>此时进程处于<strong>新建态</strong>，操作系统已经执行了创建进程的必须动作，但还<strong>未执行程序</strong></li>
+<li>如操作系统可能会因为<strong>性能不高</strong>或<strong>内存不足</strong>而<strong>限制</strong>系统中的进程数量</li>
+</ul>
+</li>
+<li>进程处于新建态时，操作系统所需的<strong>关于该进程的信息</strong>保存在<strong>内存</strong>中的<strong>进程表</strong>内，但进程本身还未进入内存
+<ul>
+<li>即将执行的程序代码不在内存中，也没有未与这个程序相关的数据<strong>分配空间</strong></li>
+<li>进程处于新建态时，程序保留在<strong>外存</strong>中，通常保留在磁盘中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>进程退出系统：</p>
+<ul>
+<li>进程到达一个自然结束点、由于不可恢复的错误而取消、在具有相应权限的另一个进程取消该进程时，进程将<strong>终止</strong></li>
+<li>终止将使进程转换为<strong>退出态</strong>，此时不在执行进程，与作业相关的表或<strong>其他信息</strong>会<strong>临时</strong>被<strong>操作系统</strong>保留，因此给<strong>辅助程序或支持程序</strong>提供了<strong>提取所需信息</strong>的时间</li>
+<li><strong>实用程序</strong>为了<strong>分析性能和利用率</strong>，可能需要提取进程的历史信息，提取后，操作系统就不在需要保留任何与该进程相关的数据，因此会从系统中<strong>删除</strong>该进程</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/080139.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>可能的状态转换</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>空（Null）==&gt;新建（New）：上表事件可能会发生</p>
+</li>
+<li>
+<p>新建==&gt;就绪（Ready）态：</p>
+<ul>
+<li>操作系统准备好再接纳一个进程时，<u>把</u>一个进程从新建态转换成就绪态</li>
+<li><u>大多数</u>操作系统会基于<strong>现有的进程数</strong>或<strong>分配给现有进程的虚存数量</strong>设置一些<strong>限制</strong>，以确保不会因为活跃进程的数量过多而导致系统性能下降</li>
+</ul>
+</li>
+<li>
+<p>就绪==&gt;运行（Running）态：</p>
+<ul>
+<li>操作系统选择一个处于就绪态的进程（调度器或分派器的工作）</li>
+</ul>
+</li>
+<li>
+<p>运行==&gt;退出（Exit）：被操作系统终止</p>
+</li>
+<li>
+<p>运行==&gt;就绪：</p>
+<ul>
+<li>最常见原因：正在运行的进程已经达到“允许不中断执行”的最大时间段，the  running process has reached the maximum allowable time for uninterrupted  execution</li>
+<li>很多多道操作系统都实行了这类时间限制</li>
+<li>其他原因，如操作系统给不同的进程分配不同的优先级（并未在所有的操作系统中实现）</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/181927.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>A被<strong>抢占（<em>preempted</em>）</strong>，一般来说，抢占定义为回收一个进程正在使用的资源。此时资源就是处理器本身，进程正在执行并且可以继续执行，但由于其他进程需要执行而被抢占</li>
+<li>其他原因，如：进程<strong>自愿释放对处理器的控制</strong>（例如一个周期性进行<strong>记账</strong>和<strong>维护</strong>的<strong>后台进程</strong>）</li>
+</ul>
+</li>
+<li>
+<p>运行==&gt;阻塞（blocked）态：</p>
+<ul>
+<li>进程请求其必须等待的某些事件时，进入阻塞态</li>
+<li>对<strong>操作系统</strong>的请求通常以<strong>系统服务调用</strong>的形式发出，即运行的程序请求调用操作系统中一部分代码所发生的过程
+<ul>
+<li>进程可能请求操作系统的一个服务，但操作系统无法<strong>立即</strong>予以服务</li>
+<li>请求一个<strong>无法得到的资源</strong>，如文件或虚存中的共享区域</li>
+<li>需要进行某种<strong>初始化</strong>的工作，如I/O操作所遇到的情况，并且只有在该初始化工作完成后才能继续执行</li>
+</ul>
+</li>
+<li>当进程相互通信，一个进程等待另一个进程提供输入时，或等待来自另一个进程的信息时，可能会被阻塞</li>
+</ul>
+</li>
+<li>
+<p>阻塞==&gt;就绪：所等待的事件发生</p>
+</li>
+<li>
+<p>就绪==&gt;退出：在某些系统中，父进程可在任何时刻终止一个子进程。如果父进程终止，那么与该父进程相关的所有子进程都将被终止</p>
+</li>
+<li>
+<p>阻塞==&gt;退出（同上）</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.7.jpg" srcset="/img/loading.gif" lazyload class="">
+
+<ul>
+<li>操作系统从就绪队列中选择进程执行</li>
+<li>当一个正在运行的程序被移出处理器时：终止or被放在就绪或阻塞队列中</li>
+<li>当一个事件发生时，<strong>所有</strong>位于<strong>阻塞队列</strong>中等待该事件的进程都被放到<strong>就绪队列</strong>中</li>
+<li>一些好的方案：
+<ul>
+<li>同时有多个队列，一个事件对应一个队列（b）</li>
+<li>每个优先级一个队列，操作系统可以很容易确定哪个就绪进程具有最高优先级且等待时间最长</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-4被挂起的程序">3.2.4被挂起的程序</h3>
+<ul>
+<li>
+<p>机器变得复杂的原因是，I/O活动远慢于计算速度=》单道程序系统中的处理器大多数处于空闲状态，多道程序系统中也可能出现这种情况</p>
+</li>
+<li>
+<p>解决：</p>
+<ul>
+<li>扩充内存来容纳更多的进程
+<ul>
+<li>贵</li>
+<li>程序对内存空间需求的增长速度快于内存价格下降的速度</li>
+</ul>
+</li>
+<li>交换
+<ul>
+<li>把内存中某个进程的一部分或全部移到磁盘中</li>
+<li>当内存中<strong>不存在就绪态</strong>的进程时，操作系统就把<strong>被阻塞</strong>的进程换出到磁盘中的<strong>挂起队列（<em>suspend queue</em>）</strong>，即临时从内存中&quot;踢出&quot;的进程队列。操作系统此后要么从<strong>挂起队列</strong>中取出另一个进程，要么接受一个<strong>新进程的请求</strong>，将其放入内存运行。When none of the processes in main memory is in the  Ready state, the OS swaps one of the blocked processes out on to disk into a suspend queue. This is a queue of existing processes that have been temporarily kicked  out of main memory, or suspended</li>
+<li>交换也是I/O操作，但是磁盘I/O一般是系统中最快地I/O，因此交换通常会提高性能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>挂起态（<em>the Suspend state</em>）</strong></p>
+<ul>
+<li>
+<p>当内存中的<strong>所有进程</strong>都处于<strong>阻塞态</strong>时，操作系统可把其中的一个进程置为<strong>挂起态</strong>，并将它转移到<strong>磁盘</strong>，此时内存所释放的空间就可被<strong>调入的另一个进程</strong>使用</p>
+</li>
+<li>
+<p>操作系统执行换出操作后，将进程取到内存中的方式有两种：接纳一个新近创建的进程，或调入一个此前挂起的进程。</p>
+</li>
+<li>
+<p>操作系统倾向于调入一个此前挂起的进程，并为它提供服务，而非增加系统的总负载数</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.9a.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>两个独立的概念：阻塞与否，挂起与否（是否被换出内存）</p>
+<ul>
+<li>就绪态：进程已经在内存中并且可以执行</li>
+<li>阻塞态：进程已经在内存中并且等待一个事件</li>
+<li>阻塞/挂起态：进程在外存中并且等待一个事件</li>
+<li>就绪/挂起态：进程已经在外存中，但只要载入内存就可以执行</li>
+</ul>
+</li>
+<li>
+<p>注意迄今为止的论述都假设未使用虚存，进程要么都在内存中，要么都在内存外。使用虚存中，可能会执行只有部分内容在内存中的进程，若访问的进程地址不在内存中，则将进程的相应部分调入内存。使用虚存看上去不需要显式交换，因为通过处理器中的存储管理硬件。任何进程中的任何地址都可移入或移出内存。然而，如第8 意所述，若活动进程很多，且所有的进程都有一部分在内存中时，则可能会导致虚存系统崩溃。因此，即使是在虚存系统中，操作系统也需要不时地根据执行情况完全显式地换出进程</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8A%EF%BC%89/os3.9b.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>阻塞→阻塞/挂起
+<ul>
+<li>若没有就绪进程，<u>则至少换出一个阻塞进程</u>，以便为另一个未阻塞进程腾出<strong>空间</strong></li>
+<li>即使有可用的就绪态进程，也能完成这种转换</li>
+<li>若操作系统需要<strong>确定当前正运行的进程</strong>，或就绪进程为了<strong>维护基本的性能</strong>而需要更多的内存空间，则会挂起一个阻塞的进程</li>
+</ul>
+</li>
+<li>阻塞/挂起→就绪/挂起
+<ul>
+<li>若<strong>等待的事件发生</strong>，则处于阻塞/挂起态的进程可转换到就绪/挂起态</li>
+<li>注意，此时要求操作系统必须得到<strong>挂起进程的状态信息</strong></li>
+</ul>
+</li>
+<li>就绪/挂起→就绪
+<ul>
+<li>若内存中没有就绪态进程，则操作系统需要调入一个进程继续执行</li>
+<li>此外，处于<strong>就绪/挂起态</strong>的进程与处于<strong>就绪态</strong>的任何进程相比，优先级更高时，也可进行这种转换</li>
+<li>出现这种情况的原因是，操作系统设计者规定，调入高优先级的进程比减少交换量更重要</li>
+</ul>
+</li>
+<li>就绪→就绪/挂起
+<ul>
+<li>若释放内存来得到足够空间的<u>唯一方法</u>是挂起一个就绪态进程，则这种转换也是必需的</li>
+<li>此外，若操作系统确信高优先级的阻塞态进程很快将会就绪，则它可能会选择挂起一个低优先级的就绪态进程，而非一个高优先级的阻塞态进程</li>
+</ul>
+</li>
+<li>新建→就绪/挂起和新建→就绪
+<ul>
+<li>new==》就绪or就绪/挂起</li>
+<li>操作系统建立一些表=》管理进程，并为进程<strong>分配地址空间</strong></li>
+<li>操作系统可能更倾向于在<strong>初期</strong>执行这些辅助工作，以便能<u>维护大量的未阻塞进程</u></li>
+<li>采用这种策略时，经常出现无足够空间分配给新进程的情况，因此使用了&quot;新建→就绪/挂起&quot;转换</li>
+<li>建进程的<strong>适时（just-in-time）原理</strong>：即尽可能<strong>推迟创建进程</strong>以<strong>减少操作系统的开销</strong>，并在系统被阻塞态进程<strong>阻塞</strong>时，允许操作系统执行<strong>进程创建</strong>任务。</li>
+</ul>
+</li>
+<li>阻塞/挂起→阻塞
+<ul>
+<li>在设计中少见</li>
+<li>一个进程终止后，会释放一些内存空间，而阻塞/挂起队列中有一个进程的优先级要比就绪/挂起队列中任何进程的优先级都高，并且操作系统有理由相信阻塞进程的事件很快就会发生。这时，把阻塞进程而非就绪进程调入内存是合理的</li>
+</ul>
+</li>
+<li>运行→就绪/挂起
+<ul>
+<li>通常当一个运行进程的分配时间到期后，它将转换到就绪态</li>
+<li>但在阻塞/挂起队列中具有<strong>较高优先级</strong>的进程不再被阻塞时，操作系统会<strong>抢占</strong>这个进程，或直接把这个运行进程转换到就绪/挂起队形中，并<strong>释放一些内存空间</strong></li>
+</ul>
+</li>
+<li>各种状态→退出</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>挂起进程的特点</p>
+<ul>
+<li>该进程不能立即执行</li>
+<li>该进程可能在也可能不在等待一个事件。若在等待一个事件，那么<u>阻塞条件不依赖于挂起条件</u>，阻塞事件的发生不会使进程立即执行</li>
+<li>为<strong>阻止</strong>该进程执行，可通过代理使其置于挂起态，代理可以是<strong>进程本身</strong>，也可以是<strong>父进程</strong>或<strong>操作系统</strong></li>
+<li>除非代理<strong>显式</strong>地命令系统进行状态转换，否则该进程无法从这一状态转移</li>
+</ul>
+</li>
+<li>
+<p>进程挂起的原因</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存分配的需要</td>
+<td>提供更多的内存空间以便调入一个就绪/挂起态进程，或增加分配给其他就绪态进程的内存</td>
+</tr>
+<tr>
+<td>交换</td>
+<td>操作系统需要释放足够的内存空间，以调入并执行处于就绪态的进程</td>
+</tr>
+<tr>
+<td>其他 OS 原因</td>
+<td>操作系统可能挂起后台进程或工具程序进程，或挂起可能会导致问题的进程</td>
+</tr>
+<tr>
+<td>交互式用户请求</td>
+<td>用户希望挂起一个程序的执行，以便进行调试或关联资源的使用</td>
+</tr>
+<tr>
+<td>定时</td>
+<td>进程可被周期性地执行（如记账或系统监视进程），并在等待下一个时间间隔时挂起</td>
+</tr>
+<tr>
+<td>父进程请求</td>
+<td>父进程可能会希望挂起后代进程的执行，以检查或修改挂起的进程，或协调不同后代进程之间的行为</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>若用户怀疑程序有缺陷，就可挂起执行程序进行<strong>调试</strong>，检查并修改程序或数据，然后恢复执行</li>
+<li>在一个<strong>收集印迹或记账</strong>的后台程序时，用户可能希望能够打开或关闭这个程序</li>
+<li><strong>分时因素</strong>的影响：若一个周期性激活的进程多数时间是空闲的，则在两次用到它的时间间隔期内，应把它换出（如监视<u>使用情况或用户活动</u>的程序）</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第三章-进程描述和控制（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-进程描述和控制（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%862/" title="第七章-内存管理（二）">
+                        <span class="hidden-mobile">第七章-内存管理（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

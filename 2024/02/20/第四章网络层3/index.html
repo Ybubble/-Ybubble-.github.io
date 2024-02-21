@@ -1,0 +1,1025 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3、Network Address Translation (NAT，网络地址转换)   A realm(地域) with private addresses refers to a network whose addresses only have meaning to devices within that network   motivation: local network uses ju">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章-网络层（三）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3、Network Address Translation (NAT，网络地址转换)   A realm(地域) with private addresses refers to a network whose addresses only have meaning to devices within that network   motivation: local network uses ju">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.25.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823.assets/4.26-16529381772011.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.26-16529381772011.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.28.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.29.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.3.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.597Z">
+<meta property="article:modified_time" content="2024-02-20T07:42:51.300Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.26.jpg">
+  
+  
+  
+  <title>第四章-网络层（三） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第四章-网络层（三）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第四章-网络层（三）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>3、<strong>Network Address Translation (NAT，网络地址转换)</strong></p>
+<ul>
+<li>
+<p>A <strong>realm(地域)</strong> with private addresses refers to a network whose addresses only have meaning to devices within that network</p>
+</li>
+<li>
+<p>motivation: local network uses just one IP address as far as  outside world is concerned:</p>
+<ul>
+<li>range of addresses <strong>not needed</strong> from ISP: <strong>just one IP  address</strong> for all devices</li>
+<li>can <strong>change addresses of devices</strong> in local network without  notifying outside world</li>
+<li><strong>can change ISP</strong> without changing addresses of devices in  local network</li>
+<li>devices inside local net <strong>not explicitly addressable</strong>, <strong>visible</strong>  by outside world (a <strong>security plus</strong>)</li>
+</ul>
+</li>
+<li>
+<p>implementation: NAT router must:</p>
+<ol>
+<li>
+<p><strong>outgoing datagrams: replace</strong> (source IP address, port #)  of every outgoing datagram to (<strong>NAT IP address, new  port #</strong>) . . .</p>
+<p>remote clients/servers will respond using (<strong>NAT IP  address, new port #</strong>) as destination addr</p>
+</li>
+<li>
+<p><strong>remember (in NAT translation table)</strong> every (source IP  address, port #) to (NAT IP address, <strong>new port #</strong>)  <strong>translation pair</strong></p>
+</li>
+<li>
+<p><strong>incoming datagrams: replace (NAT IP address, new port  #)</strong> in dest fields of every incoming datagram with  corresponding (<strong>source IP address, port #</strong>) stored in NAT  table</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.26.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<ul>
+<li>the router gets its address from the ISP’s DHCP server, and <strong>the router runs a DHCP server</strong> to provide addresses to computers within the NAT-DHCP-router-controlled home network’s address space，为位于NAT-DHCP 路由器控制的家庭网络地址空间中的计算机提供地址</li>
+<li>how does the router know the internal host to which it should forward a given datagram? ==&gt; use a <strong>NAT translation table(转发表)</strong> at the NAT router</li>
+<li>because a port number field is <u>16 bits</u> long, the NAT protocol can support over <u>60,000</u> simultaneous(同时发生的) connections with a single WAN-side IP address for the router</li>
+</ul>
+</li>
+<li>
+<p>What is the maximum number of supported connections for a  single LAN-side address?</p>
+<ul>
+<li>a connection is identified by 5-tuple: (1) protocol, (2) source IP  address, (3) source port number, (4) dest IP address, (5) dest port  number</li>
+<li>协议× 源地址×源端口×目的地址×目的端口 = 2 × 1 × 2^16^ × 2^32^ × 2^16^ =  2^65^</li>
+</ul>
+</li>
+<li>
+<p>NAT is controversial (争议):</p>
+</li>
+</ul>
+<ol>
+<li><strong>port numbers</strong> should be used for <strong>addressing processes</strong>, not for <strong>addressing hosts</strong>
+<ul>
+<li>e.g. servers running on the home network want to use well-known  ports numbers (出口端口可能变为非知名端口)</li>
+</ul>
+</li>
+<li>routers <strong>should only</strong> process up to <strong>layer 3</strong> (should not  transport layer,即不应修改端口号)</li>
+<li><strong>violates end-to-end argument</strong> (违背端到端观点)
+<ul>
+<li>hosts should be talking directly with each other without  interfering</li>
+<li>NAT possibility must be taken into account by app designers, e.g.,  P2P applications</li>
+</ul>
+</li>
+<li>address shortage should instead be solved by IPv6 not  patching(通过IPv6解决地址耗尽问题而不是打补丁)</li>
+</ol>
+<ul>
+<li>
+<p>NAT <strong>traversal (穿越)</strong>  problem</p>
+<ul>
+<li>
+<p>NAT traversal is increasingly provided by Universal Plug and Play (UPnP), which is a protocol that allows a host to discover and configure a nearby NAT</p>
+</li>
+<li>
+<p>With UPnP,an application running in a host can request a NAT mapping between its (<em>private IP address, private port number</em>) and the(<em>public IP address,public port number</em>) for some requested public port number</p>
+</li>
+<li>
+<p>client wants to connect to  server with address 10.0.0.1</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.25.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>server address 10.0.0.1 local  to LAN (client can’t use it as  destination addr)</li>
+<li>only one externally visible  NATed address: 138.76.29.7</li>
+</ul>
+</li>
+<li>
+<p>solution1: statically configure  NAT to forward incoming  connection requests at given  port to server</p>
+<ul>
+<li>e.g., (138.76.29.7, port 2500)  always forwarded to 10.0.0.1  port 80</li>
+</ul>
+</li>
+<li>
+<p>solution 2: <strong>Universal Plug and Play (UPnP, 通用即插即用) Protocol</strong>.  Allows NATed host to:</p>
+<img src="%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823.assets/4.26-16529381772011.jpg" srcset="/img/loading.gif" lazyload alt="4.26" style="zoom:50%;" />
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.26-16529381772011.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>discover and configure nearby  NAT device</li>
+<li>add/remove port mappings  (with lease times)</li>
+<li>learn public IP address  (138.76.29.7)</li>
+<li>i.e., automate static NAT port  map configuration</li>
+</ul>
+</li>
+<li>
+<p>solution 3: relaying (中继) (used in Skype)</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.27.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>NATed client establishes connection to relay</li>
+<li>external client connects to relay</li>
+<li>relay bridges packets between to connections</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-3-Internet-Control-Message-Protocol-ICMP，因特网控制报文协议">4.4.3 Internet Control Message Protocol (ICMP，因特网控制报文协议)</h3>
+<p>Recall：</p>
+<p>the Internet has three main components：</p>
+<p>:one:<strong>IP protocol</strong></p>
+<p>:two:the Internet <strong>routing protocols</strong> (including RIP.OSPF,and BGP)</p>
+<p>:three:<strong>ICMP</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.28.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>ICMP is used by <strong>hosts</strong> and <strong>routers</strong> to <strong>communicate network-layer information</strong> to each other. The most typical use of ICMP is for <strong>error reporting(差错报告)</strong></p>
+<ul>
+<li>
+<p>(1) error reporting: unreachable host, network, port,  protocol</p>
+</li>
+<li>
+<p>(2) echo request/reply (used by ping)</p>
+</li>
+<li>
+<p>For example</p>
+<ul>
+<li>error message such as&quot;Destination network unreachable.&quot;(网络不可达)==&gt;This message had its origins in ICMP ==&gt;an IP router was unable to find a path to the host ==&gt;That <strong>router</strong> created and sent a <strong>type-3 ICMP message</strong> to your host indicating the error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ICMP is often considered part of IP but architecturally it lies just <strong>above IP</strong>, as ICMP messages are <strong>carried inside IP datagrams</strong>, just as TCP or UDP segments <strong>are carried as IP payload</strong></p>
+<ul>
+<li>when a host receives an IP datagram with ICMP specified as the upper-laver protocol, it demultiplexes the datagram’s contents to ICMP, just as it would demultiplex a datagram’s content to TCP or UDP</li>
+</ul>
+</li>
+<li>
+<p>ICMP messages have a <strong>type and a code field</strong>(类型字段，编码字段),and <strong>contain the header</strong> and the <strong>first 8 bytes of the IP datagram</strong> that <u>caused the ICMP message to be generated in the first place</u>，(引起该ICMP包首次产生的 datagram头部和前8字节内容)</p>
+<p>==&gt;so that the sender can determine the datagram that caused the error</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ICMP Type</th>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>echo reply (ping)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>dest. network unreachable</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>dest host unreachable</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2</td>
+<td>dest protocol unreachable</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>dest port unreachable</td>
+</tr>
+<tr>
+<td>3</td>
+<td>6</td>
+<td>dest network unknown</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>dest host unknown</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>source quench (congestion control - not used)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0</td>
+<td>echo request (ping)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>0</td>
+<td>route advertisement</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0</td>
+<td>router discovery</td>
+</tr>
+<tr>
+<td>11</td>
+<td>0</td>
+<td>TTL expired</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0</td>
+<td>bad IP header</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>ping program</p>
+<ul>
+<li>sends an ICMP <strong>type 8</strong> <strong>code 0</strong> message to the specified host</li>
+<li>The <u>destination host</u>, seeing the <strong>echo request</strong>, sends back a <strong>type 0 code 0</strong> <u>ICMP echo reply</u></li>
+</ul>
+<p>（Most TCP/IP implementations support the ping server directly in the operating system; that is, the server <u>is not a process</u>）</p>
+</li>
+<li>
+<p>ICMP message is the <strong>source quench</strong>(源抑制) message</p>
+<ul>
+<li>seldom used in practice</li>
+<li>allow a congested router to send an ICMP source quench message to a host to force that host to reduce its transmission rate</li>
+<li>TCP has its own congestion-control mechanism==&gt;ICMP source quench message is out of use</li>
+</ul>
+</li>
+<li>
+<p>Traceroute and ICMP</p>
+<ul>
+<li>
+<p>Traceroute is <u>implemented</u> with ICMP messages</p>
+</li>
+<li>
+<p>To determine the names and addresses of the routers between source and destination</p>
+<ul>
+<li>Traceroute in the source sends a series of ordinary IP datagrams to the destination, 一系列普通的IP数据报</li>
+<li>Each of these datagrams carries a UDP segment with an u<strong>nlikely UDP port number</strong>，不可达</li>
+<li>the first of these datagrams has a TTL of 1,the second of 2,the third of 3,and so on</li>
+</ul>
+</li>
+<li>
+<p>the source starts <strong>timers</strong> for <u>each</u> of the datagrams</p>
+<ul>
+<li>when the nth datagram arrives at the nth router, the nth router observes that the TTL of the datagram has just expired, n到n刚好过期</li>
+</ul>
+</li>
+<li>
+<p>According to the rules of the IP protocol, the router <strong>discards</strong> the datagram and <strong>sends an ICMP</strong> <u>warning</u> message to the source(<strong>type 11 code 0</strong>)</p>
+<p>=&gt;this ICMP message arrives back at the source</p>
+<p>=&gt;This warning message includes <strong>the name of the router</strong> and <strong>its IP address</strong></p>
+</li>
+<li>
+<p>when ICMP messages  arrives, source <strong>records  round-trip time</strong></p>
+</li>
+<li>
+<p>stopping criteria (条件)</p>
+<ul>
+<li>UDP segment eventually  arrives at <u>destination host</u></li>
+<li>destination returns ICMP  “port unreachable” message  (<strong>type 3, code 3: dest port  unreachable</strong>)</li>
+<li>source stops</li>
+</ul>
+</li>
+<li>
+<p>Note: The standard Traceroute program actually sends sets of <strong>three packets</strong> with <strong>the same TTL</strong>; thus the Traceroute output provides three results for each TTL</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-4-IPv6">4.4.4 IPv6</h3>
+<ul>
+<li>February 2011, IANA(ICANN下属机构) allocated out the  last remaining pool of unassigned IPv4 address</li>
+<li>initial motivation: 32-bit address space soon to be  completely allocated. [Bradner 1996, RFC 1752]</li>
+<li>additional motivation:
+<ul>
+<li>header format helps speed processing/forwarding</li>
+<li>header changes to facilitate QoS 提升服务质量</li>
+</ul>
+</li>
+</ul>
+<h6 id="1、IPv6-Datagram-Format">1、IPv6 Datagram Format</h6>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.29.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Expanded addressing capabilities</p>
+<ul>
+<li>IPv6 increases the size of the IP address from 32 to <strong>128 bits</strong></li>
+<li>In addition to <strong>unicast</strong>(单播) and <strong>multicast</strong>(多播) addresses. IPv6 has introduced a new type of address, called an <strong>anycast address(任播地址)</strong>
+<ul>
+<li>allows a datagram to be delivered to <u>any one of a group of hosts</u></li>
+<li>This feature could be used,for example, to send an HTTP GET to the nearest of a number of mirror sites that contain a given document，向一组包含给定文档的镜像站点中的最近的一个发送一个HTTP GET报文</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>A streamlined 40-byte header</p>
+<ul>
+<li>fixed-length header</li>
+<li>allows for faster processing of the IP datagram</li>
+<li>A new encoding of options allows for more flexible options processing</li>
+</ul>
+</li>
+<li>
+<p>Flow labeling and priority，流标签和优先级</p>
+<ul>
+<li>identify datagrams in same “flow.” the exact meaning of a flow has not yet been determined</li>
+</ul>
+</li>
+<li>
+<p>traffic class(priority)</p>
+<ul>
+<li>identify priority among datagrams in flow</li>
+<li>8-bit</li>
+<li>similar in  spirit to the TOS in IPv4</li>
+</ul>
+</li>
+<li>
+<p>Payload length</p>
+<ul>
+<li>16-bit</li>
+<li>gives the number of bytes in the IPv6 datagram following the fixed-length,40-byte datagram header</li>
+</ul>
+</li>
+<li>
+<p>Next header</p>
+<ul>
+<li>this field identifies the protocol to which the contents(data field) of this datagram will be delivered
+<ul>
+<li>for example, to TCP or UDP</li>
+</ul>
+</li>
+<li>The field uses the same values as the protocol field in the IPv4 header</li>
+</ul>
+</li>
+<li>
+<p>Hop limit</p>
+<ul>
+<li>decremented by one by each router that forwards the datagram==&gt;-1</li>
+<li>reaches zero==&gt;the datagram is discarded</li>
+<li>similar the  TTL in IPv4</li>
+</ul>
+</li>
+<li>
+<p>Source and destination addresses: 128 bits</p>
+</li>
+<li>
+<p>Data</p>
+<ul>
+<li>the <strong>payload</strong> portion of the IPv6 datagram</li>
+<li>When the datagram reaches its <u>destination</u>, the payload will be removed from the IP datagram and passed on to the protocol [<u>specified in the next header field</u>]</li>
+</ul>
+</li>
+<li>
+<p>several fields appearing in the IPv4 datagram are no longer present in the IPv6 datagram:</p>
+<ul>
+<li>Fragmentation/Reassembly
+<ul>
+<li>IPv6 does <strong>not allow</strong> for fragmentation and reassembly at <strong>intermediate routers</strong></li>
+<li>can be performed only by the <strong>source and destination</strong></li>
+<li>(for router)If  too large to be forwarded over the outgoing link ==&gt; <strong>drops</strong>、sends a &quot;Packet Too Big&quot;<strong>ICMP error message</strong> back to the sender
+<ul>
+<li>ICMP v6: new version of ICMP  additional message types, e.g.  “Packet Too Big”</li>
+<li>multicast group management functions (IGMP, Sec. 4.7)</li>
+</ul>
+</li>
+<li>The sender resend the data,using a <strong>smaller</strong> IP datagram size</li>
+<li>Fragmentation and reassembly is a <strong>time-consuming operation</strong>，removing this functionality from the routers and placing it squarely(直接地，干脆地) in the <strong>end systems</strong> considerably <strong>speeds up</strong> IP forwarding within the network</li>
+</ul>
+</li>
+<li>Header checksum
+<ul>
+<li>the <strong>transport-layer</strong>(for example, <u>TCP and UDP</u>)and data <strong>link-layer</strong>(for example, <u>Ethernet</u>) protocols in the Internet layers perform checksumming</li>
+</ul>
+</li>
+<li>Options
+<ul>
+<li>allowed, but outside of header(不再首部中出现),  indicated by “Next Header” field</li>
+<li>The removal of the options field results in a <strong>fixed-length</strong>, <strong>40-byte</strong> IP header</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Note</p>
+<ul>
+<li>IPv6 datagram format:
+<ul>
+<li>fixed-length 40 byte header (recall: IPv4 header is 20 bytes  typical) (注意：IPv6头部长度固定，IPv4不是)</li>
+<li>IPv6 IP address length is 128 bits (recall: IPv4 address is 32  bits)</li>
+<li>no fragmentation allowed (不进行分片)</li>
+<li>a number of IPv4 fields are dropped or made optional (fast  process)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="2、Transitioning-from-IPv4-to-IPv6">2、Transitioning from IPv4 to IPv6</h6>
+<ul>
+<li>
+<p>Two approaches for transitioning from IPv4 to IPv6: <strong>dual-stack(双栈)</strong> and <strong>tunneling (隧道)</strong></p>
+</li>
+<li>
+<p>dual-stack(双栈)</p>
+<ul>
+<li>IPv6/IPv4 node：
+<ul>
+<li>has the ability to send and receive <strong>both Pv4 and IPv6 datagrams</strong></li>
+<li>must have both IPv6 and IPv4 addresses</li>
+</ul>
+</li>
+<li>whether another node is IPv6-capable or IPv4-only==&gt;DNS</li>
+<li>the data field of the IPv6 datagram can be copied into the data field of the IPv4 datagram and appropriate <strong>address mapping</strong> can be done,适当的地址映射</li>
+<li>from IPv6 to IPv4, some information in these fields will be loss</li>
+<li>if either the sender or the receiver is only IPv4-capable ( 只支持IPv4), IPv4 datagram must be used</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>tunneling</p>
+<ul>
+<li>
+<p>the intervening set of IPv4 routers between two IPv6 routers as a tunnel</p>
+</li>
+<li>
+<p>IPv6 datagram carried as payload in IPv4  datagram among IPv4 routers</p>
+
+</li>
+<li>
+<p>intervening IPv4 routers <strong>unaware</strong> that the IPv4 datagram itself contains a <strong>complete IPv6 datagram</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/4.3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/" title="第四章-网络层（四）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第四章-网络层（四）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/" title="第四章-网络层（二）">
+                        <span class="hidden-mobile">第四章-网络层（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

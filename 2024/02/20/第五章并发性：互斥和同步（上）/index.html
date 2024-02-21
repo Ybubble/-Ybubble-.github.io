@@ -1,0 +1,1009 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第五章 并发性：同步和互斥  操作系统设计中的核心问题是进程和线程的管理  多道程序设计技术(Multiprogramming:)∶管理单处理器系统中的多个进程 多处理器技术(Multiprocessing)∶管理多处理器系统中的多个进程 分布式处理器技术(Distributed processing)∶管理多台分布式计算机系统中多个进程的执行，最近迅猛发展的集群就是这类系统的典型例子   并发是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章-互斥和同步（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="第五章 并发性：同步和互斥  操作系统设计中的核心问题是进程和线程的管理  多道程序设计技术(Multiprogramming:)∶管理单处理器系统中的多个进程 多处理器技术(Multiprocessing)∶管理多处理器系统中的多个进程 分布式处理器技术(Distributed processing)∶管理多台分布式计算机系统中多个进程的执行，最近迅猛发展的集群就是这类系统的典型例子   并发是">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/os1.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.649Z">
+<meta property="article:modified_time" content="2024-02-20T13:45:28.783Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/os1.jpg">
+  
+  
+  
+  <title>第五章-互斥和同步（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第五章-互斥和同步（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第五章-互斥和同步（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>第五章 并发性：同步和互斥</h1>
+<ul>
+<li>操作系统设计中的核心问题是进程和线程的管理
+<ul>
+<li><strong>多道程序设计技术</strong>(Multiprogramming:)∶管理<u>单处理器</u>系统中的<u>多个进程</u></li>
+<li><strong>多处理器技术</strong>(Multiprocessing)∶管理<u>多处理器</u>系统中的<u>多个进程</u></li>
+<li><strong>分布式处理器技术</strong>(Distributed processing)∶管理<u>多台分布式计算机系统</u>中<u>多个进程</u>的执行，最近迅猛发展的集群就是这类系统的典型例子</li>
+</ul>
+</li>
+<li>并发是所有问题的<u>基础</u>，也是操作系统设计的基础
+<ul>
+<li>有进程间<strong>通信</strong></li>
+<li><strong>资源</strong>共享与竞争 （如内存、文件、I/O访问）</li>
+<li>多个进程活动的<strong>同步</strong></li>
+<li>给进程分配<strong>处理器时间</strong></li>
+<li>······</li>
+</ul>
+</li>
+<li>并发会在以下三种不同的上下文中出现
+<ul>
+<li><strong>多应用程序</strong>(Multiple applications)∶<u>多道程序设计技术</u>允许在多个活动的应用程序间<strong>动态共享</strong>处理器时间</li>
+<li><strong>结构化应用程序</strong>(Structured applications)∶作为模块化设计和结构化程序设计的扩展，一些应用程序可被有效地设计成<strong>一组并发进程</strong></li>
+<li><strong>操作系统结构</strong>(Operating system structure)∶同样的结构化程序设计优点适用于<strong>系统程序</strong>，且我们已知操作系统自身常常作为<strong>一组进程或线程</strong>实现</li>
+</ul>
+</li>
+<li>支持并发进程的基本需求是<strong>加强互斥的能力</strong>
+<ul>
+<li>当一个进程被授予互斥能力时，那么在其活动期间，它具有排斥<u>所有其他进程的能力</u></li>
+<li>三种方法∶信号量(semaphores)、管程(monitors)、消息传递(message passing)</li>
+</ul>
+</li>
+<li>与并发相关的关键术语</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原子操作<br />Atomic operation</td>
+<td><u>一个函数或动作</u>由一个或多个指令的序列实现，<u>对外是不可见的</u><br />也就是说，没有其他进程可以看到其中间状态或能中断此操作。要保证指令序列要么作为一个组来执行，要么都不执行，<u>对系统状态没有可见的影响</u><br />原子性保证了<strong>并发进程的隔离</strong></td>
+</tr>
+<tr>
+<td>临界区<br />Critical section</td>
+<td><strong>一段代码</strong>，在这段代码中进程将访问<strong>共享资源</strong>，当另外一个进程已在这段代码中运行时，这个进程就不能在这段代码中执行</td>
+</tr>
+<tr>
+<td>死锁<br />Deadlock</td>
+<td>两个或两个以上的进程因每个进程<strong>都在等待</strong>其他进程做完某些事情而<strong>不能继续执行</strong>的情形</td>
+</tr>
+<tr>
+<td>活锁<br />Livelock</td>
+<td>两个或两个以上的进程<strong>为响应其他进程中的变化</strong>而<strong>持续改变自己的状态</strong>但<strong>不做有用的工作</strong>的情形</td>
+</tr>
+<tr>
+<td>互斥<br />Mutual exclusion</td>
+<td>当一个进程在<strong>临界区</strong>访问共享资源时，其他进程不能进入该临界区访问任何共享资源的情形</td>
+</tr>
+<tr>
+<td>竞争条件<br />Race condition</td>
+<td>多个线程或进程在读写一个<strong>共享数据</strong>时，结果依赖于它们执行的<strong>相对时间</strong>的情形</td>
+</tr>
+<tr>
+<td>饥饿<br />Starvation</td>
+<td>一个可运行进程尽管<strong>能继续执行</strong>，但<strong>被调度程序无限期地忽视</strong>，而不能被调度执行的情形</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-1-并发的原理">5.1 并发的原理</h3>
+<ul>
+<li>
+<p>在<strong>单处理器多道程序设计系统</strong>中，进程会被<strong>交替</strong>地执行，因而表现出一种并发执行的<u>外部特征</u></p>
+<p>在<strong>多处理器系统</strong>中，不仅可以交替执行进程，而且可以<strong>重叠执行进程</strong></p>
+</li>
+<li>
+<p>交替和重叠都可视为并发处理的一个实例</p>
+</li>
+<li>
+<p>在单处理器情况下，问题源于多道程序设计系统的一个基本特性∶进程的<strong>相对执行速度</strong>不可预测，它取决于<strong>其他进程的活动</strong>、<strong>操作系统处理中断的方式</strong>以及<strong>操作系统的调度策略</strong>，困难</p>
+<ul>
+<li><strong>全局资源的共享</strong>充满了危险
+<ul>
+<li>同时读写，顺序</li>
+</ul>
+</li>
+<li>操作系统很难对资源进行<strong>最优化分配</strong>
+<ul>
+<li>死锁等问题</li>
+</ul>
+</li>
+<li>定位程序设计错误非常困难
+<ul>
+<li>结果通常是不确定的和不可再现的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-1-1-一个简单的例子">5.1.1 一个简单的例子</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">echo</span><span class="hljs-params">()</span>&#123;<br>    chin = getchar();<br>    chout = chin;<br>    <span class="hljs-built_in">putchar</span> (chout); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>考虑一个支持单用户的<strong>单处理器多道程序设计</strong>系统，过程 echo被视为一个<strong>共享</strong>过程，载入到所有应用程序的公用全局存储区中。 只需使用 echo过程的一个副本==&gt;节省空间</p>
+<p>:one:</p>
+<p>1、P1调用echo过程，并在 getchar 返回它的值并存储于chin后<strong>立即中断</strong>，此时最 近输入的<strong>字符x</strong>保存在变量chin中</p>
+<p>2、进程 P2被激活并调用 echo 过程，echo 过程运行得出结果，输入然后在屏幕上显示单个字符y</p>
+<p>3、P1恢复。此时chin中的值x被写覆盖 ==&gt; 丢失，而chin中的值y传送给chout 并显示出来</p>
+<p>==&gt;第一个字符丢失，第二个字符显示了两次</p>
+<p>:two:假设在这个过程中一次只可以有一个进程</p>
+<ul>
+<li>P1调用 echo  ==&gt; 返回值并存储于 chin ==&gt; 中断</li>
+<li>P2被激活并调用echo ==&gt; （P1仍然在 echo 过程中）P2被阻塞</li>
+<li>P1恢复，完成echo 的执行，并显示出正确的字符x</li>
+<li>P1退出echo ==&gt; 解除P2的阻塞 ==&gt; 成功地调用echo</li>
+</ul>
+<p>:star:定义了一条规则：<strong>一次只允许一个进程</strong>进入echo，并且只有在 echo 过程运行结束后，它才对另一个进程是可用的</p>
+<p>多处理器系统中：</p>
+<p>:one:</p>
+<table>
+<thead>
+<tr>
+<th>P1</th>
+<th>P2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>*</td>
+</tr>
+<tr>
+<td>chin = getchar ();</td>
+<td>*</td>
+</tr>
+<tr>
+<td>*</td>
+<td>chin = getchar ();</td>
+</tr>
+<tr>
+<td>chout = chin;</td>
+<td>chout = chin;</td>
+</tr>
+<tr>
+<td>putchar (chout);</td>
+<td>*</td>
+</tr>
+<tr>
+<td>*</td>
+<td>putchar (chout);</td>
+</tr>
+<tr>
+<td>*</td>
+<td>*</td>
+</tr>
+</tbody>
+</table>
+<p>结果：输入到P1的字符在显示前丢失，输入到P2的字符显示在P1和P2中</p>
+<p>:two:增加&quot;一次 只能有一个进程处于echo中&quot;的规则：</p>
+<p>1、P1和P2分别在一个单独的处理器上执行，P1调用 echo过程</p>
+<p>2、P1在echo过程中时，P2调用echo ==&gt; P2被阻塞，等待echo 过程可用</p>
+<p>3、P1完成echo的执行，退出该过程并继续执行==&gt; 在P1 从echo中退出的同时，P2立即被恢复并开始执行 echo</p>
+<ul>
+<li>原因
+<ul>
+<li>中断可能会在进程中的任何地方停止指令的执行（单处理器系统、多处理器系统）</li>
+<li>两个进程同时执行且都试图访问同一个全局变量（多处理系统）</li>
+</ul>
+</li>
+<li>解决：控制对共享资源的访问</li>
+</ul>
+<h3 id="5-1-2-竞争条件">5.1.2 竞争条件</h3>
+<ul>
+<li>
+<p>竞争条件的发生：<strong>多个进程或线程</strong>读写数据时，其最终结果取决于多个进程的指令<strong>执行顺序</strong></p>
+</li>
+<li>
+<p>例：</p>
+<p>1、两个进程P1和 P2共享全局变量 a，都对a进行更新，后更新全局变量a的进程决定了变量 a 的最终值</p>
+<p>2、虑两个进程P3和P4共享全局变量b和c，P3执行赋值语句b = b+ c，P4执行赋值语句c = b + c，最后结果与执行顺序相关</p>
+</li>
+</ul>
+<h3 id="5-1-3-操作系统关注的问题">5.1.3 操作系统关注的问题</h3>
+<p>1、操作系统必须能够<strong>跟踪</strong>不同的进程（进程控制块）</p>
+<p>2、操作系统必须为每个活动进程<strong>分配和释放</strong>各种<strong>资源</strong></p>
+<ul>
+<li>处理器时间∶这是调度功能</li>
+<li>存储器∶大多数操作系统使用虚存方案</li>
+<li>文件∶详见第12章</li>
+<li>I/O设备</li>
+</ul>
+<p>3、操作系统必须保护每个进程的数据和物理资源，避免其他进程的无意于扰（与存储器、文件和 I/O设备相关）</p>
+<p>4、一个进程的功能和<strong>输出结果</strong>必须与<strong>执行速度</strong>无关（相对于其他并发进程的执行速度）</p>
+<h3 id="5-1-4-进程的交互">5.1.4 进程的交互</h3>
+<p>1、进程之间相互<strong>不知道</strong>对方的存在</p>
+<ul>
+<li>独立</li>
+<li>多个独立进程的多道程序设计：批处理作业、交互式会话、两者的混合</li>
+<li>操作系统需要知道它们对资源的竞争情况 （competition）</li>
+<li>如两个无关的应用程序可能都想访问同一个磁盘、文件或打印机</li>
+</ul>
+<p>2、进程<strong>间接知道</strong>对方的存在</p>
+<ul>
+<li>不需要知道对方的进程 ID</li>
+<li>共享某些对象</li>
+<li>共享同一个对象时会表现出<strong>合作行为（cooperation）</strong></li>
+</ul>
+<p>3、进程<strong>直接知道</strong>对方的存在</p>
+<ul>
+<li>可通过进程ID互相通信</li>
+<li>表现出<strong>合作行为（cooperation）</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>感知程度</th>
+<th>关系</th>
+<th>一个进程对其他进程的影响</th>
+<th>潜在的控制问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>进程之间不知道对方的存在</td>
+<td>竞争</td>
+<td>1、一个进程的结果与另一进程的活动无关<br /> 2、进程的执行时间可能会受到影响</td>
+<td>1、互斥<br />2、死锁（可复用资源） <br />3、饥饿</td>
+</tr>
+<tr>
+<td>进程间接知道对方的存在<br />（如共享对象）</td>
+<td>通过<strong>共享</strong>合作</td>
+<td>1、一个进程的结果可能取决于从另一进程<br />2、 进程的执行时间可能会受到影响</td>
+<td>1、互斥<br />2、死锁（可<strong>复用</strong>资源） <br />3、饥饿<br />4、数据一致性</td>
+</tr>
+<tr>
+<td>进程直接知道对方的存在<br />（它们有可用的通信原语）</td>
+<td>通过<strong>通信</strong>合作</td>
+<td>1、一个进程的结果可能取决于从另一进程<br />2、进程的执行时间可能会受到影响</td>
+<td>1、死锁（可<strong>消耗</strong>资源） <br />2、饥饿<br /></td>
+</tr>
+</tbody>
+</table>
+<p>（可能竞争+饥饿）</p>
+<h6 id="进程间的资源竞争">进程间的资源竞争</h6>
+<ul>
+<li>
+<p>当<strong>并发进程</strong><u>竞争使用</u>同一资源时，它们之间会发生冲突</p>
+</li>
+<li>
+<p>资源：I/O设备、存储器、处理器时间、时钟</p>
+</li>
+<li>
+<p>竞争进程间没有任何<strong>信息交换</strong>，但一个进程的执行可能会影响到竞争进程的行为</p>
+</li>
+<li>
+<p>被拒绝访问的进程：阻塞等待，执行速度↓ ==&gt; 甚至永远不能访问该资源</p>
+</li>
+<li>
+<p>竞争进程面临三个<strong>控制</strong>问题：</p>
+<ul>
+<li>需要<strong>互斥（mutual exclusion）</strong>
+<ul>
+<li>一个不可共享的资源：<strong>临界资源（critical resource）</strong>
+<ul>
+<li>在执行过程中，每个进程都给该资源发命令，接收状 态信息，发送数据和接收数据</li>
+</ul>
+</li>
+<li>使用临界资源的那部分程序：程序的<strong>临界区（critical section）</strong></li>
+<li>:star:一次只允许有<strong>一个程序</strong>在<strong>临界区</strong>中</li>
+</ul>
+</li>
+<li><strong>死锁（deadlock）</strong>
+<ul>
+<li>P1、P2都需要R1、R2，操作系统各分配一个 ==&gt; 每个进程都在等待另一个资源，在获得 其他资源并完成功能前，谁都不会释放自己已拥有的资源 ==&gt; 死锁</li>
+</ul>
+</li>
+<li><strong>饥饿（starvation）</strong>
+<ul>
+<li>P1、P2、P3周期性地访问资源R</li>
+<li>访问权轮流授予P1和P3==&gt; 没有死锁，P2被无限地拒绝访问资源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>互斥机制示例</p>
+<p><code>n个进程并发执行</code> <code>临界资源Ra</code></p>
+<ul>
+<li>若另外一个进程在其临界区中，则任何试图进入临界区的进程都必须等待</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//进程1</span><br><span class="hljs-type">void</span> P1<br>&#123;<br>	<span class="hljs-keyword">while</span>(ture)&#123;<br>	<span class="hljs-comment">//处理代码;</span><br>	entercritical (Ra); <br>	<span class="hljs-comment">//临界区;</span><br>	exitcritical (Ra);<br>	<span class="hljs-comment">//其他代码;</span><br>	&#125;<br>&#125;<br><br><span class="hljs-comment">//进程2</span><br><span class="hljs-type">void</span> P2<br>&#123;<br>	<span class="hljs-keyword">while</span>(ture)&#123;<br>	<span class="hljs-comment">//处理代码;</span><br>	entercritical (Ra); <br>	<span class="hljs-comment">//临界区;</span><br>	exitcritical (Ra);<br>	<span class="hljs-comment">//其他代码;</span><br>	&#125;<br>&#125;<br><br><span class="hljs-comment">//进程n</span><br><span class="hljs-type">void</span> Pn<br>&#123;<br>	<span class="hljs-keyword">while</span>(ture)&#123;<br>	<span class="hljs-comment">//处理代码;</span><br>	entercritical (Ra); <br>	<span class="hljs-comment">//临界区;</span><br>	exitcritical (Ra);<br>	<span class="hljs-comment">//其他代码;</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="进程间通过共享合作">进程间通过共享合作</h6>
+<ul>
+<li>
+<p>通过共享进行合作的情况，包括进程间在互相并<strong>不确切知道对方</strong>的情况下进行交互</p>
+<ul>
+<li>多个进程可能访问一个共享变量、共享文件、数据库</li>
+<li>使用、修改共享变量，不涉及其他进程</li>
+<li>知道其他进程也可能访问同一个数据</li>
+</ul>
+<p>==&gt;必须合作 → 确保它们共享的数据得到正确管理 → 控制机制必须确保<strong>共享数据的完整性</strong></p>
+</li>
+<li>
+<p>数据保存在资源（设备或存储器）中 → 涉及有关<strong>互斥、死锁、饥饿</strong>等控制问题</p>
+</li>
+<li>
+<p>:star:<strong>唯一的区别</strong>是可以<strong>按两种不同的模式（读和写）访问数据项</strong>，并且只有<strong>写</strong>操作必须保证<strong>互斥</strong></p>
+</li>
+<li>
+<p>:star:新要求∶<strong>数据一致性</strong></p>
+<ul>
+<li>
+<p>假设两个数据项 a 和b保持着<strong>相等关系 a =b</strong>，修改需同步</p>
+</li>
+<li>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mn>1</mn><mo>:</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>+</mo><mn>1</mn><mspace linebreak="newline"></mspace><mi>b</mi><mo>=</mo><mi>b</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">P1: a=a+1\\b=b+1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mn>2</mn><mo>:</mo><mi>b</mi><mo>=</mo><mn>2</mn><mo>∗</mo><mi>b</mi><mspace linebreak="newline"></mspace><mi>a</mi><mo>=</mo><mn>2</mn><mo>∗</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">P2:b=2*b\\a=2*a
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></span></p>
+<p>如果最初状态是一致的，则单独执行每个进程会使共享数据仍然保持一致状态</p>
+</li>
+<li>
+<p>考虑并发情况 ,两个进程在每个数据项（a和 b）上都考虑到了互斥</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>a</mi><mo>=</mo><mi>a</mi><mo>+</mo><mn>1</mn><mspace linebreak="newline"></mspace><mi>b</mi><mo>=</mo><mn>2</mn><mo>∗</mo><mi>b</mi><mspace linebreak="newline"></mspace><mi>b</mi><mo>=</mo><mi>b</mi><mo>+</mo><mn>1</mn><mspace linebreak="newline"></mspace><mi>a</mi><mo>=</mo><mn>2</mn><mo>∗</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">a = a + 1\\b = 2 * b\\ b = b + 1\\ a = 2 * a
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></span></p>
+<p>按照这一执行顺序，结果不再保持条件a = b</p>
+<ul>
+<li>开始时有a = b = 1，结束时有 a = 4；b = 3</li>
+</ul>
+<p>==&gt;避免：可以把每个进程中的<strong>整个序列</strong>声明为一个<strong>临界区</strong></p>
+</li>
+<li>
+<p>若使用<strong>临界区</strong>来保护数据的完整性，则没有确定的资源或变量可作为参数。此时，可以把<strong>参数</strong>视为一个在并发进程间共享的<strong>标识符</strong>，用于<strong>标识必须互斥的临界区</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="进程间通过通信合作">进程间通过通信合作</h6>
+<table>
+<thead>
+<tr>
+<th>进程间的资源竞争</th>
+<th>进程间通过共享合作</th>
+<th>进程间通过通信合作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>有自己独立的环境</td>
+<td>有自己独立的环境</td>
+<td>各个进程都与其他进程进行连接</td>
+</tr>
+<tr>
+<td>在不知道其他进程存在的情况下<strong>共享资源</strong></td>
+<td>共享<strong>变量<br /><strong>每个进程并</strong>未明确</strong>地知道其他进程的存在<br />只知道需要<strong>维护数据的完整性</strong></td>
+<td>通信提供<strong>同步</strong>和<strong>协调各种活动</strong>的方法</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>有自己独立的环境指：</p>
+<ul>
+<li>不包括其他进程，进程间的交互是间接的，都存在共享</li>
+</ul>
+</li>
+<li>
+<p>通信：由各种类型的消息组成</p>
+</li>
+<li>
+<p>发送消息和接收消息的<u>原语</u>由<u>程序设计语言</u>提供， 或由<u>操作系统的内核</u>提供</p>
+</li>
+<li>
+<p>在传递消息的过程中进程间<strong>未共享任何对象</strong> → 这类合作<strong>不需要互斥</strong>，但仍然存在<strong>死锁</strong>和<strong>饥饿</strong>问题</p>
+<ul>
+<li>
+<p>死锁：</p>
+<ul>
+<li>两个进程<strong>都被阻塞</strong>，每个<strong>都在等待</strong>来自对方的通信 → 死锁</li>
+</ul>
+</li>
+<li>
+<p>饥饿：</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/os1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">进程间的资源竞争</th>
+<th style="text-align:center">进程间通过共享合作</th>
+<th style="text-align:center">进程间通过通信合作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">问题</td>
+<td style="text-align:center">互斥<br />死锁<br />饥饿</td>
+<td style="text-align:center">互斥<br />死锁<br />饥饿</td>
+<td style="text-align:center">死锁<br />饥饿</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-1-5-互斥的要求">5.1.5 互斥的要求</h3>
+<p>:one:必须强制实施互斥∶</p>
+<p>​	  在与<strong>相同资源</strong>或<strong>共享对象</strong>的<strong>临界区</strong>有关的<strong>所有进程</strong>中，一次只允许<strong>一个进程</strong>进入临界区</p>
+<p>:two:一个在<strong>非临界区停止</strong>的进程<strong>不能干涉其他进程</strong></p>
+<p>:three:<u>绝不允许</u>出现需要访问临界区的进程被<strong>无限延迟</strong>的情况，<u>即不会死锁或饥饿</u></p>
+<p>:four:没有进程在临界区中时，任何需要进入临界区的进程必须能够<strong>立即进入</strong></p>
+<p>:five:对相关进程的<strong>执行速度</strong>和<strong>处理器的数量</strong><u>没有任何要求和限制</u></p>
+<p>:six:一个进程<strong>驻留</strong>在临界区中的<strong>时间必须是有限的</strong></p>
+<ul>
+<li>满足方法
+<ul>
+<li>软件方法：让并发执行的进程承担这一责任
+<ul>
+<li>这类进程（不论是系统程序还是应用程序）需要与另一个进程合作</li>
+<li>不需要程序设计语言或操作系统提供任何支持来实施互斥</li>
+<li>可以更好地理解并发处理的复杂性</li>
+<li>会增加开销并存在缺陷</li>
+</ul>
+</li>
+<li>硬件方法：涉及专用机器指令
+<ul>
+<li>可以减少开销</li>
+<li>却很难成为一种通用的解决方案</li>
+</ul>
+</li>
+<li>操作系统提供：在操作系统或程序设计语言中提供某种级别的支持</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第五章-互斥和同步（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第五章-互斥和同步（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第四章-进程和线程（一）">
+                        <span class="hidden-mobile">第四章-进程和线程（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

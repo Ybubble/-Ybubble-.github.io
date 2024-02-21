@@ -1,0 +1,961 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 信息收集概述 1.1 信息收集的内容  域名和IP地址 防火墙、入侵检测等安全防范措施 内部网络结构、域组织、用户电子邮件 操作系统类型 端口 系统构架 敏感文件或目录 应用程序类型 个人身份信息…  1.2关于信息搜集的重要观点  信息收集是渗透测试的最重要的一环 关于攻击目标，知道得越多越好 知道得越多，就可能知道得更多 没有无用的信息  1.2 信息收集分类  主动通过直接访问、扫描网站">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息搜集">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 信息收集概述 1.1 信息收集的内容  域名和IP地址 防火墙、入侵检测等安全防范措施 内部网络结构、域组织、用户电子邮件 操作系统类型 端口 系统构架 敏感文件或目录 应用程序类型 个人身份信息…  1.2关于信息搜集的重要观点  信息收集是渗透测试的最重要的一环 关于攻击目标，知道得越多越好 知道得越多，就可能知道得更多 没有无用的信息  1.2 信息收集分类  主动通过直接访问、扫描网站">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.6.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.516Z">
+<meta property="article:modified_time" content="2024-02-21T14:10:50.459Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.1.jpg">
+  
+  
+  
+  <title>信息搜集 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="信息搜集"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">信息搜集</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 信息收集概述</h1>
+<h2 id="1-1-信息收集的内容">1.1 信息收集的内容</h2>
+<ol>
+<li>域名和IP地址</li>
+<li>防火墙、入侵检测等安全防范措施</li>
+<li>内部网络结构、域组织、用户电子邮件</li>
+<li>操作系统类型</li>
+<li>端口</li>
+<li>系统构架</li>
+<li>敏感文件或目录</li>
+<li>应用程序类型</li>
+<li>个人身份信息…</li>
+</ol>
+<h2 id="1-2关于信息搜集的重要观点">1.2关于信息搜集的重要观点</h2>
+<ol>
+<li>信息收集是渗透测试的最重要的一环</li>
+<li>关于攻击目标，知道得越多越好</li>
+<li>知道得越多，就可能知道得更多</li>
+<li>没有无用的信息</li>
+</ol>
+<h2 id="1-2-信息收集分类">1.2 信息收集分类</h2>
+<ol>
+<li><strong>主动</strong>通过直接访问、扫描网站，这种将流量流经网站的行为
+<ul>
+<li>优点：信息更多</li>
+<li>缺点：目标主机可能会记录操作记录</li>
+</ul>
+</li>
+<li><strong>被动</strong>利用第三方的服务对目标进行访问了解，比例：Google搜索
+<ul>
+<li>优点：行动不会被目标主机发现</li>
+<li>缺点：信息相对较少</li>
+</ul>
+</li>
+</ol>
+<h1>2 公开信息收集</h1>
+<h2 id="2-1-利用Web服务">2.1 利用Web服务</h2>
+<ol>
+<li>
+<p>网站所有者信息（社会工程学）</p>
+<p>邮编、地址；论坛版本号；网络管理员邮箱；公司人员名单、电话、邮箱</p>
+</li>
+<li>
+<p>得到对应的IP地址</p>
+<p>利用DNS服务器：提供域名到IP地址的映射</p>
+<p>ping <a target="_blank" rel="noopener" href="http://www.sina.com.cn">www.sina.com.cn</a></p>
+</li>
+<li>
+<p>获取目标网络拓扑结构</p>
+<p>网络拓扑图、IP分配表、子域名、网络设备、安全设施</p>
+</li>
+</ol>
+<h2 id="2-2-利用搜索引擎服务">2.2 利用搜索引擎服务</h2>
+<p><strong>共同特点：利用公开信息服务收集信息</strong></p>
+<ul>
+<li>信息是公开的</li>
+<li>海量的信息中很多都是敏感的信息</li>
+</ul>
+<h3 id="Google-Hacking">Google Hacking</h3>
+<p><strong>基本操作符</strong></p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>And</td>
+<td>与</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>或</td>
+</tr>
+<tr>
+<td>+</td>
+<td>强制包含搜索项</td>
+</tr>
+<tr>
+<td>-</td>
+<td>非，去掉搜索项</td>
+</tr>
+<tr>
+<td>&quot; &quot;</td>
+<td>包含一个完整的语义</td>
+</tr>
+<tr>
+<td>.</td>
+<td>单个通配符</td>
+</tr>
+<tr>
+<td>*</td>
+<td>任意通配符</td>
+</tr>
+</tbody>
+</table>
+<p><strong>高级操作符</strong></p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>site:</td>
+<td>搜索具体服务器或域名的网页</td>
+</tr>
+<tr>
+<td>filetype:</td>
+<td>搜索特定类型的文件</td>
+</tr>
+<tr>
+<td>intitle:</td>
+<td>搜索网页标题</td>
+</tr>
+<tr>
+<td>inurl:</td>
+<td>搜索URL</td>
+</tr>
+<tr>
+<td>intext:</td>
+<td>搜索正文</td>
+</tr>
+<tr>
+<td>link:</td>
+<td>搜索连接到指定网页的网页</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Google Hacking可以搜集到的信息</strong></p>
+<p>搜索密码文件、搜索管理员后台URL、搜索web应用漏洞、搜索黑客留下的后门…</p>
+<p><strong>其他工具</strong></p>
+<p>Shodan：在Shodan上搜索出来的可不是单纯的信息，而是所有接入互联网的设备！比如你的电脑、手机、摄像头甚至打印机。</p>
+<p>ZoomEye</p>
+<h2 id="2-3-利用Whols服务">2.3 利用Whols服务</h2>
+<p><strong>功能：查询已注册域名的拥有者信息</strong></p>
+<p>域名登记人信息、联系电话和邮箱、域名注册时间和更新时间、权威DNS的IP地址</p>
+<p><strong>使用方法</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.whois.net">www.whois.net</a>、SamSpade等网络实用工具</p>
+<p><strong>利用网站获得Whois数据</strong></p>
+<p><a target="_blank" rel="noopener" href="http://xn--who-ok6ez9gts1e.is">国外的who.is</a>：<a target="_blank" rel="noopener" href="https://who.is/">https://who.is/</a></p>
+<p>站长之家：<a target="_blank" rel="noopener" href="http://whois.chinaz.com/">http://whois.chinaz.com/</a></p>
+<p>爱站：<a target="_blank" rel="noopener" href="https://whois.aizhan.com/">https://whois.aizhan.com/</a></p>
+<p>微步：<a target="_blank" rel="noopener" href="https://x.threatbook.cn/">https://x.threatbook.cn/</a></p>
+<p><strong>企业的备案信息（中国）</strong></p>
+<p>天眼查：<a target="_blank" rel="noopener" href="https://www.tianyancha.com/">https://www.tianyancha.com/</a></p>
+<p>ICP备案查询网：<a target="_blank" rel="noopener" href="http://www.beianbeian.com/">http://www.beianbeian.com/</a></p>
+<p>国家企业信用信息公示系统：<a target="_blank" rel="noopener" href="http://www.gsxt.gov.cn/index.html">http://www.gsxt.gov.cn/index.html</a></p>
+<h2 id="2-4-利用DNS服务">2.4 利用DNS服务</h2>
+<ul>
+<li>DNS：提供域名到IP地址的映射</li>
+<li>区域传送（Zone transfer）：允许一个辅域名服务器更新自己的区域数据</li>
+<li>如果DNS配置不当，可能造成内部主机名和IP地址对的泄漏</li>
+</ul>
+<p>使用Nslookup可查到域名服务器地址和IP地址，以及域名服务器的传输内容</p>
+<h2 id="2-5-公开信息搜集方法的应用">2.5 公开信息搜集方法的应用</h2>
+<p>社会工程学：利用受害者心理弱点、本能反应、好奇心、信任、贪婪等心理陷阱进行诸如欺骗、伤害等危害手段。</p>
+<ul>
+<li>从同学录中寻找目标</li>
+<li>在论坛、聊天室设“钓鱼”陷阱</li>
+<li>通过简历收集信息</li>
+<li>利用搜索引擎进行数据挖掘</li>
+<li>网站出售注册信息</li>
+</ul>
+<p><strong>Maltego</strong></p>
+<p>主要功能是开源情报收集和取证。可以自动收集到所需信息，而且可以将收集的信息可视化。</p>
+<h1>3 网络扫描</h1>
+<h2 id="3-1-主机扫描">3.1 主机扫描</h2>
+<h3 id="3-1-1-ICMP">3.1.1 ICMP</h3>
+<ul>
+<li>ICMP协议负责差错的报告与控制。比如目标不可达，路由重定向等等</li>
+</ul>
+<img src="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>ICMP报文格式
+<ul>
+<li>类型域(type)用来指明该ICMP报文的类型</li>
+<li>代码域(code)确定该包具体作用</li>
+</ul>
+</li>
+</ul>
+
+<ul>
+<li>
+<p>常用的ICMP报文</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ICMP Destination Unreachable（目标不可达）</td>
+<td>3</td>
+</tr>
+<tr>
+<td>ICMP Source Quench （源抑制）</td>
+<td>4</td>
+</tr>
+<tr>
+<td>ICMP Redirection（重定向）</td>
+<td>5</td>
+</tr>
+<tr>
+<td>ICMP Timestamp Request/Reply（时间戳）</td>
+<td>13/14</td>
+</tr>
+<tr>
+<td>ICMP Address Mask Request/Reply（子网掩码）</td>
+<td>17/18</td>
+</tr>
+<tr>
+<td>ICMP Echo Request/Reply（响应请求/应答）</td>
+<td>8/0</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h3 id="3-1-2-Ping的实现机制">3.1.2 Ping的实现机制</h3>
+<p>向目标主机发送ICMP Echo Request (type 8)数据包，等待回复的ICMP Echo Reply 包(type 0) 。</p>
+<p>:exclamation:根据RFC的定义，TCP/IP协议栈应该支持各种类型的ICMP报文。但事实上，在各个操作系统具体实现TCP/IP时，可能并没有完全遵循RFC标准。</p>
+<h3 id="3-1-3-高级IP扫描技术">3.1.3 高级IP扫描技术</h3>
+<ul>
+<li>
+<p>异常的IP包头</p>
+</li>
+<li>
+<p>在IP头中设置无效的字段值</p>
+<p>向目标主机发送包头错误的IP包，目标主机或过滤设备会反馈ICMP Parameter Problem Error信息。常见的伪造错误字段为Header Length Field 和IP Options Field。</p>
+</li>
+<li>
+<p>错误的数据分片</p>
+<p>向目标主机发送的IP包中填充错误的字段值，目标主机或过滤设备会反馈ICMP Destination Unreachable信息。</p>
+</li>
+</ul>
+<h2 id="3-2-端口扫描">3.2 端口扫描</h2>
+<p>端口是通信的通道（入侵通道）</p>
+<h3 id="3-2-1-基本扫描">3.2.1 基本扫描</h3>
+
+<p><strong>优点</strong></p>
+<p>实现简单；可以用普通用户权限执行</p>
+<p><strong>缺点</strong></p>
+<p>容易被目标应用日志所记录</p>
+<h3 id="3-2-2-隐秘扫描">3.2.2 隐秘扫描</h3>
+<p><strong>TCP连接建立的过程</strong></p>
+<img src="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>SYN扫描的优缺点</strong></p>
+<p>优点：一般不会被目标主机的应用所记录</p>
+<p>缺点：运行Raw Socket时必须拥有管理员权限</p>
+<p><strong>FIN扫描的优缺点</strong></p>
+<p>优点：</p>
+<ul>
+<li>不会被记录到日志</li>
+<li>可以绕过某些防火墙</li>
+<li>netstat命令不会显示——netstate命令只能显示TCP连接或连接的尝试</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>使用RAW IP编程，实现起来相对比较复杂</li>
+<li>不同操作系统结果不同，因此不完全可信</li>
+</ul>
+<p><strong>扫描工具</strong></p>
+<p>UNIX下的端口扫描工具：Nmap</p>
+<p>Windows下的端口扫描工具：SuperScan、Nmap for windows</p>
+<h2 id="3-3-系统类型扫描">3.3 系统类型扫描</h2>
+<h3 id="3-3-1-应用程序BANNER">3.3.1 应用程序BANNER</h3>
+<p>服务程序接收到客户端的正常连接后所给出的欢迎信息</p>
+<h3 id="3-3-2-TCP-IP协议栈指纹">3.3.2 TCP/IP协议栈指纹</h3>
+<p>不同的操作系统在实现TCP/IP协议栈时都或多或少地存在着差异。而这些差异，我们就称之为TCP/IP协议栈指纹。</p>
+<ul>
+<li>不同的操作系统在实现TCP/IP协议栈的时候，并不是完全按照RFC所定义的标准来实现的</li>
+<li>在RFC中也没有对所有的问题给予精确的定义</li>
+</ul>
+<p><strong>TCP包头中的指纹</strong></p>
+<img src="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>IP包头中的指纹</strong></p>
+<img src="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/1.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>4 漏洞扫描</h1>
+<h2 id="4-1-概述">4.1 概述</h2>
+<ul>
+<li>
+<p>在计算机安全领域，安全漏洞（SecurityHole）通常又称作脆弱性（vulnerability）。</p>
+</li>
+<li>
+<p>漏洞的来源:</p>
+<p>（1）硬件、软件或协议设计时的瑕疵</p>
+<p>（2）硬件、软件或协议实现中的弱点</p>
+<p>（3）硬件、软件本身的瑕疵</p>
+<p>（4）系统和网络的错误配置</p>
+</li>
+<li>
+<p>漏洞扫描：指利用一些<u>专门或综合漏洞扫描程序</u>对目标存在的系统漏洞或应用程序漏洞进行扫描。</p>
+</li>
+</ul>
+<h2 id="4-2-漏洞扫描的缺陷">4.2 漏洞扫描的缺陷</h2>
+<p>(1) 报告并不一定可靠；(2) 易暴露目标</p>
+<h2 id="4-3-漏洞检测">4.3 漏洞检测</h2>
+<h3 id="4-3-1-概述">4.3.1 概述</h3>
+<p>漏洞检测就是对重要计算机信息系统进行检查，发现其中可被黑客利用的漏洞。该技术通常采用两种策略，即<strong>被动式策略</strong>和<strong>主动式策略</strong>。</p>
+<ul>
+<li>
+<p>被动式策略</p>
+<p>基于<strong>主机</strong>的检测，对系统中不合适的设置、脆弱的口令以及其他同安全规则相抵触的对象进行检查；</p>
+</li>
+<li>
+<p>主动式策略</p>
+<p>基于<strong>网络</strong>的检测，通过执行一些脚本文件对系统进行攻击，并记录它的反应，从而发现其中的漏洞。</p>
+</li>
+</ul>
+<h3 id="4-3-2-漏洞检测的主要方法">4.3.2 漏洞检测的主要方法</h3>
+<p>直接测试、推断、带凭证的测试</p>
+<h4 id="直接测试">直接测试</h4>
+<p>直接测试是指利用漏洞特点发现系统漏洞的方法</p>
+<p><strong>特点</strong></p>
+<p>1、通常用于对Web服务器漏洞、拒绝服务（DoS）漏洞进行检测。</p>
+<p>2、能够准确地判断系统是否存在特定漏洞。</p>
+<p>3、对于渗透所需步骤较多的漏洞速度较慢。</p>
+<p>4、攻击性较强，可能对存在漏洞的系统造成破坏。</p>
+<p>5、对于DoS漏洞，测试方法会造成系统崩溃。</p>
+<p>6、不是所有漏洞的信息都能通过直接测试方法获得。</p>
+<h4 id="推断">推断</h4>
+<ul>
+<li>推断是指不利用系统漏洞而判断漏洞是否存在的方法。它并不直接渗透漏洞，只是间接地寻找漏洞存在的证据。</li>
+<li>采用推断方法的检测手段主要有版本检查、程序行为分析、操作系统堆栈指纹分析和时序分析等。
+<ul>
+<li>版本检查是推断方法中最简单的一个应用。</li>
+<li>行为分析在需要推翻某个“风险假设”时非常有用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="带凭证的测试">带凭证的测试</h4>
+<ul>
+<li>凭证是指访问服务所需要的用户名或者密码，包括UNIX的登录权限和从网络调用Windows NT的API的能力。</li>
+<li>除了目标主机IP地址以外，直接测试和推断两种方法都不需要其他任何信息。然而，很多攻击都是拥有UNIX shell访问权限或者NT资源访问权限的用户发起的，他们的目标在于将自己的权限提升成为超级用户，从而可以执行某个命令。对于这样的漏洞，前两种方法很难检查出来。因此如果赋予测试进程目标系统的角色，将能够检查出更多的漏洞。这种方法就是带凭证的测试。</li>
+</ul>
+<h3 id="4-3-3-漏洞扫描软件">4.3.3 漏洞扫描软件</h3>
+<p>ISS、SATAN/SAINT、Nessus</p>
+<p>国内的商业漏洞扫描软件：</p>
+<p>开源软件：Xscan</p>
+<p>国内厂商：绿盟”极光“、启明星辰”天镜“</p>
+<h1>5 网络拓扑探测</h1>
+<h2 id="5-1-拓扑探测">5.1 拓扑探测</h2>
+<ul>
+<li>Traceroute技术：用来发现实际的路由路径</li>
+<li>SNMP
+<ul>
+<li>不同类型网络设备之间客户机/服务器模式的简单通信协议。</li>
+<li>两个基本命令模式：
+<ul>
+<li>Read：观察设备配置信息。</li>
+<li>Read/Write：有权写入信息。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-网络设备识别">5.2 网络设备识别</h2>
+<ul>
+<li>
+<p>搜索引擎：Sodan、ZoomEye</p>
+</li>
+<li>
+<p>基于设备指纹的设备类型探测</p>
+<p>Banner信息的获取渠道：FTP协议、SSH、Telnet、HTTP</p>
+</li>
+</ul>
+<h2 id="5-3-网络实体IP地理位置定位">5.3 网络实体IP地理位置定位</h2>
+<ul>
+<li>基于查询信息的定位
+<ul>
+<li>通过查询机构注册的信息确定网络设备的地理位置；</li>
+</ul>
+</li>
+<li>基于网络测量的定位
+<ul>
+<li>利用探测源与目标实体的时延、拓扑或其他信息估计目标实体的位置。</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/3_%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB/" title="口令攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">口令攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A53/" title="第五章-互斥和同步（三）">
+                        <span class="hidden-mobile">第五章-互斥和同步（三）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

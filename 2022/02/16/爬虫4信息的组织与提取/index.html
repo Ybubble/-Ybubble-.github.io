@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="信息标记的形式  XML（extensible markup language，扩展标记语言）标签  用尖括号表达信息 最早的通用信息标记语言，可扩展性好，但是繁琐 应用：Internet上的信息交互与传递    123456789&lt;person&gt;	&lt;firstName&gt;A&lt;&#x2F;firstName&gt;	&lt;lastName&gt;B&lt;&#x2F;lastName&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4-信息的组织与提取">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/%E7%88%AC%E8%99%AB4%E4%BF%A1%E6%81%AF%E7%9A%84%E7%BB%84%E7%BB%87%E4%B8%8E%E6%8F%90%E5%8F%96/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="信息标记的形式  XML（extensible markup language，扩展标记语言）标签  用尖括号表达信息 最早的通用信息标记语言，可扩展性好，但是繁琐 应用：Internet上的信息交互与传递    123456789&lt;person&gt;	&lt;firstName&gt;A&lt;&#x2F;firstName&gt;	&lt;lastName&gt;B&lt;&#x2F;lastName&amp;g">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:31:34.576Z">
+<meta property="article:modified_time" content="2024-02-19T15:25:36.850Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>4-信息的组织与提取 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="4-信息的组织与提取"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:31" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">4-信息的组织与提取</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="信息标记的形式">信息标记的形式</h3>
+<ul>
+<li>XML（extensible markup language，扩展标记语言）标签
+<ul>
+<li>用尖括号表达信息</li>
+<li>最早的通用信息标记语言，可扩展性好，但是繁琐</li>
+<li>应用：Internet上的信息交互与传递</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">person</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">firstName</span>&gt;</span>A<span class="hljs-tag">&lt;/<span class="hljs-name">firstName</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">lastName</span>&gt;</span>B<span class="hljs-tag">&lt;/<span class="hljs-name">lastName</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">address</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">streetAddr</span>&gt;</span>xxx<span class="hljs-tag">&lt;/<span class="hljs-name">streetAddr</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">city</span>&gt;</span>xxx<span class="hljs-tag">&lt;/<span class="hljs-name">city</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">address</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">prof</span>&gt;</span>xx<span class="hljs-tag">&lt;/<span class="hljs-name">prof</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">prof</span>&gt;</span>xx<span class="hljs-tag">&lt;/<span class="hljs-name">prof</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">person</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>JSON（JavaScript Object Notation）</p>
+<ul>
+<li>
+<p>有类型的键值对构建的信息表达方式：“key”:“value”</p>
+</li>
+<li>
+<p>一个键对应多个值时，用[ , ]组织值：“key”:[“value1”,“value2”]</p>
+</li>
+<li>
+<p>键值对嵌套使用时用{ ，}组织：“key”:{“subkey”:“subvalue”}</p>
+</li>
+<li>
+<p>信息有类型，适合程序处理（js），较XML简洁</p>
+</li>
+<li>
+<p>应用：移动应用云端和节点的信息通信，无注释、程序对接口处理的地方</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;firstName&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;A&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;lastName&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;B&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;address&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;streetAddr&quot;</span><span class="hljs-punctuation">:</span>xxx<span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;city&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;xxx&quot;</span><br>	<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;prof&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;xx&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;xx&quot;</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>YAML（YAML Ain’t Markup Language）
+<ul>
+<li>采用无类型的键值对： key:value</li>
+<li>所属关系用缩进表达</li>
+<li>用减号“-”表达并列关系</li>
+<li>用竖线“|”表示整块数据</li>
+<li>用井号“#”表示注释</li>
+<li>信息无类型，文本信息比例高，可读性好</li>
+<li>应用：各类系统的配置文件中，有注释，易读</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">firstName:A</span><br><span class="hljs-string">lastName:B</span><br><span class="hljs-attr">address:</span><br>	<span class="hljs-string">streetAddr:xxx,</span><br>	<span class="hljs-string">city:xxx</span><br><span class="hljs-attr">prof:</span><br>	<span class="hljs-string">-xx</span><br>	<span class="hljs-string">-xx</span><br></code></pre></td></tr></table></figure>
+<h3 id="信息提取的一般方法">信息提取的一般方法</h3>
+<p>:one:完整解析信息的标记形式，再提取关键信息</p>
+<ul>
+<li>优点：信息提取准确</li>
+<li>缺点：提取过程繁琐，速度慢</li>
+</ul>
+<p>:two:无视标记形式，直接搜索关键信息</p>
+<ul>
+<li>优点：提取过程简洁，速度较快</li>
+<li>缺点：提取结果准确性与信息内容相关</li>
+</ul>
+<h6 id="实例">实例</h6>
+<p>提取HTML中所有的URL链接</p>
+<p>①搜索所有的&lt; a&gt;标签</p>
+<p>②解析&lt; a&gt;标签格式，提取href后的链接内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">soup = BeautifulSoup(demo, <span class="hljs-string">&quot;html.parser&quot;</span>)<br><br><span class="hljs-keyword">for</span> link <span class="hljs-keyword">in</span> soup.find_all(<span class="hljs-string">&#x27;a&#x27;</span>):<br>    <span class="hljs-built_in">print</span>(link.get(<span class="hljs-string">&#x27;href&#x27;</span>))<br></code></pre></td></tr></table></figure>
+<h5 id="find-all-name-attrs-recursive-string-kwargs">&lt;&gt;.find_all(name,attrs,recursive,string,* *kwargs)</h5>
+<ul>
+<li>
+<p>返回一个列表类型，存储查找的结果</p>
+</li>
+<li>
+<p>name：对标签名称的检索字符串</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup<br><span class="hljs-keyword">import</span> re<br><br>r = requests.get(<span class="hljs-string">&quot;http://python123.io/ws/demo.html&quot;</span>)<br>demo = r.text<br><br>soup = BeautifulSoup(demo, <span class="hljs-string">&quot;html.parser&quot;</span>)<br><span class="hljs-built_in">print</span>(soup.find_all(<span class="hljs-string">&#x27;a&#x27;</span>))<br><span class="hljs-built_in">print</span>(soup.find_all([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>]))  <span class="hljs-comment"># 多个标签名时用列表</span><br><br><span class="hljs-keyword">for</span> tag <span class="hljs-keyword">in</span> soup.find_all(<span class="hljs-literal">True</span>):<br>    <span class="hljs-built_in">print</span>(tag.name)<br><br><span class="hljs-comment"># 打印以b开头的标签名称（正则表达式）</span><br><span class="hljs-keyword">for</span> tag <span class="hljs-keyword">in</span> soup.find_all(re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">&#x27;b&#x27;</span>)):<br>    <span class="hljs-built_in">print</span>(tag.name)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>attrs：对标签属性值的检索字符串，可标注属性检索</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(soup.find_all(<span class="hljs-string">&#x27;p&#x27;</span>, <span class="hljs-string">&#x27;course&#x27;</span>))<br><span class="hljs-built_in">print</span>(soup.find_all(<span class="hljs-built_in">id</span>=<span class="hljs-string">&#x27;link1&#x27;</span>))<br><span class="hljs-comment"># 使用正则表达式，找到id属性含link的标签（link1、link2...）</span><br><span class="hljs-built_in">print</span>(soup.find_all(<span class="hljs-built_in">id</span>=re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">&#x27;link&#x27;</span>)))<br></code></pre></td></tr></table></figure>
+<ul>
+<li>recursive：是否对子孙全部搜索，默认True</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">soup.find_all(<span class="hljs-string">&#x27;a&#x27;</span>)<br>--&gt;  [&lt;...&gt;...&lt;..&gt;]<br>soup.find_all(<span class="hljs-string">&#x27;a&#x27;</span>,recursive=<span class="hljs-literal">False</span>)<br>--&gt;  []   说明儿子节点层面上没有a标签<br></code></pre></td></tr></table></figure>
+<ul>
+<li>string：&lt;&gt;…&lt;/&gt;中字符串区域的检索字符串</li>
+<li>扩展方法</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt;&gt;.find()</td>
+<td>搜索且只返回一个结果，字符串类型，同.find_all()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_parents()</td>
+<td>在先辈节点中搜索，返回列表类型，同.find_all()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_parent()</td>
+<td>在先辈节点中返回一个结果，字符串类型，同.find()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_next_siblings()</td>
+<td>在后续平行节点中搜索，返回列表类型，同.find_all()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_next_sibling()</td>
+<td>在后续平行节点中返回一个结果，字符串类型，同.find()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_previous_siblings()</td>
+<td>在前序平行节点中搜索，返回列表类型，同.find_all()参数</td>
+</tr>
+<tr>
+<td>&lt;&gt;.find_previous_sibling()</td>
+<td>在前序平行节点中返回一个结果，字符串类型，同.find()参数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="实例：定向爬取中国大学排名">实例：定向爬取中国大学排名</h3>
+<h6 id="可行性：">可行性：</h6>
+<ul>
+<li>信息写于HTML页面中</li>
+<li>定向：只爬取一个页面，不爬取页面中的链接</li>
+<li>查看robots协议</li>
+</ul>
+<h6 id="程序的结构设计">程序的结构设计</h6>
+<p>:one:从网络上获取大学排名网页信息：getHTMLText( )</p>
+<p>:two:提取网页内容中信息到合适的数据结构：fillUnivList( )</p>
+<p>:three:利用数据结构展示并输出结果：printUnivList( )</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> bs4.element<br><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup<br><span class="hljs-keyword">import</span> bs4<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">getHTMLTex</span>(<span class="hljs-params">url</span>):  <span class="hljs-comment"># 获取URL信息，输出内容</span><br>    <span class="hljs-keyword">try</span>:<br>        r = requests.get(url, timeout=<span class="hljs-number">30</span>)<br>        r.raise_for_status()<br>        r.encoding = r.apparent_encoding<br>        <span class="hljs-keyword">return</span> r.text<br>    <span class="hljs-keyword">except</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br><br><br><span class="hljs-comment"># 核心部分</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">fillUnivList</span>(<span class="hljs-params">ulist, html</span>):  <span class="hljs-comment"># 将html页面放到ulist列表中(核心)</span><br>    soup = BeautifulSoup(html, <span class="hljs-string">&quot;html.parser&quot;</span>)<br>    <span class="hljs-keyword">for</span> tr <span class="hljs-keyword">in</span> soup.find(<span class="hljs-string">&#x27;tbody&#x27;</span>).children:<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(tr, bs4.element.Tag):  <span class="hljs-comment"># 过滤掉非标签类型的数据（string）</span><br>            a = tr(<span class="hljs-string">&#x27;a&#x27;</span>)<br>            tds = tr(<span class="hljs-string">&#x27;td&#x27;</span>)  <span class="hljs-comment"># 将所有的td标签存到一个列表中</span><br>            ulist.append([tds[<span class="hljs-number">0</span>].text.strip(), a[<span class="hljs-number">0</span>].string.strip(), tds[<span class="hljs-number">4</span>].text.strip()])<br><br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">所有大学排名的信息被封装在一个标签为tbody的表格中</span><br><span class="hljs-string">每一个大学的信息又被封装在tr标签中（每一个tr标签包含了所有当前大学的数据信息</span><br><span class="hljs-string">每个tr中的信息又被td标签所包围</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">printUnivList</span>(<span class="hljs-params">ulist, num</span>):<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&#123;0:^10&#125;\t&#123;1:^6&#125;\t&#123;2:^10&#125;&quot;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;排名&quot;</span>, <span class="hljs-string">&quot;学校名称&quot;</span>, <span class="hljs-string">&quot;总分&quot;</span>, <span class="hljs-built_in">chr</span>(<span class="hljs-number">12288</span>)))<br>    <span class="hljs-comment"># 0、1、2为槽,&#123;3&#125;表示若宽度不够,使用format的3号位置处的chr(12288)(中文空格)进行填充</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num):<br>        u = ulist[i]<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&#123;0:^10&#125;\t&#123;1:^6&#125;\t&#123;2:^10&#125;&quot;</span>.<span class="hljs-built_in">format</span>(u[<span class="hljs-number">0</span>], u[<span class="hljs-number">1</span>], u[<span class="hljs-number">2</span>]), <span class="hljs-built_in">chr</span>(<span class="hljs-number">12288</span>))<br>        <span class="hljs-built_in">print</span>()<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    uinfo = []<br>    url = <span class="hljs-string">&#x27;https://www.shanghairanking.cn/rankings/bcur/202111&#x27;</span><br>    html = getHTMLTex(url)<br>    fillUnivList(uinfo, html)<br>    printUnivList(uinfo, <span class="hljs-number">20</span>)<br><br><br>main()<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%88%AC%E8%99%AB/" class="category-chain-item">爬虫</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/%E7%88%AC%E8%99%AB5%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="5-正则表达式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">5-正则表达式</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/%E7%88%AC%E8%99%AB6%E5%AE%9E%E4%BE%8B/" title="6-爬虫实例">
+                        <span class="hidden-mobile">6-爬虫实例</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

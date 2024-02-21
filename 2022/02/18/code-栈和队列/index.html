@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="顺序栈 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011">
+<meta property="og:type" content="article">
+<meta property="og:title" content="code-栈和队列">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/18/code-%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="顺序栈 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-18T11:54:01.124Z">
+<meta property="article:modified_time" content="2024-02-19T14:28:46.782Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>code-栈和队列 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="code-栈和队列"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-18 19:54" pubdate>
+          February 18, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">code-栈和队列</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>顺序栈</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX 100</span><br><br><span class="hljs-comment">//顺序栈的定义 </span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">int</span> *base;<br>	<span class="hljs-type">int</span> *top;<br>	<span class="hljs-type">int</span> stacksize;<br>&#125;SqStack;<br><br><span class="hljs-comment">//初始化</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitStack</span><span class="hljs-params">(SqStack &amp;S)</span><br>&#123;<br>	S.base = new <span class="hljs-type">int</span>[MAX]; <span class="hljs-comment">// 为顺序栈动态分配一个最大容量为MAX的数组空间</span><br>	<span class="hljs-keyword">if</span> (!S.base)<br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br><br>	S.top = S.base;<span class="hljs-comment">//初始化将栈置空，就是让头指针指向尾指针，从语句上讲就是把尾指针的值赋值给头指针 </span><br>	S.stacksize = MAX;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">//入栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Push_S</span><span class="hljs-params">(SqStack &amp;S, <span class="hljs-type">int</span> e)</span><br>&#123;<br>	<span class="hljs-comment">//将元素e入栈 </span><br>	<span class="hljs-keyword">if</span> (S.top - S.base == S.stacksize) <span class="hljs-comment">// 判断栈是否满 </span><br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	*S.top++ = e;   <span class="hljs-comment">// *S.top=e;  S.top++;</span><br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">//出栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Pop_S</span><span class="hljs-params">(SqStack &amp;S, <span class="hljs-type">int</span> &amp;e)</span><br>&#123;<br>	<span class="hljs-comment">//用e返回出栈的元素</span><br>	<span class="hljs-keyword">if</span> (S.top == S.base) <span class="hljs-comment">// 判断栈是否为空 </span><br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	e = *--S.top;   <span class="hljs-comment">// --S.top;e=*S.top;</span><br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 取栈顶元素</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">GetTop</span><span class="hljs-params">(SqStack S, <span class="hljs-type">int</span> &amp;e)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (S.top == S.base)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; 	<span class="hljs-comment">// 栈空</span><br><br>	e = *(S.top - <span class="hljs-number">1</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">DestryStack</span><span class="hljs-params">(SqStack &amp;S)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (S.base)<br>	&#123;<br>		delete S.base;<br>		S.stacksize = <span class="hljs-number">0</span>;<br>		S.base = S.top = <span class="hljs-literal">NULL</span>;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	SqStack S;<br><br>	<span class="hljs-keyword">if</span> (InitStack(S))<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;顺序栈初始化成功!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;顺序栈初始化失败!\n&quot;</span>);<br>	&#125;<br><br>	<span class="hljs-type">int</span> loop = <span class="hljs-number">1</span>;<br>	<span class="hljs-type">int</span> e1;<br>	<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;<br><br>	<span class="hljs-comment">// 入栈</span><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入入栈元素(输入0终止):\n&quot;</span>);<br>	<span class="hljs-keyword">while</span> (loop)<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入第%d个元素值:&quot;</span>, i++);<br>		scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;e1);<br>		<span class="hljs-keyword">if</span> (e1 != <span class="hljs-number">0</span>)<br>		&#123;<br>			Push_S(S, e1);<br><br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e1 == <span class="hljs-number">0</span>)<br>		&#123;<br>			loop = <span class="hljs-number">0</span>;<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-comment">// 取栈顶元素</span><br>	<span class="hljs-type">int</span> e2;<br>	GetTop(S, e2);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;栈顶元素是:%d\n&quot;</span>, e2);<br><br>	<span class="hljs-comment">// 出栈</span><br>	<span class="hljs-type">int</span> e3; <span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">while</span> (S.top != S.base)<br>	&#123;<br>		Pop_S(S, e3);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;第%d个出栈的元素是:%d\n&quot;</span>, j++, e3);<br>	&#125;<br><br>	DestryStack(S);<br><br>	system(<span class="hljs-string">&quot;pause&quot;</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>链栈</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-comment">// 链栈的存储结构</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StackNode</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">int</span> data;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StackNode</span> *<span class="hljs-title">next</span>;</span><br>&#125;StackNode, *LinkStack;<br><br><span class="hljs-comment">// 初始化</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitStack</span><span class="hljs-params">(LinkStack &amp;S)</span><br>&#123;<br>	S = <span class="hljs-literal">NULL</span>;   <span class="hljs-comment">// 将栈顶指针置空</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 入栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Push</span><span class="hljs-params">(LinkStack &amp;S, <span class="hljs-type">int</span> e)</span><br>&#123;<br>	<span class="hljs-comment">//元素e入栈</span><br>	StackNode *p;<br>	p = new StackNode;  <span class="hljs-comment">// 生成新节点</span><br><br>	p-&gt;data = e;        <span class="hljs-comment">// 将新节点数据域置为e</span><br>	p-&gt;next = S;        <span class="hljs-comment">// 将新节点插入栈顶</span><br>	S = p;             <span class="hljs-comment">// 修改栈顶指针</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;         <span class="hljs-comment">// 链栈要注意指针的方向是从栈顶指向栈底的 </span><br>&#125;<br><br><span class="hljs-comment">// 出栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Pop</span><span class="hljs-params">(LinkStack &amp;S, <span class="hljs-type">int</span> &amp;e)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (S == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    <span class="hljs-comment">// 栈空</span><br>	&#125;<br>	e = S-&gt;data;    <span class="hljs-comment">//将栈顶元素赋值给e</span><br>	StackNode *p;<br>	p = S;         <span class="hljs-comment">// 临时保存栈顶元素空间，准备释放</span><br>	S = S-&gt;next;    <span class="hljs-comment">// 修改栈顶指针</span><br>	delete p;     <span class="hljs-comment">// 释放原栈顶元素空间</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 取栈顶元素</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">GetTop</span><span class="hljs-params">(LinkStack S)</span><br>&#123;<br>	<span class="hljs-comment">//返回S的栈顶元素,不修改栈顶指针</span><br>	<span class="hljs-keyword">if</span> (S != <span class="hljs-literal">NULL</span>)  <span class="hljs-comment">// 栈非空</span><br>		<span class="hljs-keyword">return</span> S-&gt;data;  <span class="hljs-comment">// 返回栈顶元素的值,栈顶指针不变</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">TraveStack</span><span class="hljs-params">(LinkStack S)</span><br>&#123;<br>	StackNode *p;<br>	p = S;<br>	<span class="hljs-keyword">while</span> (p)<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, p-&gt;data);<br>		p = p-&gt;next;<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	LinkStack S;<br><br>	<span class="hljs-keyword">if</span> (InitStack(S))<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;链栈初始化成功!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;链栈初始化失败!\n&quot;</span>);<br>	&#125;<br><br>	<span class="hljs-comment">// 入栈</span><br>	<span class="hljs-type">int</span> n;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入栈的元素个数:&quot;</span>);<br>	scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n;)<br>	&#123;<br>		<span class="hljs-type">int</span> e;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入第%d个入栈的元素:&quot;</span>, ++i);<br>		scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;e);<br>		Push(S, e);<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;遍历栈:\n&quot;</span>);<br>	TraveStack(S);<br><br>	<span class="hljs-comment">// 出栈（取出两个元素）</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>;)<br>	&#123;<br>		<span class="hljs-type">int</span> a;<br>		Pop(S, a);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;第%d个出栈的元素:%d\n&quot;</span>, ++i, a);<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;遍历栈:\n&quot;</span>);<br>	TraveStack(S);<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;栈顶元素是:%d\n&quot;</span>, GetTop(S));<br><br>	system(<span class="hljs-string">&quot;pause&quot;</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>链队列</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> Datatype int</span><br><span class="hljs-comment">//定义节点结构</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> &#123;</span><br>	Datatype data;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> *<span class="hljs-title">next</span>;</span><br>&#125;QueueNode;<br><span class="hljs-comment">//定义头节点</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	QueueNode *front;<br>	QueueNode *rear;<br>&#125;LinkQueue;<br><br><span class="hljs-comment">//初始化链队列，头节点置空</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InitQueue</span><span class="hljs-params">(LinkQueue *Q)</span><br>&#123;<br>	Q-&gt;front = Q-&gt;rear = <span class="hljs-literal">NULL</span>;<br>&#125;<br><br><span class="hljs-comment">//判断链队列是否为空</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">QueueEmpty</span><span class="hljs-params">(LinkQueue *Q)</span><br>&#123;<br>	<span class="hljs-keyword">return</span>(Q-&gt;front == <span class="hljs-literal">NULL</span> &amp;&amp; Q-&gt;rear == <span class="hljs-literal">NULL</span>);<br>&#125;<br><br><span class="hljs-comment">//入队</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">EnLinkQueue</span><span class="hljs-params">(LinkQueue *Q, Datatype v)</span><br>&#123;<br>	QueueNode *p;<br>	p = (QueueNode *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(QueueNode));<span class="hljs-comment">//为新的节点分配空间</span><br>	p-&gt;data = v;<br>	p-&gt;next = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">if</span> (QueueEmpty(Q))<br>		Q-&gt;front = Q-&gt;rear = p;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		Q-&gt;rear-&gt;next = p;  <span class="hljs-comment">//将新的节点连接到队列</span><br>		Q-&gt;rear = p;             <span class="hljs-comment">//指向队列尾</span><br>	&#125;<br>&#125;<br><br><span class="hljs-comment">//出队</span><br>Datatype <span class="hljs-title function_">DeLinkQueue</span><span class="hljs-params">(LinkQueue *Q)</span><br>&#123;<br>	Datatype i;<br>	QueueNode *s;<br>	<span class="hljs-keyword">if</span> (QueueEmpty(Q))     <span class="hljs-comment">//判断队列是否为空</span><br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error,the linkqueue is empty!&quot;</span>);<br>	s = Q-&gt;front;<br>	i = s-&gt;data;<br>	<span class="hljs-keyword">if</span> (Q-&gt;front == Q-&gt;rear)   <span class="hljs-comment">//判断队列是否只有一个节点</span><br>		Q-&gt;front = Q-&gt;rear = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">else</span><br>		Q-&gt;front = s-&gt;next;<br>	<span class="hljs-built_in">free</span>(s);<br>	<span class="hljs-keyword">return</span> i;<br><br>&#125;<br><br><span class="hljs-comment">//读取队列头元素，不改变队列状态</span><br>Datatype <span class="hljs-title function_">ReadLinkQueue</span><span class="hljs-params">(LinkQueue *Q)</span><br>&#123;<br>	Datatype i;<br>	<span class="hljs-keyword">if</span> (QueueEmpty(Q))     <span class="hljs-comment">//判断队列是否为空</span><br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error,the linkqueue is empty!&quot;</span>);<br>	i = Q-&gt;front-&gt;data;<br>	<span class="hljs-keyword">return</span> i;<br>&#125;<br><br><span class="hljs-comment">//销毁链队列</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">DestryQueue</span><span class="hljs-params">(LinkQueue &amp;Q)</span><br>&#123;<br>	<span class="hljs-keyword">while</span> (Q.front) &#123;<br>		Q.rear = Q.front-&gt;next;<br>		delete Q.front;<br>		Q.front = Q.rear;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	LinkQueue Q;<br>	Datatype i = <span class="hljs-number">1</span>;<br>	InitQueue(&amp;Q);<br>	<span class="hljs-keyword">while</span> (i &lt;= <span class="hljs-number">6</span>)<br>	&#123;<br>		EnLinkQueue(&amp;Q, i);      <span class="hljs-comment">//将1-6入队</span><br>		i++;<br>	&#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DeLinkQueue: %d\n&quot;</span>, DeLinkQueue(&amp;Q));<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DeLinkQueue: %d\n&quot;</span>, DeLinkQueue(&amp;Q));<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ReadLinkQueue: %d\n&quot;</span>, ReadLinkQueue(&amp;Q));<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ReadLinkQueue: %d\n&quot;</span>, ReadLinkQueue(&amp;Q));<br><br>	EnLinkQueue(&amp;Q, <span class="hljs-number">9</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The all number of the linkqueue:\n&quot;</span>);<br>	<span class="hljs-keyword">while</span> (!QueueEmpty(&amp;Q))<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\t&quot;</span>, DeLinkQueue(&amp;Q));         <span class="hljs-comment">//输出队列中所有数据</span><br><br>	DestryQueue(Q);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h1>循环队列</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXQSIZE 100</span><br><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-comment">// 定义顺序队列</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">int</span> *base;   <span class="hljs-comment">//分配存储空间 </span><br>	<span class="hljs-type">int</span> front;  <span class="hljs-comment">//队头指针 </span><br>	<span class="hljs-type">int</span> rear;  <span class="hljs-comment">//队尾指针 </span><br>&#125;SqQueue;<br><br><br><span class="hljs-comment">//初始化循环队列 </span><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitQueue</span><span class="hljs-params">(SqQueue &amp;Q)</span><br>&#123;<br>	Q.base = new <span class="hljs-type">int</span>[MAXQSIZE];   <span class="hljs-comment">//分配存储空间</span><br>	<span class="hljs-keyword">if</span> (!Q.base)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;     <span class="hljs-comment">// 存储空间分配失败 </span><br>	Q.front = Q.rear = <span class="hljs-number">0</span>;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 求队列的长度</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">QueueLength</span><span class="hljs-params">(SqQueue Q)</span><br>&#123;<br>	<span class="hljs-keyword">return</span> ((Q.rear - Q.front) + MAXQSIZE) % MAXQSIZE;<br>&#125;<br><br><br><span class="hljs-comment">// 入队操作</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">EnQueue</span><span class="hljs-params">(SqQueue &amp;Q, <span class="hljs-type">int</span> e)</span><br>&#123;<br>	<span class="hljs-comment">//首先判断队列是否已满</span><br>	<span class="hljs-keyword">if</span> ((Q.rear + <span class="hljs-number">1</span>) % MAXQSIZE == Q.front)<br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	Q.base[Q.rear] = e;  <span class="hljs-comment">// 新元素插入队尾</span><br>	Q.rear = (Q.rear + <span class="hljs-number">1</span>) % MAXQSIZE;   <span class="hljs-comment">// 队尾指针加1</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">//出队操作</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">DeQueue</span><span class="hljs-params">(SqQueue &amp;Q, <span class="hljs-type">int</span> &amp;e)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (Q.front == Q.rear)<br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	e = Q.base[Q.front];  <span class="hljs-comment">// 保存队头元素</span><br>	Q.front = (Q.front + <span class="hljs-number">1</span>) % MAXQSIZE;  <span class="hljs-comment">// 队头指针加1</span><br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 取队头元素</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">GetHead</span><span class="hljs-params">(SqQueue Q)</span><span class="hljs-comment">// 返回Q的队头元素, 不修改队头指针</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (Q.front != Q.rear)   <span class="hljs-comment">// 队列非空</span><br>		<span class="hljs-keyword">return</span> Q.base[Q.front];  <span class="hljs-comment">// 返回队头元素的值,队头指针不变</span><br>&#125;<br><br><span class="hljs-comment">//遍历队列</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">TraveQueue</span><span class="hljs-params">(SqQueue Q)</span><br>&#123;<br>	<span class="hljs-type">int</span> len = QueueLength(Q);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)<br>	&#123;<br>		<span class="hljs-type">int</span> e;<br>		DeQueue(Q, e);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, e);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	SqQueue Q;<br><br>	<span class="hljs-keyword">if</span> (InitQueue(Q))<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;队列初始化成功!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;队列初始化失败!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;队列的初始长度是:%d\n&quot;</span>, QueueLength(Q));<br><br>	<span class="hljs-comment">// 入队</span><br>	<span class="hljs-type">int</span> n;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入队元素的个数:&quot;</span>);<br>	scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)<br>	&#123;<br>		<span class="hljs-type">int</span> e;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入第%d个元素的值:&quot;</span>, i + <span class="hljs-number">1</span>);<br>		scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;e);<br>		EnQueue(Q, e);<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;队列的长度是:%d\n&quot;</span>, QueueLength(Q));<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;遍历队列:&quot;</span>);<br>	TraveQueue(Q);<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n队头元素:%d\n&quot;</span>, GetHead(Q));<br><br>	<span class="hljs-comment">// 出队</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++)<br>	&#123;<br>		<span class="hljs-type">int</span> e;<br>		DeQueue(Q, e);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;第%d个出队元素的值:%d\n&quot;</span>, i + <span class="hljs-number">1</span>, e);<br>	&#125;<br><br>	system(<span class="hljs-string">&quot;pause&quot;</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>栈的应用</h1>
+<h5 id="括号的匹配">括号的匹配</h5>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stack&gt;</span></span><br><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-type">bool</span> <span class="hljs-title function_">Matching</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-built_in">stack</span>&lt;<span class="hljs-type">char</span>&gt; s;  <span class="hljs-comment">// 定义一个stack容器</span><br>	<span class="hljs-type">char</span> ch, temp;<br>	<span class="hljs-type">int</span> flag = <span class="hljs-number">1</span>;     <span class="hljs-comment">// 标记匹配结果以控制循环及返回结果</span><br><br>	<span class="hljs-built_in">cin</span> &gt;&gt; ch; <span class="hljs-comment">//读入第一个字符</span><br><br>	<span class="hljs-keyword">while</span> (ch != <span class="hljs-string">&#x27;#&#x27;</span> &amp;&amp; flag) <span class="hljs-comment">//假设表达式以“#”结尾</span><br>	&#123;<br>		<span class="hljs-keyword">switch</span> (ch)<br>		&#123;<br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;[&#x27;</span>:<br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;(&#x27;</span>:      <span class="hljs-comment">// 若是左括号，则将其压入栈</span><br>			s.push(ch);<br>			<span class="hljs-keyword">break</span>;<br><br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;)&#x27;</span>:  <span class="hljs-comment">//若是“)”，则根据当前栈顶元素的值分情况考虑</span><br>			<span class="hljs-keyword">if</span> (!s.empty() &amp;&amp; s.top() == <span class="hljs-string">&#x27;(&#x27;</span>)  <span class="hljs-comment">// 若栈非空且栈顶元素是“(”，则正确匹配</span><br>			&#123;<br>				temp = s.top();<br>				s.pop();<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>				flag = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 若栈空或栈顶元素不是“(”，则错误失败</span><br>			<span class="hljs-keyword">break</span>;<br><br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;]&#x27;</span>: <span class="hljs-comment">//若是“]”，则根据当前栈顶元素的值分情况考虑</span><br>			<span class="hljs-keyword">if</span> (!s.empty() &amp;&amp; s.top() == <span class="hljs-string">&#x27;[&#x27;</span>) <span class="hljs-comment">// 若栈非空且栈顶元素是“[”，则正确匹配</span><br>			&#123;<br>				temp = s.top();<br>				s.pop();<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>				flag = <span class="hljs-number">0</span>;         <span class="hljs-comment">//若栈空或栈顶元素不是“[”，则错误匹配</span><br>			<span class="hljs-keyword">break</span>;<br>		&#125; <span class="hljs-comment">//switch</span><br>		<span class="hljs-built_in">cin</span> &gt;&gt; ch; <span class="hljs-comment">//继续读入下一个字符</span><br>	&#125; <span class="hljs-comment">//while</span><br>	<span class="hljs-keyword">if</span> (s.empty() &amp;&amp; flag)<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;         <span class="hljs-comment">// 匹配成功</span><br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;      <span class="hljs-comment">// 匹配失败</span><br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br><br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;请输入待匹配的表达式，以“#”结束：&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-comment">//int flag = (int)Matching();</span><br>	<span class="hljs-keyword">if</span> (Matching())<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;括号匹配成功！&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;括号匹配失败！&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br><br>	system(<span class="hljs-string">&quot;pause&quot;</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="进制转换">进制转换</h5>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br>using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-comment">// 链栈的存储结构</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StackNode</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">int</span> data;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">StackNode</span> *<span class="hljs-title">next</span>;</span><br>&#125;StackNode, *LinkStack;<br><br><span class="hljs-comment">// 初始化</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitStack</span><span class="hljs-params">(LinkStack &amp;S)</span><br>&#123;<br>	S = <span class="hljs-literal">NULL</span>;   <span class="hljs-comment">// 将栈顶指针置空</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-comment">// 入栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Push</span><span class="hljs-params">(LinkStack &amp;S, <span class="hljs-type">int</span> e)</span><br>&#123;<br>	<span class="hljs-comment">//元素e入栈</span><br>	StackNode *p;<br>	p = new StackNode;  <span class="hljs-comment">// 生成新节点</span><br><br>	p-&gt;data = e;        <span class="hljs-comment">// 将新节点数据域置为e</span><br>	p-&gt;next = S;        <span class="hljs-comment">// 将新节点插入栈顶</span><br>	S = p;             <span class="hljs-comment">// 修改栈顶指针</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;         <span class="hljs-comment">// 链栈要注意指针的方向是从栈顶指向栈底的 </span><br>&#125;<br><br><span class="hljs-comment">// 出栈</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">Pop</span><span class="hljs-params">(LinkStack &amp;S, <span class="hljs-type">int</span> &amp;e)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (S == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    <span class="hljs-comment">// 栈空</span><br>	&#125;<br>	e = S-&gt;data;    <span class="hljs-comment">//将栈顶元素赋值给e</span><br>	StackNode *p;<br>	p = S;         <span class="hljs-comment">// 临时保存栈顶元素空间，准备释放</span><br>	S = S-&gt;next;    <span class="hljs-comment">// 修改栈顶指针</span><br>	delete p;     <span class="hljs-comment">// 释放原栈顶元素空间</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><br><span class="hljs-comment">// 数制的转换(链栈实现)</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">conversion</span><span class="hljs-params">(<span class="hljs-type">int</span> N)</span><br>&#123;<span class="hljs-comment">//对于任意一个非负十进制数，打印输出与其等值的八进制数</span><br>	<span class="hljs-type">int</span> e;<br>	LinkStack S;<br>	<span class="hljs-keyword">if</span> (InitStack(S))<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;链栈S初始化成功!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;链栈S初始化失败!\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">while</span> (N) <span class="hljs-comment">//当N非零时,循环</span><br>	&#123;<br>		Push(S, N % <span class="hljs-number">8</span>);    <span class="hljs-comment">// 把N与8求余得到的八进制数压入栈S</span><br>		N = N / <span class="hljs-number">8</span>;      <span class="hljs-comment">// N更新为N与8的商</span><br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;转化为八进制数是:&quot;</span>);<br>	<span class="hljs-keyword">while</span> (S) <span class="hljs-comment">// 当栈S非空时，循环</span><br>	&#123;<br>		Pop(S, e); <span class="hljs-comment">//弹出栈顶元素e</span><br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, e); <span class="hljs-comment">//输出e</span><br>	&#125;<br><br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">int</span> n;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;请输入一个十进制数:&quot;</span>);<br>	scanf_s(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);<br><br>	conversion(n);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br><br>	system(<span class="hljs-string">&quot;pause&quot;</span>);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/18/code-%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91/" title="code-树和二叉树">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">code-树和二叉树</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/18/code-%E6%9F%A5%E6%89%BE/" title="code-查找">
+                        <span class="hidden-mobile">code-查找</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

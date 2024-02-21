@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1、 从顺序表中找到具有最小值的元素（假设唯一）并由函数返回该元素的值。然后将该元素 用最后一个元素进行替换，并删除最后一个元素，若顺序表为空则显示出错信息并退出运行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="code-顺序表">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/18/code-%E9%A1%BA%E5%BA%8F%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1、 从顺序表中找到具有最小值的元素（假设唯一）并由函数返回该元素的值。然后将该元素 用最后一个元素进行替换，并删除最后一个元素，若顺序表为空则显示出错信息并退出运行。">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2022/02/18/code-%E9%A1%BA%E5%BA%8F%E8%A1%A8/%E9%A1%BA%E5%BA%8F%E8%A1%A8%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5.assets/image-20220204154232488.png">
+<meta property="article:published_time" content="2022-02-18T11:54:01.140Z">
+<meta property="article:modified_time" content="2024-02-19T14:24:27.189Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2022/02/18/code-%E9%A1%BA%E5%BA%8F%E8%A1%A8/%E9%A1%BA%E5%BA%8F%E8%A1%A8%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5.assets/image-20220204154232488.png">
+  
+  
+  
+  <title>code-顺序表 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="code-顺序表"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-18 19:54" pubdate>
+          February 18, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">code-顺序表</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1、</h1>
+<p>从顺序表中找到具有最小值的元素（假设唯一）并由函数返回该元素的值。然后将该元素 用最后一个元素进行替换，并删除最后一个元素，若顺序表为空则显示出错信息并退出运行。</p>
+<span id="more"></span>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">Del_Min</span><span class="hljs-params">(sqList&amp; L, <span class="hljs-type">int</span>&amp; value)</span> &#123;<br>	<span class="hljs-keyword">if</span> (L.length == <span class="hljs-number">0</span>) &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;输入顺序表为空&quot;</span>);<br>		<span class="hljs-built_in">exit</span>(<span class="hljs-number">-2</span>);<br>	&#125;<br>	value = L.elem[<span class="hljs-number">0</span>];<br>	<span class="hljs-type">int</span> num = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; L.length; i++) &#123;<br>		<span class="hljs-keyword">if</span> (L.elem[i] &lt; value) &#123;<br>			value = L.elem[i];<br>			num = i;<br>		&#125;<br>	&#125;<br>	L.elem[num] = L.elem[--L.length];<br>	<span class="hljs-keyword">return</span> value;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>2、</h1>
+<p>编写算法实现带头结点的单链表的就地逆置，所谓“就地”是指辅助空间复杂度为 O（1）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C">linklist <span class="hljs-title function_">Reverse</span><span class="hljs-params">(linklist&amp; L)</span> &#123;<br>	<span class="hljs-keyword">if</span> (L-&gt;next = <span class="hljs-literal">NULL</span>) &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;输入链表为空&quot;</span>);<br>		<span class="hljs-built_in">exit</span>(<span class="hljs-number">-2</span>);<br>	&#125;<br>	linklist p = L;<br>	linklist q;<br>	createlist(q);<br>	q-&gt;next = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">while</span> (p-&gt;next!=<span class="hljs-literal">NULL</span>) &#123;<br>		p = p-&gt;next;<br>		linklist r = new node;<br>		r-&gt;data = p-&gt;data;<br>		r-&gt;next = q-&gt;next;<br>		q-&gt;next = r;<br>		<br>	&#125;<br>	<span class="hljs-keyword">return</span> q;&#125;<br></code></pre></td></tr></table></figure>
+<h1>3、</h1>
+<p>设 A 和 B 是两个单链表（带头结点），其中元素递增有序。设计一个算法从 A 和 B 中公共 元素产生单链表 C，要求不破坏 A 和 B 的结点。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C">linklist <span class="hljs-title function_">Get_Common</span><span class="hljs-params">(linklist A, linklist B)</span> &#123;<br>	linklist C = new node;<br>	createlist(C);<br>	linklist p = A;<br>	linklist q = B;<br>	<span class="hljs-keyword">while</span> (p-&gt;next) &#123;<br>		p = p-&gt;next;<br>		<span class="hljs-keyword">if</span> (seek(q, p-&gt;data)==<span class="hljs-number">1</span>) &#123;<br>			<span class="hljs-keyword">if</span> (seek(C, p-&gt;data) != <span class="hljs-number">1</span>) &#123;<br>				linklist r = new node;<br>				r-&gt;data = p-&gt;data;<br>				r-&gt;next = C-&gt;next;<br>				C-&gt;next = r;<br>			&#125;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> C;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>4、</h1>
+<p>现有非空单链表 A 和 B，均表示非负整数。A 和 B 的每位数字均采用逆序方式进行存储， 并且每个节点只能存储一位数字。请编写程序将 A 和 B 相加，并以相同形式返回一个表示 和的单链表。假定除了数字 0 以外，A 和 B 都不会以 0 开头。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">struct</span> ListNode* <span class="hljs-title function_">addTwoNumbers</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> ListNode* l1, <span class="hljs-keyword">struct</span> ListNode* l2)</span> &#123;<br>	 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>* <span class="hljs-title">l3</span>;</span><br>	 l3 = (<span class="hljs-keyword">struct</span> ListNode*)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> ListNode));<br>     l3-&gt;next = <span class="hljs-literal">NULL</span>;<br>	 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>* <span class="hljs-title">p</span> =</span> l1;<br>	 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>* <span class="hljs-title">q</span> =</span> l2;<br>     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>* <span class="hljs-title">r</span> =</span> l3;<br>	 <span class="hljs-type">int</span> next = <span class="hljs-number">0</span>;<br>     <span class="hljs-type">int</span> total;<br>	 <span class="hljs-keyword">while</span>( p != <span class="hljs-literal">NULL</span> || q != <span class="hljs-literal">NULL</span>||next!=<span class="hljs-number">0</span>) &#123;<br>		 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>* <span class="hljs-title">tem</span> =</span> (<span class="hljs-keyword">struct</span> ListNode*)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> ListNode));<br>         <span class="hljs-keyword">if</span>(p==<span class="hljs-literal">NULL</span>&amp;&amp;q==<span class="hljs-literal">NULL</span>)&#123;<br>             total = next;<br>         &#125;<span class="hljs-keyword">if</span> (p == <span class="hljs-literal">NULL</span>) &#123;<br>		    total = q-&gt;val + next;<br>            q=q-&gt;next;<br>	     &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(q== <span class="hljs-literal">NULL</span>)&#123;<br>            total = p-&gt;val + next;<br>            p=p-&gt;next;<br>         &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(q!=<span class="hljs-literal">NULL</span>&amp;&amp;q!=<span class="hljs-literal">NULL</span>)&#123;<br>            total = (p-&gt;val + q-&gt;val + next);<br>            p=p-&gt;next;<br>            q=q-&gt;next;<br>         &#125;<br>		 tem-&gt;val = total %<span class="hljs-number">10</span>;<br>		 next = total / <span class="hljs-number">10</span>;<br>		 r-&gt;next = tem;<br>         tem-&gt;next = <span class="hljs-literal">NULL</span>;<br>		 r = tem;<br>         <br>         <br>	 &#125;<br>	 <br>	 <br>	 <span class="hljs-keyword">return</span> l3-&gt;next;<br> &#125;<br></code></pre></td></tr></table></figure>
+<h1>5、编程实践</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><code class="hljs C">using namespace <span class="hljs-built_in">std</span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&quot;stdio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&quot;string.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&quot;stdlib.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&quot;ctype.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> OK 1</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span>          //定义结点</span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">char</span> data[<span class="hljs-number">10</span>];             <span class="hljs-comment">//结点的数据域为字符串</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> *<span class="hljs-title">next</span>;</span>      <span class="hljs-comment">//结点的指针域</span><br>&#125;ListNode,*LinkList;<br>         <span class="hljs-comment">// 自定义LinkList单链表类型</span><br><br>LinkList <span class="hljs-title function_">CreatList</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;            <span class="hljs-comment">//函数，用头插入法建立带头结点的单链表</span><br>LinkList <span class="hljs-title function_">LocateNode</span><span class="hljs-params">(LinkList L, <span class="hljs-type">char</span> *ch)</span>;      <span class="hljs-comment">//函数，按值查找结点</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">DeleteList</span><span class="hljs-params">(LinkList L, <span class="hljs-type">char</span> *ch)</span>;           <span class="hljs-comment">//函数，删除指定值的结点</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Printlist</span><span class="hljs-params">(LinkList L)</span>;                    <span class="hljs-comment">//函数，打印链表中的所有值</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">DeleteAll</span><span class="hljs-params">(LinkList L)</span>;                   <span class="hljs-comment">//函数，删除所有结点，释放内存</span><br>LinkList <span class="hljs-title function_">AddNode</span><span class="hljs-params">(LinkList L)</span>;				 <span class="hljs-comment">//修改程序：增加节点。用头插法，返回头指针</span><br><br><span class="hljs-comment">//==========主函数==============</span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">char</span> ch[<span class="hljs-number">10</span>], num[<span class="hljs-number">5</span>];<br>	LinkList head;<br>	head = CreatList();          <span class="hljs-comment">//用头插入法建立单链表，返回头指针</span><br>	Printlist(head);             <span class="hljs-comment">//遍历链表输出其值</span><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; Delete node (y/n):&quot;</span>);  <span class="hljs-comment">//输入&quot;y&quot;或&quot;n&quot;去选择是否删除结点</span><br>	scanf_s(<span class="hljs-string">&quot;%s&quot;</span>, num,<span class="hljs-keyword">sizeof</span>(num));<br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(num, <span class="hljs-string">&quot;y&quot;</span>) == <span class="hljs-number">0</span> || <span class="hljs-built_in">strcmp</span>(num, <span class="hljs-string">&quot;Y&quot;</span>) == <span class="hljs-number">0</span>) &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Please input Delete_data:&quot;</span>);<br>		scanf_s(<span class="hljs-string">&quot;%s&quot;</span>, ch,<span class="hljs-keyword">sizeof</span>(ch));	        <span class="hljs-comment">//输入要删除的字符串</span><br>		DeleteList(head, ch);<br>		Printlist(head);<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; Add node ? (y/n):&quot;</span>);  <span class="hljs-comment">//输入&quot;y&quot;或&quot;n&quot;去选择是否增加结点</span><br>	scanf_s(<span class="hljs-string">&quot;%s&quot;</span>, num,<span class="hljs-keyword">sizeof</span>(num));<br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(num, <span class="hljs-string">&quot;y&quot;</span>) == <span class="hljs-number">0</span> || <span class="hljs-built_in">strcmp</span>(num, <span class="hljs-string">&quot;Y&quot;</span>) == <span class="hljs-number">0</span>)<br>	&#123;<br>		head = AddNode(head);<br>	&#125;<br><br>	Printlist(head);<br>	DeleteAll(head);            <span class="hljs-comment">//删除所有结点，释放内存</span><br>	<span class="hljs-keyword">return</span> OK;<br>&#125;<br><br><br><span class="hljs-comment">//==========用头插入法建立带头结点的单链表===========</span><br>LinkList <span class="hljs-title function_">CreatList</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">char</span> ch[<span class="hljs-number">100</span>];<br>	LinkList head;<br>	head = new ListNode;<br>	head-&gt;next = <span class="hljs-literal">NULL</span>;<br><br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Input # to end  &quot;</span>);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Please input Node_data:&quot;</span>);<br>		scanf_s(<span class="hljs-string">&quot;%s&quot;</span>, ch,<span class="hljs-keyword">sizeof</span>(ch));<br>		<span class="hljs-comment">//根据输入字符串，插入单链表中。以“#”为结束标志（头插法）</span><br>		<span class="hljs-comment">/*</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"></span><br><span class="hljs-comment">		*/</span><br>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(ch, <span class="hljs-string">&quot;#&quot;</span>))<br>		&#123;<br>			<br>			<span class="hljs-keyword">if</span> (LocateNode(head, ch) == <span class="hljs-literal">NULL</span>)<br>			&#123;<br>				LinkList p = new ListNode;<br>				strcpy_s(p-&gt;data, ch);<br>				p-&gt;next = head-&gt;next;<br>				head-&gt;next = p;<br>				<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ok\n&quot;</span>);<br>			&#125;<br>			<span class="hljs-keyword">else</span> &#123;<br>				<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;已存在\n&quot;</span>);<br>			&#125;<br><br>		&#125;<br>		<span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> head;<br>&#125;<br><br><span class="hljs-comment">//==========按值查找结点，找到则返回该结点的位置，否则返回NULL==========</span><br>LinkList <span class="hljs-title function_">LocateNode</span><span class="hljs-params">(LinkList head, <span class="hljs-type">char</span> *key)</span><br>&#123;<br>	LinkList p = head-&gt;next; <span class="hljs-comment">//从首元结点比较</span><br>	<span class="hljs-comment">//扫描单链表，按值查找结点。若p=NULL则查找失败，否则p指向找到的值为key的结点</span><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-keyword">while</span> (p&amp;&amp;<span class="hljs-built_in">strcmp</span>(p-&gt;data,key)) &#123;<br>		p = p-&gt;next;<br>	&#125;<br>	<span class="hljs-keyword">if</span> (p) &#123;<br>		<span class="hljs-keyword">return</span> p;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>	<br>	<span class="hljs-comment">//若p=NULL则查找失败，否则p指向找到的值为key的结点</span><br>&#125;<br><br><span class="hljs-comment">//==========按照输入值增加节点=======</span><br>LinkList <span class="hljs-title function_">AddNode</span><span class="hljs-params">(LinkList head)</span><br>&#123;<br>	<span class="hljs-type">char</span> ch[<span class="hljs-number">10</span>];<br>	LinkList s, pp;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\nPlease input a New Node_data:&quot;</span>);<br>	scanf_s(<span class="hljs-string">&quot;%s&quot;</span>, ch,<span class="hljs-keyword">sizeof</span>(ch));           <span class="hljs-comment">//输入各结点的字符串</span><br>	<span class="hljs-keyword">if</span> (!LocateNode(head, ch)) &#123;<br>		s = new ListNode;<br>		strcpy_s(s-&gt;data, ch);<br>		s-&gt;next = head-&gt;next;<br>		head-&gt;next = s;<br><br>	&#125;<br>	<span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;已存在\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-comment">//若输入字符串与当前链表结点元素均不同，则插入到表头位置</span><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br>	<span class="hljs-keyword">return</span> head;<br><br>&#125;<br><br><span class="hljs-comment">//==========删除带头结点的单链表中的指定结点=======</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">DeleteList</span><span class="hljs-params">(LinkList head, <span class="hljs-type">char</span> *key)</span><br>&#123;<br>	LinkList p, r;<br>	p = LocateNode(head, key);    <span class="hljs-comment">//按key值查找结点的</span><br>	<span class="hljs-keyword">if</span> (p == <span class="hljs-literal">NULL</span>) &#123;            <span class="hljs-comment">//若没有找到结点，退出</span><br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;position error&quot;</span>);<br>		<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span> &#123;<br>		r = head;<br>		<span class="hljs-keyword">while</span> (r-&gt;next != p) &#123;<br>			r = r-&gt;next;<br>		&#125;<br>		r-&gt;next = p-&gt;next;<br>		delete p;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;删除成功\n&quot;</span>);<br><br>	&#125;<br>&#125;<br><span class="hljs-comment">//===========打印链表=======</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Printlist</span><span class="hljs-params">(LinkList head)</span><br>&#123;<br>	LinkList p = head-&gt;next;       <span class="hljs-comment">//从开始结点打印</span><br>	<span class="hljs-keyword">while</span> (p) &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s,   &quot;</span>, p-&gt;data);<br>		p = p-&gt;next;<br>	&#125;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>&#125;<br><span class="hljs-comment">//==========删除所有结点，释放空间===========</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">DeleteAll</span><span class="hljs-params">(LinkList head)</span><br>&#123;<br>	LinkList p = head, r;<br>	<span class="hljs-keyword">while</span> (p-&gt;next) &#123;<br>		r = p-&gt;next;<br>		delete p;<br>		p = r;<br>	&#125;<br>	delete p;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="%E9%A1%BA%E5%BA%8F%E8%A1%A8%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5.assets/image-20220204154232488.png" srcset="/img/loading.gif" lazyload alt="image-20220204154232488"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/14/hello-world/" title="Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/18/%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构-线性表">
+                        <span class="hidden-mobile">数据结构-线性表</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

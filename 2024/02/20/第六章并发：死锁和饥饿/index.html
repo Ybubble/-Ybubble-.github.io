@@ -1,0 +1,1079 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="6.1 死锁原理  死锁定义为一组相互竞争系统资源或进行通信的进程间的**&quot;永久&quot;阻塞** 当一组进程中的每个进程都在等待某个事件（典型情况下是等待释放所请求的资源），而仅有这组进程中被阻塞的其他进程才可触发该事件时，就称这组进程发生了死锁 永久性  6.1.1 可重用资源   资源通常分为两类∶ 可重用资源、可消耗资源   可重用资源是指一次仅供一个进程安全使用且不因使用而耗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第六章-死锁和饥饿">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="6.1 死锁原理  死锁定义为一组相互竞争系统资源或进行通信的进程间的**&quot;永久&quot;阻塞** 当一组进程中的每个进程都在等待某个事件（典型情况下是等待释放所请求的资源），而仅有这组进程中被阻塞的其他进程才可触发该事件时，就称这组进程发生了死锁 永久性  6.1.1 可重用资源   资源通常分为两类∶ 可重用资源、可消耗资源   可重用资源是指一次仅供一个进程安全使用且不因使用而耗">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.4.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.631Z">
+<meta property="article:modified_time" content="2024-02-20T13:30:24.672Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os2.jpg">
+  
+  
+  
+  <title>第六章-死锁和饥饿 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第六章-死锁和饥饿"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第六章-死锁和饥饿</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>6.1 死锁原理</h1>
+<ul>
+<li>死锁定义为一组<u>相互竞争系统资源</u>或<u>进行通信</u>的进程间的**&quot;永久&quot;阻塞**</li>
+<li>当一组进程中的每个进程都在等待某个事件（典型情况下是等待释放所请求的资源），而仅有这组进程中被阻塞的其他进程才可触发该事件时，就称这组进程发生了死锁</li>
+<li>永久性</li>
+</ul>
+<h3 id="6-1-1-可重用资源">6.1.1 可重用资源</h3>
+<ul>
+<li>
+<p>资源通常分为两类∶ 可重用资源、可消耗资源</p>
+</li>
+<li>
+<p>可重用资源是指<strong>一次仅供一个进程安全使用</strong>且<strong>不因使用而耗尽</strong>的资源</p>
+</li>
+<li>
+<p>进程：得到→使用→释放</p>
+</li>
+<li>
+<p>例子：处理器、I/O通道、内存和外存、设备，以及诸如文件、数据库和信号量之类的数据结构</p>
+</li>
+<li>
+<p>可重用资源死锁的例子</p>
+<ul>
+<li>
+<p>相互竞争的两个进程都要独占访问<strong>磁盘文件D</strong>和<strong>磁带设备T</strong>，每个进程都占用一个资源并请求另一个资源时，就会发生死锁</p>
+</li>
+<li>
+<p>内存请求</p>
+<ul>
+<li></li>
+<li>
+<p>假设可用的分配空间为200KB</p>
+<table>
+<thead>
+<tr>
+<th>P1</th>
+<th>P2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>请求80KB</td>
+<td>请求70KB</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>请求60KB</td>
+<td>请求80KB</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>两个进程都行进到它们的第二个请求时，就会发生死锁→解决：虚存</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-1-2-可消耗资源">6.1.2 可消耗资源</h3>
+<ul>
+<li>可消耗资源是指可**被创建（生产）<strong>和</strong>销毁（消耗）**的资源
+<ul>
+<li>可消耗资源的数量通常没有限制</li>
+<li>无阻塞生产进程可以创建任意数量的这类资源</li>
+<li>消费进程得到个资源时，该资源就不再存在</li>
+</ul>
+</li>
+<li>例子：中断、信号、消息和 I/O缓冲区中的信息</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>P1</th>
+<th>P2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>…</td>
+<td></td>
+</tr>
+<tr>
+<td>Receive(P2)</td>
+<td>Receive(P1)</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Send(P2,M1)</td>
+<td>Send(P1,M2)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>不存在解决所有类型死锁的有效策略</li>
+<li>操作系统中死锁检测、预防和避免方法小结</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>原则</th>
+<th>资源分配策略</th>
+<th>不同的方案</th>
+<th>主要优点</th>
+<th>主要缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>预防</td>
+<td>保守：预提交资源</td>
+<td>一次性请求所有资源</td>
+<td>对执行一连串活动的进程非常有效<br />不需要抢占</td>
+<td>低效<br />延迟进程的初始化<br />必须知道将来的资源请求</td>
+</tr>
+<tr>
+<td>-</td>
+<td></td>
+<td>抢占</td>
+<td>用于状态易于保存和恢复的资源时非常方便</td>
+<td>过于经常地、没必要地抢占</td>
+</tr>
+<tr>
+<td>-</td>
+<td></td>
+<td>资源排序</td>
+<td>通过编译时检测是可以实施的<br />既然问题已在系统设计时解决，因此不需要在运行时计算</td>
+<td>禁止增加的资源请求</td>
+</tr>
+<tr>
+<td>避免</td>
+<td>介于检测和预防中间</td>
+<td>操作以便发现至少一条安全路径</td>
+<td>不需要抢占</td>
+<td>必须知道将来的资源请求<br />进程不能被长时间阻塞</td>
+</tr>
+<tr>
+<td>检测</td>
+<td>非常自由∶只要有可能，请求的资源都允许</td>
+<td>周期性地调用以便测试死锁</td>
+<td>不会延迟进程的初始化<br />易于在线处理</td>
+<td>固有的抢占丢失</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-1-3-资源分配图">6.1.3 资源分配图</h3>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="6-1-4-死锁的条件">6.1.4 死锁的条件</h3>
+<ul>
+<li>
+<p>三个<strong>必要条件</strong>（死锁存在的必要条件而非充分条件）</p>
+<p>:one:<strong>互斥</strong></p>
+<p>一次只有一个进程可以使用一个资源</p>
+<p>其他进程不能访问已分配给其他进程的资源</p>
+<p>（要确保结果的一致性和数据库的完整性）</p>
+<p>:two:<strong>占有且等待</strong></p>
+<p>当一个进程等待其他进程时，继续占有已分配的资源</p>
+<p>:three:<strong>不可抢占</strong></p>
+<p>不能强行抢占进程已占有的资源</p>
+<p>（在涉及数据资源时，必须提供<strong>回滚恢复机制</strong>（rollback recovery mechanism）来支持资源抢占，只有这样才能把进程及其资源恢复到以前的适当状态，使得进程最终可以重复其动作）</p>
+</li>
+<li>
+<p>要产生死锁，还需要第四个条件∶</p>
+<p>:four:<strong>循环等待</strong>。</p>
+<p>存在一个<strong>闭合的进程链</strong>，每个进程至少占有此链中下一个进程所需的一个资源</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>死锁的可能性</th>
+<th>死锁的存在性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1、互斥<br />2、不可抢占<br />3、占有且等待</td>
+<td>1、互斥<br />2、不可抢占<br />3、占有且等待<br />4、循环等待</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>处理死锁的方法</p>
+<p>:one:采用某种策略消除条件1～4中的某个条件的出现，来**预防（prevent）**死锁</p>
+<p>:two:基于资源分配的当前状态做动态选择来**避免（avoid）**死锁</p>
+<p>:three:试图**检测（detect）**死锁 （满足条件1～4）的存在并从死锁中恢复</p>
+</li>
+</ul>
+<h1>6.2 死锁预防</h1>
+<ul>
+<li>分类
+<ul>
+<li><strong>间接</strong>死锁预防方法，即防止前面列出的三个必要条件中的任何一个条件的发生</li>
+<li><strong>直接</strong>死锁预防方法，即<strong>防止循环等待的发生</strong></li>
+</ul>
+</li>
+</ul>
+<p>具体分析与这4个条件相关的技术问题↓</p>
+<h3 id="6-2-1-互斥">6.2.1 互斥</h3>
+<p>不可能禁止，如资源读写的例子</p>
+<h3 id="6-2-2-占有且等待">6.2.2 占有且等待</h3>
+<ul>
+<li>预防占有且等待的条件→可以要求进程<strong>一次性地请求所有需要的资源</strong>，并<strong>阻塞</strong>这个进程直到所有请求都同时满足
+<ul>
+<li>问题1：低效性
+<ul>
+<li>一个进程可能<strong>被阻塞很长时间</strong>，以等待满足其所有的资源请求。而实际上，只要有<strong>一部分资源</strong>，它就可以继续执行</li>
+<li>分配给一个进程的资源<u>可能会在相当长的一段时间</u><strong>不会被该进程使用</strong>，且不能被其他进程使用</li>
+</ul>
+</li>
+<li>问题2：一个进程可能<strong>事先并不知道</strong>它所需要的所有资源</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-2-3-不可抢占">6.2.3 不可抢占</h3>
+<p>1、占有某些资源的一个进程进一步申请资源时若<strong>被拒绝</strong>，则该进程必须<strong>释放</strong>其最初占有的资源，必要时<strong>可再次申请</strong>这些资源和其他资源</p>
+<p>2、一个进程请求当前被另一个进程占有的一个资源时，<strong>操作系统可以抢占另一个进程</strong>，要求它释放资源（条件：任意两个进程的优先级都不同）</p>
+<p>[只有在<strong>资源状态</strong>可以<strong>很容易地保存和恢复</strong>的情况下（就像处理器一样），这种方法才是实用的]</p>
+<h3 id="6-2-4-循环等待">6.2.4 循环等待</h3>
+<ul>
+<li>循环等待条件可通过<strong>定义资源类型的线性顺序</strong>来预防
+<ul>
+<li>若一个进程<strong>已分配了R类型的资源</strong>，则其接下来请求的资源只能是那些<strong>排在R类型之后的资源</strong></li>
+<li>假设两个进程A和B死锁，原因是A获得R~j~，并请求R~i~，而B获得R~i~，并请求R~j~，那么这个条件不可能，因为这意味着i&lt;j且 j&lt;i</li>
+</ul>
+</li>
+<li>低效性：会使进程<strong>执行速度变慢</strong>，且可能在<strong>没有必要的情况下拒绝资源访问</strong></li>
+</ul>
+<h1>6.3 死锁避免</h1>
+<ul>
+<li>和死锁预防的差别很小
+<ul>
+<li>在死锁预防（deadlock prevention）中，约束资源请求至少可<strong>破坏四个死锁条件中的一个条件</strong>。这可通过<u>防止发生三个必要条件中的一个</u>（互斥、占有且等待、非抢占）<strong>间接完成</strong>，也可通过<u>防止循环等待</u><strong>直接完成</strong>，但都会导致<strong>低效的资源使用</strong>和<strong>低效的进程执行</strong></li>
+<li>死锁避免则相反：允许三个必要条件，但通过明智地选择，可确保永远<u>不会到达死锁点</u>，因此死锁避免与死锁预防<u>相比</u>，<strong>可允许更多的并发</strong></li>
+</ul>
+</li>
+<li>在死锁避免中<u>，是否允许当前的资源分配请求</u>是通过判断该请求是否可能导致死锁来决定的→死锁避免需要知道<strong>未来进程资源请求的情况</strong></li>
+<li>两种死锁避免方法
+<ul>
+<li>若<strong>一个进程的请求</strong>会导致死锁，则<strong>不启动</strong>该进程</li>
+<li>若一个进程<strong>增加的资源请求</strong>会导致死锁，则<strong>不允许这一资源分配</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-3-1-进程启动拒绝">6.3.1 进程启动拒绝</h3>
+<ul>
+<li>有着n个进程和m种不同类型资源的系统</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>定义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resource=<strong>R</strong>=(R~1~,R~2~,…,R~m~)</td>
+<td>系统中每种资源的总量</td>
+</tr>
+<tr>
+<td>Available =Available =<strong>V</strong>=(V~1~,V~2~,…,V~m~)</td>
+<td>未分配给进程的每种资源的总量</td>
+</tr>
+<tr>
+<td>$$Claim=C=\left[\begin{matrix}C{11}&amp;C{12}&amp;…C{1m}\C{21}&amp;C{22}&amp;…C{2m}\…&amp;…&amp;…\C{n1}&amp;C{n2}&amp;…C{nm}\end{matrix}\right]\tag{2}$$</td>
+<td>C~ij~=进程 i 对资源 j 的需求</td>
+</tr>
+<tr>
+<td>$$Allocation=A=\left[\begin{matrix}A~11~&amp;A~12~&amp;…A~1m~\A~21~&amp;A~22~&amp;…A~2m~\…&amp;…&amp;…\A~n1~&amp;A~n2~&amp;…A~nm~\end{matrix}\right]\tag{2}$$</td>
+<td>A~ij~= 当前分配给进程 i 的资源 j</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>定义一个死锁避免策略：若一个新进程的资源需求会导致死锁，则<strong>拒绝启动</strong>这个新进程</p>
+</li>
+<li>
+<p>启动一个新进程 P~n+1~的条件：$$R~j~ ≥ C~(n+1)j~ + \sum_{i=1}^{n}{C_(ij)}$$</p>
+</li>
+<li>
+<p>这个策略不是最优的，因为它假设了最坏的情况：所有进程同时发出它们的最大请求</p>
+</li>
+</ul>
+<h3 id="6-3-2-资源分配拒绝">6.3.2 资源分配拒绝</h3>
+<ul>
+<li>
+<p>资源分配拒绝策略，又称为<strong>银行家算法（banker algorithm）</strong>，需要定义<strong>状态</strong>和<strong>安全状态</strong>的概念</p>
+</li>
+<li>
+<p>系统的状态是当前给进程分配的资源情况，状态包含两个向量Resource 和 Available 及两个矩阵Claim 和 Allocation</p>
+</li>
+<li>
+<p><strong>安全状态（safe state）</strong>：<u>至少有一个</u><strong>资源分配序列</strong>不会导致死锁（即所有进程<u>都能运行直到结束</u>）</p>
+</li>
+<li>
+<p>安全状态的确定</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>由上图可判断每个进程都可以运行到结束，所以（a）定义的状态是一个安全状态</li>
+</ul>
+</li>
+<li>
+<p>进程请求一组资源时，假设同意该请求，因此改变了系统的状态，然后确定结果是否仍处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程直到同意该请求后系统状态仍然是安全的</p>
+<p>→能确保系统中的进程和资源总处于安全状态</p>
+</li>
+<li>
+<p>不安全状态</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>假设P1请求另外一个R1单元和R3单元。每个进程至少需要一个额外的 R1 单元，但现在没有</p>
+<p>一个可用的 R1单元→基于死锁避免的原则，P1的请求将被<strong>拒绝</strong>并且P1将<strong>被阻塞</strong></p>
+</li>
+<li>
+<p>注意：上图并不处于死锁状态，仅有死锁的可能</p>
+<ul>
+<li>若P1 从这一状态开始运行，先释放一个R1单元和一个R3单元，后来再次需要这些资源，则系统将达到安全状态</li>
+<li>:star:→死锁避免策略并<strong>不能确切地预测死锁</strong>，它仅是<strong>预料死锁的可能性</strong>并<strong>确保永远不会出现这种可能性</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>对死锁避免逻辑的抽象描述</p>
+<p>1、全局数据结构</p>
+<p>数据结构state定义了系统状态</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">truct state&#123;<br>    <span class="hljs-type">int</span> resource [m] ;<br>    <span class="hljs-type">int</span> available [m]; <br>    <span class="hljs-type">int</span> claim [n][m];<br>    <span class="hljs-type">int</span> alloc [n] [m];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>2、 资源分配算法(算法的主体)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> (alloc[i,*] + request[*] &gt; claim[i,*])<br>	&lt;error&gt;;    <span class="hljs-comment">/* total request &gt; claim*/</span><br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (request[*] &gt; available[*])<br>	&lt;suspend procesS&gt;; <br><span class="hljs-keyword">else</span>&#123;			<span class="hljs-comment">/* simulate alloc */</span> <br>    &lt;define newstate by;<br>    alloc[i,*]= alloc[i,*]+ request [*]; <br>    available [*]= available [*]request[*]&gt;;<br>&#125;<br><br><span class="hljs-keyword">if</span>(safe(newstate))<br>    &lt;carry out allocation&gt;;<br><span class="hljs-keyword">else</span>&#123;<br>	&lt;restore original state&gt;; <br>    &lt;suspend process&gt;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>①进行一次检测，确保该请求<u>不会超过进程最初声明的要求</u></p>
+<p>②若该请求有效，则下一步确定是否能实现这一请求（即是否有足够的可用资源）</p>
+<p>若没有，则阻塞该进程</p>
+<p>③资源被暂时分配给进程i以形成一个newstate：确定完成这个请求是否安全</p>
+<p>④测试安全性↓</p>
+<p>3、测试安全算法（银行家算法）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c">boolean <span class="hljs-title function_">safe</span><span class="hljs-params">(state S)</span>&#123;<br>    <span class="hljs-type">int</span> currentavail[m];<br>    process rest[&lt;number of processes&gt;]; <br>    Currentavail = available;<br>    rest =&#123;ali processes&#125;; <br>    possible = <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">while</span> (possible)&#123;<br>        &lt;find a process Pk in rest such that claim [k,*]- alloc [k,*&lt;=currentavail;                       <br>		<span class="hljs-keyword">if</span>(found)&#123; <span class="hljs-comment">/* simulate execution of Pk */</span><br>            currentavail= currentavail + alloc [k,*];<br>            rest = rest - &#123;Pk&#125;;<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            possible = <span class="hljs-literal">false</span>;<br>        &#125;<br>                                                                 &#125;<br>	<span class="hljs-keyword">return</span> (rest == null);<br>                                                                 &#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>死锁避免的优点</p>
+<ul>
+<li>无须<u>死锁预防</u>中的<u>抢占</u>和<u>回滚</u>进程，且与死锁预防相比<strong>限制较少</strong></li>
+</ul>
+</li>
+<li>
+<p>缺点：在使用中也有许多限制</p>
+<ul>
+<li>必须<strong>事先声明</strong>每个进程请求的<strong>最大资源</strong></li>
+<li>所讨论的进程必须是<strong>无关</strong>的，即它们的执行顺序必须<strong>没有任何同步要求的限制</strong></li>
+<li>分配的资源数量必须是<strong>固定</strong>的</li>
+<li>在占有资源时，进程<strong>不能退出</strong></li>
+</ul>
+</li>
+</ul>
+<h1>6.4 死锁检测</h1>
+<ul>
+<li><strong>死锁预防策略</strong>非常<strong>保守</strong>，它们通过<strong>限制访问资源</strong>和<strong>在进程上强加约束</strong>来解决死锁问题</li>
+<li>死锁检测策略则完全相反，它<strong>不限制</strong>资源访问或约束进程行为。对于死锁检测（deadlock detection）来说，只要有可能，就会给进程分配其所请求的资源。操作系统<strong>周期性</strong>地执行一个算法来检测前面的条件（4），即<strong>循环等待条件</strong></li>
+</ul>
+<h3 id="6-4-1-死锁检测算法">6.4.1 死锁检测算法</h3>
+<ul>
+<li>
+<p>使用Allocation 矩阵和Available 向量。还定义了一个请求矩阵<strong>Q</strong>，其中Q~ij~，表示进程 i 请求的 j 类资源的数量</p>
+</li>
+<li>
+<p>算法主要是一个标记未死锁进程的过程：</p>
+<p>1、记 Allocation矩阵中<strong>一行全为零</strong>的进程。</p>
+<p>2、初始化一个临时向量<strong>W</strong>，令<strong>W</strong><u>等于Available向量</u></p>
+<p>3、查找下标 i，使进程 i <u>当前未标记</u>且<strong>Q</strong>的<u>第 i 行小于等于<strong>W</strong></u>，即对所有的1≤k≤m，Q~ik~≤W~k~。若找不到这样的行，终止算法</p>
+<p>4、若找到这样的行，<u>标记</u>进程 i，并把 Allocation 矩阵中的<u>相应行加到 W</u> 中，即对所有的1≤k≤m，令W~k~=W~k~+A~ik~，返回步骤3</p>
+</li>
+<li>
+<p><u>当且仅当</u>这个算法的<u>最终结果有未标记的进程</u>时，才<strong>存在死锁</strong>，每个<u>未标记的进程</u>都是死锁的</p>
+</li>
+<li>
+<p>策略：</p>
+<p>查找一个进程，使得可用资源能满足该进程的资源请求，然后假设同意这些资源，让该进程运行直到结束，再释放它的所有资源</p>
+<p>然后，算法再寻找另一个可以满足资源请求的进程</p>
+<p>注意：该算法<strong>不能保证防止死锁</strong>，是否死锁<strong>取决于将来同意请求的次序</strong>，它所做的一切是<strong>确定当前</strong></p>
+<p><strong>是否存在死锁</strong></p>
+</li>
+<li>
+<p>示例</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>1、由于P4<u>没有已分配的资源</u>，标记 P4</p>
+<p>2、令= W =（ 0 0 0 0 1）</p>
+<p>3、进程P3的请求<u>小于等于</u>W，因此标记P3，并令W = W +（0 0 0 1 0）=（0 0 0 1 0）</p>
+<p>4、不存在其他未标记进程在Q中的行小于等于W，因此终止算法</p>
+<p>→结果：P1和 P2未标记，表明这两个进程是死锁的</p>
+</li>
+</ul>
+<h3 id="6-4-2-恢复">6.4.2 恢复</h3>
+<ul>
+<li>
+<p>可能的方法(复杂度递增)</p>
+<p>1、<strong>取消所有</strong>的死锁进程。这是操作系统中<strong>最常采用</strong>的方法</p>
+<p>2、 把每个死锁进程<strong>回滚</strong>到前面定义的某些检查点，并<strong>重新启动</strong>所有进程</p>
+<ul>
+<li>要求在系统中构建回滚和重启机制</li>
+<li>风险：原来的死锁<strong>可能再次发生</strong>。但是，并发进程的<strong>不确定性</strong>通常能保证不会发生这种情况</li>
+</ul>
+<p>3、<strong>连续取消死锁进程</strong>直到不再存在死锁</p>
+<ul>
+<li>所选取消进程的顺序应<strong>基于某种最小代价原则</strong></li>
+<li>在每次取消后，必须<strong>重新调用检测算法</strong>，以测试是否仍存在死锁。</li>
+</ul>
+<p>4、<strong>连续抢占资源</strong>直到不再存在死锁</p>
+<ul>
+<li>需要使用一种<strong>基于代价的选择方法</strong></li>
+<li>需要在每次抢占后<strong>重新调用检测算法</strong>。一个<u>资源被抢占的进程</u>必须<strong>回滚</strong>到<u>获得这个资源之前</u>的某一状态</li>
+</ul>
+</li>
+<li>
+<p>对于3、4，选择原则采取如下之一</p>
+<ul>
+<li>目前为止<strong>消耗的处理器时间</strong>最少</li>
+<li>目前为止<strong>产生的输出</strong>最少</li>
+<li>预计<strong>剩下的时间</strong>最长（最值得怀疑）</li>
+<li>目前为止<strong>分配的资源总量</strong>最少</li>
+<li><strong>优先级最低</strong></li>
+</ul>
+<p>（除优先级测度外，相对于整个系统的代价而言，其他原则对用户而言没有任何代价）</p>
+</li>
+</ul>
+<h1>6.5 一种综合的死锁策略</h1>
+<ul>
+<li>在不同情况下使用不同的策略
+<ul>
+<li>把资源分成几组<strong>不同的资源类</strong>
+<ul>
+<li><strong>可交换空间</strong>∶进程交换所用<strong>外存中的存储块</strong></li>
+<li><strong>进程资源</strong>∶<strong>可分配的设备</strong>，如磁带设备和文件</li>
+<li><strong>内存</strong>∶可按页或按段分配给进程</li>
+<li><strong>内部资源</strong>∶诸如 <strong>I/O通道</strong></li>
+</ul>
+</li>
+<li>为预防在资源类之间由于循环等待产生死锁，可使用前面定义的<strong>线性排序策略</strong></li>
+<li>在一个资源类中，使用该类资源最适合的算法
+<ul>
+<li>可交换空间
+<ul>
+<li>要求一次性分配所有请求的资源来预防死锁，就像占有等待预防策略一样</li>
+<li>若知道最大存储需求（通常情况下都知道），则这个策略是合理的，死锁避免也是可能的</li>
+</ul>
+</li>
+<li>进程资源
+<ul>
+<li>对于这类资源，<strong>死锁避免</strong>策略通常是很有效的，因为进程可以事先声明它们需要的这类资源</li>
+<li>采用<strong>资源排序的预防策略</strong>也是可能的</li>
+</ul>
+</li>
+<li>内存
+<ul>
+<li>对于内存，<strong>基于抢占的预防</strong>是最适合的策略。当一个进程被抢占后，它仅被换到外存，释放空间以解决死锁</li>
+</ul>
+</li>
+<li>内部资源
+<ul>
+<li>可以使用<strong>基于资源排序的预防策略</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>6.6 哲学家就餐问题</h1>
+<img src="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/os6.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>一张圆桌上有一大碗面和5个盘子，每位哲学家一个盘子， 还有5把叉子。每位想吃饭的哲学家将坐到桌子旁分配给他的位置上，使用盘子两侧的叉子，取面和吃面</p>
+</li>
+<li>
+<p>问题∶设计一套哲学家吃饭的礼仪（算法）。算法必须保证<strong>互斥</strong>（两位哲学家<u>不能同时使</u></p>
+<p><u>用同一把叉子</u>），同时还要<strong>避免死锁和饥饿</strong>（此时，饥饿的字面含义和算法中的含义相同）。</p>
+</li>
+</ul>
+<h3 id="6-6-1-基于信号量的解决方案">6.6.1 基于信号量的解决方案</h3>
+<p>:one:</p>
+<p>1、不正确</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* program diningphiloSopherg */</span><br>gemaphore fork[<span class="hljs-number">5</span>] =&#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">int</span> i;<br><span class="hljs-type">void</span> <span class="hljs-title function_">philosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>        think();<br>        wait(fork[i]);<br>        wait (fork [(i+<span class="hljs-number">1</span>) mod <span class="hljs-number">5</span>]);<br>        eat();<br>        signal(fork [(i+<span class="hljs-number">1</span>) mod <span class="hljs-number">5</span>]);<br>        signal(fork[i]);<br>    &#125;<br>&#125;<br>                     <br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    parbegin(philosopher(<span class="hljs-number">0</span>),philosopher(<span class="hljs-number">1</span>),<br>		philosopher (<span class="hljs-number">2</span>), philosopher (<span class="hljs-number">3</span>),<br>		philosopher (<span class="hljs-number">4</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>每位哲学家首先拿起左边的叉子，然后拿起右边的叉子。在哲学家吃完面后，这两把叉子又被放回到餐桌上</p>
+<p>→导致死锁∶如果所有哲学家在同一时刻都感到饥饿，都拿起左边的叉子，都伸手拿右边的叉子，但都没有拿到</p>
+<p>2、考虑增加一位服务员，他/她只允许4位哲学家同时进入餐厅，由于最多有4位哲学家就座，因而至少有一位哲学家可以拿到两把叉子→不会发生死锁和饥饿</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* program diningphilosophers */</span><br>semaphore fork [<span class="hljs-number">5</span>]= &#123;<span class="hljs-number">1</span>&#125;；<br>semaphore room =&#123;<span class="hljs-number">4</span>&#125;; <br><span class="hljs-type">int</span> i;<br>                 <br><span class="hljs-type">void</span> <span class="hljs-title function_">philosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>        think();<br>        wait (room);<br>        wait (fork[i]);<br>        wait(fork [(i+<span class="hljs-number">1</span>)mod <span class="hljs-number">5</span>]);<br>        eat();<br>        signal(fork[(i+<span class="hljs-number">1</span>)mod <span class="hljs-number">5</span>]);<br>        signal(fork[i]);<br>        signal(room);<br>    &#125;<br>&#125;<br>                 <br>vod <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    parbegin(philosopher (<span class="hljs-number">0</span>),philosopher (<span class="hljs-number">1</span>),<br>        philosopher((<span class="hljs-number">2</span>),philosopher(<span class="hljs-number">3</span>),<br>        philosopher (<span class="hljs-number">4</span>));<br>              &#125;<br></code></pre></td></tr></table></figure>
+<p>:two:一次拿起两双筷子</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c">semphore mutex=<span class="hljs-number">1</span><br>semphore philosopher[<span class="hljs-number">5</span>]=<span class="hljs-number">1</span><br>    <br>Void philosopher(<span class="hljs-type">int</span> i)<br>&#123;<br>    think();<br>    semwait(mutex);<br>    semwait(i%<span class="hljs-number">5</span>);<br>    semwait((i+<span class="hljs-number">1</span>)%<span class="hljs-number">5</span>);<br>    semsignal(mutex);<br>    eat();<br>    semsignal(i%<span class="hljs-number">5</span>);<br>    semsignal((i+<span class="hljs-number">1</span>)%<span class="hljs-number">5</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>:three:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c">Semaphore fork[<span class="hljs-number">5</span>]=<span class="hljs-number">1</span>;<br>Semamphore s1=<span class="hljs-number">0</span>,s2=<span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> i；<br>    <br>Void <span class="hljs-title function_">philosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br>	<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>	&#123;<br>        think();<br>        <span class="hljs-keyword">if</span> ((i mod <span class="hljs-number">5</span>)==<span class="hljs-number">1</span>)<br>            semwait(s1);<br>	<span class="hljs-keyword">if</span>((i mod <span class="hljs-number">5</span>)==<span class="hljs-number">4</span>)<br>		semwait(s2);<br>	semwait(fork[i]);<br>	semwait(fork[(i+<span class="hljs-number">1</span>)mod5]);<br>    &#125;<br>	eat();<br>	semsignal(fork[i]);<br>	semsignal(fork[(i+<span class="hljs-number">1</span>)mod <span class="hljs-number">5</span>]);<br>	<span class="hljs-keyword">if</span> ((i mod <span class="hljs-number">5</span>)==<span class="hljs-number">0</span>)<br>    &#123;<br>        semsignal(s1);<br>        semsignal(s2);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>:three:动态避免</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="第七章-内存管理（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第七章-内存管理（一）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第二章-操作系统概述（二）">
+                        <span class="hidden-mobile">第二章-操作系统概述（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

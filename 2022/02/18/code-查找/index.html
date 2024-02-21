@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="顺序查找 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566#include&lt;iostream&gt;using namespace std;#define MAXSIZE 100#define O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="code-查找">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/18/code-%E6%9F%A5%E6%89%BE/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="顺序查找 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566#include&lt;iostream&gt;using namespace std;#define MAXSIZE 100#define O">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-18T11:54:01.122Z">
+<meta property="article:modified_time" content="2024-02-19T14:30:10.518Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>code-查找 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="code-查找"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-18 19:54" pubdate>
+          February 18, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">code-查找</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>顺序查找</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXSIZE 100</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> OK 1;</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	<span class="hljs-type">int</span> key;<span class="hljs-comment">//关键字域</span><br>&#125;ElemType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	ElemType *R;<br>	<span class="hljs-type">int</span> length;<br>&#125;SSTable;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitList_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	L.R = new ElemType[MAXSIZE];<br>	<span class="hljs-keyword">if</span> (!L.R)<br>	&#123;<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;初始化错误&quot;</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	L.length = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">return</span> OK;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Insert_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXSIZE; i++)<br>	&#123;<br>		L.R[i].key = j;<br>		L.length++;<br>		j++;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Search_Seq</span><span class="hljs-params">(SSTable ST, <span class="hljs-type">int</span> key)</span> &#123;<br>	<span class="hljs-comment">//在顺序表ST中顺序查找其关键字等于key的数据元素。若找到，则函数值为</span><br>	<span class="hljs-comment">//该元素在表中的位置，否则为0</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = ST.length; i &gt;= <span class="hljs-number">1</span>; --i)<br>		<span class="hljs-keyword">if</span> (ST.R[i].key == key) <span class="hljs-keyword">return</span> i;		<span class="hljs-comment">//从后往前找        </span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<span class="hljs-comment">// Search_Seq</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Show_End</span><span class="hljs-params">(<span class="hljs-type">int</span> result, <span class="hljs-type">int</span> testkey)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (result == <span class="hljs-number">0</span>)<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;未找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-string">&quot;位置为&quot;</span> &lt;&lt; result &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	SSTable ST;<br>	InitList_SSTable(ST);<br>	Insert_SSTable(ST);<br>	<span class="hljs-type">int</span> testkey1 = <span class="hljs-number">7</span>, testkey2 = <span class="hljs-number">200</span>;<br>	<span class="hljs-type">int</span> result;<br>	result = Search_Seq(ST, testkey1);<br>	Show_End(result, testkey1);<br>	result = Search_Seq(ST, testkey2);<br>	Show_End(result, testkey2);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>设置监视哨的顺序查找</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXSIZE 100</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> OK 1;</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	<span class="hljs-type">int</span> key;<span class="hljs-comment">//关键字域</span><br>&#125;ElemType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	ElemType *R;<br>	<span class="hljs-type">int</span> length;<br>&#125;SSTable;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitList_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	L.R = new ElemType[MAXSIZE];<br>	<span class="hljs-keyword">if</span> (!L.R)<br>	&#123;<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;初始化错误&quot;</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	L.length = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">return</span> OK;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Insert_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;<span class="hljs-comment">//空出ST.R[0]的位置</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; MAXSIZE; i++)<br>	&#123;<br>		L.R[i].key = j;<br>		L.length++;<br>		j++;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Search_Seq</span><span class="hljs-params">(SSTable ST, <span class="hljs-type">int</span> key)</span> &#123;<br>	<span class="hljs-comment">//在顺序表ST中顺序查找其关键字等于key的数据元素。若找到，则函数值为</span><br>	<span class="hljs-comment">//该元素在表中的位置，否则为0</span><br>	ST.R[<span class="hljs-number">0</span>].key = key;                <br>	<span class="hljs-comment">//“哨兵”</span><br>	<span class="hljs-type">int</span> i;<br>	<span class="hljs-keyword">for</span> (i = ST.length; ST.R[i].key != key; --i);		<span class="hljs-comment">//从后往前找</span><br>	<span class="hljs-keyword">return</span> i;<br>&#125;<span class="hljs-comment">// Search_Seq</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Show_End</span><span class="hljs-params">(<span class="hljs-type">int</span> result, <span class="hljs-type">int</span> testkey)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (result == <span class="hljs-number">0</span>)<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;未找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-string">&quot;位置为&quot;</span> &lt;&lt; result &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	SSTable ST;<br>	InitList_SSTable(ST);<br>	Insert_SSTable(ST);<br>	<span class="hljs-type">int</span> testkey1 = <span class="hljs-number">7</span>, testkey2 = <span class="hljs-number">200</span>;<br>	<span class="hljs-type">int</span> result;<br>	result = Search_Seq(ST, testkey1);<br>	Show_End(result, testkey1);<br>	result = Search_Seq(ST, testkey2);<br>	Show_End(result, testkey2);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>折半查找</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXSIZE 100</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> OK 1;</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	<span class="hljs-type">int</span> key;<span class="hljs-comment">//关键字域</span><br>&#125;ElemType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>	ElemType *R;<br>	<span class="hljs-type">int</span> length;<br>&#125;SSTable;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">InitList_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	L.R = new ElemType[MAXSIZE];<br>	<span class="hljs-keyword">if</span> (!L.R)<br>	&#123;<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;初始化错误&quot;</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	&#125;<br>	L.length = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">return</span> OK;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Insert_SSTable</span><span class="hljs-params">(SSTable &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; MAXSIZE; i++)<br>	&#123;<br>		L.R[i].key = j;<br>		L.length++;<br>		j++;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Search_Bin</span><span class="hljs-params">(SSTable ST, <span class="hljs-type">int</span> key)</span> &#123;<br>	<span class="hljs-comment">// 在有序表ST中折半查找其关键字等于key的数据元素。若找到，则函数值为</span><br>	<span class="hljs-comment">// 该元素在表中的位置，否则为0</span><br>	<span class="hljs-type">int</span> low = <span class="hljs-number">1</span>, high = ST.length;							<span class="hljs-comment">//置查找区间初值</span><br>	<span class="hljs-type">int</span>  mid;<br>	<span class="hljs-keyword">while</span> (low &lt;= high) &#123;<br>		mid = (low + high) / <span class="hljs-number">2</span>;<br>		<span class="hljs-keyword">if</span> (key == ST.R[mid].key)  <span class="hljs-keyword">return</span> mid;      		<span class="hljs-comment">//找到待查元素</span><br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key &lt; ST.R[mid].key)  high = mid - <span class="hljs-number">1</span>;		<span class="hljs-comment">//继续在前一子表进行查找</span><br>		<span class="hljs-keyword">else</span>  low = mid + <span class="hljs-number">1</span>;                       			<span class="hljs-comment">//继续在后一子表进行查找</span><br>	&#125;<span class="hljs-comment">//while</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;										<span class="hljs-comment">//表中不存在待查元素</span><br>&#125;<span class="hljs-comment">// Search_Bin</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Show_End</span><span class="hljs-params">(<span class="hljs-type">int</span> result, <span class="hljs-type">int</span> testkey)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (result == <span class="hljs-number">0</span>)<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;未找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;找到&quot;</span> &lt;&lt; testkey &lt;&lt; <span class="hljs-string">&quot;位置为&quot;</span> &lt;&lt; result &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	SSTable ST;<br>	InitList_SSTable(ST);<br>	Insert_SSTable(ST);<br>	<span class="hljs-type">int</span> testkey1 = <span class="hljs-number">7</span>, testkey2 = <span class="hljs-number">200</span>;<br>	<span class="hljs-type">int</span> result;<br>	result = Search_Bin(ST, testkey1);<br>	Show_End(result, testkey1);<br>	result = Search_Bin(ST, testkey2);<br>	Show_End(result, testkey2);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>二叉排序树</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENDFLAG <span class="hljs-string">&#x27;#&#x27;</span></span><br><span class="hljs-comment">//char a[10]=&#123;&#x27;5&#x27;,&#x27;6&#x27;,&#x27;7&#x27;,&#x27;2&#x27;,&#x27;1&#x27;,&#x27;9&#x27;,&#x27;8&#x27;,&#x27;10&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;#&#x27;&#125;;//全局变量</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ElemType</span> &#123;</span><br>	<span class="hljs-type">char</span> key;<br>&#125;ElemType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">BSTNode</span> &#123;</span><br>	ElemType data;	<span class="hljs-comment">//结点数据域</span><br>	BSTNode *lchild, *rchild;	<span class="hljs-comment">//左右孩子指针</span><br>&#125;BSTNode, *BSTree;<br><br><br><span class="hljs-comment">//二叉排序树的递归查找</span><br>BSTree <span class="hljs-title function_">SearchBST</span><span class="hljs-params">(BSTree T, <span class="hljs-type">char</span> key)</span> &#123;<br>	<span class="hljs-comment">//在根指针T所指二叉排序树中递归地查找某关键字等于key的数据元素</span><br>	<span class="hljs-comment">//若查找成功，则返回指向该数据元素结点的指针，否则返回空指针</span><br>	<span class="hljs-keyword">if</span> ((!T) || key == T-&gt;data.key) <span class="hljs-keyword">return</span> T;       	            	<span class="hljs-comment">//查找结束</span><br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key &lt; T-&gt;data.key)  <span class="hljs-keyword">return</span> SearchBST(T-&gt;lchild, key);	<span class="hljs-comment">//在左子树中继续查找</span><br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> SearchBST(T-&gt;rchild, key);    		   			<span class="hljs-comment">//在右子树中继续查找</span><br>&#125; <span class="hljs-comment">// SearchBST</span><br><br><br><br><span class="hljs-comment">//二叉排序树的插入</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InsertBST</span><span class="hljs-params">(BSTree &amp;T, ElemType e)</span> &#123;<br>	<span class="hljs-comment">//当二叉排序树T中不存在关键字等于e.key的数据元素时，则插入该元素</span><br>	<span class="hljs-keyword">if</span> (!T) &#123;                				<span class="hljs-comment">//找到插入位置，递归结束</span><br>		BSTree S = new BSTNode;            		<span class="hljs-comment">//生成新结点*S</span><br>		S-&gt;data = e;                  		<span class="hljs-comment">//新结点*S的数据域置为e   </span><br>		S-&gt;lchild = S-&gt;rchild = <span class="hljs-literal">NULL</span>;	<span class="hljs-comment">//新结点*S作为叶子结点</span><br>		T = S;            				<span class="hljs-comment">//把新结点*S链接到已找到的插入位置</span><br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e.key &lt; T-&gt;data.key)<br>		InsertBST(T-&gt;lchild, e);			<span class="hljs-comment">//将*S插入左子树</span><br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e.key &gt; T-&gt;data.key)<br>		InsertBST(T-&gt;rchild, e);			<span class="hljs-comment">//将*S插入右子树</span><br>&#125;<span class="hljs-comment">// InsertBST</span><br><br><br><br><span class="hljs-comment">//二叉排序树的创建</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">CreateBST</span><span class="hljs-params">(BSTree &amp;T)</span> &#123;<br>	<span class="hljs-comment">//依次读入一个关键字为key的结点，将此结点插入二叉排序树T中</span><br>	T = <span class="hljs-literal">NULL</span>;<br>	ElemType e;<br>	<span class="hljs-built_in">cin</span> &gt;&gt; e.key;        <span class="hljs-comment">//???</span><br>	<span class="hljs-keyword">while</span> (e.key != ENDFLAG) &#123;   	<span class="hljs-comment">//ENDFLAG为自定义常量，作为输入结束标志</span><br>		InsertBST(T, e);          	<span class="hljs-comment">//将此结点插入二叉排序树T中</span><br>		<span class="hljs-built_in">cin</span> &gt;&gt; e.key;			<span class="hljs-comment">//???</span><br>	&#125;<span class="hljs-comment">//while            </span><br>&#125;<span class="hljs-comment">//CreatBST</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">DeleteBST</span><span class="hljs-params">(BSTree &amp;T, <span class="hljs-type">char</span> key)</span> &#123;<br>	<span class="hljs-comment">//从二叉排序树T中删除关键字等于key的结点</span><br>	BSTree p = T; BSTree f = <span class="hljs-literal">NULL</span>;                     			<span class="hljs-comment">//初始化</span><br>	BSTree q=<span class="hljs-literal">NULL</span>;<span class="hljs-comment">//change</span><br>	BSTree s;<br>	<span class="hljs-comment">/*------------下面的while循环从根开始查找关键字等于key的结点*p-------------*/</span><br>	<span class="hljs-keyword">while</span> (p) &#123;<br>		<span class="hljs-keyword">if</span> (p-&gt;data.key == key) <span class="hljs-keyword">break</span>;  	      	<span class="hljs-comment">//找到关键字等于key的结点*p，结束循环</span><br>		f = p;                                			<span class="hljs-comment">//*f为*p的双亲结点</span><br>		<span class="hljs-keyword">if</span> (p-&gt;data.key &gt; key)  p = p-&gt;lchild;     	<span class="hljs-comment">//在*p的左子树中继续查找</span><br>		<span class="hljs-keyword">else</span> p = p-&gt;rchild;  	                  		<span class="hljs-comment">//在*p的右子树中继续查找</span><br>	&#125;<span class="hljs-comment">//while</span><br>	<span class="hljs-keyword">if</span> (!p) <span class="hljs-keyword">return</span>;                         		<span class="hljs-comment">//找不到被删结点则返回</span><br>	<span class="hljs-comment">/*―考虑三种情况实现p所指子树内部的处理：*p左右子树均不空、无右子树、无左子树―*/</span><br>	<span class="hljs-keyword">if</span> ((p-&gt;lchild) &amp;&amp; (p-&gt;rchild)) &#123;     		<span class="hljs-comment">//被删结点*p左右子树均不空</span><br>		q = p;<br>		s = p-&gt;lchild;<br>		<span class="hljs-keyword">while</span> (s-&gt;rchild)                			<span class="hljs-comment">//在*p的左子树中继续查找其前驱结点，即最右下结点</span><br>		&#123;<br>			q = s; s = s-&gt;rchild;<br>		&#125;	         		<span class="hljs-comment">//向右到尽头</span><br>		p-&gt;data = s-&gt;data;               			<span class="hljs-comment">//s指向被删结点的“前驱”</span><br>		<span class="hljs-keyword">if</span> (q != p) &#123;<br>			q-&gt;rchild = s-&gt;lchild;     	<span class="hljs-comment">//重接*q的右子树</span><br>		&#125;<br>		<span class="hljs-keyword">else</span> q-&gt;lchild = s-&gt;lchild;        		<span class="hljs-comment">//重接*q的左子树</span><br>		delete s;<br>	&#125;<span class="hljs-comment">//if</span><br>	<span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-keyword">if</span> (!p-&gt;rchild) &#123;               		<span class="hljs-comment">//被删结点*p无右子树，只需重接其左子树</span><br>			q = p; p = p-&gt;lchild;<br>		&#125;<span class="hljs-comment">//else if</span><br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!p-&gt;lchild) &#123;               		<span class="hljs-comment">//被删结点*p无左子树，只需重接其右子树</span><br>			q = p; p = p-&gt;rchild;<br>		&#125;<span class="hljs-comment">//else if</span><br>	  <span class="hljs-comment">/*――――――――――将p所指的子树挂接到其双亲结点*f相应的位置――――――――*/</span><br>		<span class="hljs-keyword">if</span> (!f) T = p;                       			<span class="hljs-comment">//被删结点为根结点</span><br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (q == f-&gt;lchild) f-&gt;lchild = p;   	<span class="hljs-comment">//挂接到*f的左子树位置</span><br>		<span class="hljs-keyword">else</span> f-&gt;rchild = p;                 		<span class="hljs-comment">//挂接到*f的右子树位置</span><br>		delete q;<br>	&#125;<br>&#125;<span class="hljs-comment">//DeleteBST</span><br><br><span class="hljs-comment">//二叉排序树的删除</span><br><br><span class="hljs-comment">//中序遍历</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InOrderTraverse</span><span class="hljs-params">(BSTree &amp;T)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (T)<br>	&#123;<br>		InOrderTraverse(T-&gt;lchild);<br>		<span class="hljs-built_in">cout</span> &lt;&lt; T-&gt;data.key;<br>		InOrderTraverse(T-&gt;rchild);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	BSTree T;<br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;请输入若干字符，用回车区分，以#结束输入&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	CreateBST(T);<br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;当前有序二叉树中序遍历结果为&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	InOrderTraverse(T);<br>	<span class="hljs-type">char</span> key;<span class="hljs-comment">//待查找或待删除内容</span><br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;请输入待查找字符&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-built_in">cin</span> &gt;&gt; key;<br>	BSTree result = SearchBST(T, key);<br>	<span class="hljs-keyword">if</span> (result)<br>	&#123;<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;找到字符&quot;</span> &lt;&lt; key &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;未找到&quot;</span> &lt;&lt; key &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	&#125;<br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;请输入待删除的字符&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	<span class="hljs-built_in">cin</span> &gt;&gt; key;<br>	DeleteBST(T, key);<br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;当前有序二叉树中序遍历结果为&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>	InOrderTraverse(T);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1>B-树</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br>using namespace <span class="hljs-built_in">std</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FALSE 0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TRUE 1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> OK 1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> m 3						<span class="hljs-comment">//B-树的阶，暂设为3</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">BTNode</span> &#123;</span><br>	<span class="hljs-type">int</span> keynum;					<span class="hljs-comment">//结点中关键字的个数，即结点的大小</span><br>	BTNode *parent;				<span class="hljs-comment">//指向双亲结点</span><br>	<span class="hljs-type">int</span> key[m + <span class="hljs-number">1</span>];				<span class="hljs-comment">//关键字矢量，0号单元未用</span><br>	BTNode *ptr[m + <span class="hljs-number">1</span>];			<span class="hljs-comment">//子树指针矢量</span><br>&#125;BTNode, *BTree;<br><br><span class="hljs-comment">//- - - - - B-树的查找结果类型定义- - - - -</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Result</span> &#123;</span><br>	BTNode *pt;     							<span class="hljs-comment">//指向找到的结点</span><br>	<span class="hljs-type">int</span> i;           							<span class="hljs-comment">//1..m，在结点中的关键字序号</span><br>	<span class="hljs-type">int</span> tag;         							<span class="hljs-comment">//1：查找成功，0：查找失败</span><br>&#125;;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">Search</span><span class="hljs-params">(BTree T, <span class="hljs-type">int</span> key)</span><br>&#123;<br>	BTree p = T;<br>	<span class="hljs-type">int</span> endnum;<br>	<span class="hljs-keyword">if</span> (p)						<span class="hljs-comment">//树不为空时</span><br>	&#123;<br>		endnum = p-&gt;keynum;		<span class="hljs-comment">//获得首节点包含的记录个数</span><br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;				<span class="hljs-comment">//返回没找到</span><br>	&#125;<br>	<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">if</span> (endnum == <span class="hljs-number">0</span>)<br>	&#123;<br>		<span class="hljs-keyword">return</span> i;				<span class="hljs-comment">//树存在，但仅有一个为空根节点</span><br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key &gt;= p-&gt;key[endnum])<span class="hljs-comment">//节点不为空，但当前值比最大的key还大</span><br>	&#123;<br>		i = endnum;<br>		<span class="hljs-keyword">return</span> i;<br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key &lt;= p-&gt;key[<span class="hljs-number">1</span>])		<span class="hljs-comment">//节点不为空，但当前值比最小的key还小</span><br>	&#123;<br>		<span class="hljs-keyword">return</span> i;<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; endnum; i++)	<span class="hljs-comment">//有合适的位置，即处于当前结点的最大和最小值之间，或找到了</span><br>		&#123;<br>			<span class="hljs-keyword">if</span> (p-&gt;key[i] &lt;= key &amp;&amp; key &lt; p-&gt;key[i + <span class="hljs-number">1</span>])<br>				<span class="hljs-keyword">return</span> i;<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Insert</span><span class="hljs-params">(BTree &amp;q, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> x, BTree &amp;ap)</span><br>&#123;<span class="hljs-comment">//将x插入q结点的i+1位置中</span><br>	<span class="hljs-type">int</span> j;<br>	<span class="hljs-keyword">for</span> (j = m - <span class="hljs-number">1</span>; j &gt; i; j--)<br>	&#123;<br>		<span class="hljs-comment">//将插入位置之后的key全部后移一位</span><br>		q-&gt;key[j + <span class="hljs-number">1</span>] = q-&gt;key[j];<br>	&#125;<br>	<span class="hljs-keyword">for</span> (j = m; j &gt; i; j--)<br>	&#123;<br>		<span class="hljs-comment">//相应地也移动其后ptr的位置</span><br>		q-&gt;ptr[j] = q-&gt;ptr[j - <span class="hljs-number">1</span>];<br>	&#125;<br>	q-&gt;key[i + <span class="hljs-number">1</span>] = x;<span class="hljs-comment">//插入x到该位置</span><br>	q-&gt;ptr[i + <span class="hljs-number">1</span>] = ap;<br>	q-&gt;keynum++;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">split</span><span class="hljs-params">(BTree &amp;q, <span class="hljs-type">int</span> s, BTree &amp;ap)</span><br>&#123;	<span class="hljs-comment">//将q-&gt;key[s+1,..,m], q-&gt;ptr[s+1,..,m]移入新结点*ap作为右结点</span><br>	<span class="hljs-comment">//原结点作为新的左侧结点</span><br>	<span class="hljs-comment">//中间值被保存在ap[0]-&gt;key中，等待找到跳转回InsertBTree（）寻找到到合适的插入位置插入</span><br>	<span class="hljs-type">int</span> i;<br>	ap = new BTNode;<br>	<span class="hljs-keyword">for</span> (i = s + <span class="hljs-number">1</span>; i &lt;= m; i++)<br>	&#123;	<span class="hljs-comment">//将q-&gt;key[s+1,..,m]保存到ap-&gt;key[0,..,m-s+1]中</span><br>		<span class="hljs-comment">//将q-&gt;ptr[s+1,..,m]保存到ap-&gt;ptr[0,..,m-s+1]中</span><br>		ap-&gt;key[i - s - <span class="hljs-number">1</span>] = q-&gt;key[i];<br>		ap-&gt;ptr[i - s - <span class="hljs-number">1</span>] = q-&gt;ptr[i];<br>	&#125;<br>	<span class="hljs-keyword">if</span> (ap-&gt;ptr[<span class="hljs-number">0</span>])<br>	&#123;<br>		<span class="hljs-comment">//当ap有子树的时候</span><br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">1</span>; i++)<br>		&#123;<br>			<span class="hljs-comment">//将ap的子树的父亲改为ap自己</span><br>			ap-&gt;ptr[i]-&gt;parent = ap;<br>		&#125;<br>	&#125;<br>	ap-&gt;keynum = (m - s) - <span class="hljs-number">1</span>;<br>	ap-&gt;parent = q-&gt;parent;<span class="hljs-comment">//将ap的父亲改为q的父亲</span><br><br>	q-&gt;keynum = q-&gt;keynum - (m - s);<span class="hljs-comment">//修改q的记录个数</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">NewRoot</span><span class="hljs-params">(BTree &amp;T, BTree q, <span class="hljs-type">int</span> x, BTree &amp;ap)</span><span class="hljs-comment">//生成含信息（T, x, ap）的新的根结点*T，原T和ap为子树指针</span><br>&#123;<br>	BTree newT = new BTNode;<span class="hljs-comment">//新建一个结点作为新的根</span><br><br>	newT-&gt;key[<span class="hljs-number">1</span>] = x;<span class="hljs-comment">//写入新根的key[1]</span><br>	newT-&gt;ptr[<span class="hljs-number">0</span>] = T;<span class="hljs-comment">//将原来的树根作为新根的左子树</span><br>	newT-&gt;ptr[<span class="hljs-number">1</span>] = ap;<span class="hljs-comment">//ap作为新根的右子树</span><br>	newT-&gt;keynum = <span class="hljs-number">1</span>;<br>	newT-&gt;parent = <span class="hljs-literal">NULL</span>;<span class="hljs-comment">//新根的父亲为空</span><br><br>	ap-&gt;parent = newT;<span class="hljs-comment">//ap的父亲为新根</span><br>	T-&gt;parent = newT;<span class="hljs-comment">//T的父亲为新根</span><br><br>	T = newT;<span class="hljs-comment">//树改成新根引导的</span><br>&#125;<br><br><span class="hljs-comment">//算法7.9　B-树的插入</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">InsertBTree</span><span class="hljs-params">(BTree &amp;T, <span class="hljs-type">int</span> K, BTree q, <span class="hljs-type">int</span> i)</span> &#123;<br>	<span class="hljs-type">int</span> x = K;<br>	BTree ap = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">int</span> finished = FALSE;<span class="hljs-comment">//x表示新插入的关键字，ap为一个空指针</span><br>	<span class="hljs-keyword">while</span> (q &amp;&amp; !finished) &#123;<br>		Insert(q, i, x, ap);      		<span class="hljs-comment">//将x和ap分别插入到q-&gt;key[i+1]和q-&gt;ptr[i+1]</span><br>		<span class="hljs-keyword">if</span> (q-&gt;keynum &lt; m)<br>			finished = TRUE;   	<span class="hljs-comment">//插入完成</span><br>		<span class="hljs-keyword">else</span> &#123;                      	<span class="hljs-comment">//分裂结点*q</span><br>			<span class="hljs-type">int</span> s = m / <span class="hljs-number">2</span>;<br>			split(q, s, ap);<br>			x = ap-&gt;key[<span class="hljs-number">0</span>];<span class="hljs-comment">//	 x=q-&gt;key[s];</span><br>			  <span class="hljs-comment">//将q-&gt;key[s+1..m], q-&gt;ptr[s..m]和q-&gt;recptr[s+1..m] 移入新结点*ap</span><br>			q = q-&gt;parent;<br>			<span class="hljs-keyword">if</span> (q)<br>			&#123;<br>				i = Search(q, x);<br>			&#125;		<span class="hljs-comment">//在双亲结点*q中查找x的插入位置</span><br>		&#125;						<span class="hljs-comment">//else</span><br>	&#125;							<span class="hljs-comment">//while</span><br>	<span class="hljs-keyword">if</span> (!finished)    			<span class="hljs-comment">//T是空树（参数q初值为NULL）或者根结点已分裂为结点*q和*ap</span><br>		NewRoot(T, q, x, ap);		<span class="hljs-comment">//生成含信息（T, x, ap）的新的根结点*T，原T和ap为子树指针</span><br>	<span class="hljs-keyword">return</span>  OK;<br>&#125;							<span class="hljs-comment">//InsertBTree						//InsertBTree</span><br><br><span class="hljs-comment">//算法7.8　B-树的查找</span><br>Result <span class="hljs-title function_">SearchBTree</span><span class="hljs-params">(BTree &amp;T, <span class="hljs-type">int</span> key)</span> &#123;<br>	<span class="hljs-comment">/*在m阶B-树T上查找关键字key，返回结果(pt,i,tag)。若查找成功，则特征值tag=1，指针pt所指结点中第i个关键字等于key；否则特征值tag=0，等于key的关键字应插入在指针pt所指结点中第i和第i+1个关键字之间*/</span><br>	BTree p = T;<br>	BTree q = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">int</span> found = FALSE;<br>	<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;			<span class="hljs-comment">//初始化，p指向待查结点，q指向p的双亲</span><br>	<span class="hljs-keyword">while</span> (p &amp;&amp; !found) &#123;<br>		i = Search(p, key);<br>		<span class="hljs-comment">//在p-＞key[1..keynum]中查找i，使得：p-＞key[i]＜=key＜p-＞key[i+1]</span><br>		<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; p-&gt;key[i] == key)<br>			found = TRUE;		<span class="hljs-comment">//找到待查关键字</span><br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			q = p;<br>			p = p-&gt;ptr[i];<br>		&#125;<br>	&#125;<br>	Result result;<br>	<span class="hljs-keyword">if</span> (found)<br>	&#123;<br>		result.pt = p;<br>		result.i = i;<br>		result.tag = <span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">return</span> result;<br>	&#125;              		<span class="hljs-comment">//查找成功</span><br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		result.pt = q;<br>		result.i = i;<br>		result.tag = <span class="hljs-number">0</span>;<br>		<span class="hljs-keyword">return</span> result;<br>	&#125;              			<span class="hljs-comment">//查找不成功，返回K的插入位置信息</span><br>&#125;<span class="hljs-comment">//SearchBTree</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">InitialBTree</span><span class="hljs-params">(BTree &amp;T)</span><br>&#123;<br>	<span class="hljs-comment">//初始化一个空的根</span><br>	T-&gt;keynum = <span class="hljs-number">0</span>;<br>	T-&gt;parent = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m + <span class="hljs-number">1</span>; i++)<br>	&#123;<br>		T-&gt;ptr[i] = <span class="hljs-literal">NULL</span>;<br>	&#125;<br>&#125;<br><br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	BTree T = new BTNode;<br>	InitialBTree(T);<br>	<span class="hljs-comment">//先用SearchBTree()找到要插入的位置，得到一个Result结构体</span><br>	<span class="hljs-comment">//再用InsertBTree()插入数据</span><br>	Result result;<br>	<span class="hljs-type">int</span> a[<span class="hljs-number">11</span>] = &#123; <span class="hljs-number">45</span>,<span class="hljs-number">24</span>,<span class="hljs-number">53</span>,<span class="hljs-number">90</span>,<span class="hljs-number">3</span>,<span class="hljs-number">12</span>,<span class="hljs-number">50</span>,<span class="hljs-number">61</span>,<span class="hljs-number">70</span>,<span class="hljs-number">100</span> &#125;;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++)<br>	&#123;<br>		result = SearchBTree(T, a[i]);<br>		<span class="hljs-keyword">if</span> (result.tag == <span class="hljs-number">0</span>)<br>		&#123;<br>			InsertBTree(T, a[i], result.pt, result.i);<br>		&#125;<br>	&#125;<br>	<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;OK&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/18/code-%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/" title="code-栈和队列">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">code-栈和队列</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/18/code-%E4%B8%B2%E3%80%81%E6%95%B0%E7%BB%84%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8/" title="code-串、数组和广义表">
+                        <span class="hidden-mobile">code-串、数组和广义表</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

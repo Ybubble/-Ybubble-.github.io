@@ -1,0 +1,946 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在单道程序设计系统中，内存划分为两部分  一部分供操作系统使用（驻留监控程序、内核） 另 一部分供当前正在执行的程序使用    在多道程序设计系统中  必须在内存中进一步细分出&quot;用户&quot;部分， 以满足多个进程的要求 细分的任务由操作系统动态完成，这称为内存管理（memory management）    如果只有少量进程在内存中，那么所有进程大部分时间都用来等待I&#x2F;O，这种情">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第七章-内存管理（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="在单道程序设计系统中，内存划分为两部分  一部分供操作系统使用（驻留监控程序、内核） 另 一部分供当前正在执行的程序使用    在多道程序设计系统中  必须在内存中进一步细分出&quot;用户&quot;部分， 以满足多个进程的要求 细分的任务由操作系统动态完成，这称为内存管理（memory management）    如果只有少量进程在内存中，那么所有进程大部分时间都用来等待I&#x2F;O，这种情">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.8.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.633Z">
+<meta property="article:modified_time" content="2024-02-20T13:31:53.797Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.2.jpg">
+  
+  
+  
+  <title>第七章-内存管理（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第七章-内存管理（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第七章-内存管理（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>
+<p>在单道程序设计系统中，内存划分为两部分</p>
+<ul>
+<li>一部分供<strong>操作系统</strong>使用（驻留监控程序、内核）</li>
+<li>另 一部分供当前<strong>正在执行的程序使用</strong></li>
+</ul>
+</li>
+<li>
+<p>在多道程序设计系统中</p>
+<ul>
+<li>必须在内存中进一步细分出&quot;用户&quot;部分， 以满足多个进程的要求</li>
+<li>细分的任务由操作系统<strong>动态</strong>完成，这称为<strong>内存管理（memory management）</strong></li>
+</ul>
+</li>
+<li>
+<p>如果只有少量进程在内存中，那么所有进程大部分时间都用来等待I/O，这种情况下处理器也处于空闲状态</p>
+</li>
+<li>
+<p>必须有效地分配内存来保证适当数量的就绪进程能占用这些可用的处理器时间</p>
+</li>
+<li>
+<p>内存管理术语</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页框</td>
+<td>内存中固定长度的块</td>
+</tr>
+<tr>
+<td>页</td>
+<td>固定长度的数据块，存储在二级存储器中（如磁盘）。数据页可以临时复制到内存的页框中</td>
+</tr>
+<tr>
+<td>段</td>
+<td>变长数据块，存储在二级存储器中。整个段可以临时复制到内存的一个可用区域中（分段），或可以将一个段分为许多页，然后将每页单独复制到内存中（分段与分页相结合）</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h1>7.1 内存管理的需求</h1>
+<p>内存管理的需求</p>
+<ul>
+<li>重定位</li>
+<li>逻辑组织</li>
+<li>保护</li>
+<li>物理组织</li>
+<li>共享</li>
+</ul>
+<h3 id="7-1-1-重定位">7.1.1 重定位</h3>
+<ul>
+<li>
+<p>在多道程序设计系统中，可用的内存空间通常被多个进程共享</p>
+</li>
+<li>
+<p>程序换出到磁盘中后， 下次换入时要放到与换出前相同的内存区域中会很困难，我们需要把进程**重定位（relocate）**到内存的不同区域</p>
+</li>
+<li>
+<p>不知道程序会放到哪个区域，并且我们必须允许程序通过交换技术在内存中移动=》与寻址相关的技术问题</p>
+
+</li>
+</ul>
+<h3 id="7-1-2-保护">7.1.2 保护</h3>
+<ul>
+<li>
+<p>必须在运行时检查进程产生的所有内存访问，以确保它们只访问分配给该进程的内存空间</p>
+</li>
+<li>
+<p>通常，用户进程不能访问操作系统的任何部分，不论是程序还是数据</p>
+<p>一个进程中的程序通常不能跳转到另一个进程中的指令</p>
+<p>若无特别许可，一个进程中的程序不能访问其他进程的数据区</p>
+<p>=》处理器必须能在执行时终止这样的指令</p>
+</li>
+<li>
+<p>内存保护需求必须由处理器（硬件）而非操作系统（软件）来满足（不可预测，费时）</p>
+</li>
+</ul>
+<h3 id="7-1-3-共享">7.1.3 共享</h3>
+<h3 id="7-1-4-逻辑组织">7.1.4 逻辑组织</h3>
+<h3 id="7-1-5-物理组织">7.1.5 物理组织</h3>
+<h1>7.2 内存分区</h1>
+<ul>
+<li>
+<p>内存管理的主要操作是处理器把程序装入内存中执行</p>
+</li>
+<li>
+<p>内存管理技术</p>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>说明</th>
+<th>优势</th>
+<th>弱点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>固定分区</td>
+<td>在系统生成阶段，内存被划分成许多静态分区。进程可装入大于等于自身大小的分区中</td>
+<td>实现简单，只需要极少的操作 实现简单，只需要极少的操作系统开销</td>
+<td>由于有内部碎片，对内存的使用不充分;活动进程的最大数量是固定</td>
+</tr>
+<tr>
+<td>动态分区</td>
+<td>分区是动态创建的，因而每个进程可装入与自身大小正好相等的分区中</td>
+<td>没有内部碎片;可以更充分地使用内存</td>
+<td>由于需要压缩外部碎片， 处理器利用率低</td>
+</tr>
+<tr>
+<td>简单分页</td>
+<td>内存被划分成许多大小相等的页框;每个进程被划分成许多大小与页框相等的页;要装入一个进程，需要把进程包含的所有页都装入内存内不一定连续的某些页框中</td>
+<td>没有外部碎片</td>
+<td>有少量的内部碎片</td>
+</tr>
+<tr>
+<td>简单分段</td>
+<td>每个进程被划分成许多段;要装入一个进程，需要把进程包含的所有段都装入内存内不一定连续的某些动态分区中</td>
+<td>有内部碎片，相对于动态分区，减少 了开销</td>
+<td>存在外部碎片</td>
+</tr>
+<tr>
+<td>虚存分页</td>
+<td>除了不需要装入一个进程的所有页外，与简单分页一样;非驻留页在以后需要时自动调入内存</td>
+<td>没有外部碎片，支持更多道数的多道程序设计;巨大的虚拟地址空间</td>
+<td>复杂的内存管理开销</td>
+</tr>
+<tr>
+<td>虚存分段</td>
+<td>除了不需要装入一个进程的所有段外，与简单分段一样;非驻留段在以后需要时自动调入内存</td>
+<td>没有内部碎片;支持更多道数的多道程序设计;巨大的虚拟地址空间;支持保护和共享</td>
+<td>复杂的内存管理开销</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h3 id="7-2-1-固定分区">7.2.1 固定分区</h3>
+<h6 id="分区大小">分区大小</h6>
+<ul>
+<li>
+<p>使用大小相等的分区</p>
+<ul>
+<li>若所有的分区都已满，且没有进程处于<strong>就绪态或运行态</strong>，则操作系统可以换出一个进程的所有分区，并装入另一个进程</li>
+<li>难点
+<ul>
+<li>程序可能太大而不能放到一个分区中
+<ul>
+<li>必须使用<strong>覆盖</strong>技术设计程序，使得在任何时候<u>该程序只有一部分需要放到内存中</u></li>
+<li>当需要的模块不在时，用户程序必须把这个模块装入程序的分区， 覆盖该分区中的任何程序和数据</li>
+</ul>
+</li>
+<li>内存的<strong>利用率</strong>非常低
+<ul>
+<li>任何程序，即使很小，都需 要占据一个完整的分区</li>
+<li><strong>内部碎片（internal fragmentation）</strong>：由于装入的数据块<u>小于分区大小</u>，因而导致<strong>分区内部</strong>存在空间浪费</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>使用大小不等的分区</p>
+<ul>
+<li>
+<p>可缓解问题但不能解决，产生的内部碎片更少</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>优点</p>
+<ul>
+<li>一定的灵活性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="放置算法">放置算法</h6>
+<p>对于大小不等的分区策略，把进程分配到分区有两种方法</p>
+<ul>
+<li>
+<p>把每个进程分配到<u>能够容纳它的<strong>最小分区</strong>中</u>（每个分区一个进程队列）</p>
+<ul>
+<li>
+<p>每个分区都需要维护一个调度队列，用于保存从这个分区换出的进程</p>
+
+</li>
+<li>
+<p>优点</p>
+<ul>
+<li>若所有进程都按这种方式分配，则可使每个分区内部浪费的空间**（内部碎片）最少**</li>
+</ul>
+<p>（从单个分区的角度来看这种技术是最优的，从整个系统来看不是最佳的）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>为所有进程只提供一个队列</p>
+<ul>
+<li>当需要把一个进程装入内存时，选择可以容纳该进程的最小可用分区。如果所有的分区都已被占据，则必须进行交换</li>
+<li>换出因素考虑：
+<ul>
+<li>一般优先考虑换出能容纳新进程的最小分区中的进程</li>
+<li>优先级</li>
+<li>也可以优先选择换出被阻塞的进程而非就绪进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>优点</p>
+<ul>
+<li>固定分区方案相对比较<strong>简单</strong>，只需要很小的操作系统软件和处理开销</li>
+</ul>
+</li>
+<li>
+<p>缺点</p>
+<ul>
+<li>分区的数量在系统生成阶段已经确定，因而限制了系统中活动（未挂起）进程的数量</li>
+<li>由于分区的大小是在系统生成阶段事先设置的，因而小作业不能有效地利用分区空间
+<ul>
+<li>在事先知道所有作业的内存需求的情况下，这种方法也许是合理的，但大多数情况下这种技术非常低效</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>例子：早期的IBM主机操作系统OS/MFT（Multiprogramming with a Fixed Number of Tasks，具有固定任务数的多道程序设计系统）</p>
+</li>
+</ul>
+<h3 id="7-2-2-动态分区">7.2.2 动态分区</h3>
+<ul>
+<li>
+<p>例子：IBM 主机操作系统 OS/MVT （Multiprogramming with a Variable Number of Tasks，具有可变任务数的多道程序设计系统）</p>
+</li>
+<li>
+<p>分区长度和数量可变</p>
+</li>
+<li>
+<p>进程装入内存时，系统会给它分配一块与其所需容量<strong>完全相等</strong>的内存空间</p>
+</li>
+<li>
+<p><strong>外部碎片（external fragmentation）<strong>在所有</strong>分区外</strong>的存储空间变成了越来越多的碎片</p>
+</li>
+<li>
+<p>随着时间的推移，内存中形成了越来越多的碎片，内存的利用率随之下降</p>
+<p>==》压缩（compaction）-&gt;移动-&gt;连续</p>
+</li>
+<li>
+<p>压缩的问题：</p>
+<ul>
+<li>费时，会浪费处理器时间</li>
+<li>需要动态重定位的能力
+<ul>
+<li>必须能够把程序从内存的一块区域移动到另一块区域，且不会使程序中的内存访问无效</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="放置算法-2">放置算法</h6>
+<ul>
+<li>
+<p>把一个进程装入或换入内存时，如果内存中有多个足够大的空闲块，那 么操作系统必须确定要为此进程分配哪个空闲块</p>
+</li>
+<li>
+<p>算法（都在内存中选择大于等于进程的空闲块）</p>
+<ul>
+<li>最佳适配（Best-fit）
+<ul>
+<li>选择与要求大小最接近的块</li>
+<li>通常性能却是最差的
+<ul>
+<li>使得内存中很快形成许多小到无法满足任何内存分配请求的小块</li>
+<li>与其他算法相比，它需要更频繁地进行内存压缩</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>首次适配（first-fit）
+<ul>
+<li>从头开始扫描内存，选择大小足够的第一个可用块</li>
+<li>是最简单的，而且通常也<strong>是最好和最快</strong>的</li>
+<li>使得内存的前端出现很多小空闲分区，并且每当进行首次适配查找时，都要经过这些分区</li>
+</ul>
+</li>
+<li>下次适配（Next-fit）
+<ul>
+<li>从上一次放置的位置开始扫描内存，选择下一个大小足够的可用块</li>
+<li>通常要比首次适配的结果差，且常常会在内存的<strong>末尾</strong>分配空间，<u>导致通常位于存储空间末尾的最大空闲存储块很快分裂为小碎片</u></li>
+<li>可能需要更多次数的压缩</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="置换算法">置换算法</h6>
+<p>为避免由于等待一个活动进程解除阻塞状态引起的处理器时间浪费，操作系统将把一个阻塞的进程换出内存， 给新进程或处于就绪-挂起态的进程让出空间</p>
+<h3 id="7-2-3-伙伴系统">7.2.3 伙伴系统</h3>
+<ul>
+<li>
+<p>固定分区：限制了活动进程的数量，且如果可用分区的大小与进程大小很不匹配，那么内存空间的利用率就会非常低</p>
+</li>
+<li>
+<p>动态分区：维护特别复杂，并且会引入进行压缩的额外开销</p>
+</li>
+<li>
+<p>伙伴系统：折中方案</p>
+</li>
+<li>
+<p>伙伴系统中可用内存块的大小为 2^k^个字，L≤K≤U，其中2^L^表示分配的最小块的尺寸，2^U^表示分配的最大块的尺寸，通常2^U^是可供分配的整个内存的大小</p>
+</li>
+<li>
+<p>若请求的大小s满足2^U-1^ ＜s ≤ 2^U^，则分配整个空间，否则该块分成两个大小相等的伙伴，大小均为2^U-1^</p>
+</li>
+<li>
+<p>在任何时候，伙伴系统中为所有大小为2^i^的&quot;空洞&quot;维护 一个列表。空洞可通过对半分裂从i+1列表中移出，并在i列表中产生两个大小为2^i^的伙伴</p>
+</li>
+<li>
+<p>当i列表中的一对伙伴都变成未分配的块时，将它们从i列表中移出，合并为i+1列表中的一个块</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">get_hole</span> <span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(i == (U + <span class="hljs-number">1</span>))&lt;failure&gt;;<br>	<span class="hljs-keyword">if</span>(&lt;i <span class="hljs-built_in">list</span> empty&gt;)&#123;<br>		get <span class="hljs-title function_">hole</span><span class="hljs-params">(i + <span class="hljs-number">1</span>)</span>;<br>		&lt;split hole into buddies&gt;;<br>		&lt;put buddies on i_list&gt;;<br>    &#125;<br>	&lt;take first hole on i <span class="hljs-built_in">list</span>&gt;;<br>&#125;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>叶节点表示内存中的当前分区， 若两个伙伴都是叶节点，则至少须分配出去一个，否则它们将合并为一个更大的块</li>
+</ul>
+<h3 id="7-2-4-重定位">7.2.4 重定位</h3>
+<ul>
+<li>
+<p>逻辑地址（logical address）</p>
+<ul>
+<li>与当前数据在内存中的物理分配 地址无关的访问地址，在执行对内存的访问之前必须把它转换为物理地址</li>
+</ul>
+</li>
+<li>
+<p>相对地址（relative address）</p>
+<ul>
+<li>逻辑地址的一个特例，它是相对于某些已知点（通常是程序的开始处）的存储单元</li>
+</ul>
+</li>
+<li>
+<p>物理地址（physical address）或绝对地址</p>
+<ul>
+<li>数据在内存中的实际位置</li>
+</ul>
+</li>
+<li>
+<p>系统采用运行时动态加载的方式把使用<strong>相对地址</strong>的程序加载到内存</p>
+</li>
+<li>
+<p>基址寄存器，其内容是程序在内存中的起始地址</p>
+</li>
+<li>
+<p>界限寄存器指明程序的终止位置</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/os7.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>使得程序可以在执行过程中被换入和换出内存</li>
+<li>还提供了一种保护∶每个进程映像根据基址和界限寄存器的内容隔离，以免受到其他进程的越权访问</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%83%E7%AB%A0%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%862/" title="第七章-内存管理（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第七章-内存管理（二）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/" title="第六章-死锁和饥饿">
+                        <span class="hidden-mobile">第六章-死锁和饥饿</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

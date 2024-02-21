@@ -1,0 +1,1512 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.1因特网  具体构成描述   端系统通过通信链路(communication links)和分组交换机(packet switch)连接到一起   milions of connected computing devices：host&#x3D;end system   many types of communication links made up of different types of phy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一章-计算机网络和因特网（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%911/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1.1因特网  具体构成描述   端系统通过通信链路(communication links)和分组交换机(packet switch)连接到一起   milions of connected computing devices：host&#x3D;end system   many types of communication links made up of different types of phy">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2024-02-20T04:40:44.049Z">
+<meta property="article:modified_time" content="2024-02-20T05:24:16.116Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>第一章-计算机网络和因特网（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第一章-计算机网络和因特网（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第一章-计算机网络和因特网（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1.1因特网</h1>
+
+<h4 id="具体构成描述">具体构成描述</h4>
+<ul>
+<li>
+<p>端系统通过<strong>通信链路</strong>(<em>communication links</em>)和<strong>分组交换机</strong>(<em>packet switch</em>)连接到一起</p>
+</li>
+<li>
+<p>milions of connected computing devices：host=end system</p>
+</li>
+<li>
+<p>many types of communication links made up of different types of <strong>physical media</strong> and <strong>radio spectrum</strong></p>
+</li>
+<li>
+<p>物理媒体—&gt;通信链路(communication links):</p>
+<ul>
+<li>
+<p>同轴电缆、铜线(copper)、光纤(fiber)、无线电频谱(radio spectrum)、satellite(卫星)</p>
+</li>
+<li>
+<p>传输速率以<strong>比特/秒</strong>（bit/s,bps）来度量，transmission tate=bandwidth(带宽)</p>
+
+</li>
+</ul>
+</li>
+<li>
+<p>分组交换机（packet switches）</p>
+<ul>
+<li>
+<p>路由器、链路层交换机</p>
+</li>
+<li>
+<p>朝着最终目的地转发分组，forward packets（chunks of data）</p>
+</li>
+<li>
+<p>路由器(routers)：常用于<strong>网络核心</strong></p>
+<p>链路层交换机(link-layer switches)：常用于<strong>接入网中</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>路径：一个分组所经历的通信链路+交换机</p>
+</li>
+<li>
+<p>端系统通过<strong>因特网服务提供商</strong>接入因特网</p>
+</li>
+<li>
+<p>ISP</p>
+<ul>
+<li>每个<strong>ISP</strong>是一个由多个<strong>分组交换机</strong>和<strong>多段通信链路</strong>组成的<strong>网络</strong></li>
+</ul>
+</li>
+<li>
+<p>为<strong>端系统</strong>提供不同类型的网络接入：</p>
+<ul>
+<li>线缆调制解调器
+<ul>
+<li>
+<p>（DLS？）住宅宽带接入</p>
+</li>
+<li>
+<p>高速局域网接入</p>
+</li>
+<li>
+<p>无线接入</p>
+</li>
+<li>
+<p>56kbps拨号调制解调器接入</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>为<strong>内容提供者</strong>提供网络接入服务，将web站点直接接入因特网</p>
+</li>
+<li>
+<p>端系统互联—&gt;ISP必须互联</p>
+<ul>
+<li><strong>低层ISP</strong>通过国家的、国际的高层ISP（Level 3 Communications、AT&amp;T、Sprint、NTT）互联</li>
+</ul>
+</li>
+<li>
+<p><strong>高层ISP</strong>通过<strong>高速光纤链路</strong>互联的<strong>高速路由器</strong>组成</p>
+<ul>
+<li>每个ISP独立管理，运行着IP协议</li>
+</ul>
+</li>
+<li>
+<p>因特网标准协议（<em>Internet standard</em>）由因特网工程任务组（<em>Internet Engineering Task Force，IETF</em>）研发</p>
+</li>
+<li>
+<p>IETF的标准文档为<strong>请求评论</strong>（<em>Request For Comment，RFC</em>），定义了用于<strong>web</strong>的TCP、IP、HTTP和用于<strong>电子邮件</strong>的SMTP等协议</p>
+</li>
+</ul>
+<h4 id="服务描述">服务描述</h4>
+<p>描述角度：为<strong>应用程序</strong>提供<strong>服务</strong>的<strong>基础设施</strong></p>
+<ul>
+<li>应用程序（分布式应用程序，distributed application）：
+<ul>
+<li>电子邮件、web冲浪、即使讯息、社交网络、因特网电视、IP语音（VoIP）、流式视频、分布式游戏、对等（peer-to-peer，P2P）、文件共享、因特网电视、远程注册等</li>
+<li>分布式—&gt;涉及多台交换数据的端系统</li>
+<li>运行在<strong>端系统</strong>上，不运行在网络核心中的<strong>分组交换机</strong>中</li>
+</ul>
+</li>
+<li>communication infrastructure provided to apps
+<ul>
+<li>connection-oriented reliable service（面向连接可靠服务）：reliable data  delivery from source to destination,  called <strong>Transmission Control Protocol  (TCP)</strong></li>
+<li>connectionless unreliable service  ( 无连接不可靠服务): “best effort”  (unreliable) data delivery, called <strong>User  Datagram Protocol (UDP)</strong></li>
+</ul>
+</li>
+<li>分组交换机：促进端系统之间的数据传输，不关心作为数据的源或宿的应用程序</li>
+<li>应用程序接口（<em>Application Programming Interface，API</em>）：规定了运行在一个端系统上的<strong>软件</strong>请求<strong>因特网基础设施</strong>向运行在另一个端系统上的特定目的的<strong>软件交付数据的方式</strong>
+<ul>
+<li>Internet API is a set of rules  that the sending program must  follow</li>
+<li>hooks that allow sending and receiving app programs to  “connect” to Internet</li>
+<li>provides service options, similar  to postal service 类似邮局服务:</li>
+<li>example: Alice send a letter to  Bob</li>
+<li>a). follow the rule</li>
+<li>b). provide more than one service</li>
+</ul>
+</li>
+</ul>
+<h4 id="协议">协议</h4>
+
+<p>一个协议定义了在两个或多个<strong>通信实体</strong>之间交换的<strong>报文格式和次序</strong>，以及报文发送和/或接收一条报文或其他事件所采取的动作</p>
+<p>protocols define format, order of msgs sent and received among network entities, and actions taken on msg transmission, receipt</p>
+<ul>
+<li>
+<p>entities change: machines  rather than humans</p>
+</li>
+<li>
+<p><strong>all communication activity</strong> in Internet governed by <strong>protocols</strong></p>
+</li>
+<li>
+<p>主机：</p>
+<ul>
+<li>客户<em>client</em></li>
+<li>服务器<em>server</em></li>
+</ul>
+</li>
+<li>
+<p>大部分提供搜索结果、电子邮件、web页面和视频的服务器都属于大型<strong>数据中心</strong>（<em>data center</em>）</p>
+</li>
+</ul>
+<h1>网络边缘</h1>
+<ul>
+<li>
+<p>network edge（网络边缘）</p>
+<ul>
+<li>hosts: clients and servers 客户端和服务器</li>
+<li>servers often in data centers  (数据中心)</li>
+</ul>
+</li>
+<li>
+<p>access networks，physical  media (接入网络，物理介质):  wired，wireless communication links</p>
+</li>
+<li>
+<p>network core(网络核心):</p>
+<ul>
+<li>interconnected routers</li>
+<li>network of network</li>
+</ul>
+</li>
+<li>
+<p>end systems (hosts主机):</p>
+<ul>
+<li>at “edge of network”</li>
+<li>run (host) application programs,  e.g. Web，email</li>
+</ul>
+</li>
+<li>
+<p>further divided client/server model ( 客户端 /服务器模型)</p>
+<ul>
+<li>
+<p>client host requests, receives service  from always -on server</p>
+</li>
+<li>
+<p>e.g. Web browser/server; email client/server</p>
+</li>
+<li>
+<p>client: desktop PCs, PDAs, servers:  powerful machines (informally)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>peer -peer model (对等模型):</p>
+</li>
+<li>
+<p>minimal (or no) use of dedicated  servers</p>
+</li>
+<li>
+<p>e.g. Skype，PPTV，Thunder</p>
+</li>
+</ul>
+<h3 id="接入网">接入网</h3>
+<ul>
+<li>接入网（<em>access network</em>）：将端系统连接到其<strong>边缘路由器</strong>（<em>edge router</em>）的<strong>物理链路</strong></li>
+<li>边缘路由器：端系统到任何其他远程端系统的路径上的第一台路由器</li>
+</ul>
+<p>:one:家庭接入（住宅接入网络，residential access nets）：DSL、电缆、FTTH、拨号、卫星</p>
+<p>🔹DSL（digital subscribe line，数字用户线路）</p>
+
+<ul>
+<li>
+<p>住户通常从（提供本地电话接入的）本地电话公司处获得DSL因特网接入</p>
+</li>
+<li>
+<p>当使用DSL时，本地电话公司就是它的ISP</p>
+</li>
+<li>
+<p>每个用户的<strong>DSL调制解调器</strong>使用现有的<strong>电话线</strong>（双绞铜线）与位于本地电话公司的**本地中心局（<em>CO，central office</em>）<strong>中的</strong>数字用户线接入复用器（<em>DSLAM，DSL接入复用器</em>）**来交换数据</p>
+</li>
+<li>
+<p>家庭的<strong>DSL调制解调器</strong>将得到的<strong>数据</strong>转换为<strong>高频音</strong>，以通过<strong>电话线</strong>传输给<strong>本地中心局</strong></p>
+</li>
+<li>
+<p>来自多个家庭的<strong>模拟信号</strong>在<strong>DSLAM</strong>处转换回<strong>数字</strong>形式</p>
+</li>
+<li>
+<p>家庭电话线同时承载了数据和传统的电话信号，编码为不同的频率：</p>
+<ul>
+<li><strong>高速下行信道</strong>，位于50kHz ~ 1MHz频段</li>
+<li><strong>中速下行信道</strong>，位于4kHz ~ 50kHz频段</li>
+<li>普通的<strong>双向电话信道</strong>，位于0kHz ~ 4kHz频段</li>
+</ul>
+</li>
+<li>
+<p>note：</p>
+<p>:one:Home Access (1):digital subscriber line (DSL，数字用户线路)</p>
+
+<ul>
+<li>
+<p>DSL Modem (DSL 调制解调器)：将<strong>数字信号</strong>调制到<strong>模拟载波信号</strong>上进行传输，并<strong>解调</strong>收到的<strong>模拟信号</strong>以得到<strong>数字信息</strong>的电子设备</p>
+</li>
+<li>
+<p>Splitter (分离器)：separates <strong>data</strong> and <strong>telephone signals</strong> arriving to home and  <strong>forwards</strong> data signal to <strong>DSL modem</strong> (from CO to Home)</p>
+</li>
+<li>
+<p>DSLAM (digital subscriber line access multiplexer，数字用户线路接入复用器)：</p>
+<ul>
+<li><strong>analog signals（模拟信号）</strong> from many houses are translated back into digital format at  the DSLAM</li>
+<li><strong>separates</strong> the <strong>data</strong> and <strong>phone signals</strong> and <strong>sends</strong> the data into the Internet（from Home to CO)</li>
+</ul>
+</li>
+<li>
+<p>single DSL link <strong>appear three</strong> separate links</p>
+</li>
+<li>
+<p>a telephone call and an Internet connection can share  the <strong>DSL link at the same time</strong></p>
+</li>
+<li>
+<p>use existing telephone line to central office DSLAM</p>
+<ul>
+<li>
+<p><strong>data</strong> over DSL phone line goes to <strong>Internet</strong></p>
+</li>
+<li>
+<p><strong>voice</strong> over DSL phone line goes to <strong>telephone net</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>DSL classification</p>
+<ul>
+<li>
+<p>**ADSL (<em>Asymmetric Digital Subscriber Line，非对称数字用户线</em>) **, typically upstream <strong>1Mbps</strong>， downstream <strong>8Mbps</strong></p>
+</li>
+<li>
+<p><strong>HDSL（<em>High-speed Digital Subscriber Line,高速率数字用户线</em>）</strong>， upstream and downstream typically <strong>2Mbps</strong></p>
+</li>
+<li>
+<p><strong>VDSL（<em>Very High Speed Digital Subscriber Line，超高速数字用户线</em>）</strong>, typically upstream <strong>19.2Mbps</strong>，downstream <strong>55Mbps</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>:small_blue_diamond:电缆因特网接入（<em>cacble Internet access</em>）</p>
+<ul>
+<li>
+<p>混合光纤同轴（Hybrid Fiber Coax，HFC）网络</p>
+
+
+</li>
+<li>
+<p>电缆因特网接入需要特殊的调制解调器——电缆调制解调器（<em>cable modem</em>）</p>
+</li>
+<li>
+<p>电缆调制解调器通常是一个<strong>外部设备</strong>，通过一个<strong>以太网端口</strong>连接到家庭PC</p>
+</li>
+<li>
+<p>在电缆头端，**电缆调制解调器系统（<em>Cable Modem Termination System</em>）**起到如同DSL网络的DSLAM类似的功能：（来自许多下行家庭中的电缆调制解调器发送的）模拟信号—&gt;数字信号</p>
+</li>
+<li>
+<p>电缆因特网接入的重大特征：<strong>共享</strong>广播媒体</p>
+<ul>
+<li>若几个用户同时经下行信道下载一个视频文件，则每个用户接收视频文件的实际速率远低于电缆总计的下行速率</li>
+<li>若很少的活跃用户进行web冲浪，则每个用户都可以以下行速率的全部速率接收web网页</li>
+<li>共享—&gt;需要一个<strong>分布式多路访问协议</strong>来<strong>协调传输</strong>和<strong>避免碰撞</strong></li>
+</ul>
+</li>
+</ul>
+<p>note:</p>
+<p>:two:Home Access (2):cable network  access (有线电视电缆网络接入)</p>
+<p>​	</p>
+<ul>
+<li><strong>DSL</strong> use <strong>existing telephone infrastructure</strong>，<strong>cable Internet access（有线互联网接入）</strong> use <strong>existing cable television infrastructure</strong></li>
+<li><strong>frequency division multiplexing（频分多路复用）</strong>: different channels  transmitted in different frequency bands</li>
+</ul>
+<p>Home Access (2): cable network access (有线电视电缆网络接入)-HFC</p>
+<p>​		</p>
+<ul>
+<li>asymmetric (非对称): up to 30 Mbps downstream transmission rate，2  Mbps upstream transmission rate</li>
+<li>network of cable, fiber attaches homes to ISP router
+<ul>
+<li>homes <strong>share</strong> access network to cable headend，e.g. download video</li>
+<li><strong>unlike DSL</strong> (has dedicated <strong>access</strong> to central office)</li>
+<li>DSL and cable networks &gt;90% in USA</li>
+</ul>
+</li>
+</ul>
+<p>:small_blue_diamond:光纤到户（<em>Firber To The Home，FTTH</em>），Home Access (3)</p>
+
+<ul>
+<li>optical network terminator (ONT, 光网络终端，通常 称为“光猫”) similar to Modem</li>
+<li>光纤分布体系结构（竞争性），optical-distribution network architectures：
+<ul>
+<li>主动光纤网络（Active Optical Network，AON，有源光网络）</li>
+<li>被动光纤网络（Passive Optical Network，PON，无源光网络）</li>
+</ul>
+</li>
+<li>Each home has ONT (光猫)，users connect a home router to the ONT  to access Internet (国内大多是路由器和光猫的一体机)</li>
+<li>OLT providing <strong>conversion</strong> between <strong>optical</strong> and <strong>electrical signals</strong></li>
+<li><strong>Splitter combines</strong> a number of homes (typically &lt;100) onto a <strong>single,  shared</strong> optical fiber（光纤） (from home to OLT)</li>
+<li>PON
+<ul>
+<li>每个家庭有一个光纤网络端接服务器（Optical Network Terminator，ONT），由专门的光纤连接到邻近的分配器（splitter）</li>
+<li>光纤线路端接器（Optical Line Terminator，OLT）提供光信号和电信号之间的转换，经本地电话公司的路由器与因特网相连</li>
+<li>所有从OLT发送到splitter的分组在splitter（类似于一个电缆头端）处复制</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">接入类型</th>
+<th style="text-align:center">速率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">DSL</td>
+<td style="text-align:center">1-30Mbps</td>
+</tr>
+<tr>
+<td style="text-align:center">cable Internet access</td>
+<td style="text-align:center">30~50Mbps</td>
+</tr>
+<tr>
+<td style="text-align:center">FTTH</td>
+<td style="text-align:center">每秒千兆比特</td>
+</tr>
+<tr>
+<td style="text-align:center">卫星</td>
+<td style="text-align:center">1Mbps</td>
+</tr>
+<tr>
+<td style="text-align:center">拨号</td>
+<td style="text-align:center">56kbps</td>
+</tr>
+</tbody>
+</table>
+<p>typical home network</p>
+
+<p>:two:企业（和家庭）接入：以太网和WiFi，institutional access networks (school,  company)（机构接入网络）</p>
+<p>:small_blue_diamond: 以太网</p>
+<ul>
+<li>
+<p>provides 100Mbps, 1Gbps, 10Gbps transmission rates</p>
+</li>
+<li>
+<p>today, end systems typically connect Ethernet switch</p>
+</li>
+<li>
+<p>在公司和大学校园以及很多家庭环境中，通常用局域网（<em>LAN，local area network</em>）将端用户连接到边缘路由器</p>
+</li>
+<li>
+<p>在以上场景中最流行的接入技术：<strong>以太网</strong>（<em>Ethernet</em>）</p>
+</li>
+<li>
+<p>以太网交换机或这样相连的交换机网络，再与更大的因特网相连</p>
+
+
+</li>
+<li>
+<p>计入以太网交换机的速率：</p>
+<ul>
+<li>用户：100Mbps</li>
+<li>服务器：1Gbps甚至10Gbps</li>
+</ul>
+</li>
+</ul>
+<p>:small_blue_diamond:WiFi（无线LAN的俗称）</p>
+<ul>
+<li>
+<p>典型的家庭网络</p>
+
+</li>
+</ul>
+<p>:small_blue_diamond:广域无线接入（WiMAX）：3G和LTE（<em>Long-Term Evolution</em>）</p>
+<ul>
+<li>iPhone、安卓等设备应用了与移动电话相同的基础设施，通过蜂窝网提供商运营的基站来发送和接收分组</li>
+<li>一个用户仅需要位于基站的数万米范围内</li>
+</ul>
+<h6 id="note">note</h6>
+<p>Wireless access  networks</p>
+<ul>
+<li>shared wireless access network connects end system to router
+<ul>
+<li>via base station aka “access point”</li>
+<li>used in universities, company, cafes, homes, airports…</li>
+</ul>
+</li>
+<li>wireless LANs (无线局域网):
+<ul>
+<li>within building (about 100 ft,约 30米)</li>
+<li>802.11b/g/n/ac (WiFi): 11, 54,  600, 1300+ Mbps transmission  rate</li>
+</ul>
+</li>
+<li>wide-area wireless access(广域无线接入网)</li>
+<li>provided by telco (cellular) operator  蜂窝电话运营商 (10’s km)</li>
+<li>between 1 and 100 Mbps</li>
+<li>3G, 4G: TD-LTE(中国移动,下行和上行速率100Mbps和50Mbps)，FDD-LTE  (中国电信、联通,下行和上行速率 150Mbps和40Mbps),5G?10Gbps</li>
+</ul>
+<h3 id="物理媒体（physical-medium）">物理媒体（<em>physical medium</em>）</h3>
+<table>
+<thead>
+<tr>
+<th>技术</th>
+<th>物理媒体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HFC</td>
+<td>光缆+同轴电缆</td>
+</tr>
+<tr>
+<td>DSL</td>
+<td>双绞铜线</td>
+</tr>
+<tr>
+<td>以太网</td>
+<td>双绞铜线</td>
+</tr>
+<tr>
+<td>移动接入网</td>
+<td>无线电频谱</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>分类</p>
+<ul>
+<li>引导型媒体（<em>guided media</em>）
+<ul>
+<li>电波沿着<strong>固体媒体</strong>前行</li>
+<li>光缆、双绞铜线、同轴电缆</li>
+</ul>
+</li>
+<li>非引导型媒体（<em>unguided media</em>）
+<ul>
+<li>电波在<strong>空气</strong>或<strong>外层空间</strong>中传播</li>
+<li>无线局域网、数字卫星频道</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>双绞铜线</p>
+<ul>
+<li>
+<p>最便宜、最普遍，常用于电话网，少用于电话线</p>
+</li>
+<li>
+<p>一对电线构成一个通信链路</p>
+</li>
+<li>
+<p>无屏蔽双绞线（<em>UTP，Unshielded Twisted Pair</em>）：</p>
+<ul>
+<li>
+<p>常用在建筑物内的计算机网络中，即局域网（LAN）中</p>
+</li>
+<li>
+<p>数据传输速率：10Mbps~10Gbps，取决于线的粗细、距离。The data rates can be achieved depend on  the thickness of the wire and the distance between transmitter and receiver</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>高速LAN</strong>联网的主要方式，也常用于住宅因特网接入</p>
+</li>
+<li>
+<p>双绞线按屏蔽层有无可分为</p>
+</li>
+<li>
+<p>UTP: Unshielded Twisted Pair (非屏蔽双绞线)</p>
+</li>
+<li>
+<p>STP：Shielded Twisted-Pair （屏蔽双绞线），在芯线外增加铝箔层减少信号衰减</p>
+</li>
+<li>
+<p>(2) 双绞线按照电气性能（频率、信噪比）可分为</p>
+<ul>
+<li>一类线（CAT1）：线缆最高频率带宽是750kHZ，用于报警系统，或只适用于语音传输（一类标准主要用于八十年代 初之前的电话线缆），不同于数据传输。</li>
+<li>二类线（CAT2）：线缆最高频率带宽是1MHZ，用于语音传输和最高传输速率4Mbps的数据传输，常见于使用4Mbps规范令牌传递协议的旧的令牌网。</li>
+<li>三类线（CAT3）：该电缆的传输频率16MHz，最高传输速率为10Mbps，主要应用于语音、10Mbit/s以太网 （10BASE-T）和4Mbit/s令牌环，最大网段长度为100m，采用RJ形式的连接器，目前已淡出市场（早期电话线）。</li>
+<li>四类线（CAT4）：该类电缆的传输频率为20MHz，用于语音传输和最高传输速率16Mbps（指的是16Mbit/s令牌环）的数据传输，主要用于基于令牌的局域网和10BASE-T/100BASE-T。最大网段长为100m，采用RJ形式的连接器，未被广泛采用。</li>
+<li>五类线（CAT5）：该类电缆增加了绕线密度，外套一种高质量的绝缘材料，线缆最高频率带宽为100MHz，最高传输率为100Mbps，用于语音传输和最高传输速率为100Mbps的数据传输，主要用于100BASE-T和1000BASE-T网络，最大网段长为100m，采用RJ形式的连接器。这是最常用的以太网电缆。</li>
+<li>超五类线（CAT5e）：超5类具有衰减小，串扰少，并且具有更高的衰减与串扰的比值（ACR）和信噪比（Structural Return  Loss）、更小的时延误差，性能得到很大提高。超5类线主要用于千兆以太网（1000Mbps=1Gbps）。</li>
+<li>六类线（CAT6）：该类电缆的为250MHz，六类布线系统在 200MHz时综合衰减串扰比（PS-ACR）应该有较大的余量，它提供2倍于超五类的带宽(2Gbps)。六类布线的传输性能远远高于超五类标准，最适用于传输速率高于1Gbps的应用。要求的布线距离为：永久链路的长度不能超过90m，信道长度不能超过100m。CAT6A标准的传输速率可达到10Gbps，使用在万兆以太网中。</li>
+<li>七类线（CAT7）：传输频率为600MHz，可用于10Gbps(万兆)以太网。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>线缆最高频率带宽</th>
+<th>最高传输速率</th>
+<th>最大网段长度</th>
+<th>应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAT1</td>
+<td>750kHZ</td>
+<td></td>
+<td></td>
+<td>报警系统，语音传输</td>
+</tr>
+<tr>
+<td>CAT2</td>
+<td>1MHZ</td>
+<td></td>
+<td></td>
+<td>语音传输，数据传输(最高传输速率4Mbps)，用4Mbps规范令牌传递协议的旧的令牌网</td>
+</tr>
+<tr>
+<td>CAT3</td>
+<td>16MHz</td>
+<td>10Mbps</td>
+<td>100m</td>
+<td>语音，10Mbit/s以太网，早期电话线</td>
+</tr>
+<tr>
+<td>CAT4</td>
+<td>20MHz</td>
+<td></td>
+<td>100m</td>
+<td>语音传输，数据传输(最高传输速率16Mbps)</td>
+</tr>
+<tr>
+<td>CAT5</td>
+<td>100MHz</td>
+<td>100Mbps</td>
+<td>100m</td>
+<td>最常用的以太网电缆</td>
+</tr>
+<tr>
+<td>CAT5e</td>
+<td></td>
+<td></td>
+<td></td>
+<td>千兆以太网</td>
+</tr>
+<tr>
+<td>CAT6</td>
+<td>250MHz</td>
+<td></td>
+<td>永久链路的长度不能超过90m<br />信道长度不能超过100m</td>
+<td>最适用于传输速率高于1Gbps的应用，万兆以太网</td>
+</tr>
+<tr>
+<td>CAT7</td>
+<td>600MHz</td>
+<td></td>
+<td></td>
+<td>10Gbps(万兆)以太网</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p>同轴电缆</p>
+<ul>
+<li>普遍用于电缆电视系统中</li>
+<li>同轴电缆能被用作引导型共享媒体</li>
+<li>许多端系统能够直接与该电缆相连，每个端系统都能接收由其他端系统发送的信息</li>
+<li>bidirectional 双向, tens of Mbps  transmission rate（数十兆比特）</li>
+<li>broadband宽频:
+<ul>
+<li>multiple channels on cable</li>
+<li>used in cable television systems,  HFC</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>光纤[fiber optic cable(光纤电缆）]</p>
+<ul>
+<li>引导光脉冲(light pulses)，每个脉冲表示一个比特</li>
+<li>一根光纤能够支持极高的比特速率，高达数十甚至数百Gbps</li>
+<li>high-speed operation: high-speed point-to-point  transmission (e.g., 10’s-100’s Gpbs transmission rate)</li>
+<li>low error rate(低错误率):
+<ul>
+<li>low signal attenuation(衰减) up to 100 km</li>
+<li>repeaters (中继器) spaced far apart</li>
+<li>immune to electromagnetic noise 不受电磁干扰</li>
+</ul>
+</li>
+<li>不受电磁干扰、信号衰减极低、男窃听</li>
+<li>长途引导型传输媒体，跨海链路</li>
+</ul>
+</li>
+<li>
+<p>radio (无线电)</p>
+<ul>
+<li>
+<p>signal carried in  electromagnetic spectrum 电磁频谱</p>
+</li>
+<li>
+<p>no physical “wire”</p>
+</li>
+<li>
+<p>bidirectional 双向</p>
+</li>
+<li>
+<p>propagation environment  effects:</p>
+<ul>
+<li>reflection 反射</li>
+<li>obstruction by objects 障碍物</li>
+<li>interference 干扰</li>
+</ul>
+</li>
+<li>
+<p>radio link types:</p>
+<ul>
+<li>
+<p>陆地无线电信道</p>
+<p>1、无线电信道承载<strong>电磁频谱</strong>中的信号</p>
+<p>2、路径损耗、遮挡衰落、多径衰落（由于干扰对象的信号反射）、干扰（其他无线电信道、电磁信号）</p>
+<p>3、无线LAN技术：局域无线电信道</p>
+<p>4、short distance (e.g, Bluetooth)</p>
+<p>5、local areas (e.g., WiFi)</p>
+<p>6、wide-area (e.g., cellular)</p>
+<p>蜂窝接入：广域无线电信道</p>
+</li>
+<li>
+<p>卫星无线电信道（satellite radio channels）</p>
+<p>同步卫星（<em>geostationary satellite</em>）</p>
+<p>36000km</p>
+<p>280ms信号传播时延近地轨道卫星（<em>LEO，Low-Earth Orbiting</em>）</p>
+<p>hundreds of Mbps speed, but  about 280 ms end-end delay</p>
+<p>often used in areas without  access to DSL or cable-based  Internet access</p>
+<p>geosynchronous satellites  versus low-earth orbiting  satellites (地球同步卫星和低地球轨道卫星)</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>1.3网络核心(<em>The Network Core</em>)</h1>
+<ul>
+<li>
+<p>网络核心：由<strong>互联因特网端系统</strong>的<strong>分组交换机</strong>和<strong>链路</strong>构成的<strong>网状网络</strong>，mesh of  interconnected routers and links that interconnects routers</p>
+<ul>
+<li>interconnected <strong>routers</strong></li>
+<li>network of networks</li>
+</ul>
+</li>
+<li>
+<p>two fundamental approaches to  moving data: circuit switching（电路交换） and packet switching（包交换）</p>
+<ul>
+<li>
+<p>circuit-switched networks: the  resources needed along a path for  communication between the end  systems are reserved</p>
+</li>
+<li>
+<p>packet-switched networks: these  resources are not reserved; a session’s messages use the resources on demand</p>
+
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-3-1分组交换（包交换，packet-switching）">1.3.1分组交换（包交换，packet switching）</h5>
+<ul>
+<li>
+<p>packet-switching: hosts break application-layer messages into packets (分组/数据包)</p>
+<ul>
+<li>forward packets from one  router to the next，across  links on path from source to  destination</li>
+<li>each packet travels through communication links and packet switches (e.g.  routers，link-layer switches)</li>
+<li>each packet transmitted at <strong>full link capacity</strong></li>
+</ul>
+</li>
+<li>
+<p>报文（<em>message</em>）：</p>
+<ul>
+<li>在各种网络应用中，端系统彼此交换报文</li>
+<li>可以执行一种控制功能、包含数据</li>
+<li>源将报文划分为较小的数据块——分组（<em>packet</em>）</li>
+<li>每个分组都通过<strong>通信链路</strong>和<strong>分组交换机（<em>packet switch</em>）</strong>（交换机主要有两类：<strong>路由器</strong>和<strong>链路层交换机</strong>）传送</li>
+<li>分组以等于该链路<strong>最大传输速率</strong>的速度传输通过通信链路</li>
+<li>如果某源端系统或分组交换机经过一条链路发送一个<strong>L比特</strong>的分组，链路的传输速率为<strong>R比特/秒</strong>，则传输该分组的时间为<strong>L/R秒</strong></li>
+</ul>
+</li>
+<li>
+<p>存储转发传输（<em>store-and-forward transmission</em>）</p>
+<ul>
+<li><strong>分组交换机</strong>在链路的<strong>输入端</strong>使用<strong>存储转发传输</strong>机制</li>
+<li>在交换机能够开始向输出链路传输该分组的第一个比特之前，必须接收到整个分组</li>
+<li>由N条速率均为R的链路组成的路径（所以，在源和目的地之间有N-1台路由器），端到端的时延：<strong>d=N（$$\frac{L}{R}$$）</strong></li>
+<li>Most packet switches use store and-forward transmission</li>
+</ul>
+</li>
+<li>
+<p>排队时延和分组丢失</p>
+<ul>
+<li>每个分组交换机有多条链路与之相连</li>
+<li>对于每条链路，该分组交换机有一个<strong>输出缓存（<em>output buffer</em>）</strong>（也称为<strong>输出队列（<em>output queue</em>）</strong>，<u>用于存储路由器准备发往那条链路的<strong>分组</strong></u>（存储转发时延）</li>
+<li>each packet switch has multiple links, <strong>each</strong> link has <strong>an output buffer</strong></li>
+<li>排队时延（<em>queue delay</em>）：如果到达的分组需要传输到某条链路，但该链路正忙于传输其他分组，则该到达分组必须在该输出缓存中等待，variable and <strong>depend on level of congestion in network</strong></li>
+<li>分组丢失（丢包，packet lost）：一个分组到达时，若缓存已被其他等待传输的分组完全充满了，则到达的分组或已经排队的分组之一将被丢弃</li>
+</ul>
+</li>
+<li>
+<p>转发表（<em>forwarding table</em>）和路由选择协议（<em>routing protocol</em>）</p>
+<ul>
+<li>分组的首部包含有<strong>目的地的IP地址</strong>，当一个分组到达网络中的路由器时，路由器检查该分组的目的地址的<strong>一部分</strong></li>
+<li>routing: determines source destination route taken by packets</li>
+<li>forwarding: move packets from  router’s input to appropriate  router output</li>
+<li>每台路由器有一个<strong>转发表（<em>forwarding table</em>）</strong>，<u>用于将目的地址（或目的地址的一部分）映射为输出链路</u></li>
+<li>路由选择协议（<em>routing protocol</em>）：用于自动地设置转发表</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-3-2电路交换（circuit-switching）">1.3.2电路交换（<em>circuit switching</em>）</h5>
+<ul>
+<li>通过<strong>网络链路</strong>和<strong>交换机</strong>移动数据的两种基本方法：电路交换、分组交换</li>
+<li>在电路交换网络中，在端系统间通信会话器件，预留了端系统间通信沿路所需要的资源（缓存、链路传输速率）。在分组交换网络中，这些资源不是预留的，会话的报文按需使用这些资源，其后果是不得不等待（排队）接入通信线路</li>
+<li>Circuit switching is commonly used in  traditional telephone networks (传统电话网络)</li>
+<li>电路交换中的复用
+<ul>
+<li>链路中的电路是通过**频分复用（<em>FDM，Frequency-Division Multiplexing</em>）<strong>或</strong>时分复用（<em>TDM，Time-Division Multiplexing</em>）**来实现的</li>
+<li>FDM：
+<ul>
+<li><strong>链路</strong>的<strong>频谱</strong>由<strong>跨越链路创建</strong>的<strong>所有连接所共享</strong></li>
+<li>在电话网络中，这个频段通常具有4kHz的宽度（即4000赫兹或每秒4000周），该频段的宽度称为<strong>带宽（<em>bandwidth</em>）</strong></li>
+<li>调频无线电台也使用FDM来共享88~108MHz的频谱，每个电台被分配一个特定的频段</li>
+<li>the link dedicates a frequency band (频段) to each connection  for the duration（持续时间） of the connection</li>
+<li>the width of the band is called the bandwidth (带宽).</li>
+<li>each circuit continuously gets a fraction of the bandwidth</li>
+</ul>
+</li>
+<li>TDM：
+<ul>
+<li>时间被划分为<strong>固定区间</strong>的<strong>帧</strong>，每帧又被划分为<strong>固定数量</strong>的<strong>时隙</strong></li>
+<li>当网络跨越一条链路创建一条连接时，网络在<strong>每个帧</strong>中为该连接<strong>指定一个时隙</strong>。这些时隙专门由该连接<strong>单独使用</strong>，一个时隙（在每个帧内）可用于传输该连接的数据</li>
+<li>time is divided into frames(帧) of fixed duration, and each  frame is divided into a fixed number of time slots (时间片)</li>
+<li>network dedicates one time slot in every frame to this connection, i.e. with one time slot available for use (in every frame) to transmit the connection’s data</li>
+<li>each circuit gets all of the bandwidth periodically during brief intervals of time (slots)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="分组交换与电路交换的对比">分组交换与电路交换的对比</h5>
+<ul>
+<li>分组交换
+<ul>
+<li>不适合实时服务：端到端时延是可变的和不可预测的（主要因为排队时延的变动和不可预测所致）</li>
+<li>提供了比电路交换更好的宽带共享</li>
+<li>比电路交换更简单、更有效、实现成本更低</li>
+<li>Packet switching (包交换): these resources are not reserved, use the resource on demand</li>
+<li>Disadvantage: excessive congestion possible
+<ul>
+<li>packet delay and loss</li>
+<li>protocols needed for reliable data transfer,  congestion control</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>circuit  switching (电路交换)
+<ul>
+<li>network must <strong>establish a connection</strong> between <strong>before</strong> send the information:  the connection is called a circuit(电路).</li>
+<li>the network establishes the circuit, it also <strong>reserves a constant transmission  rate</strong> in the network’s links</li>
+<li>transfer the data to the receiver at the <strong>guaranteed constant rate</strong></li>
+</ul>
+</li>
+</ul>
+<h5 id="Packet-switching-versus-circuit-switching">Packet switching versus  circuit switching</h5>
+<ul>
+<li>Critics of packet switching (批评者):
+<ul>
+<li>packet switching is not suitable for real-time services (for example, telephone calls and video conference calls) because of  its variable and unpredictable end-to-end delays</li>
+</ul>
+</li>
+<li>Proponents of packet switching (支持者):
+<ul>
+<li>it offers <strong>better sharing of transmission capacity</strong> than circuit  switching</li>
+<li>is <strong>simpler</strong>, more <strong>efficient</strong>，and <strong>less costly</strong> to implement than  circuit switching
+<ul>
+<li>more efficient: packet switching allows more users to use  network</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Packet switching versus  circuit switching
+<ul>
+<li>the trend has certainly been in the direction of packet  switching, e.g. expensive overseas telephone call</li>
+<li>great for burst data (突发数据)
+<ul>
+<li>resource sharing</li>
+<li>simpler, no call setup</li>
+</ul>
+</li>
+<li>Disadvantage: excessive congestion possible
+<ul>
+<li>packet delay and loss</li>
+<li>protocols needed for reliable data transfer,  congestion control</li>
+</ul>
+</li>
+<li>Q: How to provide circuit-like behavior?
+<ul>
+<li>bandwidth guarantees needed for audio/video apps</li>
+<li>still an unsolved problem (chapter 7)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="1-3-3网络的网络">1.3.3网络的网络</h5>
+<ul>
+<li>
+<p>ISP互联=》创建<strong>网络的网络</strong></p>
+</li>
+<li>
+<p>End systems connect to Internet  via access ISPs</p>
+<ul>
+<li>don’t have to be telco or cable company</li>
+<li>can be residential，company and university</li>
+</ul>
+</li>
+<li>
+<p>Access ISPs in turn must be  interconnected (互相连接).</p>
+<ul>
+<li>So that any two hosts can send  packets to each other</li>
+</ul>
+</li>
+<li>
+<p>Resulting network of networks is  very complex</p>
+<ul>
+<li>Evolution was driven by economics and national policies rather than  by performance considerations</li>
+</ul>
+</li>
+<li>
+<p>互联接入ISP的目的：使所有端系统能够彼此发送分组</p>
+</li>
+<li>
+<p>网络结构1：用单一的全球承载ISP互联接入所有ISP， network  of networks-single global ISP</p>
+</li>
+<li>
+<p>网络结构2：由数十万接入ISP和多个全球承载ISP组成，network  of networks-multiple global ISPs</p>
+<ul>
+<li>两层结构：全球承载供应商（顶层）、接入ISP（底层）</li>
+</ul>
+</li>
+<li>
+<p>网络结构3：多层等级结构，Internet structure 3/4：network of  networks-regional ISP+tier-1 ISP</p>
+</li>
+<li>
+<p>网络结构4：（在3的基础上）由接入ISP、区域ISP、第一层ISP、PoP、多宿、对等、IXP组成的生态系统</p>
+<ul>
+<li>存在点（<em>PoP，Point of Presence</em>）
+<ul>
+<li>存在于等级结构的所有层次，底层（接入ISP）除外</li>
+<li>是<strong>提供商网络</strong>中的一台或多台<strong>路由器（在相同位置）群组</strong>，其中客户ISP能与提供商ISP连接</li>
+<li>对于要与提供商PoP连接的<strong>客户网络</strong>，它能从<strong>第三方通信提供商</strong>租用<strong>高速链路</strong>直接将它的路由器之一连接到位于该PoP的一台<strong>路由器</strong></li>
+</ul>
+</li>
+<li>多宿（<em>multi-home</em>）
+<ul>
+<li>**任何ISP（除了第一层ISP）**可以与两个或更多提供商ISP连接</li>
+<li>当一个ISP多宿时，即使它的提供商之一出现故障，它仍然能够继续**发送和接收分组*</li>
+</ul>
+</li>
+<li>对等（<em>peer</em>）
+<ul>
+<li>位于<strong>相同等级</strong>结构层次的邻近一对ISP能够对等，即能够直接将它们的网络连接到一起，使它们之间的<strong>所有流量直接连接</strong>而不是通过上游的中间ISP传输</li>
+</ul>
+</li>
+<li>因特网交换点（<em>IXP，Internet Exchange Point</em>）
+<ul>
+<li>通常在一个有自己的交换机的独立建筑物中</li>
+<li>是一个<strong>汇合点</strong>，<strong>多个ISP</strong>能够在这里共同<strong>对等</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>网络结构5：在4的顶部增加<strong>内容提供商网络（<em>content provider network</em>）</strong></p>
+<p>network of  networks-Content provider network</p>
+
+</li>
+</ul>
+<h3 id="Intern-vs-Intranet">Intern vs Intranet</h3>
+<ul>
+<li>
+<p>Internet: “network of  networks”</p>
+</li>
+<li>
+<p>loosely hierarchical (松散分层)</p>
+</li>
+<li>
+<p>How are they like?</p>
+<ul>
+<li>Both use <strong>TCP/IP network protocol</strong></li>
+<li>Both use <strong>e-mail</strong> and <strong>World Wide Web standards</strong></li>
+</ul>
+</li>
+<li>
+<p>What’s the differences？</p>
+<ul>
+<li>An Intranet is <strong>local and private</strong></li>
+<li>An <strong>Intranet</strong> is more <strong>secure</strong> and more <strong>speed</strong></li>
+<li>An Intranet is <strong>regulated(管制)</strong></li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%92%8C%E5%9B%A0%E7%89%B9%E7%BD%912/" title="第一章-计算机网络和因特网（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第一章-计算机网络和因特网（一）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/19/%E6%9F%A5%E6%89%BE/" title="数据结构-查找">
+                        <span class="hidden-mobile">数据结构-查找</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

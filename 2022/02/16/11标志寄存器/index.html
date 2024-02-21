@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="引言  8086CPU的标志寄存器（flag）有16位，其中存储二点信息通常被称为程序状态字（PSW） 其他寄存器是用来存放数据的，都是整个寄存器具有一个含义。而flag寄存器是按位起作用的，也就是说，它的每一位都有专门的含义，记录特定的信息  ZF标志  ZF：零标志位 记录相关指令执行后：结果为0，ZF&#x3D;1；结果不为0，ZF&#x3D;0  PF标志   flag的第2位   奇偶标志位   记录指令执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="11-标志寄存器">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/11%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="引言  8086CPU的标志寄存器（flag）有16位，其中存储二点信息通常被称为程序状态字（PSW） 其他寄存器是用来存放数据的，都是整个寄存器具有一个含义。而flag寄存器是按位起作用的，也就是说，它的每一位都有专门的含义，记录特定的信息  ZF标志  ZF：零标志位 记录相关指令执行后：结果为0，ZF&#x3D;1；结果不为0，ZF&#x3D;0  PF标志   flag的第2位   奇偶标志位   记录指令执">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:38:43.545Z">
+<meta property="article:modified_time" content="2024-02-19T16:29:13.843Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>11-标志寄存器 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="11-标志寄存器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:38" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">11-标志寄存器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>引言</h1>
+<ul>
+<li>8086CPU的标志寄存器（flag）有16位，其中存储二点信息通常被称为程序状态字（PSW）</li>
+<li>其他寄存器是用来存放数据的，都是整个寄存器具有一个含义。而flag寄存器是按位起作用的，也就是说，它的每一位都有专门的含义，记录特定的信息</li>
+</ul>
+<h1>ZF标志</h1>
+<ul>
+<li>ZF：零标志位</li>
+<li>记录相关指令执行后：结果为0，ZF=1；结果不为0，ZF=0</li>
+</ul>
+<h1>PF标志</h1>
+<ul>
+<li>
+<p>flag的第2位</p>
+</li>
+<li>
+<p>奇偶标志位</p>
+</li>
+<li>
+<p>记录指令执行后，结果的所有二进制位中1的个数：</p>
+<p>为偶数：PF=1</p>
+<p>为奇数：PF=0</p>
+</li>
+</ul>
+<h1>SF标志</h1>
+<ul>
+<li>
+<p>7</p>
+</li>
+<li>
+<p>符号标志位</p>
+</li>
+<li>
+<p>指令执行后：</p>
+<p>结果为负，SF=1</p>
+<p>结果为正，SF=0</p>
+</li>
+<li>
+<p>是CPU对有符号数运算结果的一种记录，它记录数据的正负</p>
+</li>
+<li>
+<p>如果将数据当作无符号数来运算，SF的值则没有意义</p>
+</li>
+</ul>
+<h1>CF标志</h1>
+<ul>
+<li>0</li>
+<li>进位标志位</li>
+<li>一般情况下，在进行无符号数运算时，它记录了运算结果的最高有效位向更高位的进位值，或从更高位的借位值</li>
+<li>对于位数为N的无符号数来说，其对应的二进制信息的最高位，即N-1位的最高有效位，而假想存在的第N位，就是相对于最高有效位的更高位</li>
+<li>产生借位置为cy、无借位为nc</li>
+</ul>
+<h1>OF标志</h1>
+<ul>
+<li>在进行<strong>有符号数</strong>运算时，如结果超过了机器所能表示的范围称为溢出</li>
+<li>值为1的标记：OV、值为0的标记：NV</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov al,98<br>add al,99<br><br>;add指令运算的结果是(al)=0C5H，因为进行的是有符号数运算，所以al中存储的是有符号数，而0C5H是有符号数-59的补码<br></code></pre></td></tr></table></figure>
+<h1>adc指令</h1>
+<ul>
+<li>
+<p>adc是带进位加法指令，它利用了CF位商记录的值进位</p>
+</li>
+<li>
+<p>格式：adc 操作对象1，操作对象2</p>
+</li>
+<li>
+<p>功能：操作对象1=操作对象1+操作对象2+CF</p>
+</li>
+<li>
+<p>例：adc ax，bx —&gt;(ax)=(ax)+(bx)+CF</p>
+</li>
+<li>
+<p>在执行adc指令的时候加上的CF的值的含义由adc指令前面的指令决定，即关键在于所加上的CF值是被什么指令设置的</p>
+<ul>
+<li>如果CF的值是被sub指令设置的，那么它的含义就是借位值</li>
+<li>如果是被add指令设置的，那么它的含义就是进位值</li>
+</ul>
+</li>
+<li>
+<p>编程：</p>
+<ul>
+<li>计算1EF000H+201000H，结果放在ax（高16位）和bx（低16位）中</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs assembly">mov ax,001EH<br>mov bx,0F000H<br>add bx,1000H  ;10000<br>adc ax,0020H<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>编写一个子程序，对两个128位数据进行相加</p>
+<p>参数：ds:si指向存储的第一个数的内存空间，因数据为128位，所以需要8个字单元，由低地址单元到高地址单元依次存放128位数据由高到低的各个字，运算结果存储在第一个数的存储空间中</p>
+<p>ds:di指向存储的第二个数的内存空间</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs assembly">assume cs:code,ds:data<br>data segment<br>		db 88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h,88h<br>		db 11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h,11h<br>data ends<br><br>code segment<br>start:mov ax,data<br>	  mov ds,ax<br>	  mov si,0<br>	  mov di,16<br>	  <br>	  mov cx,8<br>	  <br>	  call add128<br>	  <br>	  mov ax,4c00h<br>	  int 21h<br>	  <br>add128: push ax<br>		push cx<br>		push si<br>		push di<br>		<br>		sub ax,ax  ;将CF设置为0<br>	 S: mov ax,[si]<br>	 	adc ax,[di]<br>	 	mov [si],ax<br>	 	inc si<br>	 	inc si<br>	 	inc di<br>	 	inc di<br>	 	loop s<br>	 	<br>	 	pop di<br>	 	pop si<br>	 	pop cx<br>	 	pop ax<br>	 	ret<br>	 	<br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1>sbb指令</h1>
+<ul>
+<li>带借位减法指令，利用CF位上记录的借位值</li>
+<li>格式：sbb 操作对象1，操作对象2</li>
+<li>功能：操作对象1=操作对象1-操作对象2-CF</li>
+<li>例：sbb ax，bx—&gt;(ax)=(ax)-(bx)-CF</li>
+</ul>
+<h1>cmp指令</h1>
+<ul>
+<li>
+<p>比较指令，功能相当于减法指令，只是不保存结果</p>
+</li>
+<li>
+<p>cmp指令执行后，将对标志寄存器产生影响</p>
+</li>
+<li>
+<p>其他相关指令通过识别这些被影响的标志寄存器位来得知比较结果</p>
+</li>
+<li>
+<p>格式：cmp 操作对象1，操作对象2</p>
+</li>
+<li>
+<p>功能：计算“操作对象1-操作对象2”但不保存结果，仅仅根据计算结果对标志寄存器进行设置</p>
+</li>
+<li>
+<p>例：cmp ax，ax—&gt;(ax)-(ax)结果为0，但并不保存在ax中，仅影响flag的相关各位</p>
+<p>执行后：ZF=1,PF=1,SF=0,CF=0,OF=0</p>
+</li>
+<li>
+<p>(爆破、破解)</p>
+</li>
+<li>
+<p>比较：cmp ah，bh</p>
+<ul>
+<li>
+<p>SF=1，OF=0</p>
+<p>OF=0，说明没有溢出，逻辑上真正结果的正负=实际结果的正负</p>
+<p>SF=1，实际结果为负，所以逻辑上真正的结果为负，所以（ah）&lt;（bh）</p>
+</li>
+<li>
+<p>SF=1，OF=1</p>
+<p>OF=1，说明有溢出，逻辑上真正结果的正负≠实际结果的正负</p>
+<p>如果因为溢出而导致了实际结果为负，那么逻辑上真正的结果必然为正，这样，”SF=1，OF=1“说明了（ah）&gt;（bh）</p>
+</li>
+<li>
+<p>SF=0，OF=1</p>
+<p>（ah）&lt;（bh）</p>
+</li>
+<li>
+<p>SF=0，OF=1</p>
+<p>（ah）&gt;=（bh）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1>检测比较结果的条件转移指令</h1>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+<th>检测的相关标志位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>je</td>
+<td>等于则转移</td>
+<td>ZF=1</td>
+</tr>
+<tr>
+<td>jne</td>
+<td>不等于则转移</td>
+<td>ZF=0</td>
+</tr>
+<tr>
+<td>jb</td>
+<td>低于则转移</td>
+<td>CF=1</td>
+</tr>
+<tr>
+<td>jnb</td>
+<td>不低于则转移</td>
+<td>CF=0</td>
+</tr>
+<tr>
+<td>ja</td>
+<td>高于则转移</td>
+<td>CF=0,ZF=0</td>
+</tr>
+<tr>
+<td>jna</td>
+<td>不高于则转移</td>
+<td>CF=1或ZF=1</td>
+</tr>
+</tbody>
+</table>
+<p>e：equal、ne：not equal、b：below、a：above</p>
+<ul>
+<li>
+<p>都是cmp指令进行无符号数比较时，记录比较结果的标记位</p>
+<p>比如je，检测ZF位，当ZF=1时进行转移，如果je前面使用了cmp指令，那么je对ZF的检测，实际上就是间接地检测cmp的比较结果是否为两数相等</p>
+</li>
+<li>
+<p>编程实现：如果（ah）=（bh），则（ah）=（ah）+（ah），否则（ah）=（ah）+（bh）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs assembly">cmp ah,bh<br>je s<br>add ah,bh<br>jmp short ok<br><br>s:add ah,ah<br>ok:ret<br></code></pre></td></tr></table></figure>
+<ul>
+<li>虽然je的逻辑含义是”相等则转移“，但它进行的操作是ZF=1时转移</li>
+<li>”相等则转移“这种逻辑含义，是通过cmp指令配合使用来体现的，因为cmp指令为”ZF=1“赋予了”两数相等“的含义</li>
+<li>je检测的是ZF位置，兵部观je前面是什么指令，只要CPU执行je指令时，ZF=1，那么就会发生转移</li>
+</ul>
+</li>
+</ul>
+<h1>DF标志</h1>
+<ul>
+<li>flag的第10位是DF，方向标志位</li>
+<li>在串处理指令中，控制每次操作后si、di的增减
+<ul>
+<li>DF=0：每次操作后，si、di递增</li>
+<li>DF=1：每次操作后，si、di递减</li>
+</ul>
+</li>
+</ul>
+<h1>串传送指令</h1>
+<ul>
+<li>
+<p>格式1：movsb</p>
+<ul>
+<li>
+<p>功能：（以字节为单位传送）</p>
+<ul>
+<li>
+<p>（（es） * 16+（di））=（（ds） * 16+（（si））</p>
+</li>
+<li>
+<p>如果DF=0，则：（si）=（si）+1、（di）=（di）+1</p>
+<p>如果DF=1，ze：（si）=（si）-1，（di）=（di）-1</p>
+</li>
+</ul>
+</li>
+<li>
+<p>将ds：si指向的内存单元中的字节送入es：di中，然后根据标志寄存器DF位的值，将si和di递增或递减</p>
+</li>
+</ul>
+</li>
+<li>
+<p>格式2：movsw</p>
+<ul>
+<li>以字为单位传送</li>
+<li>将ds：si指向的内存单元中word送入es：di中，然后根据标志寄存器DF位的值，将si和di递增2或递减2</li>
+</ul>
+</li>
+<li>
+<p>一般movsb、movsw和rep配合使用</p>
+<ul>
+<li>格式：rep movsb</li>
+<li>rep的作用是根据cx的值，重复执行后面的串传送指令</li>
+<li>由于每执行一次movsb指令si和di都会递增或递减指向后一个单元或前个单元，则movsb就可以循环实现（cx）个字符的传送</li>
+<li>由于flag的DF位决定着传送指令执行后，si和di改变的方向，所以CPU应该提供相应的指令来对DF位进行设置，从而使程序员能够决定传送的方向</li>
+<li>8086CPU提供两条指令对DF位进行设置：
+<ul>
+<li>cld指令：将标志寄存器的DF位置0</li>
+<li>std指令：将标志寄存器的DF位置1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>编程</p>
+<p>1、用串传送指令，将打他段中的第一个字符串复制到它后面的空间中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs assembly">; 传送的原始位置：data:0<br>; 传送的目的位置：data:16<br>; 传送的长度：16<br>; 传送的方向：因为正向传送（每次串传送指令执行后，si和di递增）比较方便，所以设置DF=0<br><br>data segment<br> db &#x27;welcom to masm!&#x27;<br> db 16 dup (0)<br>data ends<br><br>code  segment<br>start: mov ax,data<br>	   mov ds,zx<br>	   mov si,0     ;ds:si指向打他：0<br>	   mov es,ax<br>	   mov di,16    ;es:di指向data:16<br>	   mov cx,16    ;(cx)=16,rep循环16次<br>	   <br>	   cld          ;设置DF=0，正向传送<br>	   rep movsb<br>	   <br>	   mov ax,4c00h<br>	   int 21h<br>	   <br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>分析：</p>
+<p>使用串传送指令进行数据的传送，需要给它提供一些必要的信息：</p>
+<ul>
+<li>传送的原始位置：ds:si</li>
+<li>传送的目的位置：es:di</li>
+<li>传送的长度：cx</li>
+<li>传送的方向：DF</li>
+</ul>
+</li>
+</ul>
+<p>2、用串传送指令，将F000H段中最后16个字符复制到data段中</p>
+<ul>
+<li>要传送的字符串位于F000H段的最后16个单元中，那么它的最后一个字符的位置：F000：FFFF是显而易见的</li>
+<li>可以将ds：si指向F000H段的最后一个单元，将es：di指向data段中的最后一个单元，然后逆向（即从高地址向低地址）传送16个字节</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs assembly">; 传送的原始位置：F000:FFFF<br>; 传送的目的位置：data:15<br>; 传送的长度：16<br>; 传送的方向：因为逆向传送（每次串传送指令执行后，si和di递减）比较方便，所以设置DF=1<br>data segment<br>	db 16 dup (0)<br>data ends<br><br>code segment<br>start: mov ax,0f000h<br>	   mov ds,ax<br>	   mov ax,data<br>	   mov es,ax<br>	   mov di,15<br>	   mov cx,16<br>	   <br>	   std<br>	   rep movsb<br>	   <br>	   mov ax,4c00h<br>	   int 21h<br>code ends<br>end start<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1>pushf、popf</h1>
+<p>pushf：将标志寄存器的值压栈</p>
+<p>popf：从栈中弹出数据，送入标志寄存器中</p>
+<p>pushf和popf位直接范文标志寄存器提供了一种方法</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/12%E5%86%85%E4%B8%AD%E6%96%AD/" title="12-内中断">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">12-内中断</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/10call%E5%92%8Cret%E6%8C%87%E4%BB%A4/" title="10-call和ret指令">
+                        <span class="hidden-mobile">10-call和ret指令</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,913 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="4.1 进程和线程   回顾进程的特点  资源所有权，Resource ownership  进程包括存放进程映像的虚拟地址空间 进程映像是程序、数据、栈和进程控制块中定义的属性集 进程总具有对资源的控制权或所有权 操作系统提供预防进程间发生不必要资源冲突的保护功能   调度&#x2F;执行，Scheduling&#x2F;execution  进程具有执行态（运行、就绪等）和分配给其的优先级，是可被操作系统调度和分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章-进程和线程（一）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="4.1 进程和线程   回顾进程的特点  资源所有权，Resource ownership  进程包括存放进程映像的虚拟地址空间 进程映像是程序、数据、栈和进程控制块中定义的属性集 进程总具有对资源的控制权或所有权 操作系统提供预防进程间发生不必要资源冲突的保护功能   调度&#x2F;执行，Scheduling&#x2F;execution  进程具有执行态（运行、就绪等）和分配给其的优先级，是可被操作系统调度和分">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osa.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.6b.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osb.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osc.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.6c.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osd.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.643Z">
+<meta property="article:modified_time" content="2024-02-20T13:43:11.931Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.2.jpg">
+  
+  
+  
+  <title>第四章-进程和线程（一） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第四章-进程和线程（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第四章-进程和线程（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>4.1 进程和线程</h1>
+<ul>
+<li>
+<p>回顾进程的特点</p>
+<ul>
+<li>资源所有权，Resource ownership
+<ul>
+<li>进程包括存放<u>进程映像</u>的<u>虚拟地址空间</u></li>
+<li>进程映像是程序、数据、栈和进程控制块中定义的<strong>属性集</strong></li>
+<li>进程总具有对资源的<strong>控制权或所有权</strong></li>
+<li><strong>操作系统</strong>提供预防进程间发生<u>不必要资源冲突</u>的<strong>保护功能</strong></li>
+</ul>
+</li>
+<li>调度/执行，Scheduling/execution
+<ul>
+<li>进程具有<strong>执行态</strong>（运行、就绪等）和分配给其的<strong>优先级</strong>，是可<u>被操作系统调度和分派</u>的<strong>实体</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>两个特点<strong>独立</strong>，因此操作系统应能<u>分别处理</u>它们</p>
+</li>
+<li>
+<p>拥有<u>资源所有权</u>的单位：<strong>进程（process）<strong>或</strong>任务（task）</strong></p>
+<p>将<strong>分派</strong>的单位：<strong>线程</strong>或<strong>轻量级进程（Light Weight Process， LWP）</strong></p>
+</li>
+</ul>
+<h3 id="4-1-1-多线程，Multithreading">4.1.1 多线程，Multithreading</h3>
+<ul>
+<li>
+<p>多线程：<strong>操作系统</strong>在<strong>单个进程内</strong>支持多个<strong>并发执行路径</strong>的<strong>能力</strong></p>
+</li>
+<li>
+<p>每个进程中仅执行单个线程的传统方法（此时还未提出线程的概念）称为<strong>单线程方法（single-threaded approach）</strong></p>
+</li>
+<li>
+<p>在多线程环境中，进程定义为<strong>资源分配单元</strong>和一个<strong>保护单元</strong></p>
+</li>
+<li>
+<p>与进程相关联的有</p>
+<ul>
+<li>容纳进程映像的虚拟地址空间</li>
+<li>对处理器、其他进程（（用于进程间通信）、文件和 I/O资源（设备和通道）的<strong>受保护访问</strong></li>
+</ul>
+</li>
+<li>
+<p>一个进程中可能有一个或多个线程，每个线程都有∶</p>
+<ul>
+<li>一个线程<strong>执行状态</strong></li>
+<li><strong>未运行时</strong>保存的<strong>线程上下文</strong>（thread context），<u>线程可视为在进程内运行的一个<strong>独立程序计数器</strong></u></li>
+<li>一个<strong>执行栈</strong></li>
+<li>每个线程用于<strong>局部变量</strong>的一些<strong>静态存储空间</strong></li>
+<li>与进程内其他线程<u>共享的</u>**内存和资源的访问</li>
+</ul>
+</li>
+<li>
+<p>线程和进程的区别（进程管理的角度）</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>进程中的<strong>所有线程</strong>共享该进程的<strong>状态和资源</strong>，所有线程都<strong>驻留在同一块地址空间中</strong>，并<strong>可访问相同的数据</strong>
+<ul>
+<li>若一个线程以读权限打开一个文件，那么同一进程中的其他线程也能从这个文件中读取数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>线程的如下优点</p>
+<ul>
+<li>在已有进程中<strong>创建一个新线程的时间</strong>，远少于创建一个全新进程的时间
+<ul>
+<li>Mach开发人员的研究表明，线程创建要比在 UNIX中创建进程快10倍</li>
+</ul>
+</li>
+<li><strong>终止线程</strong>要比终止进程所花的<strong>时间</strong>少</li>
+<li>同一进程内线程间<strong>切换的时间</strong>，要少于进程间切换的时间</li>
+<li>线程提高了不同执行程序间通信的效率
+<ul>
+<li>在多数操作系统中，<u>独立进程间的通信需要<strong>内核</strong>介入</u>，以提供<strong>保护</strong>和<strong>通信</strong>所需的机制</li>
+<li>由于同一进程中的<u>多个线程共享内存和文件</u>， 因此它们<strong>无须调用内核</strong>就可互相通信</li>
+</ul>
+</li>
+<li>==》若将一个应用程序或函数实现为一组相关联的执行单元，则用一组线程要比用一组分离的进程更有效</li>
+</ul>
+</li>
+<li>
+<p>实例：文件服务器</p>
+<ul>
+<li>每个<u>新文件请求到达时</u>，文件管理程序会<u>创建一个新线程</u></li>
+<li>服务器需要处理很多请求，因此会在<u>短期内创建和销毁许多线程</u></li>
+<li>服务器运行在<u>多处理器机器</u>上时，<u>同一进程中的多个线程</u>可以同时在<u>不同处理器上执行</u></li>
+<li>此外，由于文件服务中的进程或线程须<u><strong>共享</strong>文件数据</u>，并据此<strong>协调</strong>它们的行为，因此使用线程和共享内存要比使用进程和消息传递消息的速度<strong>快</strong></li>
+</ul>
+</li>
+<li>
+<p>在<u>单用户多处理系统</u>中使用线程的例子</p>
+<ul>
+<li>前台和后台工作：输入和更新</li>
+<li><strong>异步处理</strong>∶程序中的异步元素可用线程来实现
+<ul>
+<li>例如，为避免掉电带来的损失，往往把文字处理程序设计成每隔 1 分钟就把随机存储内存（RAM）缓冲区中的数据写入磁盘。可以创建 一个任务是<u>周期性地进行备份的线程</u>，该线程由<u>操作系统直接调度</u>。这样，主程序中就不需要特别的代码来<u>提供时间检查或协调输入和输出</u></li>
+</ul>
+</li>
+<li>执行速度
+<ul>
+<li>多线程进程在计算一批数据时，可通过设备读取下一批数据。在多处理器系统中，同一进程中的多个线程可同时执行。这样，既使一个线程在读取数据时被I/O操作阻塞，另一个线程仍然可以继续运行</li>
+</ul>
+</li>
+<li>模块化程序结构</li>
+</ul>
+</li>
+<li>
+<p>在支持线程的操作系统中，调度和分派是在线程基础上完成的，因此大多数与执行相关的信息可以保存在线程级的数据结构中。但是操作系统必须在进程级对它们进行管理，即进程挂起，所有线程挂起，终止就都终止</p>
+</li>
+</ul>
+<h3 id="4-1-2-线程的功能">4.1.2 线程的功能</h3>
+<h6 id="线程状态">线程状态</h6>
+<ul>
+<li>一般来说，<strong>挂起态</strong>对线程没有意义，因此这类状态仅适用于进程</li>
+<li>如果一个进程被换出，由于所有线程都共享该进程的地址空间，因此所有线程都须被换出</li>
+<li>4种与线程状态改变相关的基本操作
+<ul>
+<li>派生：
+<ul>
+<li>典型情况下，在派生一个新进程时，同时也会为该进程派生一个线程</li>
+<li>随后，进程中的线程可在<u>同一进程</u>中派生另一个线程，并为新线程<u>提供指令指针和参数</u></li>
+<li>新线程拥有<u>自己的</u>寄存器上下文和栈空间，并放在<strong>就绪队列</strong>中</li>
+</ul>
+</li>
+<li>阻塞
+<ul>
+<li>线程需要等待个事件时会被阻寒（保存线程的用户寄存器、程序计数器和栈指针），处理器转而执行另一个就绪线程</li>
+</ul>
+</li>
+<li>解除阻塞
+<ul>
+<li>发生阻塞一个线程的事件时，会将该线程转移到就绪队列中</li>
+</ul>
+</li>
+<li>结束
+<ul>
+<li>一个线程完成后，会<strong>释放其寄存器上下文和栈</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="线程同步">线程同步</h6>
+<ul>
+<li>一个进程中的<u>所有线程</u>共享<strong>同一个地址空间</strong>和诸如打开的文件之类的<strong>其他资源</strong></li>
+<li>一个线程对资源的任何修改都会影响同一进程中其他线程的环境，因此需要同步各种线程的活动，<u>以便它们<strong>互不干扰</strong>且<strong>不破坏数据结构</strong></u>
+<ul>
+<li>例如，两个线程都试图同时往一个双向链表中增加一个元素时，可能会丢失一个元素或破坏链表结构</li>
+</ul>
+</li>
+</ul>
+<h1>线程分类</h1>
+<h3 id="4-2-1-用户级和内核级线程">4.2.1 用户级和内核级线程</h3>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="用户级线程">用户级线程</h6>
+<ul>
+<li>
+<p>在纯ULT软件中，管理线程的<u>所有工作</u>都由<strong>应用程序</strong>完成，<strong>内核</strong>意识不到线程的存在</p>
+</li>
+<li>
+<p>任何应用程序都可使用线程库设计成多线程程序</p>
+<ul>
+<li>线程库是管理用户级线程的一个例程包，它含有创建和销毁线程的代码、在线程间传递消息和数据的代码、调度线程执行的代码，以及保存和恢复线程上下文的代码</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.5.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>发生在用户空间中和一个进程内的活动（内核并不知道，内核继续以进程为单位进行调度，并为进程指定一个执行状态）</p>
+<ul>
+<li>默认情况下，应用程序从单个线程开始，并在该线程中开始运行，这个应用程序及其线程将分配给一个由内核管理的进程</li>
+<li>应用程序<strong>处于运行态</strong>的任何时刻，都可派生一个在<strong>相同进程</strong>中运行的<strong>新线程</strong></li>
+<li>线程派生是通过调用<strong>线程库</strong>中的<strong>派生例程</strong>实现的
+<ul>
+<li>通过过程调用，<strong>控制权</strong>传递给派生例程</li>
+<li><strong>线程库</strong>为新线程创建一个<strong>数据结构</strong>，然后使用某种调度算法，把<strong>控制权</strong>传递给该进程中处于<strong>就绪态</strong>的一个线程</li>
+<li>当控制权传递给线程库时，<strong>保存</strong>当前线程的上下文，在控制权从线程库中传递给一个线程时，<strong>恢复</strong>那个线程的上下文
+<ul>
+<li>上下文实际上包括<strong>用户寄存器的内容</strong>、 <strong>程序计数器</strong>、<strong>栈指针</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>假设进程 B在其线程2中执行，进程和作为进程一部分的两个用户级线程的状态如图：</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osa.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>可能情况</p>
+<p>1、线程2中执行的应用程序代码进行一个阻塞进程B的系统调用（如执行一次 I/O 调用）</p>
+<p>​	  控制权转交给内核，内核启动 I/O操作，把进程 B 置于阻塞态，并切换到另一个进程</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.6b.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osb.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>此过程中，根据<u>线程库维护的数据结构</u>，进程 B 的<strong>线程2</strong>仍处于运行状态</li>
+<li>处理器角度：线程2实际上并<u>不处于运行态</u>，只是在<strong>线程库</strong>看来它处于<strong>运行态</strong></li>
+</ul>
+<p>2、</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osc.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>时钟中断把控制权传递给内核</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/os4.6c.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>根据线程库维护的数据结构，进程B的线程2仍处于<strong>运行态</strong></p>
+</li>
+</ul>
+<p>3、需要线程1运行=》线程2阻塞=》进程自身保留在运行态</p>
+<img src="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/osd.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:small_blue_diamond:b、c、d是a的过渡态</p>
+<p>:small_blue_diamond:在中断时，进程有可能处于<u>线程切换的中间时刻</u>，即正在从一个线程切换到另一个线程。当该进程被恢复时，线程库得以继续运行，完成线程切换，并把控制权转移给进程中的另一个线程</p>
+</li>
+</ul>
+</li>
+<li>
+<p>使用ULT而非KLT的优点：</p>
+<ul>
+<li>所有线程管理数据结构<u>都在一个进程的用户地址空间中</u>，<u>线程切换不需要<strong>内核模式特权</strong></u>， 因此进程不需要为了管理线程而切换到内核模式，进而节省了<strong>两次</strong>状态转换 （从用户模式到内核模式，以及从内核模式返回用户模式）的开销。</li>
+<li>调度因应用程序的不同而不同。一个应用程序可能更适合简单的<u>轮转调度算法</u>，而另一个应用程序可能更适合<u>基于优先级的调度算法</u>。为了<u>不要乱底层的操作系统调度程序</u>，可以做到为应用程序量身定做调度算法</li>
+<li>ULT 可在<strong>任何操作系统</strong>中运行，不需要对底层内核进行修改以支持 ULT。线程库是供<strong>所有应用程序共享</strong>的一组<u>应用级函数</u></li>
+</ul>
+</li>
+<li>
+<p>与KLT相比，ULT也有两个明显的缺点∶</p>
+<ul>
+<li>在典型的操作系统中，<u>许多系统调用都会引起阻塞</u>。因此，在ULT执行一个系统调用时， 不仅会阻塞这个线程，也会阻塞进程中的<strong>所有线程</strong></li>
+<li>在纯ULT策略中，多线程应用程序不能利用<strong>多处理技术</strong>。内核一次只把<strong>一个进程</strong>分配给<strong>一个处理器</strong>，<u>因此一个进程中只有一个线程可以执行</u>，这相当于在一个进程内实现了应用级多道程序设计。虽然多道程序设计可明显提高应用程序的速度，但同时执行部分代码更会使某些应用程序受益</li>
+</ul>
+</li>
+<li>
+<p>解决方案</p>
+<ul>
+<li>把应用程序写成一个多进程程序而非多线程程序，但切换又变成进程间切换，开销过大</li>
+<li>利用**“套管”（jacketing）**技术：把一个产生阻塞的系统调用转化为一个非阻塞的系统调用
+<ul>
+<li>如替代直接调用一个系统 I/O 例程，让线程调用一个<strong>应用级的J/O套管例程</strong></li>
+<li>这个套管例程中的代码用于检查并确定 I/O设各是否忙。如果忙，该线程进入<strong>阻塞态</strong>并把控制权传送给另一个线程。这个线程重新获得控制权后，套管例程会再次检查 I/O设备</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="内核级线程">内核级线程</h6>
+<ul>
+<li>在纯KLT软件中，<u>管理线程的所有工作</u>均由<strong>内核</strong>完成。应用级没有线程管理代码， <u>只有一个到内核线程设施的应用编程接口</u>（API）[Windows用这样的方法]</li>
+<li>内核为进程及进程内的每个线程<strong>维护上下文信息</strong></li>
+<li><strong>调度</strong>由<strong>内核</strong>基于<strong>线程</strong>完成</li>
+<li>优点：克服了ULT方法的两个缺点
+<ul>
+<li>内核可以同时把同一个进程中的多个线程调度到多个处理器中</li>
+<li>进程中的一个线程被阻塞时，内核可以调度同一个进程中的另一个线程。</li>
+<li><strong>内核例程</strong>自身也可是<strong>多线程</strong>的</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>在把<strong>控制权</strong>从一个线程传送到同一个进程内的另一个线程时，需要切换到<strong>内核模式</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-1-2-其他方案">4.1.2 其他方案</h3>
+<ul>
+<li>
+<p>线程和进程间的关系</p>
+<table>
+<thead>
+<tr>
+<th>线程∶进程</th>
+<th>描 述</th>
+<th>实例系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1:1</td>
+<td>执行的每个线程是唯一的进程，它有自己的地址空间和资源</td>
+<td>传统UNIX</td>
+</tr>
+<tr>
+<td>M:1</td>
+<td>一个进程定义了一个地址空间和动态资源所有权，可以在该进程中创建和执行多个线程</td>
+<td>ndows NT、Solaris Linux, OS/2、 OS/390、MACH</td>
+</tr>
+<tr>
+<td>1:M</td>
+<td>一个线程可以从一个进程环境迁移到另一个进程环境。允许线程轻松地在不同系统中移动</td>
+<td>Ra(Clouds)、Emerald</td>
+</tr>
+<tr>
+<td>M:N</td>
+<td>结合了M∶1和 1∶M 的属性</td>
+<td>TRIX</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h1>4.3 多核和多线程</h1>
+<ul>
+<li>使用<u>多核系统</u>支持<u>单个<strong>多线程</strong>应用程序</u>：工作站、游戏机、正运行<strong>处理器密集型应用</strong>的个人计算机</li>
+</ul>
+<h3 id="4-3-1-多核系统上的软件性能">4.3.1 多核系统上的软件性能</h3>
+<ul>
+<li>
+<p>多核组织结构带来的性能提升，取决于<strong>应用程序</strong>有效利用<strong>并行资源</strong>的能力</p>
+</li>
+<li>
+<p>Amdahl定律：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mtext>在单个处理器上执行程序的时间</mtext><mrow><mtext>在</mtext><mi>N</mi><mtext>个并行处理器上执行程序的时间</mtext></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>f</mi><mo stretchy="false">)</mo><mo>+</mo><mi>f</mi><mi mathvariant="normal">/</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{在单个处理器上执行程序的时间}{在N个并行处理器上执行程序的时间}=\frac{1}{(1-f)+ f/ N}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">在</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord cjk_fallback">个并行处理器上执行程序的时间</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">在单个处理器上执行程序的时间</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2574em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>该定律假设程序执行时间的 1/(1-f) 所涉及的代码本质上是串行的，其余f分之一所涉及的代码是无限并行的，并且没有调度开销</p>
+</li>
+<li>
+<p>(服务器软件)<u>数据库管理系统</u>、<u>数据库应用程序</u>、许多不同类型的 <u>服务器程序</u>能有效地使用多核系统并行化的多核组织结构（因为服务器程序通常会<u>并行地处理许多相对独立的事务</u>）</p>
+</li>
+<li>
+<p>其他适用：</p>
+<ul>
+<li>原生多线程应用程序∶<strong>多线程应用程序</strong>的特征是<u>具有少数几个</u><strong>高度线程化</strong>的进程。线程化应用程序的例子包括 Lotus Domino 和 Siebel CRM（客户关系管理）</li>
+<li>多进程应用程序∶多进程应用程序的特征是具有多个单线程的进程。多进程应用程序的例子 包括 Oracle 数据库、SAP和 PeopleSoft</li>
+<li>Java应用程序∶Java从根本上支持线程的概念。不仅 Java 语言本身能够很方便地支持多线程应用程序开发，Java 虚拟机也是一个多线程进程，它为 Java 应用程序提供调度机制和内存管理</li>
+<li>多实例应用程序∶应用程序实例需要一定程度上的<strong>隔离性</strong>时，可使用虚拟化技术（虚拟出支撑操作系统的硬件）为每个实例提供独立、安全的环境</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第四章-进程和线程（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第四章-进程和线程（一）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%8E%A7%E5%88%B6%EF%BC%88%E4%B8%8B%EF%BC%89/" title="第三章-进程描述和控制（二）">
+                        <span class="hidden-mobile">第三章-进程描述和控制（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

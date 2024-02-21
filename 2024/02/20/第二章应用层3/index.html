@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.3 File Transfer: FTP，文件传输协议∶FTP     the user interacts with FTP through an FTP user agent   :one:The user provides the hostname of the remote host :two:the FTP client process in the local host to es">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-应用层（三）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.3 File Transfer: FTP，文件传输协议∶FTP     the user interacts with FTP through an FTP user agent   :one:The user provides the hostname of the remote host :two:the FTP client process in the local host to es">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/netmail.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net24.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.a.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.23.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.561Z">
+<meta property="article:modified_time" content="2024-02-20T05:52:57.548Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.14.jpg">
+  
+  
+  
+  <title>第二章-应用层（三） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-应用层（三）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-应用层（三）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>2.3 File Transfer: FTP，文件传输协议∶FTP</h1>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net21.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>the user interacts with FTP through an FTP user agent</p>
+</li>
+<li>
+<p>:one:The user provides the <strong>hostname</strong> of the remote host</p>
+<p>:two:the <strong>FTP client</strong> process in the local host to establish a <strong>TCP connection</strong> with the FTP server process in the remote host</p>
+<p>:three:The <strong>user</strong> then provides the user <strong>identification and password</strong>, which are sent over the TCP connection as part of <strong>FTP commands</strong></p>
+<p>:four:the <u>server</u> has <strong>authorized</strong>(授权) the user</p>
+<p>:five:the <u>user</u> <strong>copies</strong> one or more files stored in the local file system into the remote file system</p>
+</li>
+<li>
+<p>HTTP和FTP最显著的区别：FTP uses <strong>two parallel TCP connections</strong> to transfer a file（a <u>control</u> connection + a <u>data</u> connection）</p>
+<ul>
+<li>control connection：sending <u>control information</u> between the two hosts
+<ul>
+<li>user identification</li>
+<li>password</li>
+<li>commands to change remote directory，改变远程目录的命令</li>
+<li>commands to&quot;put&quot;and&quot;get&quot; files</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Because FTP uses a <strong>separate control connection</strong>, FTP is said to send its <u>control</u> information <strong>out-of-band</strong>，称 FTP的控制信息是<u>带外</u>传送的</p>
+</li>
+<li>
+<p>HTTP sends request and response header lines into the same TCP connection that carries the transferred file itself，so HTTP is said to send its <u>control</u> information in-band，HTTP 是带内发送<u>控制</u>信息的</p>
+</li>
+<li>
+<p>SMTP sends <u>control</u> information <strong>in-band</strong></p>
+</li>
+<li>
+<p>control TCP connectio：port21</p>
+</li>
+<li>
+<p>The <u>client</u> side of FTP also sends, over the control connection, commands to change the remote directory</p>
+</li>
+<li>
+<p>When the <u>server</u> side receives a command for a file transfer over the control connection，the <u>server</u> side initiates a <strong>TCP data connection</strong> to the client side</p>
+</li>
+<li>
+<p><u>FTP</u> sends exactly <strong>one</strong> file over the data connection and then <u>closes</u> the data connection. If, during <u>the same session</u>, the user wants to transfer <u>another</u> file, FTP opens <u>another</u> <strong>data connection</strong></p>
+</li>
+<li>
+<p>with FTP, the control connection <strong>remains open</strong> throughout the duration of the user session, but a new data connection is <strong>created for each file</strong> transferred within a session（non-persistent）</p>
+</li>
+<li>
+<p>the FTP server must <strong>maintain state about the user</strong></p>
+<ul>
+<li>the server must <u>associate</u> the <strong>control connection</strong> with a <strong>specific user account</strong></li>
+<li>the server must keep <u>track</u> of the user’s <strong>current directory</strong> as the user wanders about the remote directory tree</li>
+<li>Keeping track of this state information for each ongoing user session significantly constrains the total number of sessions that FTP can maintain simultaneously，对每个进行中的用户会话的状态信息进行追踪，大大限制了FTP同时维持的会话总数</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-1-FTP-Commands-and-Replies">2.3.1 FTP Commands and Replies</h3>
+<ul>
+<li>
+<p>The commands, from client to server,and replies, from server to client, are sent across the control connection in <strong>7-bit ASCII format</strong></p>
+</li>
+<li>
+<p>In order to delineate successive(连续的) commands,a carriage return and line feed end each command</p>
+</li>
+<li>
+<p>Each command consists of <strong>four uppercase ASCII characters</strong>, some with optional arguments</p>
+</li>
+<li>
+<p>SER username：Used to send the user identification to the server，传递用户标识</p>
+</li>
+<li>
+<p>PASS password</p>
+</li>
+<li>
+<p>LIST</p>
+<ul>
+<li>Used to ask the server to send back a list of all the files in the current remote directory，当前远程目录中的所有文件列表</li>
+<li>The list of files is sent over a (<strong>new and non-persistent</strong>) data connection rather than the control TCP connection</li>
+</ul>
+</li>
+<li>
+<p>RETR filename：</p>
+<ul>
+<li>Used to <u>retrieve</u>(that is,get) a file from the current directory of the remote host</li>
+<li>This command causes the remote host to initiate a <strong>data connection</strong> and to send the requested file over the data connection</li>
+</ul>
+</li>
+<li>
+<p>STOR filename</p>
+<ul>
+<li>Used to store(that is,put) a file into the current directory of the remote host.</li>
+</ul>
+</li>
+<li>
+<p>Each command is followed by a reply（three-digit numbers），with an optional message following the number</p>
+</li>
+<li>
+<p>331 Username OK，password required</p>
+</li>
+<li>
+<p>125 Data connection already open，transfer starting</p>
+</li>
+<li>
+<p>425 Can’t open data connection</p>
+</li>
+<li>
+<p>452 Error writing file（写文件差错）</p>
+</li>
+</ul>
+<h1>2.4 ectronic Mail in the Internet，因特网中的电子邮件</h1>
+<ul>
+<li>
+<p>e-mail is an <strong>asynchronous communication medium</strong>(异步通信媒介)：people send and read messages when it is convenient for them, without having to coordinate with other people’s schedules，不必与他人的计划进行协调</p>
+</li>
+<li>
+<p>Internet mail system = user agents + mail servers + <strong>Simple Mail Transfer Protocol (SMTP)</strong></p>
+</li>
+<li>
+<p>user agents allow users to read，reply to，forward，save，compose messages撰写报文</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.22.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>Mail <u>servers</u> form the <u>core</u> of the e-mail infrastructure</li>
+<li>If A’s server cannot deliver mail to B’s server,<u>A’s server</u> holds the message in a message queue and attempts to transfer the message later. Reattempts are often done every <u>30</u> minutes or so; if there is no success after several days, the server removes the message and notifies the sender(A)with an e-mail message</li>
+</ul>
+</li>
+<li>
+<p>use the reliable data transfer service of <strong>TCP</strong></p>
+</li>
+<li>
+<p>electronic mail is <strong>fast, easy to  distribute, and inexpensive</strong></p>
+</li>
+<li>
+<p>Modern e -mail has many  powerful features</p>
+<ul>
+<li>messages with attachments,  hyperlinks, HTML -formatted  text, and embedded photos</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-1-SMTP">2.4.1 SMTP</h3>
+<ul>
+<li>SMTP does <strong>not</strong> normally use <strong>intermediate</strong> mail servers for sending mail</li>
+<li>if Bob’s mail <u>server</u> is down, the message remains in Alice’s mail server and waits for a new attempt—the message does not get placed in some intermediate mail server</li>
+<li>所有邮件报文的体部分 （不只是其首部）只能采用简单的7比特ASCII表示</li>
+<li>client SMTP has TCP establish a connection to port <strong>25</strong> at the server SMTP, <strong>persistent</strong> connection( 持久)</li>
+<li>SMTP can count on the reliable data transfer service of <strong>TCP</strong> to get the message to the server without errors</li>
+<li>The client then repeats this process over the <strong>same</strong> TCP connection if it has other messages to send to the server</li>
+<li>three phases of transfer
+<ul>
+<li>handshaking (greeting)</li>
+<li>transfer of messages</li>
+<li>closure</li>
+</ul>
+</li>
+<li>command/response interaction (like  HTTP, FTP)</li>
+<li>commands: ASCII text</li>
+<li>response: status code and phrase</li>
+</ul>
+<h3 id="2-4-2-Comparison-with-HTTP">2.4.2 Comparison with HTTP</h3>
+<ul>
+<li>HTTP transfers files (also called objects)<u>from a Web server to a Web client</u>(typically a browser)</li>
+</ul>
+<p>SMTP transfers files(that is,e-mail messages) <u>from one mail server to another mail server</u></p>
+<ul>
+<li>
+<p>When transferring the files, both persistent HTTP and SMTP use <strong>persistent</strong> connections</p>
+</li>
+<li>
+<p>HTTP is mainly a <strong>pull</strong> protocol</p>
+<p>SMTP is primarily a <strong>push</strong> protocol</p>
+</li>
+<li>
+<p>SMTP requires each message, including the body of each message, to be in <strong>7-bit ASCII format</strong></p>
+<ul>
+<li>If the message contains characters that are not 7-bit ASCII(for example, French characters with accents)or contains binary data(such as an image file), then the message has to be <u>encoded</u> into 7-bit ASCII</li>
+</ul>
+</li>
+<li>
+<p>HTTP: each object encapsulated in its own  response msg(每个对象对应一个响应消息)</p>
+<p>SMTP multiple objects sent in multipart  msg (所有对象放在一个消息中)</p>
+</li>
+</ul>
+<h3 id="2-4-4-Mail-Access-Protocols">2.4.4 Mail Access Protocols</h3>
+<ul>
+<li>用户代理不能使用SMTP取回报文，因为取报文是一个拉操作，而 SMTP协议是一个<strong>推协议</strong></li>
+<li>mail access protocols:
+<ul>
+<li>Post Office Protocol—Version 3 (POP3),第三版的邮局协议</li>
+<li>Internet Mail Access Protocol (IMAP),因特网邮件访问协议</li>
+<li>HTTP</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/netmail.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="POP3">POP3</h6>
+<ul>
+<li>POP3 begins when the <u>user agent</u> (the client) opens a TCP connection to the mail server(the server) on port <strong>110</strong></li>
+<li>随着建立 TCP 连接，POP3按照三个阶段进行工作
+<ul>
+<li>uthorization，特许
+<ul>
+<li>the <u>user agent</u> sends a <strong>username</strong> and <strong>a password</strong>(口令) (in the clear，明文形式) to <u>authenticate</u>(鉴别) the user</li>
+</ul>
+</li>
+<li>transaction，事务处理
+<ul>
+<li>the user agent <u>retrieves</u>(取回) messages</li>
+<li>also during this phase, the user agent can mark messages for deletion(删除标记), remove deletion marks, and obtain mail statistics(统计信息)</li>
+</ul>
+</li>
+<li>update，更新
+<ul>
+<li>occurs <u>after</u> the client has issued the <u>quit command</u>, ending the POP3 session</li>
+<li>at this time, the mail server deletes the messages that were marked for deletion，删除那些被标记为删除的报文</li>
+</ul>
+</li>
+<li>the server responds to each command with a reply</li>
+<li>+OK
+<ul>
+<li>sometimes followed by server-to-client data</li>
+<li>used by the server to indicate that the previous command was fine</li>
+</ul>
+</li>
+<li>and-ERR
+<ul>
+<li>used by the server to indicate that something was wrong with the previous command</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A user agent using POP3 can often be configured (by the user) to “<strong>download and delete</strong>&quot;or to&quot;<strong>download and keep</strong>”(可在不同设备上进行访问)</li>
+<li>the POP3 server maintains some <strong>state information</strong>，in particular, it keeps track of which <strong>user messages have been marked deleted</strong> ， However, the POP3 server <strong>does not carry state information</strong> across POP3 sessions</li>
+</ul>
+<h6 id="IMAP">IMAP</h6>
+<ul>
+<li>the POP3 protocol does not provide any means for a user to create <u>remote folders</u> and assign messages to folders，创建远程文件夹并为报文指派文件夹</li>
+<li>IMAP server will associate <u>each</u> message with a folder</li>
+<li>when a message first arrives at the server, it is associated with the recipient’s INBOX folder</li>
+<li>The recipient can then move the message into a new, user-created folder, read the message, delete the message</li>
+<li>The IMAP protocol provides commands to allow users to create folders and move messages from one folder to another</li>
+<li>provides commands that allow users to search remote folders for messages matching specific criteria</li>
+<li>an IMAP server maintains <strong>user state information</strong> across MAP sessions</li>
+</ul>
+<h6 id="Web-Based-E-mail，基于Web的电子邮件">Web-Based E-mail，基于Web的电子邮件</h6>
+<ul>
+<li>the user agent is an ordinary Web browser, and the user communicates with its remote mailbox via HTTP</li>
+<li>When a recipient, such as Bob, wants to access a message in his mailbox, the e-mail message is sent from Bob’s mail server to Bob’s browser using the HTTP protocol rather than the POP3 or IMAP protocol</li>
+</ul>
+<h1>2.5 DNS—The Internet’s Directory Service，DNS∶因特网的目录服务</h1>
+<ul>
+<li>
+<p>hostname：主机名</p>
+</li>
+<li>
+<p>一 个IP地址由4个字节组成，并有着严格的层次结构，每个字节都被句点分隔开来，表示了0~255的十进制数字</p>
+</li>
+</ul>
+<h3 id="2-5-1-Services-Provided-by-DNS">2.5.1 Services Provided by DNS</h3>
+<ul>
+<li><strong>domain name system (DNS，域名系统)</strong>
+<ul>
+<li>a distributed database implemented in a hierarchy of DNS servers，一个由分层的 DNS 服务器实现的分布式数据库</li>
+<li>an application-layer protocol that allows hosts to query the distributed database，一个使得主机能够查询分布式数据库的应用层协议</li>
+</ul>
+</li>
+<li>The DNS servers are often <strong>UNIX machines</strong> running the <strong>Berkeley Internet Name Domain (BIND)</strong> software</li>
+<li>The DNS protocol runs over <strong>UDP</strong> and uses <strong>port 53</strong></li>
+<li>DNS is commonly employed by other application-layer protocols—including HTTP, SMTP, and FTP—to <strong>translate</strong> user-supplied hostnames to IP addresses
+<ul>
+<li>The same user machine runs the client side of the DNS application，一台用户主机上运行着 DNS 应用的客户端</li>
+<li>The browser extracts the hostname, the URL and passes the hostname to the client side of the DNS application</li>
+<li>The DNS client sends a query containing the hostname to a DNS server</li>
+<li>The DNS client eventually receives a reply, which includes the IP address for the hostname</li>
+<li>Once the browser receives the IP address from DNS, it can initiate a TCP connection to the HTTP server process located at port 80 at that IP address</li>
+</ul>
+</li>
+<li>DNS adds an additional <u>delay</u>，but the desired IP address is often cached in a&quot;nearby&quot;DNS server, which helps to reduce DNS network traffic as well as the average DNS delay</li>
+<li>DNS 提供的其他服务
+<ul>
+<li>Host aliasing（主机别名）
+<ul>
+<li>对应有canonical hostname（规范主机名），DNS can be invoked by an application to obtain the canonical hostname for a supplied alias hostname as well as the IP address of the host</li>
+</ul>
+</li>
+<li>mail server aliasing（邮件服务器别名）
+<ul>
+<li>,the MX record(see below) permits a company’s mail server and Web server to have identical (aliased) hostnames</li>
+</ul>
+</li>
+<li>Load distribution（负载分配）
+<ul>
+<li>DNS is also used to perform load distribution among replicated servers, such as replicated Web servers</li>
+<li>Busy sites are replicated over multiple servers, with each server running on a different end system and each having a different IP address</li>
+<li>For replicated Web servers, a set of IP addresses is thus associated with one canonical hostname.The DNS database contains this set of IP address</li>
+<li>When clients make a DNS query for a name mapped to a set of addresses, the server responds with the entire set of IP addresses, but rotates the ordering of the addresses within each reply</li>
+<li>Because a client typically sends its HTTP request message to the IP address that is listed first in the set, DNS rotation distributes the traffic among the replicated servers</li>
+<li>DNS rotation is also used for e-mail so that multiple mail servers can have the same alias name</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-5-2-Overview-of-How-DNS-Works">2.5.2 Overview of How DNS Works</h3>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net23.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>All DNS query and reply messages are sent within UDP datagrams to <strong>port 53</strong></li>
+<li>采用集中式设计的问题，The problems with a centralized design include:
+<ul>
+<li>A single point of failure，单点故障，牵一发而动全身</li>
+<li>traffic volume，通信容量</li>
+<li>Distant centralized database，远距离的集中式数据库：造成时延</li>
+<li>Maintenance，维护
+<ul>
+<li>single DNS server would have to keep records for all Internet hosts. Not only would this centralized database be huge, but it would have to be updated frequently to account for every new host</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>doesn’t scale(无扩展性)</li>
+</ul>
+<h6 id="A-Distributed-Hierarchical-Database，分布式、层次数据库">A Distributed, Hierarchical Database，分布式、层次数据库</h6>
+<ul>
+<li>
+<p>In order to deal with the issue of <u>scale</u>(为了处理扩展性问题), the DNS uses a large number of servers, organized in a <u>hierarchical fashion</u> (分层方式) and distributed around the world</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net24.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.19.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>No single DNS server has all of the mappings(映射) for all of the hosts in the Internet</p>
+</li>
+<li>
+<p>Root DNS servers：</p>
+<ul>
+<li>Although we have referred to each of the 13 root DNS servers as if it were a single server, each &quot;server&quot;is actually a cluster of replicated servers(冗余的), for both <strong>security</strong> and <strong>reliability</strong> purposes</li>
+</ul>
+</li>
+<li>
+<p>Top-level domain (TLD)servers：</p>
+<ul>
+<li>these servers are responsible for <strong>top-level domains</strong>
+<ul>
+<li>com</li>
+<li>org</li>
+<li>net</li>
+<li>edu</li>
+<li>gov</li>
+</ul>
+</li>
+<li>all of the <strong>country</strong> top-level domains
+<ul>
+<li>uk</li>
+<li>fr</li>
+<li>ca</li>
+<li>jp</li>
+</ul>
+</li>
+<li>The company <u>Network Solutions</u> maintains the TLD servers for the <strong>com</strong> top-level domain</li>
+<li>the company <u>Educause</u> maintains the TLD servers for the <strong>edu</strong> top-level domain</li>
+</ul>
+</li>
+<li>
+<p>Authoritative DNS servers</p>
+<ul>
+<li>every organization with publicly accessible hosts (such as Web servers and mail servers)on the Internet must provide publicly accessible DNS records that map the names of those hosts to IP addresses，在因特网上具有公共可访问主机（如 Web服务器和邮件服务器）的每个组织机构必须提供公共可访问的 DNS 记录，这些记录将这些主机的名字映射为IP地址</li>
+<li>An organization’s authoritative DNS server houses these DNS records</li>
+</ul>
+</li>
+<li>
+<p>local DNS server</p>
+</li>
+<li>
+<p>does not strictly belong to the hierarchy of servers</p>
+</li>
+<li>
+<p>Each ISP—such as a university, an academic department, an employee’s company, or a residential ISP—has a local DNS server(also called a default name server，默认名字服务器）</p>
+</li>
+<li>
+<p>When a host makes a DNS query, the query is sent to the local DNS server, which acts a proxy, forwarding the query into the DNS server hierarchy</p>
+</li>
+<li>
+<p>一台主机查询另一台主机的IP（ssumed that the TLD server knows the authoritative DNS server for the hostname，[not always true,Instead, the TLD server may know only of an intermediate DNS server, which in turn knows the authoritative DNS server for the hostname]）</p>
+<ul>
+<li><strong>recursive queries</strong>(递归查询) and <strong>iterative querie</strong>(迭代查询)</li>
+<li><a target="_blank" rel="noopener" href="http://xxx.edu">xxx.edu</a> 到local DNS server发出的查询是递归查询，因为该查询请求local DNS server以自己的名义获得该映射。后面的3个查询是迭代查询，因为所有的回答都是直接返回给local DNS server</li>
+<li>从理论上讲，任何DNS 查询既可以是迭代的也能是递归的</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.a.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h6 id="DNS-caching，DNS缓存">DNS caching，DNS缓存</h6>
+<ul>
+<li>in order to improve the delay performance and to reduce the number of DNS messages ricocheting around the Internet，改善时延性能并减少在因特网上到处传输的 DNS报文数量</li>
+<li>hosts and mappings between hostnames and IP addresses are by no means permanent</li>
+<li>DNS servers discard cached information after a period of time (often set to two days)</li>
+<li>A local DNS server can also cache the IP addresses of <strong>TLD servers</strong>, thereby allowing the local DNS server to <u>bypass</u> the <strong>root DNS servers</strong> in a query chain(this often happens)</li>
+</ul>
+<h3 id="2-5-3-DNS-Records-and-Messages，DNS记录和报文">2.5.3 DNS Records and Messages，DNS记录和报文</h3>
+<ul>
+<li>the DNS servers that <u>together implement the DNS distributed database</u> store <strong>resource records(RRs，资源记录)</strong>,including RRs that provide hostname-to-IP address mappings</li>
+<li>Each <strong>DNS reply message</strong> carries one or more resource records</li>
+<li>A resource record is a four-tuple that contains the following fields: (<strong>Name,Value,Type,TTL</strong>)
+<ul>
+<li>TTL is the time to live of the resource record，it determines when a resource should be removed from a cache，TTL是该记录的生存时间，它决定了资源记录应当从缓存中删除的时间</li>
+<li>Name 和Value 的值取决于Type</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Value</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>hostname</td>
+<td>IP address for the hostname</td>
+<td>（relay1. bar. foo. com，145.37.93.126，A）</td>
+</tr>
+<tr>
+<td>NS</td>
+<td>domain</td>
+<td>the hostname of an authoritative DNS server that knows how to obtain the IP addresses for hosts in the domain，Value 是个知道如何获得该域中主机IP地址的权威 DNS 服务器的主机名，这个记录用于沿着查询链来路由 DNS 查询</td>
+<td>（<a target="_blank" rel="noopener" href="http://foo.com">foo.com</a>，dns. <a target="_blank" rel="noopener" href="http://foo.com">foo.com</a>，NS）</td>
+</tr>
+<tr>
+<td>CNAME</td>
+<td></td>
+<td>nonical hostname for the alias(别名) hostname Name，别名为 Name 的主机对应的规范主机名</td>
+<td>（<a target="_blank" rel="noopener" href="http://foo.com">foo.com</a>，relayl. <a target="_blank" rel="noopener" href="http://bar.foo.com">bar.foo.com</a>，CNAME）</td>
+</tr>
+<tr>
+<td>MX</td>
+<td></td>
+<td>canonical name of a mail server that has an alias hostname Name，名为 Name 的邮件服务器的规范主机名</td>
+<td>（<a target="_blank" rel="noopener" href="http://foo.com">foo.com</a>，<a target="_blank" rel="noopener" href="http://mail.bar.foo.com">mail.bar.foo.com</a>，MX）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>if a DNS server is <u>authoritative</u> for a <u>particular</u> hostname, then the DNS server will contain a Type <strong>A</strong> record for the hostname.(Even if the DNS server is not authoritative, it may contain a Type A record in its cache.)</li>
+<li>if a server is not authoritative for a hostname, then the server will contain a Type <strong>NS</strong> record for the domain that includes the hostname，it will also contain a Type <strong>A</strong> record that provides the IP address of the DNS server in the Value field of the NS record</li>
+</ul>
+<h6 id="DNS-message，DNS报文">DNS message，DNS报文</h6>
+<ul>
+<li>
+<p>These are the <u>only</u> two kinds of DNS messages</p>
+</li>
+<li>
+<p>both <strong>query</strong> and <strong>reply</strong> messages have the <u>same</u> format</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/net2.23.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>the first 12 bytes is the <strong>header section</strong>(首部区域)
+<ul>
+<li>identification(标识符)：16bits
+<ul>
+<li>this identifier is <u>copied</u> into the <u>reply</u> message to a <u>query</u>, allowing the client to <strong>match</strong> received replies with sent queries</li>
+<li>There are a number of flags in the flag field</li>
+<li>A 1-bit query/reply flag indicates whether the message is a query (0)or a reply(1)</li>
+<li>A 1-bit authoritative flag is set in a reply message when a DNS server is an authoritative server for a queried name，当某 DNS 服务器是所请求名字的权威 DNS 服务器时，1比特的&quot;权威的&quot;标志位被置在回答报文中</li>
+<li>1-bit authoritative flag is set in a reply message when a DNS server is an authoritative server for a queried name，递归</li>
+</ul>
+</li>
+<li>the <strong>question section</strong>(问题区域) contains information about the query that is being made
+<ul>
+<li>name field</li>
+<li>type field（A、MX）</li>
+</ul>
+</li>
+<li><strong>answer section</strong>(回答区域) contains the <strong>resource records</strong> for the name that was originally queried
+<ul>
+<li>A reply can return multiple RRs in the answer, since a hostname can have multiple IP addresses (for example, for replicated Web servers, as discussed earlier in this section)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Attacking DNS</p>
+<ul>
+<li>DDoS attacks Bombard (轰炸) root  servers with traffic
+<ul>
+<li>Not successful to date</li>
+<li>Traffic Filtering</li>
+<li>Local DNS servers cache IPs  of TLD servers, allowing root  server bypass</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Bombard TLD servers</p>
+</li>
+<li>
+<p>Potentially more dangerous</p>
+</li>
+<li>
+<p>Redirect attacks</p>
+<ul>
+<li>Man-in-middle
+<ul>
+<li>Intercept queries</li>
+</ul>
+</li>
+<li>DNS poisoning
+<ul>
+<li>Send bogus relies to DNS  server, which caches</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Exploit DNS for DDoS</p>
+<ul>
+<li>Send queries with spoofed  source address: target IP</li>
+<li>Requires amplification</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/" title="第二章-应用层（四）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第二章-应用层（四）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/" title="第二章-应用层（二）">
+                        <span class="hidden-mobile">第二章-应用层（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

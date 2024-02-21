@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 作业题目 ​	包嗅探和欺骗是网络安全中的两个重要概念；它们是网络通信中的两大威胁。能够理解这两种威胁对于理解网络中的安全措施至关重要。有许多包嗅探和欺骗工具，如Wireshark、Tcpdump、Netwox等。其中一些工具被安全专家以及攻击者广泛使用。能够使用这些工具对学生来说很重要，但对于网络安全课程的学生来说，更重要的是了解这些工具是如何工作的，即包嗅探和欺骗是如何在软件中实现的。 ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab9-嗅探和欺骗">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 作业题目 ​	包嗅探和欺骗是网络安全中的两个重要概念；它们是网络通信中的两大威胁。能够理解这两种威胁对于理解网络中的安全措施至关重要。有许多包嗅探和欺骗工具，如Wireshark、Tcpdump、Netwox等。其中一些工具被安全专家以及攻击者广泛使用。能够使用这些工具对学生来说很重要，但对于网络安全课程的学生来说，更重要的是了解这些工具是如何工作的，即包嗅探和欺骗是如何在软件中实现的。 ​">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.25.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.28.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.29.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.31.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.32.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.33.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.35.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.34.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.39.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.36.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.38.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.40.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.42.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.41.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.15.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.571Z">
+<meta property="article:modified_time" content="2024-02-21T08:14:49.740Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.1.jpg">
+  
+  
+  
+  <title>Lab9-嗅探和欺骗 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab9-嗅探和欺骗"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab9-嗅探和欺骗</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1><strong>1</strong> 作业题目</h1>
+<p>​	包嗅探和欺骗是网络安全中的两个重要概念；它们是网络通信中的两大威胁。能够理解这两种威胁对于理解网络中的安全措施至关重要。有许多包嗅探和欺骗工具，如Wireshark、Tcpdump、Netwox等。其中一些工具被安全专家以及攻击者广泛使用。能够使用这些工具对学生来说很重要，但对于网络安全课程的学生来说，更重要的是了解这些工具是如何工作的，即包嗅探和欺骗是如何在软件中实现的。</p>
+<p>​	本实验的目标是让学生掌握大多数嗅探和欺骗工具的基本技术。学生们将使用一些简单的嗅探和欺骗程序，阅读它们的源代码，修改它们，并最终对这些程序的技术方面有深入的了解。在本实验结束时，学生应该能够编写自己的嗅探和欺骗程序。</p>
+<h1>2 实验步骤及结果</h1>
+<h2 id="Lab-Task-Set-1-Using-Scapy-to-Sniff-and-Spoof-Packets">Lab Task Set 1: Using Scapy to Sniff and Spoof Packets</h2>
+<h3 id="Task-1-1-Sniffifing-Packets">Task 1.1: Sniffifing Packets</h3>
+<h4 id="Task-1-1A">Task 1.1A.</h4>
+<ol>
+<li>
+<p>查看网卡地址</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="http://xn--sniffer-nu9ky494a.py">编写sniffer.py</a></p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.2.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>以root身份运行；</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>执行命令：ping 10.9.0.5</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>返回到运行嗅探程序的终端，发现侦听到了一系列数据包：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>切换到seed用户下运行。此时无法运行嗅探程序，报错提示为权限错误，说明嗅探数据包需要有root权限。</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.8.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h4 id="Task-1-1B">Task 1.1B.</h4>
+<p>①Capture only the ICMP packet</p>
+<p>只捕获ICMP数据包的话只需要将filter参数设置为“icmp”，实验结果同1.1A</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_pkt</span>(<span class="hljs-params">pkt</span>):<br>    <span class="hljs-keyword">return</span> pkt.summary()<br>    <br>pkt = sniff(iface=<span class="hljs-string">&#x27;br-10682b5c2c9d&#x27;</span>, <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;icmp&#x27;</span>, prn=print_pkt)<br><br><span class="hljs-built_in">print</span>(pkt)<br></code></pre></td></tr></table></figure>
+<p>②Capture any TCP packet that comes from a particular IP and with a destination port number 23.</p>
+<p>在sniffer.py中设置相应的过滤条件，使嗅探程序只侦听特定的源IP和目标端口23的TCP数据包。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_pkt</span>(<span class="hljs-params">pkt</span>):<br>    <span class="hljs-keyword">return</span> pkt.summary()<br>    <br>pkt = sniff(iface=<span class="hljs-string">&#x27;br-10682b5c2c9d&#x27;</span>, <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;tcp and src host 10.9.0.8 and dst port 23&#x27;</span>, prn=print_pkt)<br><br><span class="hljs-built_in">print</span>(pkt)<br></code></pre></td></tr></table></figure>
+<p>编写sendpacket.py发包程序，使源主机和目标端口与嗅探程序的src host对应，随意指定一个目标地址，设置程序发送5个数据包。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br>ip = IP()<br>ip.src=<span class="hljs-string">&quot;10.9.0.8&quot;</span><br>ip.dst=<span class="hljs-string">&quot;10.9.0.9&quot;</span><br>tcp = TCP()<br>tcp.dport = <span class="hljs-number">23</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>    send(ip/tcp)<br></code></pre></td></tr></table></figure>
+<p>运行发包程序如下：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.10.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>侦听程序监听到了5个数据包：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.11.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>③Capture packets comes from or to go to a particular subnet. You can pick any subnet, such as</p>
+<p>128.230.0.0/16; you should not pick the subnet that your VM is attached to.</p>
+<p>捕获来自特定子网的数据包时，将filter设置为一个特定的子网网段：“net 128.230.0.0/16”</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_pkt</span>(<span class="hljs-params">pkt</span>):<br>    <span class="hljs-keyword">return</span> pkt.summary()<br>    <br>pkt = sniff(iface=<span class="hljs-string">&#x27;br-10682b5c2c9d&#x27;</span>, <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;net 128.230.0.0/16&#x27;</span>, prn=print_pkt)<br><br><span class="hljs-built_in">print</span>(pkt)<br></code></pre></td></tr></table></figure>
+<p>修改发包程序，使目的IP为指定网段的主机地址，这里设置为128.230.0.1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3</span><br><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br>ip = IP()<br>ip.src=<span class="hljs-string">&quot;10.9.0.8&quot;</span><br>ip.dst=<span class="hljs-string">&quot;128.230.0.1&quot;</span><br>tcp = TCP()<br>tcp.dport = <span class="hljs-number">23</span><br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>    send(ip/tcp)<br></code></pre></td></tr></table></figure>
+<p>同样，运行发包程序，在监听程序中监听到了该子网内的数据包。</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.13.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-1-2-Spoofifing-ICMP-Packets">Task 1.2: Spoofifing ICMP Packets</h3>
+<ol>
+<li>对发包程序进行修改，其中源IP是一个任意的IP，然后用wireshark查看所构造的ICMP数据包是否成功发送。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br>ip = IP()<br>ip.src=<span class="hljs-string">&quot;10.9.0.8&quot;</span><br>ip.dst=<span class="hljs-string">&quot;10.0.2.3&quot;</span><br>icmp=ICMP()<br><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>    send(ip/icmp)<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>可以看到，wiresahrk成功监听到5个ICMP echo数据包，说明伪造的数据包也可以被成功发送。</li>
+</ol>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.12.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-1-3-Traceroute">Task 1.3: Traceroute</h3>
+<p>sr 函数是 Scapy 的核心，这个函数返回两个列表，第一个列表是收到应答的包和其对应的应答，第二个列表是未收到应答的包。我们设置ttl为从1到30，则可以通过sr函数接收到返回的一系列数据包，<a target="_blank" rel="noopener" href="http://xn--www-c88dj92gtwh1n0aiyar37cte2a.baidu.com">所设置的目标为www.baidu.com</a>。trace.py程序如下:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br>dst=<span class="hljs-string">&quot;baidu.com&quot;</span><br>dport=<span class="hljs-number">80</span><br>minttl=<span class="hljs-number">1</span><br>maxttl=<span class="hljs-number">30</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;dst:&#123;&#125;,port:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(dst,dport))<br>ans,unans=sr(IP(dst=dst,ttl=(minttl,maxttl),<span class="hljs-built_in">id</span>=RandShort())/TCP(flags=<span class="hljs-number">0x2</span>,dport=dport),timeout=<span class="hljs-number">10</span>)<br><br><span class="hljs-keyword">for</span> snd,rcv <span class="hljs-keyword">in</span> ans:<br>    <span class="hljs-built_in">print</span>(snd.ttl,rcv.src)<br></code></pre></td></tr></table></figure>
+<p>通过ping查看百度ip，为39.156.66.10，两次运行程序都是只需要两跳就可以到达，但是接收到的数据包数量会有所不同。</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.20.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-1-4-Sniffifing-and-then-Spoofifing">Task 1.4: Sniffifing and-then Spoofifing</h3>
+<p>1、主机1.2.3.4是Internet中不存在的主机，10.9.0.99是LAN中不存在的主机，8.8.8.8是Internet中存在的主机。首先让host A（10.9.0.5）ping这三台主机，情况如下图所示，可以看到，只有第3台主机可以ping通。</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.21.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>2、接着编写嗅探程序，捕获来自host A的ICMP数据包，重新构造ICMP数据包，使源IP和目标IP互换：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">spoof</span>(<span class="hljs-params">pkt</span>):<br>    <span class="hljs-keyword">if</span> ICMP <span class="hljs-keyword">in</span> pkt <span class="hljs-keyword">and</span> <span class="hljs-number">8</span> == pkt[ICMP].<span class="hljs-built_in">type</span>:<br>        ip = IP(src = pkt[IP].dst, dst = pkt[IP].src)<br>        ip.ihl = pkt[IP].ihl<br>        ip.ttl = <span class="hljs-number">99</span><br>        icmp = ICMP(<span class="hljs-built_in">type</span> = <span class="hljs-number">0</span>)<br>        icmp.<span class="hljs-built_in">id</span> = pkt[ICMP].<span class="hljs-built_in">id</span><br>        icmp.seq = pkt[ICMP].seq<br>        data = pkt[Raw].load<br>        send(ip/icmp/data, verbose=<span class="hljs-literal">False</span>)<br>sniff(iface = <span class="hljs-string">&#x27;br-bff5c8d16447&#x27;</span>, <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;icmp and ip src 10.9.0.5&#x27;</span>, prn = spoof)<br></code></pre></td></tr></table></figure>
+<p>3、运行嗅探程序，再次让host A ping三台主机，结果如下：</p>
+<p>（1）ping 1.2.3.4 ，发现后相应的数据包，通过ttl值可以说明host A收到的是我们伪造的ICMP数据包。</p>
+
+<p>（2）ping 10.9.0.99，仍然没有收到伪造的ICMP数据包，因为和1.2.3.4不同的是，10.9.0.99与host A处于同一局域网中，HostA会先广播ARP请求询问10.9.0.99的MAC地址，之后才会发送ICMP请求，由于10.9.0.99不存在，因此不会收到ARP回复，也就不会发送ICMP，所以嗅探程序没有捕获到ICMP数据包。</p>
+
+<p>（3）ping 8.8.8.8，通过ttl的差异可以说明host A既收到了真实的ICMP，也收到了伪造的ICMP，“DUP”说明有数据包重复。</p>
+
+<h2 id="Lab-Task-Set-2-Writing-Programs-to-Sniff-and-Spoof-Packets">Lab Task Set 2: Writing Programs to Sniff and Spoof Packets</h2>
+<h3 id="Task-2-1A-Understanding-How-a-Sniffer-Works">Task 2.1A: Understanding How a Sniffer Works</h3>
+<p>1、编写嗅探程序如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;pcap.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-comment">/* This function will be invoked by pcap for each captured packet.</span><br><span class="hljs-comment">We can process each packet inside the function.</span><br><span class="hljs-comment">*/</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Ether_head</span>&#123;</span><br>    <span class="hljs-type">char</span> dst[<span class="hljs-number">6</span>];<br>    <span class="hljs-type">char</span> scr[<span class="hljs-number">6</span>];<br>    <span class="hljs-type">short</span> type;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">IP_head</span>&#123;</span><br>    <span class="hljs-comment">/* data */</span><br>    <span class="hljs-type">char</span> version:<span class="hljs-number">4</span>,head_len:<span class="hljs-number">4</span>;<br>    <span class="hljs-type">char</span> service_type;<br>    <span class="hljs-type">short</span> pkt_length;<br>    <span class="hljs-type">short</span> identification;<br>    <span class="hljs-type">short</span> flag:<span class="hljs-number">3</span>;<br>    <span class="hljs-type">short</span> offset:<span class="hljs-number">13</span>;<br>    <span class="hljs-type">char</span> TTL;<br>    <span class="hljs-type">char</span> protocol;<br>    <span class="hljs-type">short</span> check_sum;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">in_addr</span> <span class="hljs-title">src_ip</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">in_addr</span> <span class="hljs-title">dst_ip</span>;</span><br>&#125;;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">got_packet</span><span class="hljs-params">(u_char *args, <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> pcap_pkthdr *header,</span><br><span class="hljs-params">                <span class="hljs-type">const</span> u_char *packet)</span><br>&#123;<br>    <span class="hljs-comment">// printf(&quot;Got a packet\n&quot;);</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Ether_head</span> * <span class="hljs-title">E_head</span>=</span>(<span class="hljs-keyword">struct</span> Ether_head*)packet;<br>    <span class="hljs-keyword">if</span>(ntohs(E_head-&gt;type)==<span class="hljs-number">0x0800</span>)&#123;<br>        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">IP_head</span> * <span class="hljs-title">ip</span>=</span>(<span class="hljs-keyword">struct</span> IP_head*)(packet+<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> Ether_head));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;src_IP:%s\n&quot;</span>,inet_ntoa(ip-&gt;src_ip));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;dst_IP:%s\n&quot;</span>,inet_ntoa(ip-&gt;dst_ip));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">pcap_t</span> *handle;<br>    <span class="hljs-type">char</span> errbuf[PCAP_ERRBUF_SIZE];<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_program</span> <span class="hljs-title">fp</span>;</span><br>    <span class="hljs-type">char</span> filter_exp[] = <span class="hljs-string">&quot;icmp&quot;</span>;<br>    bpf_u_int32 net;<br>    <span class="hljs-comment">// Step 1: Open live pcap session on NIC with name eth3.</span><br>    <span class="hljs-comment">// Students need to change &quot;eth3&quot; to the name found on their own</span><br>    <span class="hljs-comment">// machines (using ifconfig). The interface to the 10.9.0.0/24</span><br>    <span class="hljs-comment">// network has a prefix &quot;br-&quot; (if the container setup is used).</span><br>    handle = pcap_open_live(<span class="hljs-string">&quot;br-bff5c8d16447&quot;</span>, BUFSIZ, <span class="hljs-number">1</span>, <span class="hljs-number">1000</span>, errbuf);<br>    <span class="hljs-comment">// Step 2: Compile filter_exp into BPF psuedo-code</span><br>    pcap_compile(handle, &amp;fp, filter_exp, <span class="hljs-number">0</span>, net);<br>    <span class="hljs-keyword">if</span> (pcap_setfilter(handle, &amp;fp) != <span class="hljs-number">0</span>)<br>    &#123;<br>        pcap_perror(handle, <span class="hljs-string">&quot;Error:&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(EXIT_FAILURE);<br>    &#125;<br>    <span class="hljs-comment">// Step 3: Capture packets</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Sniff packets...\n&quot;</span>);<br>    pcap_loop(handle, <span class="hljs-number">-1</span>, got_packet, <span class="hljs-literal">NULL</span>);<br>    pcap_close(handle); <span class="hljs-comment">// Close the handle</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>2、编译运行嗅探程序<code>gcc -o task2.1 task2.1.c -l pcap</code>、<code>sudo ./task2.1</code></p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.25.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、在host A中ping host B：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.26.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>4、在嗅探程序中得到结果：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.27.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>Question 1.</strong> Please use your own words to describe the sequence of the library calls that are essentialfor sniffer programs. This is meant to be a summary, not detailed explanation like the one in thetutorial or book.</p>
+<p>首先定义好解析数据包的结构体和解析函数，然后在主函数中首先调用<code>pcap_open_live</code>打开设备文件准备读取数据，也就是要启动pcap监听网卡，然后用<code>pcap_compile</code>编译过滤规则，接着<code>pcap_setfilter</code>函数用于定义过滤规则，也就是要过滤出ICMP包，接着<code>pcap_loop</code>循环抓取数据包，并交给解析函数进行解析，最后使用<code>pcap_close</code>关闭库。</p>
+<p><strong>Question 2.</strong> Why do you need the root privilege to run a sniffer program? Where does the programfail if it is executed without the root privilege?</p>
+<p>启动嗅探程序需要root权限，普通用户下运行程序会提示&quot;权限不足&quot;，无法运行。因为嗅探数据包涉及用户数据安全，因此需要有高权限才能执行。</p>
+<p><strong>Question 3.</strong> Please turn on and turn off the promiscuous mode in your sniffer program. The value1 of the third parameter in pcap open live() turns on the promiscuous mode (use 0 to turn itoff). Can you demonstrate the difference when this mode is on and off? Please describe how you candemonstrate this. You can use the following command to check whether an interface’s promiscuousmode is on or off (look at the promiscuity’s value).</p>
+<p>混杂模式下可以监听到相同网段下的其他数据包。</p>
+<h3 id="Task-2-1B-Writing-Filters">Task 2.1B: Writing Filters.</h3>
+<p><strong>Capture the ICMP packets between two specifific hosts.</strong></p>
+<p>修改过滤规则，使嗅探程序只捕获host A 到 host B的数据包</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> filter_exp[] = <span class="hljs-string">&quot;icmp and src host 10.9.0.5 and dst host 10.9.0.6&quot;</span>;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.28.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>Capture the TCP packets with a destination port number in the range from 10 to 100.</strong></p>
+<p>1、设置过滤规则，捕获目标端口号在10到100范围内的TCP数据包。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> filter_exp[] = <span class="hljs-string">&quot;TCP and dst portrange 10-100&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>2、查看host B的端口开放情况并开启host B的8080端口。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-meta"># 开启8080端口</span><br>netstat -an<span class="hljs-string">|grep 8080</span><br>nc -lp <span class="hljs-number">8080</span><span class="hljs-meta">&amp;</span><br><br><span class="hljs-meta"># 查看端口开放情况</span><br>netstat -ltn<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.29.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、host A访问host B的8080端口，host B访问hostA的23端口，返回侦听程序查看结果，只有访问23端口的数据包被侦听到。</p>
+<p>（1）10.9.0.5（A）访问10.9.0.6（B）的8080端口：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.31.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（2）10.9.0.6访问10.9.0.5的23端口：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.32.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（3）侦听结果：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.33.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-2-1C-Sniffifing-Passwords">Task 2.1C: Sniffifing Passwords</h3>
+<p>使用telnet进行远程连接时存在的一个问题是，telnet使用铭文进行数据传输，则一旦数据包被捕获，重要的数据就完全暴露给攻击者。</p>
+<p>1、监听代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> scapy.<span class="hljs-built_in">all</span> <span class="hljs-keyword">import</span> *<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_pkt</span>(<span class="hljs-params">pkt</span>):<br>    <span class="hljs-comment"># pkt.show()</span><br>    <span class="hljs-built_in">print</span>(pkt.payload.payload.payload)<br><br><span class="hljs-built_in">print</span>(sniff(iface = <span class="hljs-string">&#x27;br-bff5c8d16447&#x27;</span>,<span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;tcp port 23&quot;</span>, prn=print_pkt))<br></code></pre></td></tr></table></figure>
+<p>2、host A远程登录host B：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.35.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>3、攻击者得到密码：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.34.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-2-2A-Write-a-spoofifing-program">Task 2.2A: Write a spoofifing program.</h3>
+<p>（1）采用原始套接字编程的方式构造数据包，首先定义好IP头、TCP头、UDP头、ICMP头的结构体，还需要对定义计算校验和的函数。在构造数据包时关键是定义好源IP和目标IP，并且填充其余各个字段。伪造一个UDP/IP数据包，并且指定源IP和目标IP分别为1.1.1.1、8.8.8.8：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.39.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（2）通过wireshark查看结果：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.36.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Task-2-2B-Spoof-an-ICMP-Echo-Request">Task 2.2B: Spoof an ICMP Echo Request.</h3>
+<p>（1）构造ICMP数据包的过程和上一题相似，这里设定源IP和目标IP分别为1.2.3.4、8.8.8.8的ICMP数据包：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.38.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（2）通过wireshark查看结果：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.40.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>Question 4.</strong> Can you set the IP packet length fifield to an arbitrary value, regardless of how big the actual packet is?</p>
+<p>数据包的长度可以设定为大于实际长度的值，但是不能设为小于实际长度的值。</p>
+<p><strong>Question 5.</strong> Using the raw socket programming, do you have to calculate the checksum for the IP header?</p>
+<p>采用原始套接字编程时，不需要计算IP头部的校验和，但是需要计算ICMP头部的校验和。</p>
+<p><strong>Question 6.</strong> Why do you need the root privilege to run the programs that use raw sockets? Where does the program fail if executed without the root privilege?</p>
+<p>原始套接字可以允许用户定制数据包，这意味着存在这较大的安全隐患，因此普通用户没有权限使用原始套接字。</p>
+<h3 id="Task-2-3-Sniff-and-then-Spoof">Task 2.3: Sniff and then Spoof</h3>
+<p>攻击主机运行task2.3，使host A ping另一台主机时所收到的ICMP响应包是攻击者所伪造的。</p>
+<p>（1）host A：ping 1.1.1.1：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.42.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>（2）seed-attacker发送源IP为1.1.1.1，目标IP为host A IP的ICMP数据包：</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.41.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>遇到的问题</h1>
+<p>docker-compose down<br>
+docker network ls<br>
+docker network rm 10682b5c2c9d</p>
+<p>docker network disconnect -f net-10.9.0.0 mysql-10.9.0.6</p>
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/9.15.jpg" srcset="/img/loading.gif" lazyload class="">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab10_TCP%E6%94%BB%E5%87%BB/" title="Lab10-TCP攻击">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab10-TCP攻击</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/" title="Lab8-SQL注入">
+                        <span class="hidden-mobile">Lab8-SQL注入</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

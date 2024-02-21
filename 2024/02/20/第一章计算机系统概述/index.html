@@ -1,0 +1,972 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="操作系统各主题间的关联性  基本构成  处理器：   processor   控制计算机的操作，执行数据处理功能   与存储器交换数据   通常使用两个内部（对处理器而言）寄存器：   存储器地址寄存器，Memory Address Register，MAR 用于确定下一次读&#x2F;写的存储器地址   存储器缓冲寄存器，Memory Buffer Register，MBR 存放要写入存储器的数据或从存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一章-操作系统概述">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="操作系统各主题间的关联性  基本构成  处理器：   processor   控制计算机的操作，执行数据处理功能   与存储器交换数据   通常使用两个内部（对处理器而言）寄存器：   存储器地址寄存器，Memory Address Register，MAR 用于确定下一次读&#x2F;写的存储器地址   存储器缓冲寄存器，Memory Buffer Register，MBR 存放要写入存储器的数据或从存储">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/133246.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/151714.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/162217.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/112018.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.16.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.318Z">
+<meta property="article:modified_time" content="2024-02-20T13:50:29.287Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/133246.jpg">
+  
+  
+  
+  <title>第一章-操作系统概述 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第一章-操作系统概述"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第一章-操作系统概述</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>操作系统各主题间的关联性</h1>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/133246.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>基本构成</h1>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h5 id="处理器：">处理器：</h5>
+<ul>
+<li>
+<p>processor</p>
+</li>
+<li>
+<p><strong>控制</strong>计算机的操作，执行<strong>数据处理</strong>功能</p>
+<ul>
+<li>
+<p>与存储器<strong>交换数据</strong></p>
+</li>
+<li>
+<p>通常使用两个内部（对处理器而言）寄存器：</p>
+<ul>
+<li>
+<p>存储器<strong>地址</strong>寄存器，Memory Address Register，MAR</p>
+<p>用于确定<strong>下一次读/写</strong>的存储器地址</p>
+</li>
+<li>
+<p>存储器<strong>缓冲</strong>寄存器，Memory Buffer Register，MBR</p>
+<p>存放<strong>要写入</strong>存储器的数据或从存储器中<strong>读取</strong>的数据</p>
+</li>
+</ul>
+</li>
+<li>
+<p>输入/输出地址寄存器，I/O Address Register，I/O AR，I/O地址寄存器</p>
+<p>用于确定一个特定的输入/输出设备</p>
+</li>
+<li>
+<p>输入/输出缓冲寄存器，I/O Buffer Register，I/O BR，I/O缓冲寄存器</p>
+<p>用于在输入/输出模块和处理器间交换数据</p>
+</li>
+</ul>
+</li>
+<li>
+<p>只有一个处理器时，通常指中央处理器（CPU）</p>
+</li>
+</ul>
+<h5 id="内存：">内存：</h5>
+<ul>
+<li>main memory</li>
+<li>存储<strong>数据</strong>和<strong>程序</strong></li>
+<li>存储<strong>易失</strong>性，具有非易失性的是磁盘存储器</li>
+<li>亦称为实存储器real memory、主存储器primary memory</li>
+<li>内存模块由一组单元组成，这些单元由顺序编号的地址定义</li>
+<li>每个单元包含一个二进制数，可以解释为一个指令或数据</li>
+</ul>
+<h5 id="输入-输出模块：">输入/输出模块：</h5>
+<ul>
+<li>
+<p>I/O modules</p>
+</li>
+<li>
+<p>在 计算机和外部环境之间移动数据</p>
+</li>
+<li>
+<p>外部环境由各种外部设备组成：</p>
+<ul>
+<li>辅助存储设备（硬盘等）</li>
+<li>通信设备</li>
+<li>终端</li>
+</ul>
+</li>
+<li>
+<p>包含内存缓冲区</p>
+<p>保存临时文件，直至被发送出去</p>
+</li>
+</ul>
+<h5 id="数据总线：">数据总线：</h5>
+<ul>
+<li>在处理器、内存、输入/输出设备之间提供通信的设施</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/2.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/3.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>微处理器的发展</h1>
+<ul>
+<li>
+<p>微处理器可以在单个芯片上容纳一个处理器</p>
+</li>
+<li>
+<p>处理速度：慢······（硬件上的交互信息缩短到纳秒量级）······&gt;快</p>
+</li>
+<li>
+<p>如今微处理器成为了<strong>最快</strong>的<strong>通用处理器</strong></p>
+</li>
+<li>
+<p>发展成为了多处理器：</p>
+<ul>
+<li>
+<p>每个芯片（底座）上容纳了多个处理器（内核）</p>
+</li>
+<li>
+<p>每个处理器上有多层大容量缓存</p>
+</li>
+<li>
+<p>多个处理器之间共享内核的执行单元</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/151714.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>数字信号处理器</p>
+<p>对流信号（如音频、视频）进行处理</p>
+</li>
+<li>
+<p>其他专门的计算装置（固定功能单元）与CPU共存，用来支持其他标准的一些计算，如：</p>
+<ul>
+<li>编码/解码语音和视频（多媒体数字信号编码器/解码器）</li>
+<li>提供对加密和安全技术的支持</li>
+</ul>
+</li>
+<li>
+<p>传统微处理器正在被片上系统（便携）所取代:</p>
+<p>CPU和高速缓存在一个芯片上</p>
+<p>系统中的多数其他硬件也在此芯片上，如数字信号处理器、图像处理单元、I/O装置（无线电和多媒体数字信号编码器/解码器）、内存</p>
+</li>
+</ul>
+<h1>指令的执行</h1>
+<ul>
+<li>
+<p>一组（保存在存储器中的）指令—&gt;（处理器执行的）程序</p>
+<p>（不断重复）取指令+执行指令—&gt;程序执行</p>
+</li>
+<li>
+<p>最简单的指令处理：</p>
+<p>1、处理器从存储器中一次读取一条指令</p>
+<p>2、执行每条指令</p>
+</li>
+<li>
+<p>指令周期</p>
+<ul>
+<li>单个指令所需要的处理</li>
+<li>取指阶段 + 执行阶段</li>
+<li>仅当机器关机、发生某些未知错误、遇到与停机相关的程序指令时，程序执行才会停止</li>
+<li>程序计数寄存器
+<ul>
+<li>Program Counter，PC</li>
+<li>保存下一次要取的地址</li>
+<li>若非出现其他情况，处理器会在每次取指后递增PC，以便能按顺序取下一条指令（即位于下一个存储器地址的指令）</li>
+</ul>
+</li>
+<li>指令寄存器
+<ul>
+<li>Instruction Register，IR</li>
+<li>存放取到的指令（指令中包含处理器将要执行的操作的位，处理器解释指令并执行相应的操作）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>例：累加，把地址为940的内存单元中的内容与地址为941的内存单元中的内容相加，并将结果保存在后一个单元中</p>
+<p>AC：累加器（数据寄存器）</p>
+<p>程序计数器（PC）=指令的地址</p>
+<p>指令寄存器（IR）=正在被执行的指令</p>
+<p>累加器（AC）=临时存储</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/162217.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h1>中断</h1>
+<h5 id="分类">分类</h5>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>程序中断</td>
+<td>在某些条件下由<strong>指令执行</strong>的结果产生，如算数溢出、除数为0、试图执行一条非法机器指令及访问用户不允许的存储器位置</td>
+</tr>
+<tr>
+<td>时钟中断</td>
+<td>由处理器内部的<strong>计时器</strong>产生，允许操作系统以一定的规律执行函数</td>
+</tr>
+<tr>
+<td>I/O中断</td>
+<td>由I/O控制器产生，用于发信号通知一个操作的正常完成或各种错误条件</td>
+</tr>
+<tr>
+<td>硬件失效中断</td>
+<td>由诸如掉电或存储器奇偶校验错之类的故障产生</td>
+</tr>
+</tbody>
+</table>
+<h5 id="中断和指令周期">中断和指令周期</h5>
+<ul>
+<li>
+<p>例：WRITE调用</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.6.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<p>中断处理程序执行过程中，外部设备忙于从计算机存储接收数据并打印，这种I/O操作和用户程序中指令的执行是<strong>并发</strong>的</p>
+<p>过程：1、外部设备做好服务的准备（准备好从处理器接收更多数据）</p>
+<p>​			2、外部设备的I/O模块给处理器发送一个中断请求信号</p>
+<p>​			3、处理器响应：</p>
+<p>​				  暂停当前程序的处理</p>
+<p>​				   处理服务于特定I/O设备的程序（中断处理程序，interrupt handler）</p>
+<p>​			4、完成对设备的服务响应后，处理器恢复原先的执行</p>
+<ul>
+<li>
+<p>中断可在主程序中的任何位置而非仅在一条特定指令处发生</p>
+</li>
+<li>
+<p>处理器检查是否出现中断信号：</p>
+<ul>
+<li>
+<p>无中断：</p>
+<p>处理器继续运行，并在取值周期取当前程序的下一条指令</p>
+</li>
+<li>
+<p>有中断：</p>
+<p>处理器挂起当前程序的执行，并执行一个<em>中断处理程序</em>（通常是操作系统的一部分，确定中断的性质并执行所需要的操作）</p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.7.jpg" srcset="/img/loading.gif" lazyload class="">
+<h5 id="中断处理">中断处理</h5>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/112018.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>PSW：程序状态字</p>
+</li>
+<li>
+<p>PC：程序计数器</p>
+</li>
+<li>
+<p>控制权交到中断处理程序后，该程序执行会引起以下操作：</p>
+<ul>
+<li>
+<p>系统栈中的信息：</p>
+<ul>
+<li>与被中断相关的程序计数器</li>
+<li>PSW</li>
+<li>一些其他信息被当作正在执行的程序中的一部分</li>
+<li>与处理寄存器相关的内容（中断处理程序可能用到这些寄存器）</li>
+</ul>
+</li>
+<li>
+<p>中断处理程序开始处理中断：</p>
+<ul>
+<li>检查与I/O操作相关的状态信息或其他引起中断的事件</li>
+<li>可能包括给I/O设备发送附加命令或应答</li>
+</ul>
+</li>
+<li>
+<p>中断处理结束后：</p>
+<p>被保存的寄存器值从栈中释放并恢复到寄存器中</p>
+</li>
+<li>
+<p>从栈中恢复PSW和程序计数器的值</p>
+<p>（因此下一条要执行的指令来自前面被中断的程序）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="多个中断">多个中断</h5>
+<p>处理多个中断的方法：</p>
+<ul>
+<li>
+<p>正在处理一个中断时，禁止再发生中断：</p>
+<ul>
+<li>
+<p>处理器检查是否还有中断发生</p>
+</li>
+<li>
+<p>所有中断都严格按照顺序处理</p>
+</li>
+<li>
+<p>缺点：未考虑相对优先级和时间限制的要求</p>
+<p>例如，当来自通信线的输入到达时可能需要快速接收，以便为更多的输入让出空间。如果在第二批输入到达时第一批输入还未处理完，就可能由于I/O设备的缓冲区装满或溢出而丢失数据</p>
+</li>
+</ul>
+</li>
+<li>
+<p>定义中断优先级，允许高优先级中断打断低优先级中断</p>
+</li>
+</ul>
+<h1>存储器的层次结构</h1>
+<ul>
+<li>存储器评价：
+<ul>
+<li>容量：供应用程序使用</li>
+<li>速度：存储器的速度要跟得上处理器的速度</li>
+<li>价格</li>
+</ul>
+</li>
+<li>技术关系：
+<ul>
+<li>存取事件快，每“位”价格高</li>
+<li>容量大，每“位”价格低</li>
+<li>容量大，存取速度慢</li>
+</ul>
+</li>
+<li>典型的<em>存储器层次结构（memory hierarchy）</em>：</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>高速缓存</h1>
+<h5 id="动机">动机</h5>
+<p>就目前而言，处理器速度的提高一直快于存储器访问速度的提高。理想情况下，内存的构造技术可采用与处理器中的寄存器相同的构造技术，这样内存的存储周期才跟得上处理周期（但成本高）</p>
+<p>解决办法：利用构造性原理（principal of locality），即在内存之间提供一个容量小且速度快的存储器，称为高速缓存</p>
+<h5 id="高速缓存原理">高速缓存原理</h5>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/1.16.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>内存：容量相对较大但速度较慢</p>
+<p>高速缓存：容量较小但速度较快，包含一部分内存数据的副本</p>
+</li>
+<li>
+<p>处理器读取存储器中的一个字节或字之前：检查—&gt;确定该字或字节是否在高速缓存中</p>
+<ul>
+<li>
+<p>在：</p>
+<p>该字节/字从高速缓存传递给处理器</p>
+</li>
+<li>
+<p>不在：</p>
+<p>1、将由固定数目的字节/字组成的一块内存数据读入高速内存</p>
+<p>2、该字节/字从高速内存传递给处理器</p>
+</li>
+</ul>
+</li>
+<li>
+<p>根据<strong>访问局部性原理</strong>，当一块数据被取入高速缓存以满足一次存储器访问时，很可能紧接着的多次访问的数据是该块中的其他字节</p>
+</li>
+</ul>
+<h1>高速缓存设计</h1>
+<h1>直接内存存取</h1>
+<h5 id="执行I-O操作的技术">执行I/O操作的技术</h5>
+<ul>
+<li>可编程I/O</li>
+<li>中断驱动I/O</li>
+<li>直接内存存取（DMA）</li>
+</ul>
+<h5 id="可编程I-O操作（programmed-I-O）">可编程I/O操作（programmed I/O）</h5>
+<ul>
+<li>I/O模块执行请求的动作并设置I/O状态寄存器中相应的位</li>
+<li>不会进一步通知处理器</li>
+<li>不会中断处理器</li>
+<li>处理器在执行I/O指令后，要定期检查I/O模块的状态，以确定I/O操作是否完成</li>
+<li>缺点：
+<ul>
+<li>处理器要等很长时间来缺点I/O模块是否做好了接收或发送更多数据的准备</li>
+<li>处理器在等待期间必须不断询问I/O模块的状态，会降低整个系统的性能</li>
+<li>I/O传送速度受限于处理器测试设备和提供服务的速度</li>
+<li>处理器忙于管理I/O传送的工作，必须执行很多指令以完成I/O传送</li>
+</ul>
+</li>
+</ul>
+<h5 id="中断驱动I-O（interrupt-driven-I-O）">中断驱动I/O（interrupt-driven I/O）</h5>
+<ul>
+<li>处理器给I/O模块发送I/O命令，然后处理器忙其他有用的事情</li>
+<li>I/O模块准备好与处理器交换数据时，打断处理器的执行并请求服务</li>
+<li>缺点：
+<ul>
+<li>任何数据传送都必须完全通过处理器</li>
+<li>I/O传送速度受限于处理器测试设备和提供服务的速度</li>
+<li>处理器忙于管理I/O传送的工作，必须执行很多指令以完成I/O传送</li>
+</ul>
+</li>
+</ul>
+<h5 id="直接内存存取（Direct-Memory-Access，DMA）">直接内存存取（Direct Memory Access，DMA）</h5>
+<ul>
+<li>需要大量移动数据时更有效</li>
+<li>DMA功能可以由系统总线中的一个独立模块完成，也可以并入一个I/O模块中</li>
+<li>过程：
+<ul>
+<li>处理器读或写一块数据时，给DMA模块产生一条命令，发送：
+<ul>
+<li>是否请求一次读或写</li>
+<li>所涉I/O设备的地址</li>
+<li>开始读或写的存储单元</li>
+<li>需要读或写的字数</li>
+</ul>
+</li>
+<li>处理器继续其他工作</li>
+<li>DMA模块直接与存储器交互，发送整个数据块，每次传送一个字</li>
+<li>传送完成后，DMA模块向处理器发送一个中断信号</li>
+</ul>
+</li>
+<li>只有在开始传送和传送结束时处理器才会参与</li>
+<li>DMA需要<strong>控制总线</strong>来与存储器进行数据传送</li>
+<li>由于在总线使用中存在竞争，当处理器需要使用总线时，要等待DMA模块（并非中断，处理器没有保存上下文环境去做其他事，而只是暂停一个总线周期[在总线上传输一个字的时间]）</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F1/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/" title="第五章-链路层">
+                        <span class="hidden-mobile">第五章-链路层</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

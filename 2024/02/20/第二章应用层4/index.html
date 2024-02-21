@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.6 Peer-to-Peer Applications，P2P应用  适合于P2P设计的应用  file distribution a database distributed over a large community of peers，分布在大型对等方社区中的数据库 Skype,a phenomenally successful P2PInternet telephny applicat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-应用层（四）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.6 Peer-to-Peer Applications，P2P应用  适合于P2P设计的应用  file distribution a database distributed over a large community of peers，分布在大型对等方社区中的数据库 Skype,a phenomenally successful P2PInternet telephny applicat">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/net2.24.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.563Z">
+<meta property="article:modified_time" content="2024-02-20T05:53:21.963Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/net2.24.jpg">
+  
+  
+  
+  <title>第二章-应用层（四） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-应用层（四）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-应用层（四）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>2.6 Peer-to-Peer Applications，P2P应用</h1>
+<ul>
+<li>适合于P2P设计的应用
+<ul>
+<li>file distribution</li>
+<li>a database distributed over a large community of peers，分布在大型对等方社区中的数据库</li>
+<li>Skype,a phenomenally successful P2PInternet telephny application</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-6-1-P2P-File-Distribution，P2P文件分发">2.6.1 P2P File Distribution，P2P文件分发</h3>
+<h6 id="Scalability-扩展性-of-P2P-Architectures">Scalability(扩展性) of P2P Architectures</h6>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%824/net2.24.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>distribution time</strong>(分发时间) ：the time it takes to get a copy of the file to <strong>all</strong> N peers，是所有N个对等方得到该文件的副本所需要的时间</p>
+<h6 id="BitTorrent">BitTorrent</h6>
+<ul>
+<li>a P2P protocol for file distribution</li>
+<li>the collection of all peers participating in the distribution of a particular file is called a torren(洪流)，参与一个特定文件分发的所有对等方的集合被称为一个洪流（torrent）</li>
+<li>Peers in a torrent download <strong>equal-size</strong> <u>chunks</u>(文件块) of the file from one another, with a typical chunk size of 256 KBytes</li>
+<li>Each torrent has an infrastructure node called a <strong>tracker</strong>(追踪器)</li>
+<li>When a peer joins a torrent, it <u>registers</u> itself with the tracker and periodically(周期性地) <u>informs</u> the tracker that it is still in the torrent(In this manner, the tracker keeps track of the peers that are participating in the torrent)</li>
+<li>Periodically, Alice will ask <u>each</u> of her neighboring peers (over the <strong>TCP</strong> connections) for the <u>list</u> of that <u>chunks</u> they have. If Alice has <u>L</u> different neighbors,she will obtain <u>L</u> lists of chunks.With this knowledge,Alice will issue requests(again over the <strong>TCP</strong> connections) for chunks she currently does not have</li>
+<li>In deciding which chunks to <u>request</u>,a technique called <strong>rarest first</strong>(最稀缺优先)
+<ul>
+<li>In this manner, the rarest chunks get more quickly redistributed, aiming to (roughly)equalize(均衡，平衡) the numbers of copies of each chunk in the torrent</li>
+</ul>
+</li>
+<li>To determine which requests she <u>responds</u> to, BitTorrent uses a clever trading algorithm(对换算法)
+<ul>
+<li>gives <strong>priority</strong> to the neighbors that are currently supplying her data at the <strong>highest rate</strong></li>
+<li><u>measures</u> the rate at which she receives bits and determines the <u><strong>four</strong> peers</u>(are said to be <strong>unchoked</strong>，疏通) that are feeding her bits at the highest rate</li>
+<li>every <strong>10 seconds</strong>,<u>recalculates</u> the rates and possibly <u>modifies</u> the set of four peers</li>
+<li>every <strong>30 seconds</strong>, Alice also picks one additional neighbor(Bob) at <u>random</u> and sends it chunks(Bob is said to be <strong>optimistically unchoked</strong>)</li>
+</ul>
+</li>
+<li>sending chunks: tit-for-tat(“以牙还牙”) 一个以善意合作为出发点的博弈策略</li>
+</ul>
+<h3 id="2-6-2-Distributed-Hash-Tables-DHTs-，分散式散列表">2.6.2 Distributed Hash Tables (DHTs)，分散式散列表</h3>
+<ul>
+<li>A critical component(关键部件) of many P2P applications and other <u>distributed applications</u>is an <strong>index</strong>(that is, <strong>a simple database</strong>),supporting <strong>search</strong> and <strong>update</strong> operations</li>
+<li>When this database is distributed, the peers may perform <strong>content caching</strong>(内容缓存) and <strong>sophisticated routing of queries</strong>(复杂的查询路由) among themselves</li>
+<li>DHTs：a popular indexing and searching technique</li>
+<li>assign an identifier to each peer, where each identifier is an integer in the range [0,2&quot;-1] for some fixed n. Note that each such identifier can be expressed by an n-bit representation. each key to be an integer in the same range,求每个键是同一范围内的一个整数</li>
+<li>A <strong>hash function</strong> is a <strong>many-to-one</strong> function for which two different inputs can have the same output (same integer),but the likelihood of the having the same output is extremely small,使两个不同的输入能够具有相同的输出（相同的整数），但是具有相同输出的似然性极低</li>
+<li><strong>the immediate successor of the key</strong>(键的最直接后继): the closest peer</li>
+<li>closest：if the key is exactly equal to one of the peer identifiers, we store the (key-value) pair in that matching peer; and if the key is larger than all the peer identifiers, we use a modulo-2^n^ convention, storing the(key-value) pair in the peer with the <strong>smallest</strong> identifier，如果该键恰好等于这些对等方标识符之一，我们在匹配的对等方中存储（键，值）对;如果该键大于所有对等方标识符，我们使用模2^n^规则，在具有最小标识符的对等方中存储（键，值）对</li>
+</ul>
+<h6 id="ircular-DHT，环形DHT">ircular DHT，环形DHT</h6>
+<ul>
+<li>each peer only keeps track of its immediate successor (modulo 2^n^),仅与直接后继和直接前任联系</li>
+<li>each peer is only aware of its immediate successor,8 but does not necessarily know anything about any other peers that may be in the DHT</li>
+<li>This circular arrangement of the peers is a special case of an <strong>overlay network</strong>(覆盖网络)
+<ul>
+<li>In an overlay network, the peers form an abstract logical network(抽象的逻辑网络) which resides(存在) above the&quot;underlay(底层)&quot;computer network consisting of <strong>physical links</strong>, <strong>routers</strong>,and <strong>hosts</strong></li>
+<li>The links in an overlay network <u>are not physical links</u>, but are simply <strong>virtual liaisons</strong>(虚拟联络) <u>between pairs of peers</u></li>
+</ul>
+</li>
+<li>each peer is only aware of two peers, its <strong>immediate successor</strong> and <strong>its immediate predecessor</strong>. (By default, the peer is aware of its predecessor, since the predecessor is sending it messages.)</li>
+<li>in the worst-case，<strong>N/2</strong> messages are sent on average</li>
+<li>研究表明 DHT能被设计成每个对等方的邻居数量以及每个请求的报文数量均为O（log N），其中N是对等方的数量</li>
+</ul>
+<h6 id="Peer-Churn，对等方扰动">Peer Churn，对等方扰动</h6>
+<ul>
+<li>equire each peer to track(that is, know the IP address of) its <strong>first and second successor</strong></li>
+<li>equire each peer to periodically verify(证明，证实) that its two successors are <strong>alive</strong> (for example,by periodically <strong>sending ping messages</strong> to them and asking for responses)</li>
+<li>how a peer updates its state
+<ul>
+<li>the peer replaces its first successor with its second successor</li>
+<li>asks its new first successor for the identifier and IP address of its immediate successor  （makes peer 10 its second successor）</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/" title="第三章-运输层（一）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（一）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/" title="第二章-应用层（三）">
+                        <span class="hidden-mobile">第二章-应用层（三）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

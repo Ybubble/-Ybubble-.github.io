@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Beautiful Soup库   能够解析html和xml文件的功能库   解析、遍历、维护“标签树”的功能库   亦称为beautifulsoup4或bs4   最常用的引用方式：from  bs4  import  BeautifulSoup   一般可以认为HTML文档、标签树、BeautifulSoup类三者等价，BeautifulSoup对应一个HTML&#x2F;XML文档的全部内容   bs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3-Beautiful Soup库">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/%E7%88%AC%E8%99%AB3Beautiful%20Soup%E5%BA%93/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="Beautiful Soup库   能够解析html和xml文件的功能库   解析、遍历、维护“标签树”的功能库   亦称为beautifulsoup4或bs4   最常用的引用方式：from  bs4  import  BeautifulSoup   一般可以认为HTML文档、标签树、BeautifulSoup类三者等价，BeautifulSoup对应一个HTML&#x2F;XML文档的全部内容   bs">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:31:34.563Z">
+<meta property="article:modified_time" content="2024-02-19T15:23:52.724Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>3-Beautiful Soup库 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="3-Beautiful Soup库"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:31" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">3-Beautiful Soup库</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Beautiful-Soup库">Beautiful Soup库</h3>
+<ul>
+<li>
+<p>能够解析html和xml文件的功能库</p>
+</li>
+<li>
+<p>解析、遍历、维护“标签树”的功能库</p>
+</li>
+<li>
+<p>亦称为beautifulsoup4或bs4</p>
+</li>
+<li>
+<p>最常用的引用方式：from  bs4  import  BeautifulSoup</p>
+</li>
+<li>
+<p>一般可以认为HTML文档、标签树、BeautifulSoup类三者等价，BeautifulSoup对应一个HTML/XML文档的全部内容</p>
+</li>
+<li>
+<p>bs4将任何读入的html文件或字符串都转换成了utf-8编码</p>
+</li>
+<li>
+<p>标签</p>
+<ul>
+<li>&lt; p &gt;…&lt; /p &gt;：标签Tag</li>
+<li>&lt; p class=“title”&gt;…&lt; /p&gt;：p为名称（成对出现），其余为属性Attributes（0个或多个）</li>
+</ul>
+</li>
+</ul>
+<h3 id="Beautiful-Soup库解析器">Beautiful Soup库解析器</h3>
+<table>
+<thead>
+<tr>
+<th>解析器</th>
+<th>使用方法</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bs4的HTML解析器</td>
+<td>BeautifulSoup(mk,‘html.parser’)</td>
+<td>安装bs4库</td>
+</tr>
+<tr>
+<td>lxml的HTML解析器</td>
+<td>BeautifulSoup(mk,‘lxml’)</td>
+<td>pip install lxml</td>
+</tr>
+<tr>
+<td>lxml的XML解析器</td>
+<td>BeautifulSoup(mk,‘xml’)</td>
+<td>pip install lxml</td>
+</tr>
+<tr>
+<td>html5lib的解析器</td>
+<td>BeautifulSoup(mk,‘html5lib’)</td>
+<td>pip install html5lib</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Beautiful-Soup类的基本元素">Beautiful Soup类的基本元素</h3>
+<table>
+<thead>
+<tr>
+<th>基本元素</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tag</td>
+<td>标签，最基本的信息组织元素，分别用&lt;&gt;和&lt;/&gt;标明开头和结尾</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>标签的名字，&lt; p&gt;…&lt; /p&gt;的名字是“p”，格式：&lt; tag&gt;.name</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td>标签的属性，字典形式组织，格式：&lt; tag&gt;.attrs</td>
+</tr>
+<tr>
+<td>NavigableString</td>
+<td>标签内非属性字符串，&lt;&gt;…&lt; /&gt;中字符串，格式：&lt; tag&gt;.string</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>标签内字符串的注释部分，一种特殊的Comment类型</td>
+</tr>
+</tbody>
+</table>
+<h6 id="相关使用">相关使用</h6>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup<br><br>demo = <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">&lt;html&gt;&lt;head&gt;&lt;title&gt;This is a python demo page&lt;/title&gt;&lt;/head&gt;</span><br><span class="hljs-string">&lt;body&gt;</span><br><span class="hljs-string">&lt;p class=&quot;title&quot;&gt;&lt;b&gt;The demo python introduces several python courses.&lt;/b&gt;&lt;/p&gt;</span><br><span class="hljs-string">&lt;p class=&quot;course&quot;&gt;Python is a wonderful general-purpose programming language. You can learn Python from novice to professional by tracking the following courses:</span><br><span class="hljs-string">&lt;a href=&quot;http://www.icourse163.org/course/BIT-268001&quot; class=&quot;py1&quot; id=&quot;link1&quot;&gt;Basic Python&lt;/a&gt; and &lt;a href=&quot;http://www.icourse163.org/course/BIT-1001870001&quot; class=&quot;py2&quot; id=&quot;link2&quot;&gt;Advanced Python&lt;/a&gt;.&lt;/p&gt;</span><br><span class="hljs-string">&lt;/body&gt;&lt;/html&gt;</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br>soup = BeautifulSoup(demo, <span class="hljs-string">&quot;html.parser&quot;</span>)<br><span class="hljs-built_in">print</span>(soup.title)<br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">Tag</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-comment"># 获取链接标签</span><br>tag = soup.a<br><span class="hljs-built_in">print</span>(tag)<br><br><span class="hljs-comment"># 获得标签的名字</span><br><span class="hljs-built_in">print</span>(soup.a.name)<br><span class="hljs-comment"># a的父亲的名字(包含a标签的上一层标签)</span><br><span class="hljs-built_in">print</span>(soup.a.parent.name)<br><span class="hljs-built_in">print</span>(soup.a.parent.parent.name)<br><span class="hljs-comment"># 获得标签的属性信息</span><br><span class="hljs-built_in">print</span>(tag.attrs)  <span class="hljs-comment"># 字典格式</span><br><span class="hljs-comment"># 获得某个属性的信息</span><br><span class="hljs-built_in">print</span>(tag.attrs[<span class="hljs-string">&#x27;class&#x27;</span>])<br><span class="hljs-built_in">print</span>(tag.attrs[<span class="hljs-string">&#x27;href&#x27;</span>])  <span class="hljs-comment"># 获取链接属性</span><br><span class="hljs-comment"># 查看标签属性的类型</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(tag.attrs))  <span class="hljs-comment"># &lt;class &#x27;dict&#x27;&gt;,若无属性，字典为空</span><br><span class="hljs-comment"># 查看标签类型</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(tag))  <span class="hljs-comment"># &lt;class &#x27;bs4.element.Tag&#x27;&gt;</span><br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">NavigableString</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-built_in">print</span>(soup.a.string)<br><span class="hljs-built_in">print</span>(soup.p)<br><span class="hljs-comment"># &lt;p class=&quot;title&quot;&gt;&lt;b&gt;The demo python introduces several python courses.&lt;/b&gt;&lt;/p&gt;</span><br><span class="hljs-built_in">print</span>(soup.p.string)<br><span class="hljs-comment"># The demo python introduces several python courses.</span><br><span class="hljs-comment"># p标签中包含b标签，但是打印出来的并不含b标签，说明NavigableString可以跨越多个标签层次</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(soup.p.string))<br><span class="hljs-comment"># &lt;class &#x27;bs4.element.NavigableString&#x27;&gt;</span><br><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">Comment</span><br><span class="hljs-string">使用.string时不能判断是否为注释,需要用类型判断</span><br><span class="hljs-string">&#x27;&#x27;&#x27;</span><br>newsoup = BeautifulSoup(<span class="hljs-string">&quot;&lt;b&gt;&lt;!--this is a comment--&gt;&lt;/b&gt;&lt;p&gt;this is not a comment&lt;/p&gt;&quot;</span>, <span class="hljs-string">&quot;html.parser&quot;</span>)<br><span class="hljs-built_in">print</span>(newsoup.b.string)<br><span class="hljs-comment"># this is a comment</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(newsoup.b.string))<br><span class="hljs-comment"># &lt;class &#x27;bs4.element.Comment&#x27;&gt;</span><br><span class="hljs-built_in">print</span>(newsoup.p.string)<br><span class="hljs-comment"># this is not a comment</span><br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(newsoup.p.string))<br><span class="hljs-comment"># &lt;class &#x27;bs4.element.NavigableString&#x27;&gt;</span><br></code></pre></td></tr></table></figure>
+<h3 id="标签树的遍历">标签树的遍历</h3>
+<ul>
+<li>下行遍历</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.contents</td>
+<td>子节点的列表，将&lt; tag&gt;所有儿子节点存入列表</td>
+</tr>
+<tr>
+<td>.children</td>
+<td>子节点的迭代类型，与.contents类似，用于循环遍历儿子节点</td>
+</tr>
+<tr>
+<td>.descendants</td>
+<td>子孙节点的迭代类型，包含所有子孙节点，用于循环遍历</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>上行遍历</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.parent</td>
+<td>节点的父亲节点</td>
+</tr>
+<tr>
+<td>.parents</td>
+<td>节点先辈标签的迭代类型，用于循环遍历先辈节点</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>平行遍历</p>
+<p>条件：所有的平行遍历必须发生在同一个父亲节点下</p>
+<p>标签之间的NavigableString也构成标签树的节点</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.next_sibling</td>
+<td>返回按照HTML文本顺序的下一个平行点标签</td>
+</tr>
+<tr>
+<td>.previous_sibling</td>
+<td>返回按照HTML文本顺序的上一个平行点标签</td>
+</tr>
+<tr>
+<td>.next_siblings</td>
+<td>迭代类型，返回按照HTML文本顺序的后续所有平行点标签</td>
+</tr>
+<tr>
+<td>.previous_siblings</td>
+<td>迭代类型，返回按照HTML文本顺序的前续所有平行点标签</td>
+</tr>
+</tbody>
+</table>
+<h3 id="显示">显示</h3>
+<p>使用prettify( )：增加换行符等</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">soup = BeautifulSoup(demo, <span class="hljs-string">&quot;html.parser&quot;</span>)<br><span class="hljs-built_in">print</span>(soup.prettify())<br><span class="hljs-built_in">print</span>(soup.a.prettify())<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%88%AC%E8%99%AB/" class="category-chain-item">爬虫</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/%E7%88%AC%E8%99%AB7scrapy%E6%A1%86%E6%9E%B6/" title="7-scrapy框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">7-scrapy框架</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/%E5%AD%97%E5%85%B8/" title="字典">
+                        <span class="hidden-mobile">字典</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

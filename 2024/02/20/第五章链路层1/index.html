@@ -1,0 +1,1771 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="two fundamentally different types of link-layer channels： 1、broadcast channels，广播信道  common in local area networks (LANs), wireless LANs, satellite networks, and **hybrid fiber-coaxial cable(HFC)**acc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章-链路层">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="two fundamentally different types of link-layer channels： 1、broadcast channels，广播信道  common in local area networks (LANs), wireless LANs, satellite networks, and **hybrid fiber-coaxial cable(HFC)**acc">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821.assets/net1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net22-165486261625422.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net24.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net25.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net28.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.602Z">
+<meta property="article:modified_time" content="2024-02-20T11:42:01.721Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.2.jpg">
+  
+  
+  
+  <title>第五章-链路层 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第五章-链路层"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第五章-链路层</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>two fundamentally different types of link-layer channels：</p>
+<p>1、<strong>broadcast channels</strong>，广播信道</p>
+<ul>
+<li>common in <strong>local area networks (LANs)</strong>, <strong>wireless LANs</strong>, <strong>satellite networks</strong>, and **hybrid fiber-coaxial cable(HFC)**access networks</li>
+</ul>
+<p>2、<strong>point-topoint communication link</strong>，点对点通信链路</p>
+<p>our goals</p>
+<ul>
+<li>understand principles behind link layer services
+<ul>
+<li>error detection, correction (纠错)</li>
+<li>sharing a broadcast channel: multiple access</li>
+<li>link layer addressing</li>
+<li>local area networks: Ethernet, VLANs</li>
+</ul>
+</li>
+<li>instantiation(实例), implementation of various link  layer technologies</li>
+</ul>
+<h1>5.1 Link Layer: Introduction and Services</h1>
+<p>术语：</p>
+<ul>
+<li>hosts, routers, and switch: <strong>nodes (节点)</strong></li>
+<li>communication channels (信道)  that connect adjacent (邻近)  nodes along communication path:  links (链路 )
+<ul>
+<li>wired links</li>
+<li>wireless links</li>
+</ul>
+</li>
+<li>layer -2 packet: frame( 帧), encapsulates datagram</li>
+<li>data-link layer has responsibility of  transferring datagram from one <u>node</u>  to <strong>physically adjacent</strong> <u>node</u> over a link</li>
+<li>datagram transferred by different link protocols over different links:
+<ul>
+<li>e.g., <strong>Ethernet</strong> on <strong>first link</strong></li>
+<li><strong>frame relay (帧中继)</strong> on <strong>intermediate links</strong></li>
+<li><strong>802.11</strong> on <strong>last link</strong> (<strong>无线局域网协议</strong>)</li>
+</ul>
+</li>
+<li>each link protocol provides  different services
+<ul>
+<li>e.g., <u>may</u> or <u>may not</u> provide <strong>rdt</strong> over link</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-1-1-The-Services-Provided-by-the-Link-Layer">5.1.1 The Services Provided by the Link Layer</h3>
+<ul>
+<li>
+<p><strong>Framing（组帧）</strong></p>
+<ul>
+<li>encapsulate datagram into frame, <strong>adding header(头部)</strong>, <strong>trailer  (尾部)</strong></li>
+<li>“MAC” addresses used in frame headers to <strong>identify source,  dest</strong>
+<ul>
+<li>different from IP address!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>link access(链路接入)</strong></p>
+</li>
+<li>
+<p>channel access if shared medium</p>
+</li>
+<li>
+<p><strong>MAC (medium access control, 媒体访问控制) protocol</strong> <u>specifies the rules</u> by which a frame is transmitted onto link，规定了帧在链路上传输的规则</p>
+</li>
+<li>
+<p>【理想情况】MAC protocol is <strong>simple</strong>, sender can send a frame <strong>whenever the link is idle</strong></p>
+</li>
+<li>
+<p><strong>reliable delivery (可靠交付)</strong> between adjacent  nodes</p>
+<ul>
+<li>
+<p>When a link-layer protocol provides reliable delivery service, it <u>guarantees</u> to move <u>each</u> network-layer datagram across the link <strong>without error</strong></p>
+</li>
+<li>
+<p>we learned how to do this already (chapter 3)!</p>
+</li>
+<li>
+<p>Similar to a transport-layer reliable delivery service, a link-layer reliable delivery service is often achieved with <strong>acknowledgments</strong> and <strong>retransmissions</strong></p>
+</li>
+<li>
+<p>seldom used on <strong>low bit-error link</strong> (fiber,coax, some twisted  pair)</p>
+<ul>
+<li>be considered an <strong>unnecessary overhead</strong> ,不必要的开销</li>
+</ul>
+</li>
+<li>
+<p>often used wireless links: high error rates</p>
+<ul>
+<li>with the goal of correcting an <strong>error locally</strong>—on the link where the error occurs—rather than forcing an end-toend retransmission of the data by a transport-or application-layer protocol, 本地纠正一个差错</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>flow control (流量控制)</strong></p>
+<ul>
+<li>pacing between <u>adjacent</u> sending and receiving nodes</li>
+</ul>
+</li>
+<li>
+<p><strong>error detection (错误检测)</strong></p>
+<ul>
+<li>errors caused by <strong>signal attenuation (衰减)</strong>, <strong>noise(噪音)</strong></li>
+<li>receiver detects presence(存在) of errors
+<ul>
+<li>signals sender for retransmission or drops frame</li>
+</ul>
+</li>
+<li>sophisticated (复杂), <strong>usually implemented in hardware</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>error correction (错误纠正)</strong></p>
+<ul>
+<li>receiver <strong>identifies and corrects</strong> bit error(s) without  resorting(依靠) to retransmission</li>
+</ul>
+</li>
+<li>
+<p><strong>half-duplex and full-duplex (半双工和全双工)</strong></p>
+</li>
+<li>
+<p>with half duplex, nodes at both ends of link can transmit, but not at same time (比较：全双工是双向同时传输)</p>
+</li>
+</ul>
+<h3 id="5-1-2-Where-Is-the-Link-Layer-Implemented">5.1.2 Where Is the Link Layer Implemented?</h3>
+<ul>
+<li>
+<p>the link layer is implemented in a <strong>network adapter(网络适配器)</strong>, also sometimes known as a <strong>network interface card (NIC，网络接口卡)</strong></p>
+</li>
+<li>
+<p>the <strong>heart</strong> of the network adapter is the <strong>link-layer controller</strong>(链路层控制器)</p>
+<ul>
+<li>
+<p>usually a single, special-purpose <strong>chip</strong> that implements many of the link-layer services (framing, link access, flow control, error detection, etc</p>
+<p>→much of a link-layer controller’s functionality is <strong>implemented in hardware</strong></p>
+</li>
+<li>
+<p>Ethernet card, 802.11 card Ethernet chipset</p>
+</li>
+<li>
+<p>implements link, physical  layer</p>
+</li>
+</ul>
+</li>
+<li>
+<p>attaches into host’s system buses(系统总线)</p>
+<p>combination of <strong>hardware and software (CPU)</strong></p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.3.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>sending side
+<ul>
+<li><strong>encapsulates</strong> datagram in  frame</li>
+<li>adds error checking bits, rdt, flow control, etc</li>
+</ul>
+</li>
+<li>receiving side
+<ul>
+<li>looks for errors, rdt, flow control, etc</li>
+<li><strong>extracts</strong>(提取) datagram, passes to upper layer at receiving side</li>
+</ul>
+</li>
+</ul>
+<h1>5.2 Error-Detection and -Correction Techniques，差错检测和纠正技术</h1>
+<ul>
+<li>
+<p><strong>bit-level error detection and correction(比特级差错检测和纠正)</strong>：detecting and correcting the corruption(损坏) of bits in a link-layer frame sent from one <u>node</u> to another <strong>physically connected neighboring</strong> <u>node</u>—are two services often provided by the link layer</p>
+</li>
+<li>
+<p><strong>EDC= Error Detection and Correction bits错误检测和纠正位 (redundancy)</strong></p>
+<p>D = <strong>Data</strong> <u>protected by error checking</u>, may include header fields</p>
+</li>
+<li>
+<p>the data to be protected includes not only the datagram <u>passed down from the network layer</u> for transmission across the link, but also <strong>link-level addressing information</strong>(链路帧首部中的链路级的寻址信息), <strong>sequence numbers</strong>, and other fields <u>in the link frame header</u></p>
+</li>
+<li>
+<p><strong>Both D and EDC</strong> are sent to the receiving node in a link-level frame. At the receiving node, a sequence of bits, <strong>D’and EDC’</strong> is received. Note that D’and EDC’may <strong>differ</strong> from the original D and EDCas a result of in-transit <strong>bit flips</strong>(比特翻转)</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Error-detection and correction technigues allow the receiver to <strong>sometimes, but not always,</strong> detect that bit errors have occurred</p>
+<p>→Even with the use of error-detection bits there still <strong>may be undetected bit errors</strong></p>
+<p>receiver may be unaware → deliver a corrupted datagram to the <strong>network layer</strong></p>
+</li>
+<li>
+<p>three techniques for detecting errors</p>
+<ul>
+<li><strong>Parity checking，奇偶校验</strong>, (to illustrate the basic ideas behind error detection and correction)</li>
+<li><strong>Internet checksum，校验和</strong>，(typically used in the <u>transport layer</u>)</li>
+<li><strong>Cyclic redundancy check，循环冗余检测</strong>, (typically used in the link layer in an <u>adapter</u>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-1-Parity-Checking">5.2.1 Parity Checking</h3>
+<ul>
+<li>
+<p>工作原理：even parity scheme (偶校验方案): the total number of 1s in <strong>d+1</strong>  bits is even, odd parity scheme (奇校验方案) is similar</p>
+</li>
+<li>
+<p>Q: if an odd numbers of 1s are found  in even parity scheme, what does that  mean?</p>
+</li>
+</ul>
+<p>A: some <strong>odd number</strong> of bit errors have  occurred</p>
+<ul>
+<li>
+<p>the probability of undetected errors in a frame protected by single-bit parity can approach <strong>50%</strong></p>
+</li>
+<li>
+<p>two-dimensional(二维) bit parity:</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>d bits in D are divided into i rows  and  j columns, i+j+1 parity bits  comprise error -detection bits  detect and correct single bit  errors</li>
+<li>detect any combination of two errors (can not correct!)</li>
+<li>ability of detection and correction is known as <strong>forward  error correction (FEC,向前纠错 )</strong></li>
+<li>commonly used in <strong>audio CDs</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-2-Checksumming-Methods">5.2.2 Checksumming Methods</h3>
+<ul>
+<li>
+<p>goal: detect “errors” (e.g., flipped bits翻转位) in transmitted packet (note: used at <u>transport layer</u> <strong>only</strong>)</p>
+</li>
+<li>
+<p>sender:</p>
+<ul>
+<li>treat segment contents  as <strong>sequence of 16-bit  integers</strong></li>
+<li>checksum: addition (<strong>1’s complement sum反码运算</strong>)  of segment contents(这个和的反码形成了携带在报文段首部的因特网检验和)</li>
+<li>sender puts checksum  value into UDP checksum field</li>
+</ul>
+</li>
+<li>
+<p>receiver</p>
+<ul>
+<li>compute checksum of  received segment</li>
+<li>check if computed checksum  equals checksum field value
+<ul>
+<li>NO - error detected</li>
+<li>YES - no error detected.  <u>But maybe errors  nonetheless?</u></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>特点</p>
+<ul>
+<li>Checksumming methods require relatively <strong>little packet overhead</strong>（相对小的分组开销）</li>
+<li>provide <strong>relatively weak protection</strong> against errors as <u>compared with cyclic redundancy check</u></li>
+</ul>
+</li>
+<li>
+<p>why is checksumming not used at  link layer?</p>
+<p>A: link layer implemented in dedicated(特定的) hardware can perform more complex CRC operations</p>
+<p>（transport-layer error detection is implemented in software, it is important to have a simple and fast error-detection scheme such as checksumming）</p>
+</li>
+</ul>
+<h3 id="5-2-3-Cyclic-Redundancy-Check-CRC">5.2.3 Cyclic Redundancy Check(CRC)</h3>
+<ul>
+<li>
+<p>all CRC calculations are done in modulo-2 arithmetic （模 2运算）without carries addition or borrows in  subtraction (要点：加法中不进位，减法中不借位！！！)</p>
+</li>
+<li>
+<p>已知待传输数据D和生成式G，计算CRC冗余位R？</p>
+<p>计算过程：</p>
+<p>（1）将数据D左移r位（相当于在D后面添加r个0），注意r的值等于G的位数减1</p>
+<p>（2）将左移r位后的D与G进行模2除法运算</p>
+<p>（3）判断除法的余数结果是否有r位，如果没有则在高位用0补足r位，得到余数，即CRC冗余位R</p>
+</li>
+</ul>
+<h1>5.3 Multiple Access Protocols</h1>
+<ul>
+<li>
+<p>two types of network links</p>
+<p>:one:A <strong>point-to-point link</strong>(点对点链路) consists of a single sender at one end of the link and a single receiver at the other end of the link</p>
+<ul>
+<li>Many <strong>link-layer protocols</strong> have been designed for point-to-point links
+<ul>
+<li><strong>point-to-point protocol (PPP，点对点协议)</strong></li>
+<li><strong>high-level data link control (HDLC，高级数据链路控制)</strong></li>
+</ul>
+</li>
+</ul>
+<p>:two: <strong>broadcast link，广播链路</strong></p>
+<ul>
+<li>can have <u>multiple</u> sending and receiving nodes all connected to the <strong>same</strong>, <strong>single</strong>, <strong>shared</strong> broadcast channel</li>
+<li>The term <code>broadcast</code> is used here because when any one node transmits a frame, the channel <strong>broadcasts the frame</strong> and <u>each of the other nodes</u> <strong>receives a copy</strong></li>
+<li>old-fashioned Ethernet</li>
+<li>802.11 wireless LAN</li>
+</ul>
+</li>
+<li>
+<p>how to coordinate(协调) the access of multiple sending and receiving nodes to a shared broadcast channel—the multiple access problem</p>
+</li>
+<li>
+<p><strong>multiple access protocols(MAC，多路访问协议)</strong></p>
+<ul>
+<li>
+<p>used for nodes regulate(规范) their transmission into the shared broadcast channel</p>
+</li>
+<li>
+<p>multiple access protocols are needed in a wide variety of network settings：including both <strong>wired</strong> and <strong>wireless local area networks</strong>, and <strong>satellite networks</strong></p>
+</li>
+<li>
+<p><strong>single</strong> shared broadcast channel</p>
+</li>
+<li>
+<p><strong>two or more simultaneous transmissions</strong> by nodes:  <strong>interference(干扰)</strong></p>
+<ul>
+<li><strong>collision (冲突)</strong> if node receives two or more signals <strong>at the same time</strong></li>
+<li><strong>all</strong> the frames involved in the collision are <strong>lost</strong></li>
+<li>the broadcast channel is <strong>wasted</strong> during the collision interval</li>
+</ul>
+</li>
+<li>
+<p><u>multiple access protocol (作用)</u></p>
+<ul>
+<li><strong>distributed algorithm</strong> that determines how nodes share channel, i.e., determine when node can transmit</li>
+<li>communication about channel sharing must use channel itself! 利用通信信道本身来协商
+<ul>
+<li><strong>coordinate</strong>(协调) the transmissions of the active nodes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>An ideal multiple access  protocol</p>
+<ul>
+<li>
+<p>given: broadcast channel of rate R bps</p>
+</li>
+<li>
+<p>desiderata:</p>
+<ol>
+<li>
+<p>when one node wants to transmit, it can send  at rate <strong>R</strong></p>
+</li>
+<li>
+<p>when <strong>M</strong> nodes want to transmit, each can send  at average rate <strong>R/M</strong></p>
+</li>
+<li>
+<p>fully <strong>decentralized</strong> (去中心化):</p>
+<p><strong>no</strong> special node to <strong>coordinate</strong> transmissions</p>
+<p><strong>no synchronization</strong>(同步) of clocks, slots</p>
+</li>
+<li>
+<p><strong>simple</strong></p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>MAC protocols:  taxonomy (分类)</p>
+<p>three broad classes:</p>
+<ul>
+<li><strong>channel partitioning protocol (信道划分协议)</strong>
+<ul>
+<li>divide channel into smaller “<strong>pieces</strong>” (time slots,  frequency, code)</li>
+<li>allocate channel piece to node for <strong>exclusive use (独享)</strong></li>
+</ul>
+</li>
+<li><strong>random access protocol (随机访问协议)</strong>
+<ul>
+<li>channel not divided, <strong>allow collisions</strong></li>
+<li>“ <strong>recover</strong>” from collisions</li>
+</ul>
+</li>
+<li><strong>“taking turns” protocol (轮流协议)</strong>
+<ul>
+<li>nodes <strong>take turns</strong>, but nodes with <strong>more to send</strong> can  take <strong>longer turns</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-1-Channel-Partitioning-Protocols">5.3.1 Channel Partitioning Protocols</h3>
+<ul>
+<li>two techniques that can be used to partition(划分) a broadcast channel’s bandwidth among all nodes sharing that channel： <strong>time-division multiplexing (TDM)、frequency-division multiplexing (FDM)</strong></li>
+</ul>
+<p>:one:TDMA: time division multiple access (时分多路访问)</p>
+<ul>
+<li>
+<p>TDM divides time into time frames and further divides each time frame into N time slots. (The TDM time frame should not be confused with the link-layer unit of data exchanged between sending and receiving adapters. which is also called a frame)</p>
+</li>
+<li>
+<p>access to channel (R bps) in “rounds”</p>
+</li>
+<li>
+<p>each station(节点) gets fixed length slot (length =  single pkt trans time) in each round</p>
+</li>
+<li>
+<p>unused slots go <strong>idle</strong>(空闲)</p>
+</li>
+<li>
+<p>example: 6-station LAN, 1,3,4 have pkt, slots 2,5,6 idle</p>
+<img src="%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821.assets/net1.jpg" srcset="/img/loading.gif" lazyload alt="net1" style="zoom:67%;" />
+</li>
+<li>
+<p>优点</p>
+<ul>
+<li><strong>eliminates collisions</strong> and is <strong>perfectly fair</strong>: Each node gets a dedicated transmission rate of <strong>R/N bps</strong> during each frame time</li>
+</ul>
+</li>
+<li>
+<p>Drawbacks (缺点)</p>
+<ul>
+<li>a node is <strong>limited</strong> to an average rate of <strong>R/N</strong> although it  is the <strong>only node</strong> with data to send</li>
+<li>a node must <strong>wait for</strong> its turn in the transmission  sequence even it is <strong>only node with a frame</strong> to send</li>
+</ul>
+</li>
+</ul>
+<p>:three:FDMA: frequency division multiple access (频分多路访问)</p>
+<ul>
+<li>channel spectrum(频谱) divided into <strong>frequency bands(频段)</strong></li>
+<li>each station assigned <strong>fixed frequency band</strong></li>
+<li><strong>unused</strong> transmission time in frequency bands <strong>go idle</strong></li>
+<li>example: 6-station LAN, 1,3,4 have pkt, frequency bands  2,5,6 idle</li>
+<li><u>same drawbacks</u> with TDMA</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net2.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:three:CDMA: code division multiple access (码分多路访问)</p>
+<ul>
+<li>assign <strong>different codes</strong> to each node</li>
+<li>node use <strong>unique</strong> code to <strong>encode</strong> data it sends</li>
+<li>different node <strong>can transmit simultaneously</strong> (各自对应的接收方可正确接受发送方编码后的数据， 而不在乎其他节点的干扰传输)</li>
+<li>used in <strong>military systems(军用系统)</strong>, <strong>cellular telephony(蜂窝电话)</strong></li>
+</ul>
+<h3 id="5-3-2-Random-Access-Protocols">5.3.2 Random Access Protocols</h3>
+<ul>
+<li>when node has packet to send</li>
+<li>transmit at <strong>full channel data rate R</strong></li>
+<li><strong>no a priori coordination</strong>(协调) among nodes</li>
+<li>two or more transmitting nodes ➜ “<strong>collision</strong>”(允许冲突出现)
+<ul>
+<li>waits a random delay before retransmitting the frame</li>
+</ul>
+</li>
+<li>random access MAC protocol specifies(说明):
+<ul>
+<li>how to <strong>detect collisions</strong></li>
+<li>how to <strong>recover from collisions</strong> (e.g., via random delayed  retransmissions)</li>
+</ul>
+</li>
+<li>examples of random access MAC protocols:
+<ul>
+<li>slotted ALOHA</li>
+<li>ALOHA</li>
+<li>CSMA, CSMA/CD, CSMA/CA</li>
+</ul>
+</li>
+</ul>
+<p>:one:Random access protocols -I: <strong>Slotted(时隙) ALOHA</strong></p>
+<ul>
+<li>assumptions (假设)：</li>
+</ul>
+<ol>
+<li>all frames same size <strong>L</strong></li>
+<li>time divided into equal size <strong>slots L/R (time to  transmit 1 frame)</strong></li>
+<li>nodes start to transmit only <strong>slot beginning</strong></li>
+<li>nodes are <strong>synchronized</strong>( 每个节点都知道时隙何时开始)</li>
+<li>if 2 or more nodes  transmit in slot, all nodes <strong>detect collision</strong> before slot <strong>ends</strong></li>
+</ol>
+<ul>
+<li>
+<p>operation (操作)：</p>
+<ul>
+<li>when node has fresh frame  to send, transmits in next  slot
+<ul>
+<li>if no collision: node can  send new frame in next  slot</li>
+<li>if collision: node  retransmits frame in  each subsequent slot with  prob. p є(0,1) until  success</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>例</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>Pros(支持者):</p>
+<ul>
+<li><strong>single active node</strong> can  continuously transmit <strong>at  full rate</strong> of channel</li>
+<li><strong>highly</strong> decentralized 高度分散的(并非完全): only slots in nodes (所有节点的时隙)need to be in sync
+<ul>
+<li>each node <strong>detects</strong> collisions and <u>independently</u> decides <strong>when to retransmit</strong></li>
+</ul>
+</li>
+<li>simple</li>
+</ul>
+</li>
+<li>
+<p>Cons(反对者)</p>
+<ul>
+<li><strong>collisions</strong>, <strong>wasting</strong> slots</li>
+<li><strong>idle</strong> slots</li>
+<li>nodes may be able to  <strong>detect collision in less than time</strong> to transmit  packet</li>
+<li>clock <strong>synchronization</strong></li>
+</ul>
+</li>
+<li>
+<p>Slotted ALOHA:  efficiency</p>
+<ul>
+<li>efficiency: long-run  fraction of successful slots  (many nodes, all with many  frames to send)</li>
+<li>suppose: <strong>N</strong> nodes with  many frames to send,  each transmits in slot  with probability <strong>p</strong></li>
+<li>prob that <strong>given node</strong> has  success in a slot = p(1- p)^N-1^</li>
+<li>prob that <strong>any node</strong> has a  success = Np(1-p)^N-1^</li>
+<li>max efficiency: find p* that maximizes  Np(1-p)^N-1^</li>
+<li>for many nodes, take  limit of Np*(1-p*)^N-1^ as  N goes to infinity, gives: <strong>max efficiency = 1/e =  0.37</strong></li>
+<li><strong>at best</strong>: channel used for useful  transmissions 37% of time!</li>
+</ul>
+</li>
+</ul>
+<p>:two:Random access protocols -II: <strong>Pure (unslotted) ALOHA</strong></p>
+<ul>
+<li>Pure(unslotted) Aloha: simpler, <strong>no synchronization (完全去中心化)</strong>，, fully decentralized，完全分散</li>
+<li>operation (操作)：when frame first arrives (datagram from  network-layer)
+<ul>
+<li>transmit <strong>immediately</strong></li>
+<li>if collision, <strong>immediately retransmit</strong> the frame with probability <strong>p</strong></li>
+<li>otherwise, wait for <strong>a frame transmission time</strong> with probability <strong>1-p</strong></li>
+<li>until succeed</li>
+</ul>
+</li>
+<li>collision probability increases:
+<ul>
+<li>frame sent at t0 collides with other frames sent in <strong>[t0 -1,t0 +1]</strong></li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net4.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Pure ALOHA efficiency</p>
+<ul>
+<li>
+<p>P(success by given node) = P(node transmits)</p>
+<p>​                                             × P(no other node transmits in [t0 -1,t0 ]</p>
+<p>​                                             ×P(no other node transmits in [t0 ,t0 +1]</p>
+<p>​                                             = p × (1-p)^N-1^(1-p)^N-1^ = p × (1-p)^2(N-1)^</p>
+<p>P(success for any node) = Np(1-p)^2(N-1)^</p>
+<p>… choosing optimum p and then letting n → ∞ = 1/(2e) = 0.18</p>
+<p>→ even worse than slotted Aloha!</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>:three:Random access protocols -III: <strong>CSMA</strong></p>
+<p><code>In both slotted and pure ALOHA,a node's decision to transmit is made independently of the activity of the other nodes attached to the broadcast channel</code></p>
+<p><code> In particular, a node neither pays attention to whether another node happens to be transmitting when it begins to transmit,nor stops transmitting if another node begins to interfere with its transmission</code></p>
+<ul>
+<li>
+<p><strong>CSMA(carrier sense multiple access,载波侦听多路访问)</strong>: <strong>listen before transmit</strong></p>
+</li>
+<li>
+<p>operation (操作)：</p>
+<p>(a) if channel sensed <strong>idle</strong>: transmit entire frame (在传输数据之前先侦听信道是否空闲)</p>
+<p>(b) if channel sensed <strong>busy</strong>, <strong>defer</strong> transmission (推迟传输) with <strong>random time</strong> and <strong>sense</strong> the channel, <strong>until sense idle</strong>, then transmit entire frame (如果发现信道中有其他节点正在传输数据，等待一段随机时间后再侦听信道，直到侦听到信道空闲时在传输数据)</p>
+</li>
+<li>
+<p>human analogy: don’t interrupt others!</p>
+</li>
+<li>
+<p>collisions can still occur:</p>
+<ul>
+<li><strong>propagation delay</strong> means two nodes <strong>may not</strong> hear  each other’s transmission</li>
+<li>two nodes transmit data at  the <strong>same time</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>collision</strong>: entire packet  transmission time wasted</p>
+<ul>
+<li><strong>distance &amp; propagation</strong>  delay play role in in  determining collision  probability</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>Drawback：B and D continue to transmit their entire  frames although collision has occurred</p>
+<p>:four:Random access protocols -III: <strong>CSMA/CD (collision detection)</strong></p>
+<ul>
+<li><strong>collision detection (冲突检测)</strong>:
+<ul>
+<li><strong>a transmitting node listens to</strong> the channel while it is  <strong>transmitting</strong></li>
+<li>when it detects an interfering frame, <strong>stops and waits</strong> a  <strong>random amount of time</strong> before repeating <strong>sense-andtransmit-when-idle</strong> cycle</li>
+</ul>
+</li>
+<li><strong>easy</strong> in wired LANs: measure signal strengths, compare  transmitted, received signals</li>
+<li><strong>difficult</strong> in wireless LANs: received signal strength  overwhelmed by local transmission strength</li>
+<li>CSMA/CD(带冲突检测的载波侦听多路访问): carrier sensing,  deferral as in CSMA
+<ul>
+<li>collisions detected within short time</li>
+<li>colliding transmissions aborted (立即终止), reducing channel  wastage (损耗)</li>
+</ul>
+</li>
+<li>human analogy: the polite conversationalist (有礼貌且健谈的人)</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net6.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>检测到碰撞将立即停止传输</p>
+<p>adding collision detection to a multiple access protocol will help protocol performance by not transmitting a useless, damaged (by interference with a frame from another node) frame in its entirety, 不传输一个无用的、（由来自另一个结点的帧干扰）损坏的帧</p>
+<ul>
+<li>
+<p>Random access protocols -III: Ethernet CSMA/CD algorithm</p>
+<ul>
+<li>
+<p>Step 1. NIC receives  datagram from network  layer, creates frame</p>
+</li>
+<li>
+<p>Step 2. If NIC senses  channel idle (no signal  energy entering the  adapter from the channel  for <strong>96 bit times</strong>), starts  frame transmission. If  NIC senses channel <strong>busy</strong>,  <strong>waits</strong> until channel <strong>idle</strong>  (<strong>plus 96 bit times</strong>), then  transmits（<strong>载波侦听！</strong>）</p>
+</li>
+<li>
+<p>Step 3. If NIC transmits  entire frame without detecting another transmission, NIC is done  with frame !</p>
+</li>
+<li>
+<p>Step 4. If NIC detects  another transmission while  transmitting, <strong>aborts and sends 48 bits jam signal</strong> ( 中止并发送拥堵信号)(冲突检测！)</p>
+<p>(注：发送拥堵信号的目的是确保其他节点也能及时检测到冲突)</p>
+</li>
+<li>
+<p>Step 5. <strong>After aborting</strong>, NIC enters <strong>binary (exponential)  backoff (二进制指数后退):</strong></p>
+<p>→解决的问题→希望的时间间隔∶当碰撞结点数量较少时，时间间隔较短；当碰撞结点数量较大时，时间间隔较长</p>
+<ul>
+<li>after <strong>n th</strong> collision, NIC chooses <strong>K</strong> at random from {0,1,2,3  …, 2^n^ -1}, n&lt;=10. NIC waits <strong>K</strong>·512 bit times, returns to Step  2(发生n次冲突后，NIC从{0,1,2,3…, 2n -1}随机选择一个值赋给 K，并等待K·512 bit times，即K倍发送512bit数据所消耗的时间)</li>
+<li>first collision: choose K from {0, 1}; delay is Kx512 bit  transmission times</li>
+<li>after second collision: choose K from {0, 1, 2, 3}…</li>
+<li>after ten or more collision: choose K from {0, 1, 2, 3, 4, … …  , 1023}</li>
+<li>more collisions, longer backoff interval</li>
+</ul>
+</li>
+<li>
+<p>Random access protocols -III: Ethernet CSMA/CD efficiency</p>
+<ul>
+<li>d~prop~ = max propagation delay between two nodes  in LAN</li>
+<li>d~trans~ = time to transmit a max-size frame</li>
+<li>efficiency = 1/(1+5d~prop~/d~trans~)</li>
+<li>efficiency goes to 1
+<ul>
+<li>as <strong>d~prop~ goes to 0</strong>, <strong>colliding nodes will abort</strong> immediately  without wasting the channel</li>
+<li>as <strong>d~trans~ goes to very large</strong>, frame <strong>hold on</strong> the channel for  long time, channel doing <strong>productive work</strong> most of time</li>
+</ul>
+</li>
+<li><strong>better</strong> performance than ALOHA: and simple,  cheap, decentralized!</li>
+</ul>
+<p>(efficiency: the  long-run fraction of time during  which frames are  being transmitted  on the channel  without  collisions(many  nodes, all with  many frames to  send)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-3-Taking-Turns-Protocols-轮流协议">5.3.3 Taking-Turns Protocols,轮流协议</h3>
+<p><code>two desirable properties of a multiple access protocol are</code></p>
+<p><code>(1) when only one node is active, the active node has a throughput of R bps,and </code></p>
+<p><code>(2)when M nodes are active, then each active node has a throughput of nearly R/M bps</code></p>
+<p><code>The ALOHA and CSMA protocols have this first property but not the second</code></p>
+<p>“Taking turns” MAC  protocols 轮流多路访问协议</p>
+<ul>
+<li>
+<p>channel partitioning MAC protocols:</p>
+<ul>
+<li>share channel <strong>efficiently</strong> and <strong>fairly</strong> at high load</li>
+<li><strong>inefficient</strong> at low load: delay in channel access, 1/N  bandwidth allocated even if only 1 active node!</li>
+</ul>
+</li>
+<li>
+<p>random access MAC protocols</p>
+<ul>
+<li><strong>efficient</strong> at <strong>low load</strong>: single node can fully utilize  channel</li>
+<li>high load: collision overhead</li>
+</ul>
+<p>“taking turns” protocols look for best of both worlds!</p>
+</li>
+</ul>
+<p>:one:“Taking turns” MAC  protocols-I: <strong>polling protocol(轮询协议)</strong></p>
+<ul>
+<li>原理：<strong>master</strong> node “invites” <strong>slave</strong> nodes to transmit in  turn</li>
+<li>typically used with <strong>“dumb” slave devices</strong></li>
+<li>eliminates (消除) the  collisions and empty slots</li>
+<li>concerns:
+<ul>
+<li>polling overhead</li>
+<li>polling latency 轮询延迟</li>
+<li>single point of failure  (master)</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>:two:“Taking turns” MAC protocols-II:  <strong>token passing protocols(令牌传输协议)</strong></p>
+<ul>
+<li>control token (令牌) passed from one node  to next <strong>sequentially</strong></li>
+<li>token message: a <u>special-purpose frame</u>(特殊的帧) is  exchanged</li>
+<li><strong>原理</strong>：node receives a token, holds onto it  if has frames to transmit, otherwise  forwards it to next node</li>
+<li><strong>decentralized (no master node)</strong> and <strong>highly  efficient</strong></li>
+<li>concerns:
+<ul>
+<li>token overhead</li>
+<li>latency</li>
+<li>single point of failure ( a node crash or a  node neglects to release the token)</li>
+</ul>
+</li>
+</ul>
+<p>Summary of MAC  protocols</p>
+<ul>
+<li>
+<p>channel partitioning, by time, frequency or code</p>
+<ul>
+<li>Time Division, Frequency Division, Code division</li>
+</ul>
+</li>
+<li>
+<p>random access (dynamic)</p>
+<ul>
+<li>
+<p>S-ALOHA, ALOHA, CSMA, CSMA/CD</p>
+</li>
+<li>
+<p>carrier sensing: easy in some technologies (wire), hard  in others (wireless)</p>
+</li>
+<li>
+<p>CSMA/CD used in Ethernet</p>
+</li>
+<li>
+<p>CSMA/CA used in 802.11 （带冲突避免的载波侦听多路访问）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>taking turns</p>
+<ul>
+<li>polling from central site, token passing</li>
+<li>Bluetooth（蓝牙）, FDDI （光纤分布式数据接口）, token  ring (令牌环)</li>
+</ul>
+</li>
+</ul>
+<h1>5.4 LANs</h1>
+<h3 id="5-4-1-MAC-Addresses">5.4.1 MAC Addresses</h3>
+<ul>
+<li>
+<p>Recall: 32-bit IP address:</p>
+<ul>
+<li>network-layer address for <strong>interface</strong></li>
+<li>used for layer 3 (network layer) <strong>forwarding</strong></li>
+</ul>
+</li>
+<li>
+<p>MAC (or LAN or physical) address:</p>
+<ul>
+<li>
+<p>function: used ‘locally” to get frame from one interface to  another <strong>physically-connected</strong> interface (same network, in IP-addressing sense)</p>
+</li>
+<li>
+<p>48 bit (<strong>6 bytes</strong>) MAC address (for most LANs) <strong>burned (固化)</strong>  <strong>in NIC ROM</strong>, also sometimes software settable, <strong>2^48^ possible</strong>  MAC address</p>
+</li>
+<li>
+<p>e.g.: 1A-2F-BB-76-09-AD（16进制）</p>
+</li>
+<li>
+<p>it is not a node(that is, host or router) that has a link-layer address but instead a node’s adapter that has a link-layer address</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>重要的是注意到链路层交换 机并不具有与它们的接口（这些接口是与主机和路由器相连的）相关联的链路层地址。这是因为链路层交换机的任务是在主机与路由器之间承载数据报;交换机透明地执行该项任务，这就是说，主机或路由器不必明确地将帧寻址到其间的交换机</code></p>
+<ul>
+<li>linklayer address：<strong>LAN address</strong> = <strong>physical address</strong> = <strong>MAC address</strong></li>
+<li><strong>each adapter</strong> on LAN has <strong>unique</strong> LAN address (host, router, switch)</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net8.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>MAC address allocation administered by IEEE (Institute of  Electrical and Electronics Engineers,电气和电子工程师协会)</li>
+<li>manufacturer buys portion of MAC address space (to assure  uniqueness (唯一性))</li>
+<li>Analogy(类比):
+<ul>
+<li>MAC address: like <strong>Social Security Number</strong> (no changes anywhere)</li>
+<li>IP address: like <strong>postal address</strong></li>
+</ul>
+</li>
+<li>MAC flat (扁平结构) (as opposed to a hierarchical structure)  address ➜ <strong>portability(便于携带)</strong>
+<ul>
+<li>can move adapter card from one LAN to another</li>
+</ul>
+</li>
+<li>IP hierarchical (层次结构) address ➜ <strong>not portable</strong>
+<ul>
+<li>address depends on IP subnet to which node is attached</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-4-2-Address-Resolution-Protocol-ARP">5.4.2 Address Resolution Protocol (ARP)</h3>
+<ul>
+<li>In a subnet, node want to send a  datagram, source must give its adapter  not only the IP datagram but also the  MAC address</li>
+</ul>
+<p><code>Question: how to determine interface’s MAC address,  knowing its IP address?</code></p>
+<ul>
+<li>
+<p>ARP table: each IP node (host,  router) on LAN has table in memory</p>
+<ul>
+<li>IP/MAC address mappings for  some LAN nodes: &lt; <strong>IP address; MAC address; TTL</strong>&gt;</li>
+<li>TTL (Time To Live): time after  which address mapping will be  forgotten (typically 20 min)</li>
+</ul>
+</li>
+<li>
+<p>ARP protocol: <strong>in same  subnet (在子网内)</strong></p>
+<ul>
+<li>
+<p>A wants to send datagram to B</p>
+<ul>
+<li>but B’s MAC address not in A’s  ARP table</li>
+</ul>
+</li>
+<li>
+<p>A broadcasts ARP query packet,  containing B’s IP address</p>
+<ul>
+<li>dest MAC address = FF-FF-FFFF-FF-FF(目标IP：B的IP)</li>
+<li>all nodes on LAN receive ARP query</li>
+</ul>
+</li>
+<li>
+<p>B receives ARP packet, replies  to A with its (B’s) MAC address</p>
+<ul>
+<li>
+<p>frame sent to A’s MAC address  (unicast)</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net9.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>A <strong>caches (saves) IP-to-MAC address pair</strong> in its ARP  table <strong>until information becomes old (times out)</strong></p>
+<ul>
+<li>soft state: information that times out (goes away)  unless refreshed</li>
+</ul>
+</li>
+<li>
+<p>ARP is <strong>“plug-and-play”即插即用:</strong></p>
+<ul>
+<li>nodes create their ARP tables without intervention (干 预) from net administrator</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Addressing: routing to another  subnet (路由到其他子网)</p>
+<p>walkthrough: send datagram from A to C via R</p>
+<ul>
+<li>focus on addressing – at IP (datagram) and MAC layer  (frame)</li>
+<li>assume A knows C’s IP address</li>
+<li>assume A knows IP address of first hop router, R (how?)</li>
+<li>assume A knows R’s MAC address (how?)</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net10.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>A creates IP datagram with IP source A, destination C</li>
+<li>A creates link-layer frame with R’s MAC address as dest,  frame contains A-to-C IP datagram</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net11.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>frame sent from A to R</li>
+<li>frame received at R, datagram removed, passed up to IP layer</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net12.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>R forwards datagram with IP source A, destination C  (<strong>forwarding table</strong>)</li>
+<li>R creates link-layer frame with <strong>C’s MAC address (ARP)</strong> as  dest, frame contains A-to-C IP datagram</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net13.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="Ethernet">Ethernet</h3>
+<p>“dominant” wired LAN technology (主流有线局域网技术):</p>
+<ul>
+<li>cheap $20 for NIC</li>
+<li>reasons for the success
+<ul>
+<li>first widely used LAN technology</li>
+<li>simpler, cheaper than token ring (令牌环), FDDI(光纤分布式数据接口) and ATM</li>
+<li>kept up with speed race: 10 Mbps – 10 Gbps</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net14.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Ethernet: physical  topology</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net15.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p><strong>bus (总线型拓扑结构)</strong>: popular through mid 90s</p>
+<ul>
+<li>a broadcast LAN, use CSMA/CD</li>
+<li>all nodes in same collision domain (can collide with each other)</li>
+</ul>
+</li>
+<li>
+<p><strong>star(星型拓扑结构)</strong>: late 90s</p>
+<ul>
+<li>hub-based star topology, active hub (集线器) in center</li>
+<li>hub: a physical-layer(物理层) device that acts on individual bits rather than  frames</li>
+<li>boosts (放大) its energy strength and transmits the bit onto all the interfaces</li>
+<li>also a broadcast LAN, use CSMA/CD</li>
+<li>receives frames from two different interfaces at the same time, collision  occurs</li>
+</ul>
+</li>
+<li>
+<p>star (星型拓扑结构): prevails today (from early 2000s)</p>
+<ul>
+<li>
+<p>switch (交换机) star topology  active switch in center</p>
+</li>
+<li>
+<p>each “spoke” runs a (separate) Ethernet protocol (nodes  do not collide with each other), do not need CSMA/CD!</p>
+</li>
+<li>
+<p>switch operates up through layer 2</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net16.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Ethernet frame  structure</p>
+<ul>
+<li>sending adapter encapsulates <strong>IP datagram</strong> (or other  network layer protocol packet也可承载其他网络层协议 数据包) in <strong>Ethernet frame</strong></li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net17.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>preamble(前同步码, 8 bytes):
+<ul>
+<li>7 bytes with pattern 10101010 followed by 1 byte with  pattern 10101011</li>
+<li>used to <strong>synchronize</strong> receiver, sender <strong>clock rates</strong></li>
+<li><strong>addresses</strong>: <strong>6 byte</strong> source, destination MAC addresses
+<ul>
+<li>if adapter receives frame with <strong>matching destination address</strong>,  or with broadcast address (e.g. ARP packet), it passes data in  frame to network layer protocol</li>
+<li>otherwise, adapter <strong>discards</strong> frame</li>
+</ul>
+</li>
+<li><strong>type(2 bytes)</strong>: indicates higher layer protocol (mostly IP but others possible, e.g., <strong>Novell IPX, AppleTalk</strong>)</li>
+<li>Data(46-1,500bytes): <strong>&gt; 1500, fragment(分段)</strong> the  datagram; <strong>&lt;46</strong>, stuffed to <strong>fill it out</strong> (填充)</li>
+<li><strong>CRC (4 bytes)</strong>: cyclic redundancy check at receiver
+<ul>
+<li>error detected: frame is <strong>dropped</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Ethernet: unreliable,  connectionless</p>
+<ul>
+<li>unreliable (不可靠): receiving NIC <strong>doesnt</strong> send <strong>acks</strong> or <strong>nacks</strong> to sending NIC
+<ul>
+<li>if <strong>fails</strong> CRC check, <strong>discards</strong> the frame</li>
+<li>data in dropped frames recovered only if initial sender uses  higher layer rdt (e.g., TCP), otherwise dropped data lost</li>
+</ul>
+</li>
+<li><strong>connectionless(无连接)</strong>: no handshaking between sending  and receiving NICs (Recall: IP’s layer-3 datagram service,  UDP’s layer-4 service)</li>
+<li>Ethernet’s MAC protocol: <strong>unslotted CSMA/CD wth binary  backoff</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="Hubs-集线器">Hubs (集线器)</h3>
+<ul>
+<li><strong>physical-layer (“dumb”) repeaters (转发器):</strong>
+<ul>
+<li>receives a signal on the input side, and regenerates the  signal on the output side</li>
+</ul>
+</li>
+<li><strong>physical-layer Hubs (集线器):</strong>
+<ul>
+<li>bits coming <strong>in one link</strong> go out <strong>all other links</strong> at same rate</li>
+<li>all nodes connected to hub can <strong>collide</strong> with one another</li>
+<li><strong>no frame buffering</strong></li>
+<li>no <strong>CSMA/CD</strong> at hub: host NICs detect collisions</li>
+</ul>
+</li>
+</ul>
+<p>Note:</p>
+<p>Repeater -&gt; physical-layer (layer -1)</p>
+<p>Hubs -&gt; physical-layer (layer -1)</p>
+<p>Switch -&gt; link-layer (layer -2)</p>
+<p>Router -&gt; network-layer (layer-3)</p>
+<ul>
+<li>
+<p>Link-Layer switch</p>
+<ul>
+<li>link-layer device: takes an active role
+<ul>
+<li>store, forward <strong>Ethernet frames</strong></li>
+<li>examine incoming frame’s <strong>MAC address</strong>, <strong>selectively</strong>  <strong>forward frame</strong> to one-or-more outgoing links when  frame is to be forwarded on segment, uses <strong>CSMA/CD</strong> to access segment</li>
+<li>output interfaces <strong>have buffers</strong></li>
+</ul>
+</li>
+<li>transparent(透明性)
+<ul>
+<li>hosts are <strong>unaware</strong> of presence of switches</li>
+</ul>
+</li>
+<li><strong>plug-and-play device (self-learning 自学习)</strong>
+<ul>
+<li>switches <strong>do not need</strong> to be configured</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Switch: multiple  simultaneous transmissions</p>
+<ul>
+<li>
+<ul>
+<li>hosts have dedicated, direct  connection to switch</li>
+<li>switches <strong>buffer</strong> packets</li>
+<li>Ethernet protocol used on  each incoming link, but <strong>no  collisions; full duplex (全双工)</strong>
+<ul>
+<li>each link is its own <strong>collision  domain (冲突域)</strong></li>
+</ul>
+</li>
+<li><strong>switching</strong>: A-to-A’ and B-to-B’ can transmit simultaneously,  without collisions</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net18.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>Note: Hubs 不能隔离冲突域(collision domain)和广播域(broadcast domain)</p>
+<p>​           Switch：可隔离冲突域，不能隔离广播域</p>
+<p>​           Router：可隔离冲突域和广播域</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Switch forwarding table</p>
+<ul>
+<li>
+<p><strong>Filtering (过滤)</strong>: determines a frame  forward or dropped</p>
+</li>
+<li>
+<p><strong>Forwarding(转发)</strong>: determines interfaces  should be directed and moved</p>
+</li>
+<li>
+<p>Q: how does switch know A’ reachable via  interface 4, B’ reachable via interface 5?</p>
+<p>A: each switch has a switch table(交换 表), each entry:</p>
+<ul>
+<li>(MAC address of host, interface to  reach host, time stamp)</li>
+<li>looks like a routing table!</li>
+</ul>
+<p>Q: how are entries created,  maintained in switch table?  something like a routing protocol?</p>
+<p>One important difference: switches  forward packets <strong>based on MAC  address</strong> rather than IP address</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net19.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>How filtering and forwarding work?</p>
+</li>
+<li>
+<p>Suppose a frame with destination  address A arrives interface x</p>
+<p>(1) no entry in the table, forwards  frame to <strong>all interface except x</strong> (广播该帧到除x外的所有接口)</p>
+<p>(2) an entry in the table, associating A  with interface x, performs the  <strong>filtering function discarding the frame</strong>  (目标地址A对应的接口是x本身，丢弃帧)</p>
+<p>(3) an entry in the table, associating A  with interface y≠x, <strong>forwards frame to interface y</strong> (目标地址A对应的接口不等 于x，转发帧)</p>
+</li>
+<li>
+<p>Q: how the table configured? <strong>no need</strong>!</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Switch: self-learning  (自学习)</p>
+<ul>
+<li>
+<p>switch learns which hosts  can be reached through  which interfaces</p>
+<ul>
+<li>when frame received,  switch “learns” location  of sender: incoming LAN  segment</li>
+<li>records sender/location  pair in switch table</li>
+<li><strong>plug-and-play devices (即插即用设备)</strong></li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net22-165486261625422.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>filtering/forwardin</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">when frame received at <span class="hljs-keyword">switch</span>:<br>    <span class="hljs-number">1.</span> record incoming link, MAC address of sending host<br>    <span class="hljs-number">2.</span> index <span class="hljs-keyword">switch</span> table using MAC destination address<br>    <span class="hljs-number">3.</span> <span class="hljs-keyword">if</span> entry found <span class="hljs-keyword">for</span> destination<br>            then &#123;<br>            <span class="hljs-keyword">if</span> destination on segment <span class="hljs-keyword">from</span> which frame arrived<br>                then drop frame<br>            	<span class="hljs-keyword">else</span> forward frame on <span class="hljs-keyword">interface</span> <span class="hljs-symbol">indicated</span> <span class="hljs-symbol">by</span> <span class="hljs-symbol">entry</span><br>            &#125;<br>			<span class="hljs-symbol">else</span> <span class="hljs-symbol">flood</span> /* <span class="hljs-symbol">forward</span> <span class="hljs-symbol">on</span> <span class="hljs-symbol">all</span> <span class="hljs-symbol">interfaces</span> <span class="hljs-symbol">except</span> <span class="hljs-symbol">arriving</span> <span class="hljs-symbol">interface</span> */<br><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Interconnecting switches</p>
+<p>switches can be connected together</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net23.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>Q: sending from A to G - how does S1 know to forward frame  destined to G via S4 and S3?</p>
+<p>A: self learning! (works exactly the same as in single-switch  case!)</p>
+<p>Suppose C sends frame to I, I responds to C</p>
+<p>Q: show switch tables and packet forwarding in S1 , S2 ,  S3 , S4</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net24.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Switches vs. routers</p>
+<ul>
+<li>
+<p>(1) both are store-andforward:</p>
+<p><strong>routers</strong>: network-layer  devices (examine <strong>network-layer</strong> headers)</p>
+<p><strong>switches</strong>: link-layer devices  (examine <strong>link-layer</strong> headers)</p>
+</li>
+<li>
+<p>(2) both have forwarding  tables:</p>
+<p>routers: <strong>routing table(路由表)</strong>, compute tables using  <strong>routing algorithms</strong>, forward  using <strong>IP addresses</strong></p>
+<p>switches: <strong>switch table(交换表)</strong>, learn forwarding table  using <strong>flooding</strong>, forward using  <strong>MAC addresses</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net25.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="PPP-Design-Requirements-RFC-1557">PPP Design Requirements  [RFC 1557]</h3>
+<ul>
+<li><strong>packet framing</strong>: encapsulation of network-layer  datagram in data link frame   carry network layer data of any network layer protocol (not  just IP) at same time  ability to demultiplex upwards</li>
+<li><strong>bit transparency (透明性)</strong>: must <strong>carry any bit</strong> pattern in  the data field</li>
+<li><strong>error detection</strong> (no correction)</li>
+<li><strong>connection liveness (活跃性)</strong>: detect, signal link failure  to network layer</li>
+<li><strong>network layer address negotiation</strong>: endpoint can  learn/configure each other’s network address</li>
+</ul>
+<p>PPP non-requirements</p>
+<ul>
+<li>no error correction/recovery</li>
+<li>no flow control</li>
+<li>out of order delivery OK</li>
+<li>no need to support multipoint links (e.g., polling)</li>
+</ul>
+<p>Error recovery, flow control, data re-ordering  all relegated (委托) to higher layers!</p>
+<p>PPP Data Frame</p>
+<ul>
+<li><strong>Flag</strong>: delimiter 分隔符(framing), starting with 01111110</li>
+<li><strong>Address</strong>: does nothing (only one option), in the future  possible use</li>
+<li><strong>Control</strong>: does nothing; in the future possible multiple  control fields</li>
+<li><strong>Protocol</strong>: upper layer protocol to which frame delivered  (eg, PPP-LCP, <strong>IP</strong>, IPCP, etc)</li>
+<li><strong>info</strong>: upper layer data being carried (max. 1500 bytes)</li>
+<li><strong>check</strong>: cyclic redundancy check for error detectio</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net26.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>Byte Stuffing</p>
+<ul>
+<li>
+<p>“data transparency” requirement: data field must be  allowed to include flag pattern &lt;01111110&gt;</p>
+</li>
+<li>
+<p>Q: is received &lt;01111110&gt; data or flag?</p>
+</li>
+<li>
+<p>Sender: adds (“stuffs”) extra &lt; 01111101&gt; (转义字符)  byte after each &lt; 01111110&gt; data byte</p>
+</li>
+<li>
+<p>Receiver:</p>
+<ul>
+<li>single 01111110: flag byte</li>
+<li>single 01111101+ 01111110: discard first byte, continue data  reception，后面跟的不是flag，而是数据</li>
+<li>two 01111101 bytes in a row: discard first byte, continue data  reception，后面跟的不是转义字符，而是数据</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net27.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<p>PPP Data Control  Protocol</p>
+<ul>
+<li>
+<p>Before exchanging networklayer data, data link peers  must</p>
+<ul>
+<li>configure PPP link (max.  frame length, authentication)</li>
+<li>learn/configure network  layer information
+<ul>
+<li>for IP: carry IP Control  Protocol (IPCP) msgs (protocol  field: 8021) to configure/learn  IP addresss</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/net28.jpg" srcset="/img/loading.gif" lazyload class=""></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" title="第一章-操作系统概述">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第一章-操作系统概述</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/" title="第四章-网络层（四）">
+                        <span class="hidden-mobile">第四章-网络层（四）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

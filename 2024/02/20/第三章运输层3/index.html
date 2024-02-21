@@ -1,0 +1,830 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3.4.2 Pipelined Reliable Data Transfer Protocols，流水线可靠数据传输协议  Protocol rdt3.0 is a functionally correct protocol. At the heart of rdt3.0’s performance problem is the fact that it is a stop-and-wait pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-运输层（三）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%823/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3.4.2 Pipelined Reliable Data Transfer Protocols，流水线可靠数据传输协议  Protocol rdt3.0 is a functionally correct protocol. At the heart of rdt3.0’s performance problem is the fact that it is a stop-and-wait pr">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2024-02-20T04:40:44.575Z">
+<meta property="article:modified_time" content="2024-02-20T06:24:47.324Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>第三章-运输层（三） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-运输层（三）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-运输层（三）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="3-4-2-Pipelined-Reliable-Data-Transfer-Protocols，流水线可靠数据传输协议">3.4.2 Pipelined Reliable Data Transfer Protocols，流水线可靠数据传输协议</h3>
+<ul>
+<li>Protocol rdt3.0 is a functionally correct protocol. At the heart of rdt3.0’s performance problem is the fact that it is a stop-and-wait protocol</li>
+<li>定义发送方（或信道）的**利用率（utilization）**为：发送方实际忙于将 发送比特送进信道的那部分时间与发送时间之比：$$U~sender~=\frac{L/R}{RTT+L/R}$$</li>
+<li>**流水线(pipelining)**技术对可靠数据传输协议可带来如下影响∶
+<ul>
+<li>the range of <strong>sequence numbers</strong> must be increased,增加序号范围
+<ul>
+<li>since each in-transit packet (not counting retransmissions)must have a unique sequence number and there may be multiple, in-transit, unacknowledged packets</li>
+</ul>
+</li>
+<li>the sender and receiver sides of the protocols may have to <strong>buffer</strong> more than one packet,缓存多个分组
+<ul>
+<li>Minimally, the <u>sender</u> will have to buffer packets that <strong>have been transmitted but not yet acknowledged</strong>,发送但未被确认</li>
+<li>Buffering of <strong>correctly received packets</strong> may also be needed at the <u>receiver</u>，已正确接收</li>
+</ul>
+</li>
+<li>The <u>range of sequence numbers</u> needed and the <u>buffering requirements</u> will depend on the manner in which a <u>data transfer protocol</u> responds to lost, corrupted, and overly delayed packets
+<ul>
+<li>Two basic approaches toward pipelined error recovery(流水线的差错恢复) can be identified
+<ul>
+<li><strong>Go-Back-N</strong>，GBN，回退N步</li>
+<li><strong>selective repeat</strong>，SR，选择重传</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-4-3-Go-Back-N-GBN">3.4.3 Go-Back-N(GBN)</h3>
+<ul>
+<li>
+<p>In a Go-Back-N(GBN)protocol, the <u>sender</u> is allowed to transmit multiple packets (when available) <strong>without waiting for an acknowledgment</strong></p>
+</li>
+<li>
+<p>it is constrained(受限于) to have no more than some <u>maximum</u> allowable number,N, of <strong>unacknowledged packets</strong> in the pipeline，未确认的分组数不能超过某个最大允许数N</p>
+
+<ul>
+<li>send_base: sequence number of the oldest unacknowledged packet，最早的未确认分组的序号</li>
+<li>nextseqnum: smallest unused sequence number，为最小的未使用序号（即下一个待发分组的序号）</li>
+<li>[ 0 , send_base-1 ] : packets that already been transmitted and acknowledged，已经发送并被确认的分组</li>
+<li>[ send_base , nextseqnum-1 ] : packets that been sent but not yet acknowledged，应已经发送但未被确认</li>
+<li>[ nextseqnum , send_base+N-1 ] : can be used for packets that can be sent  immediately，些要被立即发送的分组</li>
+<li>[ send_base+N,  ] : cannot be used until the packet with sequence number  send_base has been acknowledged</li>
+<li>window size N: maximum allowable number of consecutive(连续的) unacknowledged packets in the pipeline</li>
+</ul>
+</li>
+<li>
+<p>N is often referred to as the window size and the <u>GBN</u> protocol itself as a <strong>sliding-window protocol</strong>(滑动窗口协议)</p>
+</li>
+<li>
+<p>为什么不允许数据报的数量是无限的？=》flow control and congestion control</p>
+</li>
+<li>
+<p>In practice, a packet’s <strong>sequence number</strong> is carried in a <strong>fixed-length field</strong> in the packet <strong>header</strong></p>
+<ul>
+<li>if <strong>k</strong> is the number of bits in the packet <u>sequence number field</u>, <u>the range of sequence numbers</u> is thus <strong>[0,2^k^-1]</strong></li>
+<li><strong>TCP</strong> has a <strong>32-bit sequence number field</strong>, where TCP sequence numbers count bytes in the byte stream rather than packets(注意：TCP序号是按字节流中的字节进行计数的，而不是按分组计数)</li>
+</ul>
+</li>
+<li>
+<p>扩展 FSM：增加了变量（类似 于编程语言中的变量）base和 nextseqnum，还增加了对这些变量的操作以及与这些变量有关的条件动作</p>
+
+
+</li>
+<li>
+<p>CBN 发送方必须响应三种类型的事件∶</p>
+<ul>
+<li>
+<p>Invocation from above，上层的调用</p>
+<ul>
+<li>When rdt_send()is called from above, the sender <u>first</u> checks to see <strong>if the window is full</strong>
+<ul>
+<li>not full-&gt; a packet is created and sent、variables are appropriately updated,更新变量</li>
+<li>full-&gt;the  sender simply returns the data back to the upper layer（ an implicit indication that the window is full，隐式地指示窗口已满）
+<ul>
+<li>In a real implementation, the sender would more likely have either <strong>buffered</strong> (but not immediately sent) this data</li>
+<li>or would have a synchronization mechanism(同步机制) (for example, a semaphore or a flag) that would allow the upper layer to call rdt_send () only when the window is not full</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Receipt of an ACK</p>
+</li>
+<li>
+<p>In our GBN protocol, an acknowledgment for a packet with sequence number n will be taken to be a <strong>cumulative acknowledgment</strong>(累积确认). indicating that all packets with a sequence number up to and including n have been correctly received at the receiver</p>
+</li>
+<li>
+<p>A timeout event</p>
+<ul>
+<li>
+<p>single timer, for oldest in-flight(unacked) pkt</p>
+</li>
+<li>
+<p>if a timeout occurs, the <strong>sender</strong> resends all packets that have been previously sent but that have not yet been acknowledged，重传所有已发送但还未被确认过的分组</p>
+</li>
+<li>
+<p>if an ACK is received but there are still additional transmitted but not yet acknowledged packets, the timer is restarted，仍有已发送但未被确认的分组，则定时器被重新启动</p>
+</li>
+<li>
+<p>If there are no outstanding, unacknowledged packets, the timer is stopped，没有已发送但未被确认的分组，该定时器被终止</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ACK-only: always send ACK for correctly-received pkt with highest  in-order seq #</p>
+<ul>
+<li>may generate duplicate ACKs</li>
+<li>need only remember expectedseqnum</li>
+</ul>
+</li>
+<li>
+<p>out-of-order pkt:</p>
+<ul>
+<li>discard (don’t buffer): no receiver buffering!(注意)</li>
+<li>re-ACK pkt with highest in-order seq #</li>
+</ul>
+</li>
+</ul>
+
+<h3 id="3-4-4-Selective-Repeat-SR-，选择重传">3.4.4 Selective Repeat (SR)，选择重传</h3>
+<ul>
+<li>The <u>GBN</u> protocol allows the sender to potentially “fill the pipeline” with packets, thus avoiding the <u>channel utilization problems</u>(信道利用率问题) we noted with stop-and-wait protocols</li>
+<li>GBN 本身也有一些情况存在着性能问题
+<ul>
+<li><u>retransmit a large number  of packets</u> if <u>window size and bandwidth-delay large</u>
+<ul>
+<li>A single packet error can thus cause GBN to retransmit a large number of packets, many unnecessarily，单个分组的差错就能够引起GBN重传大量分组，许多分组根本没有必要重传</li>
+<li>As the probability of channel errors increases, the pipeline can become filled with these unnecessary retransmissions，随着信道差错率的增加，流水线可能会被这些不必要重传的分组所充斥</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>selective-repeat protocols <u>avoid unnecessary retransmissions</u> by having the sender retransmit only those packets that <u>it suspects were received in error</u>(that is, were lost or corrupted) at the receiver</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>R发送方的事件与动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data received from above</strong><br />When data is received from above, the SR sender checks the next available sequence number for the packet<br />If the sequence number is within the sender’s window, the data is packetized and sent<br />otherwise it is either buffered or returned to the upper layer for later transmission, as in GBN</td>
+</tr>
+<tr>
+<td><strong>Timeout</strong><br />Timers are again used to protect against lost packets.<br />However,<u>each</u> packet must now have its own logical timer, since <u>only</u> a single packet will be transmitted on timeout<br /></td>
+</tr>
+<tr>
+<td><strong>ACK received</strong><br />if an ACK is received, the SR sender <u>marks</u> that packet as having been received, <u>provided it is in the window</u><br />If the packet’s sequence number is equal to send_base, the window base is moved forward to the unacknowledged packet with the <u>smallest sequence number</u>，窗口基序号向前移动到具有最小序号的未确认分组处<br />If the window moves and there are untransmitted packets with sequence numbers that now fall within the window, these packets are transmitted，有序号落在窗口内的未发送分组，则发送这些分组</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>R 接收方的事件与动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Packet with sequence number in [rcv base,rcv_base+N-1]is correctly received</strong><br /> In this case, the received packet falls within the receiver’s window and a selective ACK packet is returned to the sender<br />If the packet was <u>not previously received</u>, it is <u>buffered</u><br />If this packet has a sequence number equal to the base of the receive window(ev_base), then this packet, and any previously buffered and consecutively numbered (beginning with rcv_base)packets are delivered to the upper layer. The receive window is then moved forward by the number of packets delivered to the upper layer,接收窗口按向前移动分组的编号向上交付这些分组</td>
+</tr>
+<tr>
+<td>序号在[rcv_base-N，rev_base-1]内的分组被正确收到。在此情况下，必须产生一个ACK，即使该分组 是接收方以前已确认过的分组</td>
+</tr>
+<tr>
+<td>其他情况，忽略该分组</td>
+</tr>
+</tbody>
+</table>
+
+<p>==sender==</p>
+<p>data from above:</p>
+<ul>
+<li>if next available seq # in  window, send pkt</li>
+</ul>
+<p>timeout(n):</p>
+<ul>
+<li>resend pkt n, restart timer</li>
+</ul>
+<p>ACK(n) in  [sendbase,sendbase+N-1]:</p>
+<ul>
+<li>mark pkt n as received</li>
+<li>if n is smallest unACKed pkt (n=send_base), move forward  window base to next  unACKed seq #</li>
+</ul>
+<p>==receiver==</p>
+<p>pkt n in [rcvbase, rcvbase+N-1]</p>
+<ul>
+<li>send ACK(n)</li>
+<li>out-of-order: buffer</li>
+<li>in-order (n=recv_base):
+<ul>
+<li>deliver (also deliver  buffered, in-order pkts),  move forward window to  next not-yet-received pkt</li>
+</ul>
+</li>
+<li>pkt n in [rcvbase-N,rcvbase-1]
+<ul>
+<li>send ACK(n), although  previously acknowledged</li>
+</ul>
+</li>
+<li>otherwise: ignore</li>
+</ul>
+
+
+<ul>
+<li>
+<p>接收方重新确认（而不是忽略）已收到过的那些序号小于当前窗口基序号的分组，意味着发送方和接收方的窗口并不总是一致</p>
+</li>
+<li>
+<p>Selective repeat: dilemma (困境)</p>
+
+</li>
+<li>
+<p>没有办法区分是一个分组的重传还是一个分组的初次传输，窗口大小的影响（对于 SR 协议而言，窗口长度比须小于或等于序号空间大小的一半）</p>
+</li>
+<li>
+<p>靠数据传输机制及其用途的总结</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>用途和说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checksum [first rdt 2.0]</td>
+<td>Used to detect <strong>bit errors</strong> in a transmitted packet</td>
+</tr>
+<tr>
+<td>Acknowledgment [first rdt 2.0]</td>
+<td>Used by the receiver to tell the sender that a packet or set of  packets has been received correctly. Acknowledgments may be  individual or cumulative, depending on the protocol</td>
+</tr>
+<tr>
+<td>Negative acknowledgment [first rdt 2.0]</td>
+<td>Used by the receiver to tell the sender that a packet has not been  received correctly. Carry the sequence number of the packet that  was not received correctly</td>
+</tr>
+<tr>
+<td>Sequence number [first rdt 2.1]</td>
+<td>Used for sequential numbering of packets of data flowing from  sender to receiver. Gaps and duplicate in the sequence numbers of  received packets to detect a lost and duplicate copies of a packet</td>
+</tr>
+<tr>
+<td>Timer [first rdt 3.0]</td>
+<td>Used to timeout/retransmit a packet, possibly because the packet  (or its ACK) was lost within the channel. duplicate copies of a packet  may be received by a receiver</td>
+</tr>
+<tr>
+<td>Window, pipelining [first rdt 3.0+]</td>
+<td>allowing multiple packets to be transmitted but not yet  acknowledged, sender utilization can be increased over a stop-and<br />wait mode of operation.  the window size may be set on the basis of the receiver’s ability to  receive and buffer messages, or the level of congestion in the  network, or both</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/" title="第三章-运输层（四）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（四）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/" title="第三章-运输层（二）">
+                        <span class="hidden-mobile">第三章-运输层（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

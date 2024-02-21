@@ -1,0 +1,899 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.2The Web and HTTP 2.2.1 Overview of HTTP   The HyperText Transfer Protocol (HTTP), the Web’s application-layer protocol, is at the heart of the Web   HTTP is implemented（实现） in two programs：a client">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-应用层（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.2The Web and HTTP 2.2.1 Overview of HTTP   The HyperText Transfer Protocol (HTTP), the Web’s application-layer protocol, is at the heart of the Web   HTTP is implemented（实现） in two programs：a client">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/172121.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/neta.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.557Z">
+<meta property="article:modified_time" content="2024-02-20T05:48:54.976Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/172121.jpg">
+  
+  
+  
+  <title>第二章-应用层（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-应用层（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-应用层（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>2.2The Web and HTTP</h1>
+<h3 id="2-2-1-Overview-of-HTTP">2.2.1 Overview of HTTP</h3>
+<ul>
+<li>
+<p>The <strong>HyperText Transfer Protocol (HTTP)</strong>, the Web’s application-layer protocol, is at the <u>heart</u> of the Web</p>
+</li>
+<li>
+<p>HTTP is implemented（实现） in two programs：a client program and a server program</p>
+</li>
+<li>
+<p>client program and server programa talk to each other by exchanging HTTP messages</p>
+</li>
+<li>
+<p>HTTP defines the <strong>structure</strong> of these messages and <u>how the client and server exchange the messages</u></p>
+</li>
+<li>
+<p>Web terminology</p>
+
+<ul>
+<li>URL：<a target="_blank" rel="noopener" href="http://xn--tiqt5l0ys//%E8%B7%AF%E5%BE%84%E5%90%8D">http://主机名//路径名</a></li>
+<li>Web servers：implement the server side of HTTP, house Web objects, each addressable by a URL，Web 服务器实现了HTTP的服务器端，它用于<strong>存储 Web 对象，每个对象由 URL寻址</strong></li>
+</ul>
+</li>
+<li>
+<p>HTTP defines how Web clients request Web pages from Web servers and how servers transfer Web pages to clients，HTTP定义了Web客户向Web服务器请求服务器的服务器 Web 页面的方式，以及服务器向客户传送Web页面的方式</p>
+</li>
+<li>
+<p>HTTP uses <strong>TCP</strong> as its <u>underlying transport protocol</u>（底层传输协议）</p>
+</li>
+<li>
+<p>the HTTP client first initiates a TCPconnection with the server. Once the connection is established, the browser and the server processes access TCP through their socket interfaces，HTTP客户首先发起一个与服务器的TCP 连接。一旦连接建立，该浏览器和服务器进程就可以通过套接字接口访问TCP</p>
+</li>
+<li>
+<p>:star:the server sends requested files to clients <strong>without storing any state information about the client</strong></p>
+</li>
+<li>
+<p>HTTP server maintains no information about the clients（ HTTP ：a <strong>stateless</strong> protocol，无状态协议）</p>
+</li>
+</ul>
+<h3 id="2-2-2-Non-Persistent-and-Persistent-Connections，非持续连接和持续连接">2.2.2 Non-Persistent and Persistent Connections，非持续连接和持续连接</h3>
+<ul>
+<li>default mode：Persistent Connection</li>
+</ul>
+<h6 id="HTTP-with-Non-Persistent-Connections">HTTP with Non-Persistent Connections</h6>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/172121.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>the HTTP client process initiates a TCP connection to the serve on port number 80.Associated with the TCP connection, there will be a socket at the client and a socket at the server</p>
+</li>
+<li>
+<p>he HTTP client sends an HTTPrequest message to the server via its socket. The request message includes the path name</p>
+</li>
+<li>
+<p>the HTTP server process receives the request message via its socket, retrieves the object, ,encapsulates the object in an HTTP response message,and sends the response message to the client via its socket</p>
+</li>
+<li>
+<p>the HTTP server process tells TCP to close the TCP connection.(But TCP doesn’t actually terminate the connection until it knows for sure that the client has received the response message intact.)</p>
+</li>
+<li>
+<p>The HTTP client receives the response message. The TCP connection terminates. The message indicates that the encapsulated object is an HTML file. The client extracts（提取） the file from the response message,examines the HTML file, and finds references to the 10 JPEG objects.</p>
+</li>
+<li>
+<p>the first four steps are then repeated for each of the referenced JPEG objects.</p>
+</li>
+<li>
+<p>HTTP has nothing to do with how a Web page is interpreted by a client，HTTP与客户如何解释一个Web页面毫无关系</p>
+<p>The HTTP specifications define only the <strong>communication protocol</strong> between the client HTTP program and the server HTTP program</p>
+</li>
+<li>
+<p>users can configure modern browsers to control the degree of parallelism. In their default modes, most browsers open 5 to 10 parallel TCP connections, and each of these connections handles one request-response transaction</p>
+</li>
+<li>
+<p>round-trip time (RTT)：往返时间</p>
+<ul>
+<li>
+<p>RTT= <strong>packet-propagation delays</strong>+<strong>packet-queuing delays</strong> in intermediate routers and switches+<strong>packet-processing delays</strong></p>
+</li>
+<li>
+<p>例：点击一个超链接</p>
+<ul>
+<li>
+<p>the browser to initiate a TCP connection between the browser and the Web server（involves a&quot;three-way handshake&quot;）</p>
+</li>
+<li>
+<p>the client sends a small TCP segment to the server</p>
+</li>
+<li>
+<p>the server acknowledges and responds with a small TCP segment</p>
+</li>
+<li>
+<p>the client acknowledges back to the server</p>
+</li>
+</ul>
+<p>（the first two parts of the three-way handshake take one RTT）</p>
+<ul>
+<li>the client sends the HTTP request message combined with the third part of he three-way handshake(the acknowledgment)into the TCP connection</li>
+<li>Once the request message arrives at the server, the server sends the HTML file into the TCP connection</li>
+<li>:star:the total response time is two RTTs plus the transmission time at the server of the HTML file</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.7.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>shortcomings</p>
+<ul>
+<li>a brand-new connection must be established and maintained for each requested object，必须为每一个请求的对象建立和维护一个全新的连接</li>
+<li>For each of these connections, <strong>TCP buffers</strong> must be allocated and <strong>TCP variables</strong> must be kept in both the client and server，在客户和服务器中都要分配 TCP的缓冲区和保持TCP变量</li>
+<li>can place a significant burden  on the Web server</li>
+<li>each object suffers a delivery delay of <strong>two RTTs</strong>— one RTT to <u>establish</u> the TCP connection and one RTT to <u>request</u> and receive an object.</li>
+</ul>
+</li>
+</ul>
+<h6 id="HTTP-with-Persistent-Connections">HTTP with Persistent Connections</h6>
+<ul>
+<li>These requests for objects can be made back-to-back, without waiting for replies to pending requests (pipelining，流水线）</li>
+<li>Typically,the HTTP server closes a connection when it isn’t used for a certain time (a configurable timeout interval）</li>
+<li>client sends requests as  soon as it encounters a  referenced object</li>
+<li>as little as <strong>one RTT</strong> for all  the referenced objects</li>
+<li>The <u>default mode</u> of HTTP uses <u>persistent</u> connections with <u>pipelining</u></li>
+</ul>
+<h3 id="2-2-3-HTTP-Message-Format">2.2.3 HTTP Message Format</h3>
+<h6 id="请求报文">请求报文</h6>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.8.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>written in ordinary ASCII text</li>
+<li>each line followed by a <u>carriage return（回车）</u> and a <u>line feed（换行）</u></li>
+<li>HTTP request message = request line(请求行，the first line) + the header lines（首部行）</li>
+<li>request line has three fields
+<ul>
+<li>the method field</li>
+<li>the URL field</li>
+<li>and the HTTP version field</li>
+</ul>
+</li>
+<li>the method field：
+<ul>
+<li>GET</li>
+<li>POST</li>
+<li>HEAD</li>
+<li>PUT</li>
+<li>DELETE</li>
+</ul>
+</li>
+<li>也许会认为该首部行是不必要的，因为在该主机中已经有一条TCP连接存在了。 但是该首部行提供的信息是<strong>Web代理高速缓存</strong>所要求的</li>
+<li>Connection: close =》Non-Persistent connection</li>
+<li>User-agent: =》the browser type that is making the request to the server</li>
+<li>useful：the server can actually <u>senddifferent versions</u>  of the same object to different types of user agents</li>
+<li>a request generated with a form does <u>not necessarily</u> use the POST method</li>
+<li>HEAD method：
+<ul>
+<li>it responds with an <strong>HTTP message</strong> but it <u>leaves out the <strong>requested object</strong></u></li>
+<li>always used in debugging</li>
+</ul>
+</li>
+<li>PUT method
+<ul>
+<li>allows a user to upload an object to a <u>specific</u> path (directory)on a <u>specific</u> Web server</li>
+<li>also used by <u>applications</u> that need to upload objects to Web servers</li>
+</ul>
+</li>
+<li>DELETE method
+<ul>
+<li>allows a user, or an application,to delete an object on a Web server</li>
+</ul>
+</li>
+</ul>
+<h6 id="response-Message">response Message</h6>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.9.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>status line + header lines + entity body</p>
+</li>
+<li>
+<p>status line = protocol version field + a status code+ a corresponding（对应的） status message</p>
+</li>
+<li>
+<p>Date: <strong>header line indicates</strong> the time and date when the <strong>HTTP response was created</strong> and <strong>sent by the server</strong></p>
+</li>
+<li>
+<p>Last-Modified: header line indicates the time and date when the <strong>object</strong> was created or last modif</p>
+</li>
+<li>
+<p>Content-Type: header line indicates that the object in the entity body is HTML text. (The object type is officially indicated by the Content-Type: header and not by the file extension.)</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>短语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>🆗</td>
+<td></td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>请求的对象已经被永久转移了，新的 URL定义在响应报文的Location∶首部行中。客户软件将自动获取新的 URL</td>
+</tr>
+<tr>
+<td>400</td>
+<td>bad Request</td>
+<td>this is a generic error code indicating that the request could not be understood by the server</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td></td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP Version Not Supported</td>
+<td>the requested HTTP protocol version is not supported by the server</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-4-User-Server-Interaction-Cookies，用户与服务器的交互">2.2.4 User-Server Interaction: Cookies，用户与服务器的交互</h3>
+<ul>
+<li>
+<p>it is often desirable for a Web site to identify users, either because the server wishes to restrict user access or because it wants to serve content as a function of the user identity</p>
+<p>一个 Web 站点通常希望能够识别用户，可能是因为服务器希望限制用户的访问，或者因为它希望把内容与用户身份联系起来</p>
+</li>
+<li>
+<p>cookies allow sites to keep <strong>track</strong> of users</p>
+</li>
+<li>
+<p>cookie technology has four components</p>
+<ul>
+<li>a <strong>cookie header line</strong> in the HTTP <strong>response</strong> message</li>
+<li>a <strong>cookie header line</strong> in the HTTP <strong>request</strong> message</li>
+<li>a <strong>cookie file</strong> kept on the <strong>user’s end system</strong> and <u>managed by the user’s browser</u></li>
+<li>a back-end database at the <strong>Web site</strong>，位于 Web 站点的一个后端数据库</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net2.10.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>Cookies can  be used to create a <strong>user session layer</strong> on top of stateless HTTP， cookie 可以在无状态的HTTP之上建立一个用户会话层</p>
+</li>
+<li>
+<p>what cookies can be used for</p>
+<ul>
+<li>authorization (授权)</li>
+<li>shopping carts (购物车)</li>
+<li>recommendations (推荐)</li>
+<li>user session state (Web email) 用户会话状态</li>
+</ul>
+</li>
+<li>
+<p>how to keep “state”:</p>
+<ul>
+<li>protocol endpoints: maintain state at  sender/receiver over multiple transactions</li>
+<li>cookies: make http messages <strong>carry state</strong>,  create a <strong>user session layer</strong> on top of  stateless http</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-5-Web-Caching，Web缓存">2.4.5 Web Caching，Web缓存</h3>
+<p>Cache：高速缓冲存储器</p>
+<ul>
+<li>
+<p>A Web cache—also called a proxy server—is a <strong>network entity</strong> that <u>satisfies HTTP requests</u> on the behalf of an <u>origin Web server</u></p>
+</li>
+<li>
+<p>goal: satisfy client request without involving origin  server</p>
+</li>
+<li>
+<p>Web cache has its own <u>disk storage</u> and keeps <u>copies of recently requested objects</u> in this storag</p>
+</li>
+<li>
+<p>typically proxy server is  installed by <strong>ISP</strong></p>
+</li>
+<li>
+<p>过程</p>
+<ul>
+<li>
+<p>The browser establishes a TCP connection to the Web cache and sends an HTTP request for the object to the Web cache</p>
+</li>
+<li>
+<p>the Web cache checks to see if it has a copy of the object stored locally. If it does, the Web cache returns the object within an HTTP response message to the client browser</p>
+</li>
+<li>
+<p>if the Web cache does not have the object, the Web cache opens a TCP connection to the origin server.The Web cache then sends an HTTP request for the object into the cache-to-server TCP connection. After receiving this request, the origin server sends the object within an HTTP response to the Web cache</p>
+</li>
+<li>
+<p>When the Web cache receives the object, it stores a copy in its local storage and sends a copy, within an HTTP response message, to the client browser(over the <u>existing</u> TCP connection between the client browser and the Web cache)</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/neta.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>在因特网上部署Web缓存器有两个原因:</p>
+<ul>
+<li>:small_blue_diamond:a Web cache can substantially(大幅地) reduce the <strong>response time</strong> for a client request</li>
+<li>:small_blue_diamond: Web caches can ubstantially reduce traffic on an institution’s access link to the Internet，Web缓存器能够大大减少一个机构的接入链路到因特网的通信量</li>
+<li>Furthermore,Web caches can substantially reduce <u>Web traffic</u> in the Internet as a whole, thereby improving performance for all applications，Web 缓存器能从整体上大大减低因特网上的 Web 流量，从而改善了所有应用的性能</li>
+<li>Internet dense with caches:  enables “poor” content  providers to effectively  deliver content (so too does  P2P file sharing)</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-6-The-Conditional-GET，条件GET方法">2.2.6 The Conditional GET，条件GET方法</h3>
+<ul>
+<li>HTTP has a mechanism that allows a cache to verify that its objects are <strong>up to date</strong></li>
+<li>Goal
+<ul>
+<li>origin server <u>don’t</u> send object if cache has <strong>up-to-date(最新的)</strong> cached  version</li>
+</ul>
+</li>
+<li>判断HTTP请求是一个条件GET方法：
+<ul>
+<li>the request message uses the GET method</li>
+<li>the request message includes an If-Modified-Since: header line，请求报文中包 含一个&quot;If-Modified-Since∶&quot;首部行</li>
+<li>origin server: response  contains <u>no</u> object if cached  copy is up-to-date:  HTTP/1.0 304 Not  Modified</li>
+<li>304 Not Modifie：Web server s the cache that it can go ahead and forard its(the proxy cache’s) cached copy of the object to the requesting browser</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%822/net.jpg" srcset="/img/loading.gif" lazyload class="">
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%823/" title="第二章-应用层（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第二章-应用层（三）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E5%BA%94%E7%94%A8%E5%B1%821/" title="第二章-应用层（一）">
+                        <span class="hidden-mobile">第二章-应用层（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

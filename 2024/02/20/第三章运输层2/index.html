@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3.3 Connectionless Transport: UDP，无连接运输∶UDP   UDP does just about as little as a transport protocol can do. Aside from the multiplexing&#x2F;demultiplexing function and some light error checking, it adds n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-运输层（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3.3 Connectionless Transport: UDP，无连接运输∶UDP   UDP does just about as little as a transport protocol can do. Aside from the multiplexing&#x2F;demultiplexing function and some light error checking, it adds n">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/net3.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/net3.10.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.572Z">
+<meta property="article:modified_time" content="2024-02-20T06:23:07.834Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/net3.9.jpg">
+  
+  
+  
+  <title>第三章-运输层（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-运输层（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-运输层（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>3.3 Connectionless Transport: UDP，无连接运输∶UDP</h1>
+<ul>
+<li>
+<p>UDP does just about <u>as little as</u> a transport protocol can do. Aside from the <strong>multiplexing/demultiplexing function</strong> and some <strong>light error checking</strong>, it adds nothing to IP</p>
+</li>
+<li>
+<p>Note that with UDP there is no handshaking between sending and receiving transport-layer entities before sending a segment. For this reason, UDP is said to be connectionless</p>
+</li>
+<li>
+<p><strong>DNS</strong> is an example of an application-layer protocol that typically uses UDP</p>
+</li>
+<li>
+<p>许多应用更适合用UDP的原因∶</p>
+<ul>
+<li>finer(更精细) application-level control over what data is sent, and when，关于何时、发送什么数据的应用层控制更为精细
+<ul>
+<li>TCP has a congestion-control mechanism. ( receipt, need acknowledging, egardless of how long reliable delivery takes)，不适于实时应用</li>
+</ul>
+</li>
+<li>No connection establishment，无需连接建立
+<ul>
+<li>UDP does not introduce any delay to establish a connection.不会引入建立连接的时延，可能是DNS运行在UDP之上而不是运行在TCP之上的主要原因</li>
+</ul>
+</li>
+<li>No connection state，无连接状态
+<ul>
+<li>TCP maintains connection state in the end systems（includeing receive and send buffers(接收和发送缓存), congestion-control parameters(拥塞控制参数), and sequence(序号) and acknowledgment number parameters(确认号的参数)），UDP不维护连接状态，也不跟踪这些参数</li>
+<li>For this reason, a server devoted to a particular application can typically <u>support many more active clients</u> when the application runs over UDP rather than TCP，某些专门用于某种特定应用的服务器当应用程序运行在 UDP之上而不是运行在 TCP上时，一般都能支持更多的活跃客户</li>
+</ul>
+</li>
+<li>mall packet header overhead, 分组首部开销小
+<ul>
+<li>每个TCP报文段都有<strong>20字节</strong>的首部开销，而UDP仅有<strong>8字节</strong>的开销</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>流行的因特网应用及其下面的运输协议</p>
+<table>
+<thead>
+<tr>
+<th>应用</th>
+<th>应用层协议</th>
+<th>对应的运输层协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electronic mail</td>
+<td>SMTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Remote terminal acces，远程终端访问</td>
+<td>Telnet</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>HTTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>File transfer</td>
+<td>FTP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>Remote file server，远程文件服务器</td>
+<td>NFS</td>
+<td>Typical UDP</td>
+</tr>
+<tr>
+<td>Streaming multimedia，流式多媒体</td>
+<td>typically proprietary，通常专用</td>
+<td>UDP or TCP</td>
+</tr>
+<tr>
+<td>Internet telephony</td>
+<td>typically proprietary</td>
+<td>UDP or TCP</td>
+</tr>
+<tr>
+<td>Network management，网络管理</td>
+<td>SNMP</td>
+<td>Typical UDP</td>
+</tr>
+<tr>
+<td>Routing protocol，路由选择协议</td>
+<td>RIP</td>
+<td>Typical UDP</td>
+</tr>
+<tr>
+<td>Name translation，名字转换</td>
+<td>DNS</td>
+<td>Typical UDP</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>UDP is used for RIP routing table updates</li>
+<li>RIP updates are sent periodically(typically every five minutes),lost updates will be replaced by more recent updates, thus making the lost, out-of-date update useless，更新的丢失能被最近的更新所替代</li>
+<li>UDP is used to carry network management
+<ul>
+<li>network management applications must often run when the network is in a stressed state，网络管理应用程序通常必须在该网络处于重压状态时运行—precisely when reliable,congestion-controlled data transfer is difficult to achieve</li>
+</ul>
+</li>
+<li>DNS runs over UDP, thereby avoiding TCP’s connection stablishment delays</li>
+</ul>
+</li>
+<li>
+<p>some controversy：</p>
+<ul>
+<li>congestion control is needed to prevent the network from entering a congested state in which very little useful work is done.If everyone were to start streaming high-bitrate video without using any congestion control, there would be so much packet overflow at routers that very few UDP packets would successfully traverse the source-to-destination path</li>
+</ul>
+</li>
+<li>
+<p>It is possible for an application to have reliable data transfer when using UDP. This can be done if reliability is built into the application its</p>
+</li>
+</ul>
+<h3 id="3-3-1-UDP-Segment-Structure">3.3.1 UDP Segment Structure</h3>
+<ul>
+<li>
+<p>The <strong>application data</strong> occupies the <strong>data field</strong> of the UDP segment</p>
+<ul>
+<li>For example, for DNS, the data field contains either a query message or a response message</li>
+<li>For a streaming audio application(流式音频应用),audio samples(音频抽样数据) fill the data field</li>
+</ul>
+</li>
+<li>
+<p>The <strong>UDP header</strong> has only <strong>four fields</strong>, each consisting of <strong>two bytes</strong></p>
+</li>
+<li>
+<p><strong>长度</strong>字段指示了在UDP报文段中的字节数（<strong>首部+数据</strong>）</p>
+</li>
+<li>
+<p>The <strong>checksum</strong>(校验和) is used by the <strong>receiving host</strong> to check whether errors have been introduced into the segment</p>
+<p>（实际上，计算检验和时，除了UDP报文段以外还包括了IP首部的一些字段，现在先忽略）</p>
+
+</li>
+</ul>
+<h3 id="3-3-2-UDP-Checksum">3.3.2 UDP Checksum</h3>
+<ul>
+<li>
+<p>The UDP checksum provides for error detection，差错检测功能</p>
+<ul>
+<li>the checksum is used to determine(确定) whether bits within the UDP segment have been altered(改变)(for example, by noise in the links or while stored in a router，链路中的噪声干扰或者存储在路由器中时引入问题) as it moved from source to destination</li>
+</ul>
+</li>
+<li>
+<p>校验和=发送方数据相加（有溢出则回卷，即和的末位+1），取反</p>
+<p>接收方将所有数据相加（包括校验和），结果应为全1</p>
+</li>
+<li>
+<p>end-end principle，端到端原则：certain functionality (error detection, in this case)must be implemented on an end-end basis:“functions placed at the lower levels may be redundant or of little value when compared to the cost of providing them at the higher level.”</p>
+<ul>
+<li>there is no guarantee that all the <strong>links</strong> between source and destination provide error checking;</li>
+<li>even if segments are correctly transferred across a link, it’s possible that bit errors could be introduced when a segment is stored in a <strong>router’s memory</strong>.</li>
+</ul>
+</li>
+<li>
+<p>UDP检查错误但不能修复错误，只能丢弃或警告</p>
+</li>
+</ul>
+<h1>3.4 Principles of Reliable Data Transfer，可靠数据传输原理</h1>
+<p>假设是分组将以它们发送的次序进行交付，某些分组可能会丢失;即底层信道将不会对分组重排序</p>
+<ul>
+<li><strong>rdt_send（）</strong>
+<ul>
+<li>通过调用rdt_send（）函数，可以调用数据传输协议的发送方。它将要发送的数据交付给位于接收方的较高层</li>
+<li><strong>rdt</strong></li>
+<li>stands for <strong>reliable data transfer protocol</strong>,表示可靠数据传输协议</li>
+<li><strong>_send</strong>
+<ul>
+<li>indicates that the sending side of rdt is being called, 指示rdt 的发送端正在被调用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>rdt_rcv()</strong>
+<ul>
+<li>On the receiving side,<strong>rdt_rcv()</strong> will be called when a packet arrives from the receiving side of the channel</li>
+</ul>
+</li>
+<li><strong>deliver_data()</strong>
+<ul>
+<li>When the rdt protocol wants to deliver data to the upper layer, it will do so by calling <strong>deliver_data()</strong></li>
+</ul>
+</li>
+<li><strong>udt_send()</strong>
+<ul>
+<li>Both the send and receive sides of rdt send packets to the other side by a call to udt_send ()</li>
+<li><strong>udt</strong> stands for <strong>unreliable data transfer</strong></li>
+</ul>
+</li>
+</ul>
+<p>In this section we consider only the case of unidirectional data transfer, that is, data transfer from the sending to the receiving side. The case of reliable bidirectional (that is. full-duplex) data transfer is conceptually no more difficult but considerably more tedious to explain</p>
+<p>在本节中仅考虑<strong>单向数据传输</strong>（unidirectional data transfer）的情况，即数据传输是从<strong>发送端到接收端的</strong>，先不考虑可靠的<strong>双向数据传输</strong>（bidirectional data transfer）（即全双工数据传输）</p>
+<p>除了交换含有待传送的数据的分组之外，rdt 的发送端和接收端还需往返交换控制分组</p>
+<h3 id="3-4-1-Building-a-Reliable-Data-Transfer-Protocol，构造可靠数据传输协议">3.4.1 Building a Reliable Data Transfer Protocol，构造可靠数据传输协议</h3>
+<h6 id="Reliable-Data-Transfer-over-a-Perfectly-Reliable-Channel-rdtl-0-经完全可靠信道的可靠数据传输">Reliable Data Transfer over a Perfectly Reliable Channel: rdtl.0,经完全可靠信道的可靠数据传输</h6>
+<ul>
+<li>
+<p>底层信道是完全可靠的</p>
+</li>
+<li>
+<p><strong>finite-state machine(FSM)</strong>：有限状态机</p>
+</li>
+<li>
+<p>引起变迁的事件显示在表示变迁的横线上方</p>
+<p>事件发生时所采取的动作显示在横线下方</p>
+<p>如果对一个事件没有动作，或没有就事件发生而采取了一个动作，我们将在横线上方或下方使用符号ʌ，以分别明确地表示缺少动作或事件</p>
+<p>FSM 的初始状态用虚线表示</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/net3.9.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h6 id="Reliable-Data-Transfer-over-a-Channel-with-Bit-Errors-rdt2-0，经具有比特差错信道的可靠数据传输">Reliable Data Transfer over a Channel with Bit Errors: rdt2.0，经具有比特差错信道的可靠数据传输</h6>
+<ul>
+<li>
+<p>Such <strong>bit errors</strong> typically occur in the <strong>physical components</strong>(物理部件) of a network as a packet is transmitted, propagates, or is buffered，传输、传播、缓存</p>
+</li>
+<li>
+<p><code>assume for the moment that all transmitted packets are received(although their bits may be corrupted) in the order in which they were sent</code></p>
+</li>
+<li>
+<p><code>message-dictation protocol uses both positive acknowledgments (肯定确认，&quot;OK&quot;)and negative acknowledgments(否定确认，&quot;Please repeat that.&quot;).</code></p>
+<p>In a computer network setting, <strong>reliable data transfer protocols</strong> based on such <strong>retransmission</strong>(重传) are known as <strong>ARQ</strong>(Automatic Repeat reQuest) protocols，自动重传请求协议</p>
+</li>
+<li>
+<p>ARQ协议中还需要另外三种协议功能来处理存在比特差错的情况∶</p>
+<ul>
+<li>Eror detection，差错检测
+<ul>
+<li>a mechanism is needed to allow the receiver to detect when bit errors have occurred</li>
+<li>checksum······</li>
+<li>these techniques require that extra bits(beyond the bits of original data to be transferred)be sent from the sender to the receiver; these bits will be gathered into the packet checksum field of the rdt2.0 data packet</li>
+</ul>
+</li>
+<li>Receiver feedback, 接收方反馈
+<ul>
+<li>rdt2.0 protocol will similarly send <strong>ACK</strong>(肯定确认) and <strong>NAK</strong>(否定确认) packets back from the receiver to the sender</li>
+<li>In principle, these packets need only be one bit long; for example, a <strong>0</strong> value could indicate a <strong>NAK</strong> and a value of <strong>1</strong> could indicate an <strong>ACK</strong></li>
+</ul>
+</li>
+<li>Retransmission，重传
+<ul>
+<li>a packet that is received in error at the receiver will be retransmitted by the sender</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%822/net3.10.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>If a <u>NAK</u> is received, the protocol retransmits <strong>the last packet</strong> and <u>waits</u> for an ACK or NAK to be returned by the receiver in response to the retransmitted data packet</li>
+<li>:star:when the sender is in the <strong>wait-for-ACK-or-NAK state</strong>, it cannot get more data from the upper layer; that is, <u>the rdt_send() event can not occur</u>; that will happen only after the sender <strong>receives an ACK</strong> and <strong>leaves this state</strong></li>
+<li>The receiver-side FSM for rdt2.0 still has a single state. On packet arrival, the receiver replies with either an ACK or a NAK,<u>depending</u> on whether or not the received packet is <strong>corrupt</strong>(受损)</li>
+</ul>
+</li>
+<li>
+<p><strong>stop-and-wait protocols</strong>(停等协议)：the sender will not send a new piece of data until it is sure that the receiver has correctly received the current packet</p>
+</li>
+<li>
+<p>haven’t accounted for the possibility that the <u>ACK or NAK</u> packet could be corrupted</p>
+</li>
+<li>
+<p>处理受损ACK和NAK时的3种可能性∶</p>
+<ul>
+<li>重传</li>
+<li><strong>add enough checksum bits</strong> to allow the sender not only to detect(察觉，检查错误), but also to recover from bit error，修复. This solves the immediate problem for a channel that can corrupt packets but not lose them.产生错误但不会丢失分组的信道</li>
+<li>the third approach is for the sender simply to <strong>resend</strong> the <strong>current data packet</strong> when it receives a garbled ACK or NAK packet
+<ul>
+<li>however, introduces <strong>duplicate packets</strong>(冗余分组) into the sender-to-receiver channel</li>
+<li>The fundamental difficulty with duplicate packets is that the receiver doesn’t know whether the ACK or NAK it last sent was received correctly at the sender. Thus, it cannot know a priori whether an arriving packet contains new data or is a retransmission!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>（solution，几乎所有现有的数据传输协议都采用的）add a new field to the data packet and have the sender number its data packets by putting a <strong>sequence number</strong>(序号) into this field</p>
+</li>
+<li>
+<p>For this simple case of a stop-and-wait protocol, a 1-bit sequence number will suffice</p>
+</li>
+<li>
+<p>:small_blue_diamond:rdt2.1的FSM描述</p>
+<ul>
+<li>the rdt2.1 sender and receiver FSMs each now have twice as many states as before</li>
+<li>When an <strong>out-of-order packet</strong> is received, the receiver sends a <strong>positive acknowledgment</strong> for the packet it has received. When a <strong>corrupted packet</strong> is received, the receiver sends a <strong>negative acknowledgment</strong></li>
+</ul>
+
+
+</li>
+<li>
+<p>:small_blue_diamond:rdt2.2的FSM描述</p>
+</li>
+</ul>
+
+
+<p>rd2.1和 rd2.2之间的细微变化在于，接收方此时必须包括由一个 ACK报文所确认的分组序号（这可以通过在接收方 FSM中，在make_pkt（）中包括参数 ACK 0或 ACK 1 来实现），发送方此时必须检查接收到的 ACK 报文中被确认的分组序号（这可通过在发送方FSM中，在 isACK（）中包括参数0或1来实现）</p>
+<h6 id="Reliable-Data-Transfer-over-a-Lossy-Channel-with-Bit-Errors-rdt3-0，具有比特差错的丢包信道的可靠数据传输∶-rdt-3-0">Reliable Data Transfer over a Lossy Channel with Bit Errors:rdt3.0，具有比特差错的丢包信道的可靠数据传输∶ rdt 3.0</h6>
+<ul>
+<li>
+<p>Suppose now that in addition to corrupting bits, the underlying channel can lose，丢包</p>
+<p>( how to detect packet loss and what to do when packet loss occurs?)</p>
+</li>
+<li>
+<p>Implementing(实现) a <strong>time-based retransmission mechanism</strong> requires a <strong>countdown timer</strong>(倒计数定时器) that can <strong>interrupt the sender</strong> after a given amount of time has expired，在一定的时间量过期后</p>
+</li>
+<li>
+<p>The sender will need to be able to：</p>
+<ul>
+<li>start the timer each time a packet (either a first-time packet or a retransmission)is sent</li>
+<li>respond to a timer interrupt (taking appropriate actions)</li>
+<li>stop the timer</li>
+</ul>
+</li>
+<li>
+<p>Because packet sequence numbers alternate between 0 and 1, protocol rdt3.0 is sometimes known as the <strong>alternating-bit protocol</strong>(比特交替协议)</p>
+</li>
+</ul>
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%823/" title="第三章-运输层（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（三）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%821/" title="第三章-运输层（一）">
+                        <span class="hidden-mobile">第三章-运输层（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

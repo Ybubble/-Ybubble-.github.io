@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="排序   定义 记录以顺序表存储 1234567891011121314#define MAXSIZE 20  &#x2F;&#x2F;记录数量typedef int KeyType;  &#x2F;&#x2F;设关键字为int型typedef int InfoType;typedef struct &#123;  &#x2F;&#x2F;定义每个记录（数据元素）的结构	KeyType key;  &#x2F;&#x2F;关键字	InfoType otherinfo;&#x2F;&#x2F;其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-排序">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="排序   定义 记录以顺序表存储 1234567891011121314#define MAXSIZE 20  &#x2F;&#x2F;记录数量typedef int KeyType;  &#x2F;&#x2F;设关键字为int型typedef int InfoType;typedef struct &#123;  &#x2F;&#x2F;定义每个记录（数据元素）的结构	KeyType key;  &#x2F;&#x2F;关键字	InfoType otherinfo;&#x2F;&#x2F;其他">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/124418.jpg">
+<meta property="article:published_time" content="2024-02-19T06:44:55.660Z">
+<meta property="article:modified_time" content="2024-02-19T06:49:07.608Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/19/%E6%8E%92%E5%BA%8F/1.jpg">
+  
+  
+  
+  <title>数据结构-排序 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据结构-排序"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-19 14:44" pubdate>
+          February 19, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据结构-排序</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>排序</h1>
+<img src="/2024/02/19/%E6%8E%92%E5%BA%8F/1.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/19/%E6%8E%92%E5%BA%8F/3.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>定义</h1>
+<p>记录以顺序表存储</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXSIZE 20  <span class="hljs-comment">//记录数量</span></span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> KeyType;  <span class="hljs-comment">//设关键字为int型</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> InfoType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>  <span class="hljs-comment">//定义每个记录（数据元素）的结构</span><br>	KeyType key;  <span class="hljs-comment">//关键字</span><br>	InfoType otherinfo;<span class="hljs-comment">//其他数据项</span><br>&#125;RedType;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>  <span class="hljs-comment">//定义顺序表的结构</span><br>	RedType r[MAXSIZE + <span class="hljs-number">1</span>];  <span class="hljs-comment">//存储顺序表的向量，r[0]一般作烧饼或缓冲区</span><br>	<span class="hljs-type">int</span> length;  <span class="hljs-comment">//顺序表的长度</span><br>&#125;SqList;<br></code></pre></td></tr></table></figure>
+<h1>插入排序</h1>
+<h4 id="基本思想：">基本思想：</h4>
+<p>每步将一个待排序对象，按其关键码大小，插入到前面已经排好序的一组对象的适当位置上，直到对象全部插入为止（即边插入边排序，保证子序列中随时都是排好序的）</p>
+<h4 id="分类：">分类：</h4>
+
+<h6 id="直接插入排序">直接插入排序</h6>
+<ul>
+<li>
+<p>步骤：</p>
+<p>:one:在R[1…i-1]中查找R[i]的插入位置，R[1…j].key &lt;= R[i].key &lt; R[j+1…i-1].key</p>
+<p>:two:将R[j+1…i-1]中的所有记录均后移一个位置</p>
+<p>:three:将R[i] 插入到R[j+1]的位置上</p>
+</li>
+<li>
+<p>算法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">InserSort</span><span class="hljs-params">(SqList &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> i, j;<br>	<span class="hljs-keyword">for</span>(i=<span class="hljs-number">2</span>;i&lt;L.length;i++)<br>		<span class="hljs-keyword">if</span> (L.r[i].key &lt; L.r[i - <span class="hljs-number">1</span>].key)  <span class="hljs-comment">//将L.r[i]插入有序子表</span><br>		&#123;<br>			L.r[<span class="hljs-number">0</span>] = L.r[i];  <span class="hljs-comment">//复制为哨兵</span><br>			L.r[i] = L.r[i - <span class="hljs-number">1</span>];<br>			<span class="hljs-keyword">for</span> (j = i - <span class="hljs-number">2</span>; L.r[<span class="hljs-number">0</span>].key &lt; L.r[j].key; j--)<br>				L.r[j + <span class="hljs-number">1</span>] = L.r[j];  <span class="hljs-comment">//记录后移</span><br>			L.r[j + <span class="hljs-number">1</span>] = L.r[<span class="hljs-number">0</span>];  <span class="hljs-comment">//插入到正确位置</span><br>		&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>算法分析：</p>
+<ul>
+<li>
+<p>在平均情况下，直接插入排序关键字的比较次数和记录移动次数均约为：<strong>n^2^ /4</strong></p>
+</li>
+<li>
+<p>时间复杂度为：<strong>O(n^2^ )</strong></p>
+</li>
+<li>
+<p>空间复杂度为：<strong>O(1)</strong>  &lt;·····只需要一个记录的辅助空间r[0]</p>
+</li>
+<li>
+<p>是一种<strong>稳定</strong>的排序方法</p>
+</li>
+<li>
+<p>也适用于<strong>链式</strong>存储结构，只是在单链表上无需移动记录，只需修改相应的指针</p>
+</li>
+<li>
+<p>更适合于**初始记录基本有序（正序）**的情况，当初始记录无序，n较大时，此算法时间复杂度较高，不宜采用</p>
+</li>
+<li>
+<p>所以只能用于顺序结构，不能用于链式结构</p>
+</li>
+<li>
+<p>适合<strong>初始记录无序、n较大</strong>时的情况</p>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="折半插入排序">折半插入排序</h6>
+<ul>
+<li>算法：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">BInsertSort</span><span class="hljs-params">(SqList &amp;L)</span><br>&#123;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt;= L.length; i++)<br>	&#123;<br>		L.r[<span class="hljs-number">0</span>] = L.r[i];<br>		low = <span class="hljs-number">1</span>;<br>		high = i - <span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">while</span> (low &lt;= high)  <span class="hljs-comment">//在r[low..high]中折半查找有序插入的位置</span><br>		&#123;<br>			m = (low + high) / <span class="hljs-number">2</span>;  <span class="hljs-comment">//向下取整</span><br>			<span class="hljs-keyword">if</span> (L.r[<span class="hljs-number">0</span>].key &lt; L.r[m].key)high = m - <span class="hljs-number">1</span>;<br>			<span class="hljs-keyword">else</span> low = m + <span class="hljs-number">1</span>;<br>		&#125;<br>		<span class="hljs-keyword">for</span> (j = i - <span class="hljs-number">1</span>; j &gt; high + <span class="hljs-number">1</span>; j--)L.r[j + <span class="hljs-number">1</span>] = L.r[j];<br>		L.r[high + <span class="hljs-number">1</span>] = L.r[<span class="hljs-number">0</span>];<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>算法分析：
+<ul>
+<li>时间复杂度为：<strong>O(n^2^ )</strong></li>
+<li>空间复杂度为：<strong>O(1)</strong></li>
+<li>是一种<strong>稳定</strong>的排序方法</li>
+<li>当<strong>n较大</strong>时，总关键码比较次数比直接插入排序的最坏情况要好得多，但比其最好情况要差（总关键码比较次数：直接插入最好情况 &lt; 折半 &lt;&lt; 直接插入最坏情况）</li>
+<li>在对象的<strong>初始</strong>排列已经按关键码排好序或<strong>接近有序</strong>时，直接插入排序比折半插入排 序执行的关键码比较次数要少</li>
+<li>折半插入排序的对象<strong>移动次数</strong>与直接插入排序<strong>相同</strong>，依赖于对象的初始排列</li>
+<li>减少了比较次数，但没有减少移动次数</li>
+<li><strong>平均性能</strong>优于直接插入排序</li>
+</ul>
+</li>
+</ul>
+<h6 id="希尔排序">希尔排序</h6>
+<ul>
+<li>
+<p>基本思想：</p>
+<p>先将整个待排记录序列分割成若干子序列，分别进行<strong>直接插入排序</strong>，待整个序列中的记录“基本有序” 时，再对全体记录进行一次直接插入排序</p>
+<ul>
+<li>子序列的构成不是简单地”逐段分割”。而是，将相隔某个增量dk的记录组成一个子序列让增量dk逐趟缩短（例如依次取5,3,1）直到dk＝1为止</li>
+<li>小元素跳跃式前移最后一趟增量为1时， 序列已基本有序平均性能优于直接插入排序</li>
+</ul>
+</li>
+<li>
+<p>算法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">ShellInsert</span><span class="hljs-params">(SqList &amp;L, <span class="hljs-type">int</span> dk)</span><br>&#123;<span class="hljs-comment">//对顺序表L进行一趟增量为dk的Shell排序，dk为步长因子</span><br>	<span class="hljs-keyword">for</span>(i=dk+<span class="hljs-number">1</span>;i&lt;=L.length;i++)  <span class="hljs-comment">//开始将r[i]插入有序增量子表</span><br>		<span class="hljs-keyword">if</span> (L.r[i].key &lt; L.r[i - dk].key) &#123;<br>			L.r[<span class="hljs-number">0</span>] = L.r[i];<br>			<span class="hljs-keyword">for</span> (j = i - dk; j &gt; <span class="hljs-number">0</span> &amp;&amp; (L.r[<span class="hljs-number">0</span>].key &lt; L.r[j].key; j = j - dk))<br>				L.r[j + dk] = L.r[j];  <span class="hljs-comment">//关键字较大的记录在子表中后移</span><br>			L.r[j + dk] = L.r[<span class="hljs-number">0</span>];  <span class="hljs-comment">//在本趟结束时将r[i]插入到正确位置</span><br>		&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>:exclamation:注意：关于“一趟”：[0,0+dk)共dk组，每组都完成一次排序为“一趟”</p>
+<p>​            r[0]只是暂存单元，不是哨兵，当j&lt;=0时，插入位置巳找到</p>
+</li>
+<li>
+<p>算法分析：</p>
+<ul>
+<li>时间复杂度：未有定论。有人在大量的实验基础上推出：当 n 在某个特定范围内，希尔排序所需的比较和移动次数约为 **n^1/3^**当 n—&gt;∞ 时，可减少到 n(log~2~n)^2^</li>
+<li>空间复杂度：O(1)&lt;·····只需要一个辅助空间r[0]</li>
+<li>记录跳跃式地移动导致排序方法是<strong>不稳定</strong>的</li>
+<li>只能用于<strong>顺序结构</strong>，不能用于链式结构</li>
+<li>增量序列可以有各种取法，但应该使增量序列中的值没有除1之外的公因子，并且最后一个增量值必须等于1</li>
+<li>适合<strong>初始记录无序、n较大</strong>时的情况</li>
+</ul>
+</li>
+</ul>
+<h6 id="总结：">总结：</h6>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">直接插入排序</th>
+<th>折半插入排序</th>
+<th>希尔排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">时间复杂度</td>
+<td style="text-align:left">O(n^2^ )</td>
+<td>O(n^2^ )</td>
+<td>未定</td>
+</tr>
+<tr>
+<td style="text-align:left">空间复杂度</td>
+<td style="text-align:left">O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td style="text-align:left">稳定性</td>
+<td style="text-align:left">稳定</td>
+<td>稳定</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td style="text-align:left">使用场景</td>
+<td style="text-align:left">初始记录无序、n较大</td>
+<td>n较大，初始排列已经按关键码排好序或接近有序</td>
+<td>始记录无序、n较大</td>
+</tr>
+</tbody>
+</table>
+<h1>交换排序</h1>
+<h4 id="基本思想：-2">基本思想：</h4>
+<p>两两比较，如果发生逆序则交换，直到所有记录都排好序为止</p>
+<h4 id="分类：-2">分类：</h4>
+<img src="/2024/02/19/%E6%8E%92%E5%BA%8F/4.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="冒泡排序">冒泡排序</h6>
+<p>算法：</p>
+<ul>
+<li>
+<p>算法:one:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">bubble_sort</span><span class="hljs-params">(SqList &amp;L)</span> &#123;<br>	<span class="hljs-type">int</span> m, i, j;<br>	RedType x;  <span class="hljs-comment">//交换时的临时空间</span><br>	<span class="hljs-keyword">for</span> (m = <span class="hljs-number">1</span>; m &lt;= n - <span class="hljs-number">1</span>; m++) &#123;  <span class="hljs-comment">//总共需要n-1趟</span><br>		<span class="hljs-keyword">for</span>(j=<span class="hljs-number">1</span>;j&lt;=n-m;j++)<br>			<span class="hljs-keyword">if</span> (L.r[j].key &gt; L.r[j + <span class="hljs-number">1</span>].key) &#123;  <span class="hljs-comment">//发生逆序</span><br>				x = L.r[j].key;<br>				L.r[j] = L.r[j + <span class="hljs-number">1</span>];<br>				L.r[j + <span class="hljs-number">1</span>] = x;  <span class="hljs-comment">//交换</span><br>			&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>算法:two:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">bubble_sort2</span><span class="hljs-params">(SqList &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> m, i, j, flag = <span class="hljs-number">1</span>;  <span class="hljs-comment">//flag作为是否有交换的标记</span><br>	RedType x;<br>	m = n - <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">while</span> ((m &gt; <span class="hljs-number">0</span>) &amp;&amp; (flag == <span class="hljs-number">1</span>))<br>	&#123;<br>		flag = <span class="hljs-number">0</span>;<br>		<span class="hljs-keyword">for</span>(j=<span class="hljs-number">1</span>;j&lt;=m;j++)<br>			<span class="hljs-keyword">if</span> (L.r[j].key &gt; L.r[j + <span class="hljs-number">1</span>].key)<br>			&#123;<br>				flag = <span class="hljs-number">1</span>;  <span class="hljs-comment">//发生交换，flag置为1，若本趟未发生交换，flag保持为0</span><br>				x = L.r[j];  <span class="hljs-comment">//交换</span><br>				L.r[j] = L.r[j + <span class="hljs-number">1</span>];<br>				L.r[j + <span class="hljs-number">1</span>] = x;<br>			&#125;<br>		m--;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>每趟结束时，不仅能挤出一个最大值到最后面位置，还能同时部分理顺其他元素； 一旦下趟没有交换，还可提前结束排序</li>
+</ul>
+</li>
+</ul>
+<p>算法分析：</p>
+<ul>
+<li>
+<p><strong>比较次数</strong>和<strong>移动次数</strong>与<strong>初始排列</strong>有关</p>
+</li>
+<li>
+<p>最好情况下只需1趟排序，比较次数为 n-1，不移动</p>
+</li>
+<li>
+<p>最坏情况下需 n-1趟排序，第i趟比较n-i次，移动3(n-i) 次</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi><mo stretchy="false">)</mo><mtext>、</mtext><mn>3</mn><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sum_{i=1}^{n-1}{(n-i)}=\frac{1}{2}(n^2-n)、3\sum_{i=1}^{n-1}{(n-i)}=\frac{3}{2}(n^2-n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.0788em;vertical-align:-1.2777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">i</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:3.0788em;vertical-align:-1.2777em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span><span class="mord">3</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">i</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>时间复杂度：<strong>O(n^2^)</strong></p>
+</li>
+<li>
+<p>空间复杂度：<strong>O(1)</strong></p>
+</li>
+<li>
+<p><strong>稳定</strong>的排序方法</p>
+</li>
+</ul>
+<p>:exclamation:注意：“一趟”排序指找到当前序列最小或最大的一个</p>
+<h6 id="快速排序">快速排序</h6>
+<ul>
+<li>
+<p>基本思想：</p>
+<p>通过一趟排序，将待排序记录分割成独立的两部分，其中一部分记录的关键字均比另一部分记录的关键字小，则可分别对这两部分记录进行排序，以达到整个序列有序</p>
+<p>:one:任取一个元素 (如第一个) 为中心</p>
+<p>:two:所有比它小的元素一律前放，比它大的元素一律后放，形成左右两个子表</p>
+<p>:three:对各子表重新选择中心元素并依此规则调整，直到每个子表的元素只剩一个</p>
+</li>
+<li>
+<p>算法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">Partition</span><span class="hljs-params">(SqList &amp;L, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span><br>&#123;<br>	L.r[<span class="hljs-number">0</span>] = L.r[low];<br>	pivotkey = L.r[low].key;<br>	<span class="hljs-keyword">while</span> (low &lt; high)<br>	&#123;<br>		<span class="hljs-keyword">while</span> (low &lt; high&amp;&amp;L.r[high].key &gt;= pivotkey)high--;<br>		L.r[low] = L.r[high];<br>		<span class="hljs-keyword">while</span> (low &lt;= high &amp;&amp; L.r[low].key &lt;= pivotkey)low++;<br>		L.r[high] = L.r[low];<br>	&#125;<br>	L.r[low] = L.r[<span class="hljs-number">0</span>];<br>	<span class="hljs-keyword">return</span> low;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">QSort</span><span class="hljs-params">(SqList &amp;L, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (low &lt; high)<br>	&#123;<br>		pivotloc = Partition(L, low, high);<br>		QSort(L, low, pivotloc - <span class="hljs-number">1</span>);<br>		QSort(L, pivotloc + <span class="hljs-number">1</span>, high);<br>	&#125;<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	QSort(L, <span class="hljs-number">1</span>, L.length);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>算法分析：</p>
+<ul>
+<li>平均计算时间是：<strong>O(nlog~2~n)</strong></li>
+<li>实验结果表明： 就<strong>平均计算时间</strong>而言，快速排序是我们所讨论的所有<strong>内排序</strong>方法中最好的一个 :+1:</li>
+<li>快速排序是<strong>递归</strong>的，需要有 一个栈存放每层递归调用时参数（新的 low和high）</li>
+<li>最大递归调用层次数与<strong>递归树的深度</strong>一致， 因此，要求<strong>存储</strong>开销为：<strong>O(log~2~n)</strong></li>
+<li>稳定性：<strong>不稳定</strong>，可选 任一元素为枢轴</li>
+<li>分情况讨论：
+<ul>
+<li>最好：划分后，左侧右侧子序列的长度相同，空间效率：O(log~2~n)</li>
+<li>最坏：初始记录序列按关键字有序或基本有序，快速排序将蜕化为起泡排序。递归树成为单支树，每次划分只得到一个比上一次少一个 对象的子序列，必须经过 n-1 趟才能把所有对象定位，而且第 i 趟需要经过 n-i 次关键码比较才能找到第 i 个对象的安放位置。此时，栈的最大深度为n。O(n)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>:exclamation:注意：“一趟”指: 对一个（子）表完成排序，即对于一个元素，在比较区域内，左边均小，右边均大</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>冒泡排序</th>
+<th>快速排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>时间复杂度</td>
+<td>O(n^2^)</td>
+<td>O(nlog~2~n)</td>
+</tr>
+<tr>
+<td>空间复杂度</td>
+<td>O(1)</td>
+<td>O(n) ~ O(log~2~n)</td>
+</tr>
+</tbody>
+</table>
+<h1>选择排序</h1>
+<h4 id="基本思想：-3">基本思想：</h4>
+<p>每一趟在后面 n-i +1个中选出关键码最小的对象, 作为有序序列的第 i 个记录</p>
+<h4 id="分类：-3">分类：</h4>
+<img src="/2024/02/19/%E6%8E%92%E5%BA%8F/5.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="简单选择排序">简单选择排序</h6>
+<ul>
+<li>
+<p>算法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">SelectSort</span><span class="hljs-params">(SqList &amp;L)</span><br>&#123;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; L.length; i++)<br>		<span class="hljs-comment">//在L.r[i..L.length] 中选择key最小的记录</span><br>	&#123;<br>		k = i;<br>		<span class="hljs-keyword">for</span> (j = i + <span class="hljs-number">1</span>; j &lt; L.length; j++)<br>			<span class="hljs-keyword">if</span> (L.r[j].key &lt; L.r[k].key)k = j;<br>		<span class="hljs-keyword">if</span> (k != i) &#123;  <span class="hljs-comment">//L.r[i]&lt;---&gt;L.r[k]</span><br>			L.r[<span class="hljs-number">0</span>] = L.r[k];<br>			<span class="hljs-keyword">for</span> (j = k; j &gt; i; j--)L.r[j] = L.r[j - <span class="hljs-number">1</span>];<br>			L.r[i] = L.r[<span class="hljs-number">0</span>];<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>算法分析：</p>
+<p>:one:移动次数：最好情况：0；最坏情况：3(n-1)</p>
+<p>:two:比较次数：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>i</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x\sum_{i=1}^{n-1}{(n-i)}=\frac{1}{2}(n^2-n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.0788em;vertical-align:-1.2777em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">i</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<p>:three:时间复杂度：<strong>O(n^2^)</strong></p>
+<p>:four:空间复杂度：<strong>O(1)</strong></p>
+<p>:five:稳定性与具体实现有关</p>
+</li>
+</ul>
+<h6 id="树形选择排序-deciduous-tree">树形选择排序:deciduous_tree:</h6>
+<h6 id="堆排序：">堆排序：</h6>
+<ul>
+<li>
+<p>定义：</p>
+<ul>
+<li>
+<p>堆排序 (Heap Sort) 是一种树形选择排序，在排序过程中，将待排序的记录 r[l…n]看成是一棵完全二叉树的顺序存储结构，利用完全二叉树中双亲结点和孩子结点之间的内在关系，在当前无序的序列中选择关键字最大（或最小）的记录</p>
+</li>
+<li>
+<p>若将和此序列对应的一维数组（ 即以一维数组做此序列的存储结构） 看成是一个完全二叉树， 则堆实质上是满足如下性质的完全二叉树：树中所有非终端结点的值均不大于（或不小于）其左、右孩子结点的值(根结点最大或最小)</p>
+</li>
+<li>
+<p>n个元素的序列{k~1~,k~2~,…，k~n~}称之为堆， 当且仅当满足以下条件时：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>k</mi><mi>i</mi></msub><mo>≤</mo><msub><mi>k</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>k</mi><mi>i</mi></msub><mo>≤</mo><msub><mi>k</mi><mrow><mn>2</mn><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd></mtr></mtable></mrow><mtext>或</mtext><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>k</mi><mi>i</mi></msub><mo>≥</mo><msub><mi>k</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>k</mi><mi>i</mi></msub><mo>≥</mo><msub><mi>k</mi><mrow><mn>2</mn><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases}k_i\leq k_{2i}\\k_i\leq k_{2i+1}\end{cases}或\begin{cases}k_i\geq k_{2i}\\k_i\geq k_{2i+1}\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">或</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+<li>
+<p>分类：大顶堆/小顶堆；大根堆/小根堆</p>
+</li>
+<li>
+<p>性质：</p>
+<ul>
+<li>堆是一棵采用<strong>顺序存储结构</strong>的<strong>完全二叉树</strong></li>
+<li>堆的根结点是关键字序列中的最小(或最大)值，分别称为小(或大)根堆</li>
+<li>从根结点到每一叶子结点路径上的元素组成的序列都是按元素值(或关键字值)非递减(或非递增)的</li>
+<li>堆中的任一子树也是堆</li>
+</ul>
+</li>
+<li>
+<p>堆排序：</p>
+<p>利用堆顶记录的关键字值最小(或最大)的性质，从 当前待排序的记录中依次选取关键字最小(或最大)的记录，就可以实现对数据记录的排序，这种排序方法称为堆排序</p>
+</li>
+<li>
+<p>基本思想：</p>
+<p>:one:将无序序列建成一个堆</p>
+<p>:two:输出堆顶的最小（大）值</p>
+<p>:three:使剩余的n-1个元素又调整成一个堆，则可得到 n个元素的次小值</p>
+<p>:four:重复执行，得到一个有序序列</p>
+<img src="/2024/02/19/%E6%8E%92%E5%BA%8F/124418.jpg" srcset="/img/loading.gif" lazyload class="">
+
+</li>
+<li>
+<p>算法：</p>
+<p>:one:堆调整算法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HeapAdjust</span><span class="hljs-params">(SqList &amp;L, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> m)</span><br>&#123;<span class="hljs-comment">// r[n..m]中记录关键字除r[n].key之外均满足堆定义</span><br> <span class="hljs-comment">//本函数调整r[n]的位置使之成为一个大顶堆</span><br>	rc = L.r[n];<br>	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">2</span> * n; j &lt;= m; j *= <span class="hljs-number">2</span>) &#123;  <span class="hljs-comment">//沿key较大的孩子结点向下筛选</span><br>		<span class="hljs-keyword">if</span> (j &lt; m&amp;&amp;L.r[j].key &lt; L.r[j + <span class="hljs-number">1</span>].key)j++;  <span class="hljs-comment">// j为key较大记录的下标</span><br>		<span class="hljs-keyword">if</span> (rc.key &gt;= L.r[j].key)<span class="hljs-keyword">break</span>;  <span class="hljs-comment">// rc应插入在位置n上</span><br>		L.r[n] = L.r[j];<br>		n = j;<br>	&#125;<br>	L.r[n] = rc;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>:two:堆排序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">HeapSort</span><span class="hljs-params">(SqList &amp;L)</span><br>&#123;<br>	<span class="hljs-type">int</span> i;<br>	n = L.length;<br>	<span class="hljs-keyword">for</span> (i = n / <span class="hljs-number">2l</span>i &gt; <span class="hljs-number">0</span>; i--)<br>		HeapAdjust(L, i, n);  <span class="hljs-comment">//初始建堆</span><br>	<span class="hljs-keyword">for</span> (i = n; i &gt; <span class="hljs-number">1</span>; i--)  <span class="hljs-comment">//进行n-1趟排序</span><br>	&#123;<br>		Swap(L.r[i], L.r[i - <span class="hljs-number">1</span>]);  <span class="hljs-comment">//堆顶与最后一个记录交换</span><br>		HeapAdjust(L, <span class="hljs-number">1</span>, i - <span class="hljs-number">1</span>);  <span class="hljs-comment">//将L.r[1..i-1]重新调整为堆</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>算法分析：</p>
+<ul>
+<li>时间效率：<strong>O(nlog~2~n)</strong></li>
+<li>空间效率：<strong>O(1)</strong></li>
+<li>稳定性：<strong>不稳定</strong></li>
+<li>适用于n较大的情况</li>
+<li>只能用顺序存储实现，不能用链式存储</li>
+<li>堆排序的时间主要消耗在建初始堆和调整建立新堆时进行的反复“筛选”上。堆排序在最坏情况下，其时间复杂度也为O(nlog2n)，这是堆排序的最大优点。无论待排序列中的记录是正序还是逆序，都不会使堆排序处于“最好”或“ 最坏”的状态</li>
+</ul>
+</li>
+</ul>
+<h1>归并排序</h1>
+<h4 id="定义">定义</h4>
+<ul>
+<li>
+<p>归并：将两个或两个以上的有序表组合成一个新有序表</p>
+</li>
+<li>
+<p>2-路归并排序：子序列总是两两归并</p>
+<p>:one:初始序列看成n个有序子序列，每个子序列长度为1</p>
+<p>:two:两两合并，得到 n/2 个长度为2或1的有序子序列</p>
+<p>:three:再两两合并，重复直至得到一个长度为n的有序序列为止</p>
+</li>
+</ul>
+<h4 id="算法：">算法：</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Merge</span><span class="hljs-params">(RedType R[], RedType T[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> high)</span><br>&#123;<br>	i = low;<br>	j = mid + <span class="hljs-number">1</span>;<br>	k = low;<br>	<span class="hljs-keyword">while</span> (i&lt;=mid&amp;&amp;j&lt;=high)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (R[i].key &lt;= R[j].key)T[k++] = R[i++];<br>		<span class="hljs-keyword">else</span> T[k++] = R[j++];<br>	&#125;<br>	<span class="hljs-keyword">while</span> (i &lt;= mid)T[k++] = R[i++];<br>	<span class="hljs-keyword">while</span> (j &lt;= mid)T[k++] = R[j++];<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">MSort</span><span class="hljs-params">(RedType R[], RedType &amp;T[], <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span><br>&#123;<span class="hljs-comment">//R [low .. high]归并排序后放人 T[low.. high]中</span><br>	<span class="hljs-keyword">if</span> (low == high) T[low] = R[low];<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		mid = (low + high) / <span class="hljs-number">2</span>; <span class="hljs-comment">//将当前序列一分为二， 求出分裂点 mid</span><br>		MSort(R, S, low, mid); <span class="hljs-comment">//对子序列 R[low.. mid]递归归并排序， 结果放入S[low .. mid]</span><br>		MSort(R, S, mid + <span class="hljs-number">1</span>, high);<span class="hljs-comment">//对子序列 R[mid+l.. high]递归归并排序， 结果放人 S[mid+ 1. . high]</span><br>		Merge(S, T, low, mid, high);<span class="hljs-comment">//将S[low .. mid]和S[mid+l. .high]归并到 T[low .. high]</span><br>	&#125;<span class="hljs-comment">//else </span><br>&#125;<br><br>	<span class="hljs-type">void</span> <span class="hljs-title function_">MergeSort</span><span class="hljs-params">(SqList &amp;L)</span><br>	&#123;<span class="hljs-comment">//对顺序表 L 做归并排序</span><br>		MSort(L.r, L.r, <span class="hljs-number">1</span>, L.length);<br>	&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="算法分析：">算法分析：</h4>
+<ul>
+<li>时间效率：<strong>O(nlog~2~n)</strong></li>
+<li>空间效率：<strong>O(n)</strong>&lt;·····需要一个与原始序列同样大小的辅助序列</li>
+<li>稳定性：<strong>稳定</strong></li>
+<li>可用于链式结构，且不要附加存储空间，但递归实现时仍需要开辟相应的递归工作栈。</li>
+<li>整个归并排序仅需 log~2~n 趟</li>
+<li>两个顺序表合并的时间复杂度为O(m+n)，m和n分别为顺序表表长</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/19/%E6%9F%A5%E6%89%BE/" title="数据结构-查找">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据结构-查找</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/19/%E5%9B%BE2/" title="数据结构-图（二）">
+                        <span class="hidden-mobile">数据结构-图（二）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

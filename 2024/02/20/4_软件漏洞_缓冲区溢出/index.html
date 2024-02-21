@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 概述 漏洞的定义 指信息系统硬件、软件、操作系统、网络协议、数据库等在设计上、实现上出现的可以被攻击者利用的错误、缺陷和疏漏。通俗一点说，漏洞就是可以被攻击利用的系统弱点。 从导致的后果来看，漏洞可能会造成：以匿名身份直接获取系统最高权限；从普通用户提升为管理员用户；实施远程拒绝服务攻击等。 漏洞攻击步骤 漏洞发现（Vulnerability Discovery）→漏洞分析（Vulnerabi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓冲区溢出">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 概述 漏洞的定义 指信息系统硬件、软件、操作系统、网络协议、数据库等在设计上、实现上出现的可以被攻击者利用的错误、缺陷和疏漏。通俗一点说，漏洞就是可以被攻击利用的系统弱点。 从导致的后果来看，漏洞可能会造成：以匿名身份直接获取系统最高权限；从普通用户提升为管理员用户；实施远程拒绝服务攻击等。 漏洞攻击步骤 漏洞发现（Vulnerability Discovery）→漏洞分析（Vulnerabi">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.2.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.3.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.4.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.5.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.6.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.7.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.8.png">
+<meta property="article:published_time" content="2024-02-20T13:55:34.521Z">
+<meta property="article:modified_time" content="2024-02-21T15:01:32.503Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.1.jpg">
+  
+  
+  
+  <title>缓冲区溢出 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="缓冲区溢出"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">缓冲区溢出</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 概述</h1>
+<p><strong>漏洞的定义</strong></p>
+<p>指信息系统硬件、软件、操作系统、网络协议、数据库等在设计上、实现上出现的可以被攻击者利用的<strong>错误、缺陷和疏漏</strong>。通俗一点说，漏洞就是可以被攻击利用的系统弱点。</p>
+<p>从导致的后果来看，漏洞可能会造成：以匿名身份直接获取系统最高权限；从普通用户提升为管理员用户；实施远程拒绝服务攻击等。</p>
+<p><strong>漏洞攻击步骤</strong></p>
+<p>漏洞发现（Vulnerability Discovery）→漏洞分析（Vulnerability Analysis）→漏洞利用（Vulnerability Exploit）</p>
+<p><strong>漏洞的标准化研究</strong></p>
+<ul>
+<li>公共漏洞和暴露（Common Vulnerabilities &amp; Exposures，CVE）</li>
+<li>通用缺陷枚举（Common Weakness Enumeration, CWE）</li>
+</ul>
+<h1>2 典型漏洞类型</h1>
+<h2 id="2-1-栈溢出（Stack-Overflow，CWE-121）">2.1 栈溢出（Stack Overflow，CWE-121）</h2>
+<blockquote>
+<p>背景</p>
+<p>栈溢出攻击的相关概念最早要追述到1972年美国空军发表的一份研究报告《Computer Security Technology Planning Study》。在这份报告中，通过溢出缓冲区来注入代码这一想法首次被提了出来。</p>
+<p>直到1986年才出现了首次真实的攻击，Morris蠕虫病毒利用了Unix操作系统中fingerd程序的gets()函数导致的栈溢出来实现远程代码执行。</p>
+<p>1996年，Elias Levy (a.k.a Aleph One)在大名鼎鼎的Phrack杂志上发表了文章《Smashing the Stack for Fun and Profit》，从此栈溢出漏洞的利用技术被广泛知晓。</p>
+</blockquote>
+<h3 id="2-1-1-栈基础">2.1.1 栈基础</h3>
+<ul>
+<li>
+<p>当程序运行时，计算机会在内存区域中开辟一段连续的内存块，包括代码段、数据段和堆栈段三部分。</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.1.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>程序在内存中的存放形式</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.2.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p><strong>代码段</strong>(.text)，也称文本段(Text Segment)，存放着程序的机器码和只读数据，可执行指令就是从这里取得的。如果可能，系统会安排好相同程序的多个运行实体共享这些实例代码。这个段在内存中一般被标记为只读，任何对该区的写操作都会导致段错误(Segmentation Fault)。</p>
+</li>
+<li>
+<p><strong>数据段</strong>，包括已初始化的数据段(.data)和未初始化的数据段(.bss)，前者用来存放保存全局的和静态的已初始化变量，后者用来保存全局的和静态的未初始化变量。数据段在编译时分配。</p>
+</li>
+<li>
+<p><strong>堆栈段</strong>分为堆和栈</p>
+<ul>
+<li>
+<p>堆（Heap）</p>
+<ul>
+<li>位于BSS内存段的上边，用来存储程序运行时分配的变量。</li>
+<li>堆的大小并不固定，可动态扩张或缩减。其分配由malloc()、new()等这类实时内存分配函数来实现。当进程调用malloc等函数分配内存时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）。</li>
+<li>堆的内存释放由应用程序去控制，通常一个new()就要对应一个delete()，如果程序员没有释放掉，那么在程序结束后操作系统会自动回收。</li>
+</ul>
+</li>
+<li>
+<p>栈（Stack）</p>
+<ul>
+<li>
+<p>一种用来存储函数调用时的临时信息的结构，如函数调用所传递的参数、函数的返回地址、函数的局部变量等。</p>
+</li>
+<li>
+<p>在程序运行时由编译器在需要的时候分配，在不需要的时候自动清除。</p>
+</li>
+<li>
+<p>栈的特性: 最后一个放入栈中的物体总是被最先拿出来，这个特性通常称为先进后出(FILO)队列。</p>
+</li>
+<li>
+<p>栈的基本操作</p>
+<ul>
+<li>PUSH操作：向栈中添加数据，称为压栈，数据将放置在栈顶；</li>
+<li>POP操作：POP操作相反，在栈顶部移去一个元素，并将栈的大小减一，称为弹栈。</li>
+</ul>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.3.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>程序在内存中的影像</strong></p>
+<ul>
+<li>随着函数调用层数的增加，函数栈帧是一块块地向内存<strong>低地址</strong>方向延伸的。</li>
+<li>随着进程中函数调用层数的减少，即各函数调用的返回，栈帧会一块块地被遗弃而向内存的高址方向回缩。</li>
+<li>各函数的栈帧大小随着函数的性质的不同而不等，由函数的局部变量的数目决定。</li>
+<li>在溢出中，我们主要关注数据区和堆栈区。</li>
+</ul>
+<p><strong>程序所使用的栈</strong></p>
+<ul>
+<li>
+<p>在使用栈时，引用栈帧需要借助两个寄存器。</p>
+<ul>
+<li>一个是SP(ESP)，即栈顶指针，它随着数据入栈出栈而发生变化。</li>
+<li>另一个是BP(EBP)，即基地址指针，它用于标识栈中一个相对稳定的位置，通过BP，再加上偏移地址，可以方便地引用函数参数以及局部变量。</li>
+</ul>
+</li>
+<li>
+<p>函数被调用的时候，栈中的压入情况</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.4.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>如果局部变量发生溢出，很有可能会覆盖掉EBP甚至RET(返回地址)，这就是缓冲区溢出攻击的“奥秘”所在。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-2-栈溢出原理">2.1.2 栈溢出原理</h3>
+<ul>
+<li>如果在堆栈中压入的数据超过预先给堆栈分配的容量时，就会出现堆栈溢出，从而使得程序运行失败；如果发生溢出的是大型程序还有可能会导致系统崩溃。</li>
+<li>程序中发生函数调用时，计算机做如下操作：
+<ul>
+<li>首先把指令寄存器EIP（它指向当前CPU将要运行的下一条指令的地址）中的内容压入栈，作为程序的返回地址（下文中用RET表示）；</li>
+<li>之后放入栈的是基址寄存器EBP，它指向当前函数栈帧（stack frame）的底部；</li>
+<li>然后把当前的栈指针ESP拷贝到EBP，作为新的基地址，最后为本地变量的动态存储分配留出一定空间，并把ESP减去适当的数值。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-3-栈溢出实例">2.1.3 栈溢出实例</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span> </span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123; <br> <span class="hljs-type">char</span> name[<span class="hljs-number">16</span>]; <br> gets(name); <br> <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">16</span>&amp;&amp;name[i];i++) <br> <span class="hljs-built_in">printf</span>(“%c”,name[i]); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>编译上述代码，输入hello world！ 结果会输出hello world！</p>
+<ul>
+<li>
+<p>在调用main()函数时，程序对栈的操作：</p>
+<ul>
+<li>先在栈底压入返回地址</li>
+<li>接着将栈指针EBP入栈，并把EBP修改为现在的ESP</li>
+<li>之后ESP减16，即向上增长16个字节，用来存放name[]数组</li>
+</ul>
+</li>
+<li>
+<p>现在栈的布局如图所示</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.5.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>执行完gets(name)之后，栈中的内容如下图所示</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.6.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>接着执行for循环，逐个打印name[]数组中的字符，直到碰到0x00字符</p>
+</li>
+<li>
+<p>最后，从main返回，将ESP增加16以回收name[]数组占用的空间，此时ESP指向先前保存的EBP值。程序将这个值弹出并赋给EBP，使EBP重新指向main()函数调用者的栈的底部。然后再弹出现在位于栈顶的返回地址RET，赋给EIP，CPU继续执行EIP所指向的命令。</p>
+<blockquote>
+<p>说明1：EIP寄存器的内容表示将要执行的下一条指令地址。</p>
+<p>说明2：当调用函数时， Call指令会将返回地址(Call指令下一条指令地址)压入栈Ret指令会把压栈的返回地址弹给EIP</p>
+</blockquote>
+</li>
+<li>
+<p>如果输入的字符串长度超过16个字节，例如输入：Hello world!AAAAAAAA……，则当执行完gets(name)之后，栈的情况如图所示。</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.7.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>由于输入的字符串太长，name[]数组容纳不下，只好向栈的底部方向继续写‘A’。这些‘A’覆盖了堆栈的老的元素，从上页图可以看出，EBP，Ret 都已经被‘A’覆盖了。</li>
+<li>从main返回时，就必然会把‘AAAA’的ASCII码——0x41414141视作返回地址，CPU会试图执行0x41414141处的指令，结果出现难以预料的后果，这样就产生了一次堆栈溢出。</li>
+</ul>
+</li>
+</ul>
+<h1>3 溢出漏洞利用原理</h1>
+<h2 id="3-1-溢出攻击的基本流程">3.1 溢出攻击的基本流程</h2>
+<p>注入恶意数据→溢出缓冲区→控制流重定向→执行有效载荷</p>
+<h3 id="3-1-1-溢出点定位">3.1.1 溢出点定位</h3>
+<p><strong>探测法</strong>：构造数据，根据出错的情况来判断、<strong>反汇编分析</strong></p>
+<h3 id="3-1-2-覆盖执行控制地址">3.1.2 覆盖执行控制地址</h3>
+<p>执行控制地址可包括：覆盖返回地址、覆盖函数指针变量、覆盖异常处理结构</p>
+<h3 id="3-1-3-覆盖异常处理结构">3.1.3 覆盖异常处理结构</h3>
+<ul>
+<li>异常处理是一种对程序异常的处理机制，它把错误处理代码与正常情况下所执行的代码分开。</li>
+<li>当程序发生异常时，系统中断当前线程，将控制权交给异常处理程序</li>
+<li>Windows的异常处理机制称为结构化异常处理（Structured Exception Handling ）</li>
+</ul>
+<h3 id="3-1-4-跳转地址的确定">3.1.4 跳转地址的确定</h3>
+<ul>
+<li>跳转指令的选取：<code>jmp esp</code>、<code>call ebx</code>、<code>call ecx</code>等</li>
+<li>跳转指令的搜索范围
+<ul>
+<li>用户空间的任意地址、系统dll、进程代码段、PEB、TEB</li>
+<li>跳转指令地址的选择规律</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-1-5-Shellcode定位和跳转">3.1.5 Shellcode定位和跳转</h3>
+<p>Shellcode的基本构成</p>
+<img src="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/4.8.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>Nop Sled：类NOP指令填充，可以是NOP，也可以是<code>inc eax</code>等无副作用指令。</li>
+<li>Decoder：解码部分，对Real_Shellcode解码。</li>
+<li>Real_Shellcode：真正有意义的shellcode部分，但是经过了编码处理。</li>
+</ul>
+<h2 id="3-2-溢出利用的关键技术">3.2 溢出利用的关键技术</h2>
+<h1>4 漏洞利用保护机制</h1>
+<h2 id="4-1-更安全的函数">4.1 更安全的函数</h2>
+<p>有些内存复制函数靠数据中的某些特殊字符来判断是否复制完成，这样复制的长度取决于数据，更安全的 是由程序来指定长度</p>
+<table>
+<thead>
+<tr>
+<th>不安全</th>
+<th>安全</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>strcpy</td>
+<td>strncpy</td>
+</tr>
+<tr>
+<td>sprintf</td>
+<td>snprintf</td>
+</tr>
+<tr>
+<td>strcat</td>
+<td>strncat</td>
+</tr>
+<tr>
+<td>gets</td>
+<td>fgets</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-2-更安全的动态链接库">4.2 更安全的动态链接库</h2>
+<p>开发一个安全的动态链接库替换不安全的库。如libsafe函数库，基于ebp进行边界检测，不允许复制超出帧指针 的边界。libmib函数库，为strcpy等函数提供安全版本。</p>
+<h2 id="4-3-编程语言">4.3 编程语言</h2>
+<p>语言本身可以检测缓冲区溢出。如python和java，提供自动边界检查。</p>
+<h2 id="4-4-地址随机化">4.4 地址随机化</h2>
+<p>ASLR（Address space layout randomization）地址空间配置随机化。为了成功实施缓冲区溢出攻击， 攻击者需要使漏洞程序返回到他们注入的代码，就首先需要猜测注入代码的地址。操作系统以前总是把栈放在固定位置，而ASLR就是为了解决这个问题。静态ASLR是指除了程序映像以外的内存区域都被随机化。</p>
+<h2 id="4-5-StackGuard">4.5 StackGuard</h2>
+<p><strong>防御思路</strong></p>
+<p>基于栈的缓冲区溢出攻击需要修改返回地址，如果能够在函数返回前检测到返回<strong>地址是否被修改</strong>，就能抵御攻击。一种方法是将返回地址备份到其他地方。而StackGuard是在返回地址和缓冲区之间设置一个哨兵，这个哨兵来检测返回地址是否被修改。</p>
+<p><strong>原理</strong></p>
+<p>缓冲区溢出攻击修改返回地址时，所有处于缓冲区和返回地址之间的内存值也会被修改。不想改变某个 特定位置的值，唯一方法是用相同的值覆盖这个位置</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/5_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_shellcode%E7%BC%96%E5%86%99/" title="shellcode">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shellcode</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/3_%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB/" title="口令攻击">
+                        <span class="hidden-mobile">口令攻击</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

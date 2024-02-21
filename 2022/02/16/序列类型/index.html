@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="序列类型 序列类型概念  序列是具有先后关系的一组元素 序列是一维向量，元素类型可以不同 可以通过下标访问序列的特定元素 序列是一个基类类型  序列类型通用操作符   x in s   x not in s   s + t     --&gt;连接连个序列   s*n      --&gt;复制n次   n*s      --&gt;复制n次   s[ i ]     --&gt;索引   s[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="序列类型">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="序列类型 序列类型概念  序列是具有先后关系的一组元素 序列是一维向量，元素类型可以不同 可以通过下标访问序列的特定元素 序列是一个基类类型  序列类型通用操作符   x in s   x not in s   s + t     --&gt;连接连个序列   s*n      --&gt;复制n次   n*s      --&gt;复制n次   s[ i ]     --&gt;索引   s[">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T06:45:40.827Z">
+<meta property="article:modified_time" content="2024-02-19T14:47:17.933Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>序列类型 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="序列类型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 14:45" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">序列类型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>序列类型</h1>
+<h3 id="序列类型概念">序列类型概念</h3>
+<ul>
+<li>序列是具有先后关系的一组元素</li>
+<li>序列是一维向量，元素类型可以不同</li>
+<li>可以通过下标访问序列的特定元素</li>
+<li>序列是一个基类类型</li>
+</ul>
+<h3 id="序列类型通用操作符">序列类型通用操作符</h3>
+<ul>
+<li>
+<p>x in s</p>
+</li>
+<li>
+<p>x not in s</p>
+</li>
+<li>
+<p>s + t     --&gt;连接连个序列</p>
+</li>
+<li>
+<p>s*n      --&gt;复制n次</p>
+</li>
+<li>
+<p>n*s      --&gt;复制n次</p>
+</li>
+<li>
+<p>s[ i ]     --&gt;索引</p>
+</li>
+<li>
+<p>s[ i : j ]、s[ i : j : k ]   注意：[i , j)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 相当于倒序</span><br>	ls = [<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">123</span>, <span class="hljs-string">&#x27;.io&#x27;</span>]<br>	ls = ls[::-<span class="hljs-number">1</span>]<br>	--&gt;[<span class="hljs-string">&#x27;.io&#x27;</span>, <span class="hljs-number">123</span>, <span class="hljs-string">&#x27;python&#x27;</span>]<br>	s = <span class="hljs-string">&#x27;python123.io&#x27;</span><br>	s = s[::-<span class="hljs-number">1</span>]<br>	--&gt;oi<span class="hljs-number">.321</span>nohtyp通用函数和方法<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="通用函数和方法">通用函数和方法</h3>
+<ul>
+<li>len(s)</li>
+<li>min(s)</li>
+<li>max(s)</li>
+<li>s.index(i)</li>
+<li>s.index(x , i , j )     返回序列s从i开始到j位置中第一次出现元素x的位置</li>
+<li>s.count(x)</li>
+</ul>
+<h4 id="元组">元组( )</h4>
+<ul>
+<li>一旦创建便<strong>不可修改</strong>，也因此没有特殊操作</li>
+<li>创建：()、tuple()，元素间用逗号分隔</li>
+<li>可以使用或不使用小括号</li>
+<li>注意：如果元组中只有<strong>一个</strong>元素，必须加<strong>逗号</strong>， 如t=(‘A’)为str类型，t=(‘A’,)为元组</li>
+<li>有下标和切片</li>
+<li>排序：sorted(t)，返回的为<strong>列表</strong>类型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span> * <span class="hljs-number">20</span>)<br>creature = <span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span><br><span class="hljs-built_in">print</span>(creature)<br>color = (<span class="hljs-string">&#x27;blue&#x27;</span>, creature)<br><span class="hljs-built_in">print</span>(color)<br>--&gt;(<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>)<br>--&gt;(<span class="hljs-string">&#x27;blue&#x27;</span>, (<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>))<br></code></pre></td></tr></table></figure>
+<h4 id="列表">列表[ ]</h4>
+<ul>
+<li>
+<p>创建后可以随意修改</p>
+</li>
+<li>
+<p>创建：[]、list()，元素间用逗号分隔</p>
+<p>​			a[]、a[’ ’ , ’ ’ , ’ ']、a[ [ ] , [ ] , [ ]]</p>
+</li>
+<li>
+<p>元素中各元素类型不同，无长度限制</p>
+</li>
+<li>
+<p>特别的操作函数和方法</p>
+<p>del ls[i]</p>
+<p>del ls[i : j : k ]</p>
+<p>ls.append()  在列表<strong>最后</strong>增加一个元素x</p>
+<p>ls.clear()  删除列表中的<strong>所有</strong>元素</p>
+<p>ls.copy()</p>
+<p>ls.insert(i ,x )  在列表中第i位置增加元素x，其他元素后移</p>
+<p>ls.pop(i)   将列表中第i位置元素删除元素x</p>
+<p>ls.pop()    从后往前删</p>
+<p>ls.remove(x)  将列表中出现的<strong>第一个</strong>元素x删除</p>
+<p>​						用循环和remove删除元素时要注意下标的改变，否则易出现漏删的情况</p>
+<p>ls.reverse()    将列表中的元素<strong>反转</strong></p>
+<p>ls2.extend(ls1)  列表<strong>相加</strong></p>
+<p>ls.sort()   默认<strong>升序</strong>，可以通过reverse控制升序和降序，Ture降序（默认）<br>
+ls.sort(reverse=Ture)   <strong>降序</strong></p>
+<ul>
+<li>
+<p>注意</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">sort 与 <span class="hljs-built_in">sorted</span> 区别：<br>sort 是应用在 <span class="hljs-built_in">list</span> 上的方法<br><span class="hljs-built_in">sorted</span> 可以对所有可迭代的对象进行排序操作。<br><span class="hljs-built_in">list</span> 的 sort 方法返回的是对已经存在的列表进行操作，而内建函数 <span class="hljs-built_in">sorted</span> 方法返回的是一个新的 <span class="hljs-built_in">list</span>，而不是在原来的基础上进行的操作。<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>列表推导式：最终得到的是一个列表<br>
+格式1：[for i in 可迭代的]<br>
+格式2：[i for i in 可迭代的 if 条件]</p>
+</li>
+</ul>
+<h3 id="字符串">字符串</h3>
+<ul>
+<li>
+<p>查找内容:find,index,rfind,rindex<br>
+find : 从左向右找，只要遇到一个符合要求的就返回位置，如果没有找到任何符合要求的就返回-1</p>
+</li>
+<li>
+<p>count : 统计指定字符的个数</p>
+</li>
+<li>
+<p>index : 与find类似，但是找不到会报错</p>
+</li>
+<li>
+<p>startswith(‘xxx’)  判断是否以xxx开头</p>
+</li>
+<li>
+<p>endswith(‘xxx’)</p>
+</li>
+<li>
+<p>isalpha()   是否全部是字母组成</p>
+</li>
+<li>
+<p>isdigit()</p>
+</li>
+<li>
+<p>isalnum(）</p>
+</li>
+<li>
+<p>isspace()</p>
+</li>
+<li>
+<p>issupper()  是否全部是大写</p>
+</li>
+<li>
+<p>islower()</p>
+</li>
+<li>
+<p>replace(old,new,count) 默认全部替换，也可以通过count指定次数</p>
+</li>
+<li>
+<p>切割字符串：<br>
+split,rsplilt,splitlines,partition,rpartition<br>
+split(‘分隔符’,maxsplit) 返回的结果是一个列表，maxsplit为最多分割次数</p>
+</li>
+<li>
+<p>修改大小写：capitalized、title、upper、lower<br>
+title()  每个单词的第一个字母大写<br>
+upper()   每个单词大写<br>
+capitalize()  第一个字母大写</p>
+</li>
+<li>
+<p>空格处理：<br>
+ljust,rjust,center,  添加空格控制字符串的对齐方式<br>
+lstrip,rstrip,strip  删除空格<br>
+join  字符串拼接<br>
+list2=‘(想要用的连接符)’.join(list1)  拼接两个列表</p>
+</li>
+</ul>
+<h3 id="序列类型应用场景">序列类型应用场景</h3>
+<ul>
+<li>元素遍历</li>
+<li>数据保护：如果不希望数据被程序所修改，转换成元组类型</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Python%E5%9F%BA%E7%A1%80/" class="category-chain-item">Python基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/jieba%E5%BA%93/" title="jieba库">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">jieba库</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/15/%E6%96%87%E4%BB%B6/" title="文件">
+                        <span class="hidden-mobile">文件</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

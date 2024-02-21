@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Task 1: Get Familiar with SQL Statements   找到数据库容器的id：dockps，启动shell：docksh eee    根据实验手册的提示，使用数据库sqllab_users：use sqllab_users；查看表名：show tables；查看数据库表的基本信息，得到列名：desc credential。 使用数据库sqllab_users：  查">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab8-SQL注入">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="Task 1: Get Familiar with SQL Statements   找到数据库容器的id：dockps，启动shell：docksh eee    根据实验手册的提示，使用数据库sqllab_users：use sqllab_users；查看表名：show tables；查看数据库表的基本信息，得到列名：desc credential。 使用数据库sqllab_users：  查">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181058074.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181108205.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181138367.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184238436.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184320804.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184327895.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184410198.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184530428.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184530428.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184539962.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105195950595.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105200004386.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105210642565.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220529205.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220603119.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220607247.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220617535.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105221222416.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105221236840.png">
+<meta property="article:published_time" content="2024-02-20T13:55:34.568Z">
+<meta property="article:modified_time" content="2024-02-21T08:03:40.839Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181058074.png">
+  
+  
+  
+  <title>Lab8-SQL注入 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab8-SQL注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab8-SQL注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>Task 1: Get Familiar with SQL Statements</h1>
+<ol>
+<li>
+<p>找到数据库容器的id：dockps，启动shell：docksh eee</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181058074.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>根据实验手册的提示，使用数据库sqllab_users：use sqllab_users；查看表名：show tables；查看数据库表的基本信息，得到列名：desc credential。</p>
+<p>使用数据库sqllab_users：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181108205.png" srcset="/img/loading.gif" lazyload class="">
+<p>查看表的信息：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105181138367.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p>查看用户Alice的信息</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> credential <span class="hljs-keyword">where</span> <span class="hljs-type">Name</span>=<span class="hljs-string">&#x27;Alice&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184238436.png" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h1>Task 2: SQL Injection Attack on SELECT Statement</h1>
+<h2 id="Task-2-1-SQL-Injection-Attack-from-webpage">Task 2.1: SQL Injection Attack from webpage.</h2>
+<p>在不知道密码的情况下以admin的身份登录，根据提示的源码来看，sql语句只实现了简单的拼接，所以构造payload如下，实现无密码登录：</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-literal">Admin</span>’<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184320804.png" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184327895.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-2-2-SQL-Injection-Attack-from-command-line">Task 2.2: SQL Injection Attack from command line.</h2>
+<p>与上一实验类似，只是这次需要在url中实现注入，需要注意url编码问题，payload如下：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">http:<span class="hljs-regexp">//</span>www.seed-server.com/unsafe_home.php?username=admin%27%23<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184410198.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-2-3-Append-a-new-SQL-statement">Task 2.3: Append a new SQL statement.</h2>
+<p>尝试实现两条sql语句注入，但是发现无法成功执行，从报错结果来看，后端采用的是query()函数，一次只能执行一条sql语句，因此出现了语法错误，执行失败。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">www.seed-server.com/unsafe_home.php?<span class="hljs-attribute">username</span>=admin&#x27;;update credential <span class="hljs-built_in">set</span> <span class="hljs-attribute">salary</span>=0 where <span class="hljs-attribute">Name</span>=<span class="hljs-string">&#x27;Alice&#x27;</span>;%23<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184530428.png" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 3: SQL Injection Attack on UPDATE Statement</h1>
+<h2 id="Task-3-1-Modify-your-own-salary">Task 3.1: Modify your own salary.</h2>
+<p>首先以Alice的身份登录，进入修改页面，在表单输入sql注入语句，实现对Salary字段的修改。</p>
+<p>更新Salary为100000：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184530428.png" srcset="/img/loading.gif" lazyload class="">
+<p>返回Alice主页，发现Salary被修改为指定值：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105184539962.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-3-2-Modify-other-people’-salary">Task 3.2: Modify other people’ salary.</h2>
+<p>想要修改其他人的Salary字段，只要在原来的基础上添加修改条件即可。数据库中Boby对应的ID为2，所以添加条件：where ID=2#，或者where Name=‘Boby’#。</p>
+<p>添加修改条件：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105195950595.png" srcset="/img/loading.gif" lazyload class="">
+<p>利用admin的身份登录，发现Boby的相关信息已经被修改：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105200004386.png" srcset="/img/loading.gif" lazyload class="">
+<h2 id="Task-3-3-Modify-other-people’-password">Task 3.3: Modify other people’ password.</h2>
+<p>根据源码提示，用户的密码经过sha1加密，所以首先需要将我们想要改的密码经过sha1加密。本实验中想要把Boby的密码改为“123456”，所以首先在在线加密平台对其进行加密：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105210642565.png" srcset="/img/loading.gif" lazyload class="">
+<p>然后用同样的方法修改利用Alice的身份对Boby的密码进行修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">pwd</span><span class="hljs-string">&#x27;,Password=&#x27;</span>7c4a8d09ca3762af61e59520943dc26494f8941b<span class="hljs-string">&#x27; where Name=&#x27;</span>Boby<span class="hljs-string">&#x27;;#</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220529205.png" srcset="/img/loading.gif" lazyload class="">
+<p>在数据库中查询，可以看到Boby的密码已经被修改为对应的hash值，在登录页面中使用新密码成功登录。</p>
+<p>原密码hash值：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220603119.png" srcset="/img/loading.gif" lazyload class="">
+<p>新密码hash值：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220607247.png" srcset="/img/loading.gif" lazyload class="">
+<p>使用新密码登录：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105220617535.png" srcset="/img/loading.gif" lazyload class="">
+<h1>Task 4: Countermeasure — Prepared Statement</h1>
+<p>采用预编译的手段来修改源代码，来抵御上述的SQL注入。首先在defense文件夹下修改unsafe.php文件，将sql查询语句进行如下修改：</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105221222416.png" srcset="/img/loading.gif" lazyload class="">
+<p>接着重启容器：dcbuild、dcup，再次使用Task1的方法，发现返回的页面为空，即无法实现SQL注入。</p>
+<img src="/2024/02/20/Lab8_SQL%E6%B3%A8%E5%85%A5/image-20230105221236840.png" srcset="/img/loading.gif" lazyload class="">
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab9_%E5%97%85%E6%8E%A2%E5%92%8C%E6%AC%BA%E9%AA%97/" title="Lab9-嗅探和欺骗">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab9-嗅探和欺骗</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/Lab7_XSS%E6%94%BB%E5%87%BB/" title="Lab7-XSS攻击">
+                        <span class="hidden-mobile">Lab7-XSS攻击</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

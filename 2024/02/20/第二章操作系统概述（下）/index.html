@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2.4现代操作系统的特征  多数操作系统都只有一个单体内核（monolithic kernel），操作系统应提供的多数功能都由这个大内核来提供，典型情况下，这个大内核是作为一个进程实现的，所有元素都共享相同的地址空间 微内核体系结构（microkernel architecture）只给内核分配一些最基本的功能，包括地址空间、进程间通信（IPC，Inter Process Communicatio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章-操作系统概述（二）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="2.4现代操作系统的特征  多数操作系统都只有一个单体内核（monolithic kernel），操作系统应提供的多数功能都由这个大内核来提供，典型情况下，这个大内核是作为一个进程实现的，所有元素都共享相同的地址空间 微内核体系结构（microkernel architecture）只给内核分配一些最基本的功能，包括地址空间、进程间通信（IPC，Inter Process Communicatio">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.jpg">
+<meta property="article:published_time" content="2024-02-20T12:04:46.627Z">
+<meta property="article:modified_time" content="2024-02-20T13:29:09.940Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.13.jpg">
+  
+  
+  
+  <title>第二章-操作系统概述（二） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第二章-操作系统概述（二）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 20:04" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第二章-操作系统概述（二）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>2.4现代操作系统的特征</p>
+<ul>
+<li>多数操作系统都只有一个<strong>单体内核（<em>monolithic kernel</em>）</strong>，操作系统应提供的多数功能都由这个大内核来提供，典型情况下，这个大内核是作为一个<strong>进程</strong>实现的，<strong>所有元素</strong>都<strong>共享相同的地址空间</strong></li>
+<li><strong>微内核体系结构（<em>microkernel architecture</em>）<strong>只给</strong>内核</strong>分配一些<strong>最基本的功能</strong>，包括地址空间、进程间通信（<em>IPC，Inter Process Communication</em>）、基本的调度。其他操作系统服务由运行在用户模式且与其他应用程序类似的<strong>进程</strong>提供，这些进程可根据特定的应用和环境需求进行定制，有时也称这些进程为<strong>服务器</strong></li>
+<li>微内核方法可使系统结构的设计更加简单、灵活，非常适合于<strong>分布式环境</strong></li>
+<li><strong>多线程（<em>multithreading</em>）<strong>技术：把一个应用程序的</strong>进程</strong>划分为可以<strong>同时运行</strong>的多个<strong>线程</strong></li>
+<li>线程和进程的区别：
+<ul>
+<li>线程
+<ul>
+<li>可分派的工作单元</li>
+<li>包括处理器<strong>上下文环境</strong>（包括程序计数器和栈指针）和<strong>栈中自身的数据区域</strong>（目的是启用子程序分支</li>
+<li>线程<strong>顺序执行</strong>且<strong>可以中断</strong>，因此处理器可以转到另一个线程</li>
+</ul>
+</li>
+<li>进程
+<ul>
+<li>一个或多个<strong>线程</strong>和<strong>相关资源</strong>（如包含数据和代码的存储器空间、打开的文件和设备）的<strong>集合</strong></li>
+<li>严格对应于一个正在执行的程序的概念</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>对称多处理（<em>SMP，Symmetric MultiProcessing</em>）</strong>
+<ul>
+<li>不仅指<strong>计算机硬件体系结构</strong>，也指采用该系统结构的<strong>操作系统行为</strong></li>
+<li>对称多处理系统可调度进程或线程到<strong>所有的处理器</strong>上运行</li>
+</ul>
+</li>
+</ul>
+<h1>2.5容错性</h1>
+<ul>
+<li>指系统或部件在发生软/硬件错误时，能够继续正常运行的能力，这种能力通常会涉及到一定程度的冗余</li>
+<li>旨在提高系统的可靠性</li>
+</ul>
+<h5 id="2-5-1基本概念">2.5.1基本概念</h5>
+<ul>
+<li>
+<p>可靠性R(t)：从t‘=0~t‘=t时刻系统正确运行的概率</p>
+<ul>
+<li>“正确运行”：一系列程序正常运行，并保护数据不被意外地修改</li>
+</ul>
+</li>
+<li>
+<p>平均失效时间MTTF</p>
+<ul>
+<li>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>平均失效时间</mtext><mi>M</mi><mi>T</mi><mi>T</mi><mi>F</mi><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi mathvariant="normal">∞</mi></msubsup><mi>R</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">平均失效时间MTTF=\int_0^∞ R(t)dt
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">平均失效时间</span><span class="mord mathnormal" style="margin-right:0.13889em;">MTTF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3262em;vertical-align:-0.9119em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4143em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.8129em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9119em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mord mathnormal">d</span><span class="mord mathnormal">t</span></span></span></span></span></p>
+</li>
+<li>
+<p><strong>平均修复时间（MTTR）</strong>：<strong>修复或替换</strong>错误部分所花费的<strong>平均时间</strong></p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.13.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>系统或服务的<strong>可用性（<em>availability</em>）</strong></p>
+<ul>
+<li>系统能够有效服务用户请求的时间段</li>
+<li>系统不可用的时间称为<strong>宕机时间（<em>downtime</em>）</strong>，系统可用的时间称为<strong>正常运行时间（<em>uptime</em>）</strong></li>
+<li>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>一个系统的可用性</mtext><mi>A</mi><mo>=</mo><mfrac><mrow><mi>M</mi><mi>T</mi><mi>T</mi><mi>F</mi></mrow><mrow><mi>M</mi><mi>T</mi><mi>T</mi><mi>F</mi><mo>+</mo><mi>M</mi><mi>T</mi><mi>T</mi><mi>R</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">一个系统的可用性A=\frac{MTTF}{MTTF+MTTR}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">一个系统的可用性</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1297em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">MTTF</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">MTTR</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">MTTF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-5-2错误">2.5.2错误</h5>
+<ul>
+<li>永久性错误：错误一旦发生，就会一直存在。错误在故障本部分替换或修复前一直存在，如硬盘磁头损坏、软件错误、通信部件损坏</li>
+<li>临时性错误：错误不存在于所有操作条件下
+<ul>
+<li>瞬时性错误：仅发生一次，如冲激噪声造成的位传输错误、电源故障、改变内存位的辐射</li>
+<li>间歇性错误：发生在多个不可预测的时间，如连接松动</li>
+</ul>
+</li>
+<li>空间（物理）冗余
+<ul>
+<li>使用多个组件同时执行相同的功能，如多条并行线路以多数输出的结果作为输出</li>
+<li>设置一个可用组件作为备份，以防另一组件出现错误的情况，如互联网上的备用域名服务器</li>
+</ul>
+</li>
+<li>时间冗余
+<ul>
+<li>检测到错误时重复某一功能或操作</li>
+<li>对于临时性错误有效，对于永久性错误无效</li>
+</ul>
+</li>
+<li>信息冗余：通过复制或编码数据的方式来检测和修复位数据，进而提高容错性。如存储系统所用的差错控制编码电路和RAID磁盘所用的纠错技术</li>
+</ul>
+<h5 id="2-5-3操作系统机制">2.5.3操作系统机制</h5>
+<p>一些提高容错性的技术</p>
+<ul>
+<li>进程隔离
+<ul>
+<li>进程在内存、文件存取和执行过程中通常是相互隔离的</li>
+</ul>
+</li>
+<li>并发控制</li>
+<li>虚拟机</li>
+<li>检测点和回滚机制
+<ul>
+<li>检测点是<strong>应用程序状态</strong>的一个<strong>副本</strong>，该副本在<strong>可考虑范围内</strong>保存于<strong>对错误免疫</strong>的<strong>存储介质</strong>中</li>
+<li><strong>回滚</strong>从先前存储的<strong>检测点</strong>重新开始执行</li>
+<li>可用于从<strong>瞬时错误</strong>及<strong>永久性硬件故障</strong>、某些类型的<strong>软件异常</strong>中恢复</li>
+</ul>
+</li>
+</ul>
+<h1>2.7微软Windows系统简介</h1>
+<h5 id="2-7-1背景">2.7.1背景</h5>
+<p>MS-DOS（Windows）=》Windows NT=》Windows8</p>
+<h5 id="2-7-2体系结构">2.7.2体系结构</h5>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os1.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.14.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>
+<p>Windows的体系结构是<strong>高度模块化</strong>的</p>
+</li>
+<li>
+<p>每个函数都正好由一个操作系统部件管理，操作系统的其余部分和所有应用程序通过相应的部件使用标准接口来访问这个函数</p>
+</li>
+<li>
+<p>理论上，任何模块都可以移动、升级或替换，而不需要重写整个系统或其标准应用程序编程接口（API）</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%8B%EF%BC%89/os2.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>硬件抽象层
+<ul>
+<li>在通用的硬件命令和响应与某一特定平台专用的命令和响应之间进行映射，它将操作系统从与平台相关的硬件差异中隔离出来</li>
+<li>HAL使得每个机器的系统总线、直接存储访问（DMA）控制器、中断控制器、系统计时器和存储控制器对内核来说看上去是相同的</li>
+<li>支持SMP</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>执行体模块：</p>
+<ul>
+<li>I/O管理器：负责实现所有Windows I/O API，并实施安全性、设备命名和文件系统（使用对象管理器）</li>
+<li>高速缓存管理器
+<ul>
+<li>使最近访问过的磁盘数据驻留在<strong>内存</strong>中，以实现快速访问</li>
+<li>在<strong>更新后的数据</strong>发送到<strong>磁盘</strong>前，于<strong>内存中</strong>保持一段<strong>很短的时间</strong>，<strong>延迟</strong>磁盘<strong>写</strong>操作，进而提高基于文件的I/O性能</li>
+</ul>
+</li>
+<li>对象管理器
+<ul>
+<li><strong>创建、管理和删除</strong>Windows<strong>执行体对象</strong>和用于表示诸如进程、线程和同步对象等资源的<strong>抽象数据类型</strong></li>
+<li>为对象的保持、命名和安全性设置实施统一的规则</li>
+<li>负责创建对象句柄（由<strong>访问控制信息</strong>和<strong>指向对象的指针</strong>组成）</li>
+</ul>
+</li>
+<li>即插即用管理器：决定并加载特定设备的<strong>驱动</strong></li>
+<li>电源管理器
+<ul>
+<li>调整各种设备间的电源管理</li>
+<li>可以把处理器设置为休眠状态==》节能</li>
+<li>可以把内存中的内容写入磁盘，然后切断整个系统的电源</li>
+</ul>
+</li>
+<li>安全访问监控程序：强制执行访问确认和审核产生规则</li>
+<li>虚存管理器
+<ul>
+<li>管理虚拟地址、物理地址和磁盘上的页面文件</li>
+<li>控制内存管理硬件和相应的数据结构，把进程地址空间中的虚地址映射到计算机内存中的物理页</li>
+</ul>
+</li>
+<li>进程/线程管理器</li>
+<li>配置管理器：负责执行和管理<strong>系统注册表</strong>（保存系统和用户参数设置的数据仓库）</li>
+<li>本地过程调用（<em>LPC，Local Procedure Call</em>）机制：类似于<strong>分布处理</strong>中的<strong>远程过程调用（<em>RPC，Remote Procedure Call</em>）</strong></li>
+</ul>
+</li>
+<li>
+<p>Windows支持4种基本的<strong>用户模式进程</strong></p>
+<ul>
+<li>特殊系统进程：管理系统所需的用户模式服务，如绘画管理程序、认证子系统、服务管理程序、登录进程</li>
+<li>服务进程
+<ul>
+<li>打印机后台管理程序、事件记录器、与设备驱动协作的用户模式构件、不同的网络服务程序</li>
+<li>这些服务是在Windows系统中国后台运行用户模式活动的唯一办法</li>
+</ul>
+</li>
+<li>环境子系统
+<ul>
+<li>提供不同的操作系统个性化设置（环境）</li>
+<li>支持的子系统由Win32和POSIX</li>
+<li>每个环境子系统包括一个在所有子系统应用程序种会都共享的子系统进程，以及把用户应用程序调用转换为<strong>本地过程调用（LPC）<strong>和/或</strong>本地Windows调用的动态连接客（DLL）</strong></li>
+</ul>
+</li>
+<li>用户应用程序
+<ul>
+<li>为充分利用系统功能而为用户提供的<strong>可执行程序（EXE）<strong>和</strong>动态链接库（DLL）</strong></li>
+<li>支持在64位系统上运行32位程序</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E5%85%AD%E7%AB%A0%E5%B9%B6%E5%8F%91%EF%BC%9A%E6%AD%BB%E9%94%81%E5%92%8C%E9%A5%A5%E9%A5%BF/" title="第六章-死锁和饥饿">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第六章-死锁和饥饿</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0(%E4%B8%8A%EF%BC%89/" title="第二章-操作系统概述（一）">
+                        <span class="hidden-mobile">第二章-操作系统概述（一）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

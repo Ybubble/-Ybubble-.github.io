@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 TCP协议  传输控制协议（TCP）是Internet协议套件的核心协议。 位于IP层的顶部；传输层。 为应用程序提供主机到主机的通信服务。 两个传输层协议  TCP：在应用程序之间提供可靠且有序的通信通道。 UDP：具有较低开销的轻量级协议，可用于不需要可靠性或通信顺序的应用程序。    2 TCP服务器程序   步骤1：创建一个套接字。与客户端程序相同。   步骤2：绑定到端口号。 通过网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="假消息攻-TCP攻击">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="1 TCP协议  传输控制协议（TCP）是Internet协议套件的核心协议。 位于IP层的顶部；传输层。 为应用程序提供主机到主机的通信服务。 两个传输层协议  TCP：在应用程序之间提供可靠且有序的通信通道。 UDP：具有较低开销的轻量级协议，可用于不需要可靠性或通信顺序的应用程序。    2 TCP服务器程序   步骤1：创建一个套接字。与客户端程序相同。   步骤2：绑定到端口号。 通过网">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/10.1.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/10.2.jpg">
+<meta property="article:published_time" content="2024-02-20T13:55:34.534Z">
+<meta property="article:modified_time" content="2024-02-21T14:53:33.370Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/10.1.png">
+  
+  
+  
+  <title>假消息攻-TCP攻击 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="假消息攻-TCP攻击"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 21:55" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">假消息攻-TCP攻击</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>1 TCP协议</h1>
+<ul>
+<li>传输控制协议（TCP）是Internet协议套件的核心协议。</li>
+<li>位于IP层的顶部；传输层。</li>
+<li>为应用程序提供<u>主机到主机</u>的通信服务。</li>
+<li>两个传输层协议
+<ul>
+<li>TCP：在应用程序之间提供可靠且有序的通信通道。</li>
+<li>UDP：具有较低开销的轻量级协议，可用于不需要可靠性或通信顺序的应用程序。</li>
+</ul>
+</li>
+</ul>
+<h1>2 TCP服务器程序</h1>
+<ul>
+<li>
+<p>步骤1：创建一个套接字。与客户端程序相同。</p>
+</li>
+<li>
+<p>步骤2：绑定到端口号。</p>
+<p>通过网络与其他人通信的应用程序需要在其主机上注册端口号。当数据包到达时，操作系统根据端口号知道哪个应用程序是接收器。服务器需要告诉操作系统它正在使用哪个端口。这是通过bind（）系统调用完成的</p>
+</li>
+<li>
+<p>步骤3：侦听连接。</p>
+<ul>
+<li>设置套接字后，TCP程序调用listen（）以等待连接。</li>
+<li>它告诉系统它已准备好接收连接请求。</li>
+<li>一旦收到连接请求，操作系统将通过三方握手建立连接。</li>
+<li>已建立的连接放置在队列中，等待应用程序接收它。第二个参数给出了可以存储在队列中的连接数（linux kernel 2.2以后）。</li>
+</ul>
+</li>
+<li>
+<p>步骤4：接收连接请求建立连接后，应用程序需要“接收”连接才能访问它。accept（）系统调用从队列中提取第一个连接请求，创建一个新套接字，并返回引用该套接字的文件描述符。</p>
+</li>
+<li>
+<p>步骤5：发送和接收数据一旦建立并接受了连接，双方都可以使用这个新的套接字发送和接收数据。</p>
+</li>
+</ul>
+<h1>3 数据传输</h1>
+<ul>
+<li>一旦建立连接，操作系统在每一端分配两个缓冲区，一个用于发送数据（发送缓冲区）和接收缓冲区（接收缓冲区）。</li>
+<li>当应用程序需要发送数据时，它会将数据放入TCP发送缓冲区。</li>
+<li>发送缓冲区中的每个字节（8bit）在报头中都有一个序列号字段，用于指示数据包的序列。在接收端，这些序列号用于将数据放置在接收缓冲区内的正确位置。</li>
+<li>一旦数据被放入接收缓冲区，它们就被合并到一个数据流中。</li>
+<li>应用程序从接收缓冲区读取数据。如果没有可用的数据，它通常会被锁定。当有足够的数据可读取时，它将被解除阻止。</li>
+<li>接收方使用确认包通知发送方接收的数据。</li>
+</ul>
+<h1>4 SYN Flooding攻击</h1>
+<h2 id="4-1-概述">4.1 概述</h2>
+<p><strong>想法</strong>：为了填充存储半开放连接的队列，以便没有空间为任何新的半开放连接存储TCB，基本上服务器不能接受任何新的SYN数据包。</p>
+<p><strong>实现这一点的步骤</strong>：持续向服务器发送大量SYN数据包。这会通过插入TCB记录来消耗队列中的空间。</p>
+<ul>
+<li>不要完成握手的第三步，因为这将使TCB记录出列。</li>
+<li>当向服务器发送SYN数据包时，我们需要使用随机源IP地址；否则，攻击可能会被防火墙阻止。</li>
+<li>服务器发送的SYN+ACK数据包可能会被丢弃，因为伪造的IP地址可能不会分配给任何机器。如果到达现有机器，RST包将被发送，TCB将被平衡。</li>
+<li>由于第二种选择不太可能发生，TCB记录将大部分保留在队列中。这导致了SYN Flooding攻击。</li>
+</ul>
+<p><strong>TCP状态</strong></p>
+<ul>
+<li>LISTEN：等待TCP连接。</li>
+<li>ESTABLISHED：完成三次握手</li>
+<li>SYN_RECV：半开放式连接</li>
+</ul>
+<p><strong>结果</strong></p>
+<ul>
+<li>使用netstat命令，我们可以看到在端口23上有大量半开放的连接，带有随机源IP。</li>
+<li>使用top命令，我们可以看到服务器上的<u>CPU使用率不高</u>。<u>服务器处于活动状态</u>，可以正常执行其他功能，但不能仅接受telnet连接。</li>
+</ul>
+<h2 id="4-2-对策：syn-cookies">4.2 对策：syn cookies</h2>
+<ul>
+<li>在服务器接收到SYN数据包后，它使用只有服务器知道的密钥从数据包中的信息计算密钥散列（H）。</li>
+<li>此哈希（H）作为初始序列号从服务器发送到客户端。H称为SYN cookie。</li>
+<li>服务器不会将半开放连接存储在其队列中。</li>
+<li>如果客户端是攻击者，H将无法到达攻击者。如果客户端不是攻击者，则在确认字段中输入H+1。</li>
+<li>服务器通过重新计算cookie来检查确认字段中的数字是否有效。</li>
+</ul>
+<h1>5 TCP重置攻击</h1>
+<ul>
+<li>
+<p>断开TCP连接</p>
+<img src="/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/10.1.png" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>A向B发送一个“FIN”数据包。</li>
+<li>B用“ACK”数据包进行回复。这使A与B交流更加接近。</li>
+<li>现在，B向a发送一个“FIN”数据包，a回复“ACK”。</li>
+</ul>
+</li>
+<li>
+<p>使用重置标志：</p>
+<ul>
+<li>通信一方发送RST包则立即断开连接。</li>
+</ul>
+</li>
+</ul>
+<p><strong>目标</strong>：断开A和B之间的TCP连接</p>
+<h2 id="5-1-SSH连接上的TCP重置攻击">5.1 SSH连接上的TCP重置攻击</h2>
+<ul>
+<li>如果加密是在网络层完成的，则包括包头在内的整个TCP数据包都将被加密，这使得嗅探或欺骗变得不可能。</li>
+<li>但由于SSH在<strong>传输层</strong>进行加密，<strong>TCP包头仍然未加密</strong>。因此，攻击是成功的，因为RST数据包只需要包头。</li>
+</ul>
+<h1>6 TCP会话劫持攻击</h1>
+<p><strong>目标</strong>：在已建立连接中注入数据。</p>
+<h2 id="6-1-创建反向shell">6.1 创建反向shell</h2>
+<ul>
+<li>劫持连接后运行的最佳命令是运行反向shell命令。</li>
+<li>在服务器上运行shell程序，如/bin/bash，并使用可由攻击者控制的输入/输出设备。</li>
+<li>shell程序使用TCP连接的一端作为其输入/输出，连接的另一端由攻击者计算机控制。</li>
+<li>反向 shell是一个在远程计算机上运行的shell进程，可连接回攻击者。</li>
+<li>这是一种非常常见的黑客技术。</li>
+</ul>
+<img src="/2024/02/20/10_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_TCP%E6%94%BB%E5%87%BB/10.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="6-2-防御会话劫持">6.2 防御会话劫持</h2>
+<ul>
+<li>使攻击者难以伪造数据包
+<ul>
+<li>随机化源端口号</li>
+<li>随机化初始序列号</li>
+<li>对本地攻击无效</li>
+</ul>
+</li>
+<li>加密有效载荷</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/11_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB-DNS%E6%AC%BA%E9%AA%97/" title="假消息攻击-DNS欺骗">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">假消息攻击-DNS欺骗</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/9_%E5%81%87%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB_%E5%8C%85%E5%97%85%E6%8E%A2%E4%B8%8E%E6%AC%BA%E9%AA%97/" title="假消息攻击-包嗅探与欺骗">
+                        <span class="hidden-mobile">假消息攻击-包嗅探与欺骗</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

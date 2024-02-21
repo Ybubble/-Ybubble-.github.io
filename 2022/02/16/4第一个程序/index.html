@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一个源程序从写出到执行的过程   编写  用文本编辑器（记事本、Nodepad++、UltraEdit······），用汇编语言编写汇编源程序    对源程序进行编译连接  使用汇编语言编译程序（MASM.EXE）对源程序文件中的源程序进行编译，产生目标文件 再用连接程序（LINK.EXE）对目标文件进行连接，生成可在操作系统中直接运行的可执行文件 可执行文件中包含两部分内容  程序（啊从原程序中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4-第一个程序">
+<meta property="og:url" content="https://ybubble.github.io/2022/02/16/4%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="一个源程序从写出到执行的过程   编写  用文本编辑器（记事本、Nodepad++、UltraEdit······），用汇编语言编写汇编源程序    对源程序进行编译连接  使用汇编语言编译程序（MASM.EXE）对源程序文件中的源程序进行编译，产生目标文件 再用连接程序（LINK.EXE）对目标文件进行连接，生成可在操作系统中直接运行的可执行文件 可执行文件中包含两部分内容  程序（啊从原程序中">
+<meta property="og:locale" content="zn_CN">
+<meta property="article:published_time" content="2022-02-16T13:38:43.523Z">
+<meta property="article:modified_time" content="2024-02-19T15:03:13.909Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>4-第一个程序 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="4-第一个程序"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-16 21:38" pubdate>
+          February 16, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">4-第一个程序</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>一个源程序从写出到执行的过程</h1>
+<ul>
+<li>
+<p>编写</p>
+<ul>
+<li>用文本编辑器（记事本、Nodepad++、UltraEdit······），用汇编语言编写汇编源程序</li>
+</ul>
+</li>
+<li>
+<p>对源程序进行编译连接</p>
+<ul>
+<li>使用汇编语言编译程序（MASM.EXE）对源程序文件中的源程序进行编译，产生目标文件</li>
+<li>再用连接程序（LINK.EXE）对目标文件进行连接，生成可在操作系统中直接运行的可执行文件</li>
+<li>可执行文件中包含两部分内容
+<ul>
+<li>程序（啊从原程序中的汇编指令翻译过来的机器码）和数据（源程序中定义的数据）</li>
+<li>相关的描述信息（比如：程序有多大、要占用多少内存空间）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>执行可执行文件的程序</p>
+<ul>
+<li>在操作系统中，执行可执行文件中的程序</li>
+<li>操作系统依照可执行文件中的描述信息，将可执行文件中的机器码和数据加载如内存，并进行相关的初始化（比如：设置CS：IP指向的第一条要执行的指令），然后有CPU执行程序</li>
+</ul>
+</li>
+</ul>
+<h1>源程序</h1>
+<h5 id="汇编指令">汇编指令</h5>
+<p>有对应的机器码的指令，可以被编译为机器指令，最终为CPU所执行</p>
+<h5 id="伪指令">伪指令</h5>
+<ul>
+<li>
+<p>没有对应的机器码的指令，最终不被CPU所执行</p>
+</li>
+<li>
+<p>伪指令是由编译器来执行的指令，编译器根据伪指令来进行相关的编译工作</p>
+</li>
+<li>
+<p>定义一个段</p>
+<ul>
+<li>
+<p>segment和ends时一对成对使用的伪指令，这是在写可被编译器编译的汇编程序时，必须要用到的一对伪指令</p>
+</li>
+<li>
+<p>segment和ends的功能就是定义一个段，segment说明一个段的开始，ends说明一个段的结束</p>
+</li>
+<li>
+<p>一个段必须有一个名称来标识，格式：</p>
+<p>段名   segment</p>
+<p>段名   ends</p>
+</li>
+<li>
+<p>一个汇编程序是由多个段组成的，这些段被用来存放代码、数据或当作栈空间来使用</p>
+</li>
+<li>
+<p>一个有意义的程序中至少要有一个段，这个段用来存放代码</p>
+</li>
+</ul>
+</li>
+<li>
+<p>end：一个汇编程序的结束标记</p>
+</li>
+<li>
+<p>汇编源程序：</p>
+<p>伪指令（编译器处理）</p>
+<p>汇编指令（编译为机器码）</p>
+</li>
+<li>
+<p>程序：源程序中最终由计算机执行、处理的指令或数据</p>
+</li>
+<li>
+<p>可以将源程序文件中的所有内容成为源程序，将源程序中最终由计算机执行处理的指令或数据成为程序</p>
+</li>
+<li>
+<p>程序最先以汇编指令的形式存在源程序中，经编译、连接后转变为机器码，存储在可执行文件中</p>
+</li>
+</ul>
+<h5 id="标号">标号</h5>
+<ul>
+<li>一个标号指代了一个地址</li>
+<li>codesg：放在segment的前面，作为一个段的名称，这个段的名称最终将被编译、连接程序处理为一个段的段地址</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs assembly">计算：2^3：<br>assume cs:abc<br>abc segment<br>move ax,2<br>add ax,ax<br>add ax,ax<br>abc ends<br>end<br></code></pre></td></tr></table></figure>
+<h5 id="DOS中的程序运行">DOS中的程序运行</h5>
+<ul>
+<li>DOS是一个单任务操作系统</li>
+<li>一个程序P2在可执行文件中，则必须由一个正在运行的程序P1，将P2从可执行文件中载入内存后，将CPU的控制权交给P2，P2才能得以运行。P2开始运行后，P1暂停运行</li>
+<li>当P2运行完毕后，应该将CPU的控制权交还给使它得以运行的程序P1，此后P1继续运行</li>
+</ul>
+<h5 id="程序返回">程序返回</h5>
+<ul>
+<li>
+<p>一个程序结束后，将CPU的控制权交换给使它的以运行的程序的过程</p>
+</li>
+<li>
+<p>应该在程序末尾添加啊返回的程序段：</p>
+<p>mov ax，4c00H</p>
+<p>int 21H</p>
+<p>（int：DOS中的‘’中断’‘）</p>
+</li>
+<li>
+<p>汇编指令，编译时由CPU执行</p>
+</li>
+</ul>
+<h5 id="连接的作用">连接的作用</h5>
+<ul>
+<li>当源程序很大时，可以将它分为多个源程序文件来编译，每个源程序编译为目标文件后再用连接程序将它们连接到一起，生成一个可执行文件</li>
+<li>程序中调用了某个库文件中的子程序，需要将这个库和该程序生成的目标文件连接到一起，生成一个可执行文件</li>
+<li>一个源程序编译后，得到了存有机器码的目标文件，目标文件中的有些内容还不能直接用来生成可执行文件，连接程序将这些内容处理为最终的可执行信息</li>
+<li>在只有一个源程序文件，而又不需要调用某个库中的子程序的情况下，也必须用连接程序对目标文件进行处理，生成可执行文件</li>
+</ul>
+<h5 id="操作系统的外壳">操作系统的外壳</h5>
+<ul>
+<li>操作系统是由多个功能模块组成的庞大、复杂的软件系统。任何通用的操作系统，都要提供一个成为shell（外壳）的程序，用户使用这个程序来操作计算机系统工作</li>
+<li><a target="_blank" rel="noopener" href="http://xn--DOScommand-sf2pypgb0500c6t0ast7d.com">DOS中有一个程序command.com</a>，这个程序在DOS中成为命令解释器，也就是DOS系统的shell</li>
+</ul>
+<h5 id="汇编程序从写出到执行的过程：">汇编程序从写出到执行的过程：</h5>
+<p>编程-&gt;1.asm-&gt;编译-&gt;1.obj-&gt;连接-&gt;1.exe-&gt;加载-&gt;内存中的程序-&gt;运行</p>
+<h5 id="debug">debug</h5>
+<p>debug可以将程序加载如内存，设置CS：IP指向程序的入口，但debug并不放弃对CPU的控制，这样就可以用debug的相关命令来单步执行程序，查看每条指令的执行结果</p>
+<h5 id="实例1">实例1</h5>
+<p>debug将程序从可执行文件加载入内存后，cx中存放的是程序的长度（cx=000F：程序的机器码共有15个字节）</p>
+<p>exe文件中的程序的加载过程：</p>
+<ul>
+<li>
+<p>找到一段起始地址为SA：0000（即起始地址的偏移地址为0）的容量足够的空闲内存区</p>
+</li>
+<li>
+<p>在这段内存区的前256个字节中，创建一个称为程序的前缀（PSP）的数据区，DOS利用PSP来和被加载程序进行通信</p>
+</li>
+<li>
+<p>从这段内存的256字节处开始（在PSP的后面），将程序装入，程序的地址被设为SA+10H：0</p>
+<p>（空闲的内存区从SA：0开始，0-255字节为PSP，从256字节处开始存放程序。为更好地区分PSP和程序，DOS一般将它们划分到不同的段中，所以会有这样的地址安排：空闲内存区：SA：0；PSP区：SA：0；程序区：SA+10H：0。注意：PSP区和程序区虽然物理地址连续，却有不同的段地址）</p>
+</li>
+<li>
+<p>将该内存的段地址存入DS中，初始化其他相关寄存器后，设置CS：IP指向程序的入口</p>
+</li>
+<li>
+<p>总结：</p>
+<ul>
+<li>
+<p>程序加载后，ds中存放着程序所在内存区的段地址，这个内存区的偏移地址为0，则程序所在的内存区的地址为ds：0</p>
+</li>
+<li>
+<p>这个内存区的前256个字节中存放的是PSP，dos用来和程序进行通信</p>
+</li>
+<li>
+<p>从256字节处向后的空间存放的是程序</p>
+</li>
+<li>
+<p>所以从ds中可以得到PSP的段地址SA，PSP的偏移地址为0，则物理地址为SA*16+0</p>
+</li>
+<li>
+<p>因为PSP占256（100H）字节，所以程序的物理地址是：</p>
+<p>SA * 16+0+256=SA * 16+16 * 16=（SA+16）*16+0</p>
+<p>可用段地址和偏移地址表示为SA+10：0</p>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/16/8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98/" title="8-数据处理的两个基本问题">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">8-数据处理的两个基本问题</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/16/5%5Bbx%5D%E5%92%8Cloop%E6%8C%87%E4%BB%A4/" title="5-[bx]和loop指令">
+                        <span class="hidden-mobile">5-[bx]和loop指令</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

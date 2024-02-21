@@ -1,0 +1,823 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="3.6 Principles of Congestion Control，塞控制原理 congestion control in the available bit-rate(ABR，可用比特率)service in asynchronous transfer mode(ATM，异步传递方式) networks，异步传递方式（ATM）网络中可用比特率（ABR）服务中的拥塞控制  congestio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章-运输层（六）">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="3.6 Principles of Congestion Control，塞控制原理 congestion control in the available bit-rate(ABR，可用比特率)service in asynchronous transfer mode(ATM，异步传递方式) networks，异步传递方式（ATM）网络中可用比特率（ABR）服务中的拥塞控制  congestio">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.39.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.40.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.41.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.42.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.43.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.44.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.45.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.46.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.47.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.48.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.49.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.50.jpg">
+<meta property="article:published_time" content="2024-02-20T04:40:44.584Z">
+<meta property="article:modified_time" content="2024-02-20T07:34:31.238Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.39.jpg">
+  
+  
+  
+  <title>第三章-运输层（六） - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第三章-运输层（六）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-20 12:40" pubdate>
+          February 20, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">第三章-运输层（六）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>3.6 Principles of Congestion Control，塞控制原理</h1>
+<p>congestion control in the <strong>available bit-rate</strong>(ABR，可用比特率)service in <strong>asynchronous transfer mode</strong>(ATM，异步传递方式) networks，异步传递方式（ATM）网络中可用比特率（ABR）服务中的拥塞控制</p>
+<ul>
+<li>congestion:
+<ul>
+<li>informally: “too many sources sending too much data too  fast for network to handle”</li>
+<li>different from flow control! (receiver controls sender,  so sender won’t overflow receiver’s buffer) (注意与流量控制的区别！)</li>
+<li>Manifestations(表现):
+<ul>
+<li>long delays (queueing in router buffers)</li>
+<li>lost packets (buffer overflow at routers)</li>
+</ul>
+</li>
+<li>a top-10 problem!</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-1-The-Causes-and-the-Costs-of-Congestion">3.6.1 The Causes and the Costs of Congestion</h3>
+<h6 id="Scenario-1-Two-Senders-a-Router-with-Infinite-Buffers，两个发送方和一台具有无穷大缓存的路由器">Scenario 1: Two Senders, a Router with Infinite Buffers，两个发送方和一台具有无穷大缓存的路由器</h6>
+<ul>
+<li>
+<p>output link capacity: R</p>
+<p>no retransmission,  flow control, and  congestion control</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.39.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+<li>
+<p><strong>每连接的吞吐量（per-connection throughput）</strong>（接收方每秒接收的字节数）与该连接发送速率之间的函数关系</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.40.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li>The link simply cannot deliver packets to a receiver at a steady-state rate that exceeds R/2，链路完全不能以超过 R/2的稳定状态速率向接收方交付分组</li>
+<li>This upper limit on throughput is a consequence of the <u>sharing</u> of link capacity between two connections</li>
+<li>No matter how high Hosts A and B set their sending rates, they will each never see a throughput higher than R/2</li>
+</ul>
+</li>
+<li>
+<p>When the sending rate exceeds R/2, the <u>average number of queued packets</u> in the <u>router</u> is unbounded(无限的，极大的，不受控的), and <u>the average delay</u> between source and destination becomes <u>infinite</u></p>
+</li>
+<li>
+<p>拥塞网络的一种代价：<u><strong>large queuing delays</strong> are experienced as the <strong>packet arrival rate</strong> nears the <strong>link capacity</strong></u></p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.41.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+<h6 id="Scenario-2-Two-Senders-and-a-Router-with-Finite-Buffers-两个发送方和一台具有有限缓存的路由器">Scenario 2: Two Senders and a Router with Finite Buffers, 两个发送方和一台具有有限缓存的路由器</h6>
+<ul>
+<li>
+<p>one router, finite buffers (likely droped packet)</p>
+</li>
+<li>
+<p>sender retransmission of timed-out packet</p>
+</li>
+<li>
+<p>λ~in~ :Sends original  data into socket</p>
+</li>
+<li>
+<p>λ’~in~: Trsnsport layer sends segments into  network（containing ontaining original data and retransmitted data，sometimes referred to as the <strong>offered load</strong>，供给载荷）</p>
+</li>
+<li>
+<p>application-layer input = application-layer output: λ~in~ = λ~out~</p>
+</li>
+<li>
+<p>transport-layer input includes retransmissions :λ‘~in~ ≥λ~in~</p>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.42.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>①Idealization: perfect knowledge，理想情况：A能确定路由器中的缓存是否空闲，因而仅当缓存空闲时才发送一个分组。在这种情况下，将不会产生丢包，λ~in~与λ’~in~相等，并且连接的吞吐量就等于λ~in~</p>
+<p>平均主机发送速率不能超过 R/2，因为假定不会发生分组丢失</p>
+<p>从吞吐量的角度看、性能理想，即发送的每个分组都被接收到</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.43.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>② Idealization: known  loss packets can be  lost, dropped at router  due to full buffers，发送方仅当在确定了一个分组已经丢失时才重传</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.44.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.45.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>因此，在所发送的 0.5R 单位数据当中，从平均的角度说， 0.333R 字节/秒是初始数据，而0.166R字节/秒是重传数据。</p>
+<p><u>the sender must perform retransmissions in order to compensate for dropped (lost) packets due to buffer overflow另一种网络拥寒的代价，即发送方必须执行重传以补偿因为缓存溢出而丢弃（丢失）的分组</u></p>
+<p>③Realistic: duplicates</p>
+<ul>
+<li>packets can be lost, dropped at  router due to full buffers</li>
+<li>sender times out prematurely,  sending two copies, both of  which are delivered</li>
+<li>发送方也许会提前发生超时并重传在队列中已被推迟但还未丢失的分组</li>
+<li>初始数据分组和重传分组都可能到达接收方（接收方只需要一份这样的分组副本就行了，重传分组将被丢弃）</li>
+<li>在这种情况下，路由器转发重传的初始分组副本是在做无用功，因为接收方已收到了该分组的初始版本。而路由器本可以利用链路的传输能力去发送另一个分组</li>
+<li><u>unneeded retransmissions by the sender in the face of large delays may cause a router to use its link bandwidth to forward unneeded copies of a packet，网络拥塞的另一种代价，即发送方在遇到大时延时所进行的不必要重传会引起路由器利用其链路带宽来转发必要的分组副本</u></li>
+<li>“costs” of congestion:
+<ul>
+<li>more work (retrans) for given “goodput”(实际吞吐量)</li>
+<li>unneeded retransmissions: link carries multiple copies of pkt decreasing goodput</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.46.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.47.jpg" srcset="/img/loading.gif" lazyload class="">
+<h6 id="Scenario-3-Four-Senders-Routers-with-Finite-Buffers-and-Multihop-Paths，4个发送方和具有有限缓存的多台路由器及多跳路径">Scenario 3: Four Senders, Routers with Finite Buffers, and Multihop Paths，4个发送方和具有有限缓存的多台路由器及多跳路径</h6>
+<ul>
+<li>
+<p>assume that each host uses a <strong>timeout/retransmission</strong> mechanism to implement a reliable data transfer service，都采用超时/重传机制来实现可靠数据传输服务</p>
+<p>all hosts have the same value of λ~in~</p>
+<p>all router links have capacity R bytes/sec</p>
+<p>all the router have R  capacity</p>
+</li>
+<li>
+<p>对于极小的 λ~in~值，路由器缓存的溢出是很少见的，吞吐量大致接近供给载荷，对稍大的 λ~in~值，对应的吞吐量也更大，因为有更多的初始数据被发送到网络中并交付到目的地，溢出仍然很少。因此，对于较小的λ~in~，λ~in~的增大会导致λ~out~的增大</p>
+</li>
+<li>
+<p>λ~in~（因此λ’~in~）很大时的情况:</p>
+<ul>
+<li>
+<p>到达路由器 R2的A-C流量（在经过路由器 R1转发后到达路由器R2）的到达速率至多是R，也就是从 R1 到 R2 的链路容量</p>
+</li>
+<li>
+<p>如果λ’~in~对于所有连接 （包括B-D连接）来说是极大的值，那么在 R2上，B-D流量的到达速率可能会比A-C 流量的到达速率大得多，存在竞争</p>
+</li>
+<li>
+<p>as red λ‘~in~ increases, all arriving  blue pkts at upper queue are  dropped, blue throughput-&gt;0</p>
+</li>
+<li>
+<p>the transmission capacity used at the first router to forward the packet to the second router could have been much more profitably used to transmit a different packet. (For example, when selecting a packet for transmission, it might be better for a router to give priority to packets that have already traversed some number of upstream routers.)</p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.48.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.49.jpg" srcset="/img/loading.gif" lazyload class="">
+<ul>
+<li><u>another cost of dropping a packet due to congestion—when a packet is dropped along a path, the ransmission capacity that was used at each of the upstream links to forward that packet to the point at which it is dropped ends up having been wasted</u></li>
+<li>another “cost” of congestion:
+<ul>
+<li>when packet dropped, any upstream transmission  capacity (routers) used for that packet was  wasted!</li>
+<li>当一个segment沿着一条路径传输被丢弃时，上游路由器转发该分组的传输容量就被浪费了</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-2-Approaches-to-Congestion-Control">3.6.2 Approaches to Congestion Control</h3>
+<p>two broad approaches to congestion control that are taken in practice（ distinguish among congestion-control approaches by whether the <u>network</u> layer provides any <u>explicit assistance</u> to the <u>transport</u> layer for congestion-control purposes）</p>
+<ul>
+<li><strong>end-to-end congestion control</strong>，端到端拥塞控制
+<ul>
+<li>the <u>network</u> layer provides <strong>no explicit support</strong> to the transport layer for congestion control purposes，没有显式支持</li>
+<li>Even the presence of congestion in the network must be inferred by the end systems based only on observed network behavior(for example, packet loss and delay)</li>
+<li><strong>TCP</strong> must necessarily take this <strong>end-to-end approach</strong> toward congestion control
+<ul>
+<li>since the <strong>IP layer</strong> provides <strong>no feedback</strong> to the end systems regarding(有关) network congestion</li>
+<li>TCP segment loss(as indicated by a <u>timeout</u> or a <u>triple(3次) duplicate acknowledgment</u>) is taken as an indication of network congestion and TCP <strong>decreases its window size</strong> accordingly(相应地，因而)</li>
+<li>uses increasing round-trip delay values as indicators of increased network congestion，使用增加的往返时延值作为网络拥塞程度增加的指示</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Network-assisted congestion control</strong>，网络辅助的拥塞控制
+<ul>
+<li>network-layer components(网络层构件) (that is, <strong>routers</strong>)provide <strong>explicit feedback</strong> to the sender regarding the congestion state in the network，提供关于网络中拥塞状态的显式反馈信息.  This feedback may be as simple as <strong>a single bit</strong> indicating congestion at a line</li>
+<li>congestion information is typically fed back from the network to the sender in one of two ways
+<ul>
+<li><strong>derect feedback</strong> may be sent from a network router to the sender. This form of notification typically takes the form of a <strong>choke packet</strong>(阻塞分组) (essentially saying,“I’m congested!”)</li>
+</ul>
+</li>
+<li>the second form of notification occurs when a <u>router</u> <strong>marks/updates</strong> a field in a packet flowing from sender to receiver to indicate congestion
+<ul>
+<li>Upon receipt of a marked packet, the receiver then notifies the sender of the congestion indication</li>
+<li>Note that this latter form of notification takes <strong>at least a full round-trip time</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-3-Network-Assisted-Congestion-Control-Example-ATM-ABR-Congestion-Control-网络辅助的拥塞控制例子∶ATM-ABR拥塞控制">3.6.3 Network-Assisted Congestion-Control Example: ATM ABR Congestion Control, 网络辅助的拥塞控制例子∶ATM ABR拥塞控制</h3>
+<ul>
+<li>
+<p>Fundamentally(基本上) ATM takes a <strong>virtual-circuit (VC)</strong> oriented approach toward packet switching，采用一种面向虚电路（VC）的方法来处理分组交换</p>
+</li>
+<li>
+<p><strong>each switch</strong> on the source-to-destination path will <strong>maintain state</strong> about the source-to-destination VC</p>
+</li>
+<li>
+<p>This per-VC state allows a switch to <strong>track</strong> the behavior of individual senders <code>(e.g.,tracking their average transmission rate)</code> and to take source-specific congestion-control actions(采取特定源的拥塞控制动作) <code>(such as explicitly signaling to the sender to reduce its rate when the switch becomes congested)</code></p>
+</li>
+<li>
+<p>This per-VC state at network switches makes ATM ideally suited to perform network-assisted congestion control</p>
+</li>
+<li>
+<p>ABR has been designed as an <strong>elastic</strong>(弹性的) data transfer service in a manner reminiscent(使人联想) of TCP</p>
+<ul>
+<li>When the network is underloaded, ABR service should be able to take advantage of the spare available bandwidth</li>
+<li>when the network is congested, ABR service should throttle its transmission rate to some predetermined minimum transmission rate</li>
+</ul>
+</li>
+<li>
+<p>adopt ATM terminology(using the term <u>switch</u>(交换机) rather than router, and the term <strong>cell</strong>(信元) rather than packet)</p>
+</li>
+<li>
+<p>Interspersed(穿插) with the <u>data cells</u> are <strong>resource-management cells (RM cells)</strong>(资源管理信元，RM信元)</p>
+<ul>
+<li>
+<p>can be used to <u>convey congestion-related information</u> among the <u>hosts and switches</u></p>
+</li>
+<li>
+<p>When an RM cell <u>arrives at a destination</u>, it will be turned around and <strong>sent back</strong> to the sender(possibly after the destination has <strong>modified</strong> the contents of the RM cell)</p>
+</li>
+<li>
+<p>It is also possible for a <strong>switch</strong> to <strong>generate</strong> an RM cell itself and send this RM cell directly to a source</p>
+</li>
+<li>
+<p>RM cells can be used to provide both <strong>direct network feedback</strong> and <strong>network feedback via the receiver</strong>(提供直接网络反馈和经由接收方的网络反馈)</p>
+<img src="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/3.50.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ul>
+</li>
+<li>
+<p>ATM ABR congestion control is a <strong>rate-based</strong>(基于速率) approach</p>
+<ul>
+<li>the sender <strong>explicitly computes a maximum rate</strong> at which it can send and <strong>regulates</strong>(调整，控制) itself accordingly，明确计算最大速率，自我调整</li>
+</ul>
+</li>
+<li>
+<p>ABR provides three mechanisms for <u>signaling congestion-related information</u> from the <u>switches to the <strong>receiver</strong></u>:</p>
+<ul>
+<li><strong>EFCl bit</strong>
+<ul>
+<li><u>Each</u> data cell contains an <strong>explicit forward congestion indication (EFCI，式转发拥塞指示)</strong> bit</li>
+<li>(congested network <strong>switch</strong> can set)置1：告诉目的主机已经拥塞</li>
+<li>The destination <u>must</u> check the EFCI bit in all received data cells</li>
+<li>When an RM cell arrives at the destination, if <u>the most recently received data cell</u> had the EFCI bit set to 1, then the <strong>destination</strong> sets the <strong>congestion indication bit (the CI bit，拥塞指示比特)</strong> of the RM cell to 1 and <u>sends the RM cell back</u> to the <strong>sender</strong></li>
+</ul>
+</li>
+<li><strong>CI and NI bits</strong>
+<ul>
+<li>sender-to-receiver RM cells are interspersed with data cells. The rate of RM cell interspersion is a tunable(可调的) parameter(参数), with the <u>default</u> value being one RM cell every <strong>32</strong> data cells，每32个数据信元中有一个RM信元</li>
+<li>These RM cells have a <strong>congestion indication(CI，拥塞指示)</strong> bit and a <strong>no increase (NI，无增长)</strong> bit that can be <strong>set by a congested network switch</strong>，拥塞的交换机设置</li>
+<li>switch can set the <strong>NI bit</strong> in a passing RM cell to 1 under <strong>mild congestion</strong> and can set the <strong>CI bit</strong> to 1 under <strong>severe congestion</strong> conditions</li>
+<li>When a destination host receives an RM cell, it will send the RM cell back to the sender with its CI and NI bits <strong>intact</strong>(不变的) (除了上述EFCI的情况)</li>
+</ul>
+</li>
+<li><strong>ER setting</strong>
+<ul>
+<li><u>Each</u> RM cell also contains a <strong>2-byte</strong> **explicit rate (ER，显式速率)**field</li>
+<li>A <u>congested switch</u> may <strong>lower</strong> the value contained in the ER field in a passing RM cell</li>
+<li>the ER field will be set to the <strong>minimum supportable rate</strong> of <strong>all switches</strong> on the source-to-destination path</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%827/" title="第三章-运输层（七）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第三章-运输层（七）</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%825/" title="第三章-运输层（五）">
+                        <span class="hidden-mobile">第三章-运输层（五）</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>
