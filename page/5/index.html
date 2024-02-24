@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/1.jpg">
-  <link rel="icon" href="/img/1.jpg">
+  <link rel="icon" href="/img/7.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -200,15 +200,285 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" target="_self">
-          第一章-操作系统概述
+        <a href="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/" target="_self">
+          环境变量
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/6_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/" target="_self">
         <div>
-          操作系统各主题间的关联性  基本构成  处理器：   processor   控制计算机的操作，执行数据处理功能   与存储器交换数据   通常使用两个内部（对处理器而言）寄存器：   存储器地址寄存器，Memory Address Register，MAR 用于确定下一次读/写的存储器地址   存储器缓冲寄存器，Memory Buffer Register，MBR 存放要写入存储器的数据或从存储
+          1 概述 环境变量概念   一组动态的定义值   操作系统运行环境的一部分   影响正在运行进程的行为方式（加载哪些外部DLL）   在Unix中提出，也被微软操作系统采用   示例：PATH变量 当执行一个程序时，如果没有提供完整的路径，shell进程将使用环境变量来找到程序的位置   2 如何访问环境变量 2.1 从主函数中访问  2.2 更可靠的方法：使用全局变量  3 进程如何获取环境变量
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-20 21:55" pubdate>
+              2024-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/20/5_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_shellcode%E7%BC%96%E5%86%99/" target="_self">
+          shellcode
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/5_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_shellcode%E7%BC%96%E5%86%99/" target="_self">
+        <div>
+          1 概述 概念 ShellCode就是一段能够完成一定功能(比如打开一个命令窗口)、可直接由计算机执行的机器代码，通常以十六进制的形式存在。 shellcode的功能 可以是处于恶作剧弹出对话框、打开dos窗口（执行任意程序）、添加系统管理用户、打开可以远程连接的端口、发起反向连接、上传（下载）木马病毒并运行可能是攻击性的，删除重要文件、窃取数据破坏，格式化磁盘… 2 通用shellcode的编写
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-20 21:55" pubdate>
+              2024-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/" target="_self">
+          缓冲区溢出
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/4_%E8%BD%AF%E4%BB%B6%E6%BC%8F%E6%B4%9E_%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/" target="_self">
+        <div>
+          1 概述 漏洞的定义 指信息系统硬件、软件、操作系统、网络协议、数据库等在设计上、实现上出现的可以被攻击者利用的错误、缺陷和疏漏。通俗一点说，漏洞就是可以被攻击利用的系统弱点。 从导致的后果来看，漏洞可能会造成：以匿名身份直接获取系统最高权限；从普通用户提升为管理员用户；实施远程拒绝服务攻击等。 漏洞攻击步骤 漏洞发现（Vulnerability Discovery）→漏洞分析（Vulnerabi
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-20 21:55" pubdate>
+              2024-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/20/3_%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB/" target="_self">
+          口令攻击
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/3_%E5%8F%A3%E4%BB%A4%E6%94%BB%E5%87%BB/" target="_self">
+        <div>
+          1 概述 1.1 身份认证 用户向计算机系统以一种安全的方式提交自己的身份证明，然后由系统确认用户的身份是否属实，最终拒绝用户或者赋予用户一定的权限。 1.2 身份认证的关系 常见的身份验证思路 What you know？ What you have？ Who you are ？  Where you are？ 计算机领域中的身份认证   用户名和密码验证   磁卡或者智能卡认证   基于人的生
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-20 21:55" pubdate>
+              2024-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" target="_self">
+          信息搜集
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/1%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" target="_self">
+        <div>
+          1 信息收集概述 1.1 信息收集的内容  域名和IP地址 防火墙、入侵检测等安全防范措施 内部网络结构、域组织、用户电子邮件 操作系统类型 端口 系统构架 敏感文件或目录 应用程序类型 个人身份信息…  1.2关于信息搜集的重要观点  信息收集是渗透测试的最重要的一环 关于攻击目标，知道得越多越好 知道得越多，就可能知道得更多 没有无用的信息  1.2 信息收集分类  主动通过直接访问、扫描网站
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-20 21:55" pubdate>
+              2024-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%94%BB%E9%98%B2%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/" class="category-chain-item">网络攻防课程实验</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A53/" target="_self">
+          第五章-互斥和同步（三）
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A53/" target="_self">
+        <div>
+          5.5 消息传递   进程交互时，必须满足两个基本要求∶同步和通信  同步：实现互斥 通信：交换信息，实现合作  =&gt;方法：消息传递   消息传递的优点： 1、提供以上功能 2、可在分布式系统、共享内存的多处理器系统、单处理器系统中实现   消息传递的原语（进程间进行消息传递所需的最小操作集）   12send(destination,message)receive(source,messa
         </div>
       </a>
     
@@ -254,15 +524,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/" target="_self">
-          第五章-链路层
+        <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/" target="_self">
+          第五章-互斥和同步（二）
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E9%93%BE%E8%B7%AF%E5%B1%821/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8B%EF%BC%89/" target="_self">
         <div>
-          two fundamentally different types of link-layer channels： 1、broadcast channels，广播信道  common in local area networks (LANs), wireless LANs, satellite networks, and **hybrid fiber-coaxial cable(HFC)**acc
+          5.2 互斥∶硬件的支持 5.2.1 中断禁用   单处理器机器中：  并发进程不能重叠，只能交替 一个进程在调用一个系统服务(主动)或被中断(被动)前，将一直运行  ==&gt;为保证互斥，只需保证一个进程不被中断即可 临界区不能被中断↓ 123456while (true)&#123;    /*禁用中断*/;    /* 临界区 */;    /* 启用中断*/;    /* 其余部分*/;
         </div>
       </a>
     
@@ -270,7 +540,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
+            <time datetime="2024-02-20 20:04" pubdate>
               2024-02-20
             </time>
           </div>
@@ -286,7 +556,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -308,15 +578,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/" target="_self">
-          第四章-网络层（四）
+        <a href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" target="_self">
+          第五章-互斥和同步（一）
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%824/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%B9%B6%E5%8F%91%E6%80%A7%EF%BC%9A%E4%BA%92%E6%96%A5%E5%92%8C%E5%90%8C%E6%AD%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" target="_self">
         <div>
-          4.5 Routing Algorithms  Typically a host is attached directly to one router, the default router for the host (also called the first-hop router，第一跳路由器 for the host) c(x,x’) = cost of link (x,x’)  :one:
+          第五章 并发性：同步和互斥  操作系统设计中的核心问题是进程和线程的管理  多道程序设计技术(Multiprogramming:)∶管理单处理器系统中的多个进程 多处理器技术(Multiprocessing)∶管理多处理器系统中的多个进程 分布式处理器技术(Distributed processing)∶管理多台分布式计算机系统中多个进程的执行，最近迅猛发展的集群就是这类系统的典型例子   并发是
         </div>
       </a>
     
@@ -324,7 +594,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
+            <time datetime="2024-02-20 20:04" pubdate>
               2024-02-20
             </time>
           </div>
@@ -340,7 +610,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -362,15 +632,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/" target="_self">
-          第四章-网络层（三）
+        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8B%EF%BC%89/" target="_self">
+          第四章-进程和线程（一）
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%823/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8B%EF%BC%89/" target="_self">
         <div>
-          3、Network Address Translation (NAT，网络地址转换)   A realm(地域) with private addresses refers to a network whose addresses only have meaning to devices within that network   motivation: local network uses ju
+          4.4 Windows 8的进程和线程管   应用程序（application）   由一个或多个进程组成   每个进程（process）提供执行程序所需要的资源   每个进程的组成：    每个进程都以一个称为主线程的单线程开始   任何一个线程可以创建其他线程     线程（thread）   进程中可被调度执行的实体   一个进程的所有线程共享其虚拟地址空间和系统资源      作业对象（j
         </div>
       </a>
     
@@ -378,7 +648,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
+            <time datetime="2024-02-20 20:04" pubdate>
               2024-02-20
             </time>
           </div>
@@ -394,7 +664,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -416,15 +686,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/" target="_self">
-          第四章-网络层（二）
+        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/" target="_self">
+          第四章-进程和线程（一）
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%822/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%B8%8A%EF%BC%89/" target="_self">
         <div>
-          4.4 The Internet Protocol (IP): Forwarding and Addressing in the Internet，网际协议∶因特网中的转发和编址  the Internet’s network layer has three major components  the IP protocol the routing component  determines th
+          4.1 进程和线程   回顾进程的特点  资源所有权，Resource ownership  进程包括存放进程映像的虚拟地址空间 进程映像是程序、数据、栈和进程控制块中定义的属性集 进程总具有对资源的控制权或所有权 操作系统提供预防进程间发生不必要资源冲突的保护功能   调度/执行，Scheduling/execution  进程具有执行态（运行、就绪等）和分配给其的优先级，是可被操作系统调度和分
         </div>
       </a>
     
@@ -432,7 +702,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
+            <time datetime="2024-02-20 20:04" pubdate>
               2024-02-20
             </time>
           </div>
@@ -448,277 +718,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/" target="_self">
-          第四章-网络层（一）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E7%BD%91%E7%BB%9C%E5%B1%821/" target="_self">
-        <div>
-          forwarding  Forwarding involves the transfer of a packet from an incoming link to an outgoing link within a single router    routing  Routing involves all of a network’s routers, whose collective(集体
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%827/" target="_self">
-          第三章-运输层（七）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%827/" target="_self">
-        <div>
-          3.7 TCP Congestion Control，TCP拥塞控制   the approach taken by TCP is to have each sender limit the rate at which it sends traffic into its connection as a function of perceived(感知到的，认为) network congestio
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/" target="_self">
-          第三章-运输层（六）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%826/" target="_self">
-        <div>
-          3.6 Principles of Congestion Control，塞控制原理 congestion control in the available bit-rate(ABR，可用比特率)service in asynchronous transfer mode(ATM，异步传递方式) networks，异步传递方式（ATM）网络中可用比特率（ABR）服务中的拥塞控制  congestio
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%825/" target="_self">
-          第三章-运输层（五）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%825/" target="_self">
-        <div>
-          3.5.4 Reliable Data Transfer   TCP creates a reliable data transfer service(可靠数据传输) on top of IP’s unreliable best-effort service   TCP’s reliable data transfer service ensures that the data stream th
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/" target="_self">
-          第三章-运输层（四）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/%E7%AC%AC%E4%B8%89%E7%AB%A0%E8%BF%90%E8%BE%93%E5%B1%824/" target="_self">
-        <div>
-          3.5 Connection-Oriented Transport: TCP   TCP protocol runs only in the end systems and not in the intermediate network elements(routers and link-layer switches), the intermediate network elements do n
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 12:40" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
   
   
 
@@ -738,7 +738,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/4/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/#board">10</a><a class="extend next" rel="next" href="/page/6/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/4/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/6/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
