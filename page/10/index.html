@@ -200,60 +200,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2022/02/16/3%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%863--%E5%AF%84%E5%AD%98%E5%99%A8/" target="_self">
-          3-寄存器2
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/16/3%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%863--%E5%AF%84%E5%AD%98%E5%99%A8/" target="_self">
-        <div>
-          内存中字的存储 两个16进制位对应一个字节，两个字节对应一个位 任何两个地址连续的内存单元，N号单元和N+1号单元，可以将它们看成两个内存单元，也可以看成一个地址为N的字单元中的高位字节单元和低位字节单元 DS和[address] CPU要读取一个内存单元的时候，必须先给出这个内存单元的地址 在8086CPU中，内存单元由段地址和偏移地址组成 8086CPU中有一个DS寄存器，通常用来存放要访问的
-        </div>
-      </a>
-    
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-02-16 21:38" pubdate>
-              2022-02-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2022/02/16/2%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%862--%E5%AF%84%E5%AD%98%E5%99%A8/" target="_self">
           2-寄存器
         </a>
@@ -695,6 +641,60 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2022/02/16/9%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%9A%84%E5%8E%9F%E7%90%86/" target="_self">
         <div>
           转移指令类似于高级语言中的go to指令 8086CPU的转移指令分类：  无条件转移指令（如：jmp） 条件转移指令 循环指令（如：loop） 过程（相当于C中的函数） 中断（:star:)  操作符offset   伪指令   offset是由编译器处理的符号，功能：取得标号的偏移地址   例：  1、  12345678assume cs:codesgcodesg segmentstart:
+        </div>
+      </a>
+    
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-16 21:38" pubdate>
+              2022-02-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/" class="category-chain-item">汇编基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/16/8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98/" target="_self">
+          8-数据处理的两个基本问题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/16/8%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98/" target="_self">
+        <div>
+          reg：寄存器 sreg：段寄存器 bx、si、di、bp   在8086CPU中，只有bx、bp、si、di这四个寄存器可以用在[ ]中进行内存单元的寻址   在[ ]中，这四个寄存器可以单个出现，或只能以四种组合出现： bx+si、bx+di、bp+si、bp+di   只要在[ ]总使用寄存器bp，而指令中没有显性地给出段地址，段地址就默认在ss中   机器指令处理地数据所在地位置   绝大
         </div>
       </a>
     
